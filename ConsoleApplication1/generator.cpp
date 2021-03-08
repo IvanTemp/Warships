@@ -4,7 +4,7 @@
 #include <map>
 #include "generator.h"
 
-std::pair <int, int> Field_Final[width_height][width_height] = { std::make_pair(0, 0) }; //Поля с ID
+std::pair <int, int> Field_Final[width_height][width_height] = { std::make_pair(0, 0) }; //Поля, которое видит игрок и Терминатор
 std::pair <int, int> Field_ID[width_height][width_height] = { std::make_pair(0, 0) }; //Поля с ID
 std::pair <int, int> Field_War[width_height][width_height] = { std::make_pair(0, 0) }; //Поля с туманом войны
 
@@ -21,12 +21,12 @@ void Output_Field() {
 }
 
 
-void Generate_ships_in_random_places(ship sheep, int ID) {
+void Generate_ships_in_random_places(ship sheep) {
 	srand(time(0));
 	std::map <std::string, int> TypeToLength = { {"Aircraft Carrier", 4}, {"Heavy Cruiser", 3}, {"Tsundere", 2}, {"Small", 1} };
 	std::map <std::string, int> TypeToDurability = { {"Aircraft Carrier", 4}, {"Heavy Cruiser", 3}, {"Tsundere", 2}, {"Small", 1} };
 	bool stop = false, breaksIn = true;
-	int x = 0, y = 0, rotation = 0, length = TypeToLength[sheep.GetType()];
+	int x = 0, y = 0, rotation = 0, length = TypeToLength[sheep.GetType()], ID = sheep.GetID();
 	//rotation: 0 - North, 1 - East, 2 - South - 3 - West
 	while (!stop) {
 		breaksIn = true;
