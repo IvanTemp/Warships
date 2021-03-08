@@ -335,6 +335,12 @@ void Generate_boat(int Field[width_height][width_height]) {
 	}
 }
 
+void Generate_ships_in_random_places(int Field[width_height][width_height], int Count_battleships, int Count_cruisers, int Count_destroyers, int Count_boats) {
+	for (int count = 0; count < Count_battleships; count++) {
+		Generate_ship(Field, 4);
+	}
+}
+
 void Generate_ship(int Field[width_height][width_height], int length) {
 	bool stop = false, breaksIn = true;
 	int i, j, rotation;
@@ -375,19 +381,13 @@ void Generate_ship(int Field[width_height][width_height], int length) {
 	}
 }
 
-void Generate_ships_in_random_places(int Field[width_height][width_height], int Count_battleships, int Count_cruisers, int Count_destroyers, int Count_boats) {
-	for (int count = 0; count < Count_battleships; count++) {
-		Generate_ship(Field, 4);
-	}
-}
-
-int main() {
-	srand(time(0));
-	int Field[width_height][width_height] = { 0 }; //Поле
-	//Generate_battleship(Field);
-	//Generate_cruiser(Field);
-	//Generate_destroyer(Field);
-	//Generate_boat(Field);
-	Generate_ships_in_random_places(Field, 1, 2, 3, 4);
-	Output(Field);
-}
+//int main() {
+//	srand(time(0));
+//	int Field[width_height][width_height] = { 0 }; //Поле
+//	//Generate_battleship(Field);
+//	//Generate_cruiser(Field);
+//	//Generate_destroyer(Field);
+//	//Generate_boat(Field);
+//	Generate_ships_in_random_places(Field, 1, 2, 3, 4);
+//	Output(Field);
+//}
