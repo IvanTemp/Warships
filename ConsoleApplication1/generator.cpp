@@ -381,13 +381,13 @@ void Generate_ships_in_random_places(int Field[width_height][width_height], int 
 	}
 }
 
-int main() {
-	srand(time(0));
-	int Field[width_height][width_height] = { 0 }; //Поле
-	//Generate_battleship(Field);
-	//Generate_cruiser(Field);
-	//Generate_destroyer(Field);
-	//Generate_boat(Field);
-	Generate_ships_in_random_places(Field, 1, 2, 3, 4);
-	Output(Field);
-}
+//int main() {
+//	srand(time(0));
+//	int Field[width_height][width_height] = { 0 }; //Поле
+//	//Generate_battleship(Field);
+//	//Generate_cruiser(Field);
+//	//Generate_destroyer(Field);
+//	//Generate_boat(Field);
+//	Generate_ships_in_random_places(Field, 1, 2, 3, 4);
+//	Output(Field);
+//}

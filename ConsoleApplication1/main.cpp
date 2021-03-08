@@ -10,11 +10,11 @@ int main()
 		ship2("Prinz Eugene", "Heavy Cruiser"), 
 		ship3("FLX", "Tsundere"),
 		ship4("Flaffey", "Small");
-	ship1.Print(); 
+	ship1.Print();
 	ship2.Print();
 	ship3.Print();
 	ship4.Print();
-	ship2.SetDurab({5,7,9});
+	ship2.SetDurab({ship2.GetDurab()[0]-2,7,9});
 	//Создадим вектор флот
 	std::vector<ship> fleet;
 	//Запихнем в вектор флот наши кораблики
