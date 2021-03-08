@@ -18,6 +18,7 @@ void Output_Field() {
 	}
 }
 
+
 void Generate_ships_in_random_places(ship sheep) {
 	srand(time(0));
 	bool stop = false, breaksIn = true;
