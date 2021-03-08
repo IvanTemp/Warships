@@ -4,6 +4,7 @@
 #include <map>
 #include "generator.h"
 
+
 std::pair <int, int> temp;
 temp.first() = 0;
 temp.second() = 0;
