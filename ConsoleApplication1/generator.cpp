@@ -23,6 +23,7 @@ void Generate_ships_in_random_places(ship ship1) {
 	bool stop = false, breaksIn = true;
 	int x = 0, y = 0, rotation = 0;
 	if (ship1.GetType() == "Aircraft Carrier") {
+		int length = 4;
 		//rotation: 0 - North, 1 - East, 2 - South - 3 - West
 		while (!stop) {
 			breaksIn = true;
@@ -60,5 +61,4 @@ void Generate_ships_in_random_places(ship ship1) {
 			}
 		}
 	}
-	return ship1;
 }

@@ -1,4 +1,5 @@
 #pragma once
+#include "ship.h"
 
 //Настройки игры
 #define width_height 10 //Ширина высота поля
