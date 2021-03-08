@@ -8,9 +8,6 @@
 
 int main()
 {
-	std::cout << std::endl << std::endl << std::endl;
-	Output_Field();
-	std::cout << std::endl << std::endl << std::endl;
 
 	//Получение урона
 	//Создадим вектор флот
@@ -27,11 +24,15 @@ int main()
 	fleet.push_back({ "Flaffey3", "Small" });
 	fleet.push_back({ "Flaffey4", "Small" });
 	Generate_ships_in_random_places(fleet[0]);
+	std::cout << std::endl << std::endl << std::endl;
+	Output_Field();
+	std::cout << std::endl << std::endl << std::endl;
 	//Выведем флот
 	std::cout << "======Fleet=======" << std::endl;
 	for (const auto& x : fleet)
 	{
 		x.Print();
 	}
+	system("pause");
 	return 0;
 }
