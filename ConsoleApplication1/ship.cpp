@@ -26,8 +26,8 @@ ship::ship(const std::string& nm, const std::string& tp) :name(nm), type(tp), du
 
 void ship::Print() const
 {
-    std::cout << "Ship name is " << name << std::endl;
-    std::cout << "Type is " << type << std::endl;
+    std::cout << "Ship name is " << name;
+    std::cout << "(" << type << ")" << std::endl;
     std::cout << "Durability is";
     for (int i = 0; i < durability.size(); i++)
     {
@@ -65,3 +65,9 @@ std::vector<int> ship::GetDurab() const
 {
     return durability;
 }
+
+void ship::SetXYType(const std::pair<int, int> cord, const std::string tp)
+{
+    coord[cord.first][cord.second] = tp;
+}
+
