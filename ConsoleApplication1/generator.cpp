@@ -4,9 +4,12 @@
 #include <map>
 #include "generator.h"
 
-std::pair <int, int> Field_ID[width_height][width_height] = { 0 }; //Поля с ID
-std::pair <int, int> Field_Durability[width_height][width_height] = { 0 }; //Поля с прочностью
-std::pair <int, int> Field_War[width_height][width_height] = { 0 }; //Поля с туманом войны
+std::pair <int, int> temp;
+temp.first() = 0;
+temp.second() = 0;
+std::pair <int, int> Field_Final[width_height][width_height] = { temp }; //Поля с ID
+std::pair <int, int> Field_ID[width_height][width_height] = { temp }; //Поля с ID
+std::pair <int, int> Field_War[width_height][width_height] = { temp }; //Поля с туманом войны
 
 void Output_Field() {
 
