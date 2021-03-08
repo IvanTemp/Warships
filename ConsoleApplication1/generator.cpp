@@ -1,22 +1,33 @@
 #include <iostream>
 #include <locale>
 #include <vector>
+#include <map>
+#include "generator.h"
 
-const int width_height = 10; //Высота и ширина поля(По умолчанию - 10)
+int Field[width_height][width_height] = { 0 }; //Поле
 const int Count_battleships = 1; //Количество четырёхпалубников(По умолчанию - 1)
 const int Count_cruisers = 2; //Количество трёхпалубников(По умолчанию - 2)
 const int Count_destroyers = 3; //Количество двухпалубников(По умолчанию - 3)
 const int Count_boats = 4; //Количество однопалубников(По умолчанию - 4)
 
-void Output(int Field[width_height][width_height]) {
-	for (int i = 0; i < width_height; i++) {
-		for (int j = 0; j < width_height; j++) {
-			if (Field[i][j] == 2)
-				Field[i][j] = 0;
-			std::cout << Field[i][j] << " ";
+void Output_Field() {
+
+	std::map <int, char> OutputMap = { {2, '*'}, {1, ' '}, {0, '#' } };
+	for (int cj = 0; cj < width_height; cj++) {
+		std::cout << "         |";
+		for (int cjj = 0; cjj < width_height; cjj++) {
+			std::cout << OutputMap[Field[cj][cjj]] << "|";
 		}
 		std::cout << std::endl;
 	}
+
+	//for (int i = 0; i < width_height; i++) {
+	//	for (int j = 0; j < width_height; j++) {
+	//		Field[i][j] == 2 ? std::cout << "*" << "|" : Field[i][j] == 1 ? std::cout << " " << "|" : Field[i][j] == 0 ? std::cout << "#" << "|"
+			
+	//	}
+	//	std::cout << std::endl;
+	//}
 }
 
 void Generate_battleship(int Field[width_height][width_height]) {
@@ -335,59 +346,46 @@ void Generate_boat(int Field[width_height][width_height]) {
 	}
 }
 
-void Generate_ships_in_random_places(int Field[width_height][width_height], int Count_battleships, int Count_cruisers, int Count_destroyers, int Count_boats) {
-	for (int count = 0; count < Count_battleships; count++) {
-		Generate_ship(Field, 4);
-	}
-}
-
-void Generate_ship(int Field[width_height][width_height], int length) {
-	bool stop = false, breaksIn = true;
-	int i, j, rotation;
-	//rotation: 0 - North, 1 - East, 2 - South - 3 - West
-	while (!stop) {
-		breaksIn = true;
-		i = -1 + rand() % width_height + 1, j = -1 + rand() % width_height + 1, rotation = 2;
-		std::cout << i << " " << j << " " << rotation << std::endl; //TEST
-		switch (rotation) {
-		case 2: //South
-			if (i < width_height - 4) {
-				for (int h = 0; h < length; h++) {
-					if (Field[i + h][j] != 0) breaksIn = false;
-				}
-				if (breaksIn) {
-					if (i > 0) {
-						if (j > 0) Field[i - 1][j - 1] = 2;
-						Field[i][j - 1] = 2;
-						if (j < width_height - 1) Field[i - 1][j + 1] = 2;
+void Generate_ships_in_random_places(int Count_battleships, int Count_cruisers, int Count_destroyers, int Count_boats) {
+	std::cout << "test 0" << std::endl;
+	for (int length = 4; length > 0; length--) {
+		bool stop = false, breaksIn = true;
+		int i = 0, j = 0, rotation = 0;
+		//rotation: 0 - North, 1 - East, 2 - South - 3 - West
+		while (!stop) {
+			std::cout << "test" << std::endl;
+			breaksIn = true;
+			i = -1 + rand() % width_height + 1, j = -1 + rand() % width_height + 1, rotation = 2;
+			std::cout << i << " " << j << " " << rotation << std::endl; //TEST
+			switch (rotation) {
+			case 2: //South
+				if (i < width_height - 4) {
+					for (int h = 0; h < length; h++) {
+						if (Field[i + h][j] != 0) breaksIn = false;
 					}
-					for (int temp_int = 0; temp_int < length; length++) {
-						if (j > 0) Field[i + temp_int][j - 1] = 2;
-						Field[i + temp_int][j] = 1;
-						if (j < width_height - 1) Field[i + temp_int][j + 1] = 2;
+					if (breaksIn) {
+						if (i > 0) {
+							if (j > 0) Field[i - 1][j - 1] = 2;
+							Field[i][j - 1] = 2;
+							if (j < width_height - 1) Field[i - 1][j + 1] = 2;
+						}
+						for (int temp_int = 0; temp_int < length; temp_int++) {
+							if (j > 0) Field[i + temp_int][j - 1] = 2;
+							Field[i + temp_int][j] = 1;
+							if (j < width_height - 1) Field[i + temp_int][j + 1] = 2;
+						}
+						if (i < width_height - 1) {
+							if (j > 0) Field[i + length][j - 1] = 2;
+							Field[i + length][j - 1] = 2;
+							if (j < width_height - 1) Field[i + length][j + 1] = 2;
+						}
+						stop++;
 					}
-					if (i < width_height - 1) {
-						if (j > 0) Field[i + length][j - 1] = 2;
-						Field[i + length][j - 1] = 2;
-						if (j < width_height - 1) Field[i + length][j + 1] = 2;
-					}
-					stop++;
+					else continue;
 				}
 				else continue;
+				break;
 			}
-			else continue;
-			break;
 		}
 	}
 }
-
-//int main() {
-//	srand(time(0));
-//	int Field[width_height][width_height] = { 0 }; //Поле
-//	//Generate_battleship(Field);
-//	//Generate_cruiser(Field);
-//	//Generate_destroyer(Field);
-//	//Generate_boat(Field);
-//	Generate_ships_in_random_places(Field, 1, 2, 3, 4);
-//	Output(Field);
-//}
