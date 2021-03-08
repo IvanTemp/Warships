@@ -4,36 +4,20 @@
 #include "ship.h"
 
 
-ship::ship(const std::string& nm, const std::string& tp) :name(nm), type(tp), durability(1, 3)
+ship::ship(const std::string& nm, const std::string& tp, const int ID) :name(nm), type(tp), durability(0)
 {
     //Вопрос правильно ли вот так. Ведь на лекции int age мы инициалиризрооваплиотмсиоамиролап выше (:name(nm), role(rl), age(0))
-    if (tp == "Aircraft Carrier")
-    {
-        durability.resize(4);
-        std::fill(durability.begin(), durability.end(), 4);
-    }
-    else if (tp == "Heavy Cruiser")
-    {
-        durability.resize(3);
-        std::fill(durability.begin(), durability.end(), 5);
-    }
-    else if (tp == "Tsundere")
-    {
-        durability.resize(2);
-        std::fill(durability.begin(), durability.end(), 5);
-    }
+    if (tp == "Aircraft Carrier") durability = 16;
+    else if (tp == "Heavy Cruiser") durability = 18;
+    else if (tp == "Tsundere") durability = 10;
+    else if (tp == "Small") durability = 6;
 }
 
 void ship::Print() const
 {
     std::cout << "Ship name is " << name;
     std::cout << "(" << type << ")" << std::endl;
-    std::cout << "Durability is";
-    for (int i = 0; i < durability.size(); i++)
-    {
-        std::cout << " " << durability[i];
-    }
-    std::cout << std::endl;
+    std::cout << "Durability is " << durability << std::endl;
 }
 
 void ship::SetName(const std::string nm)
@@ -56,12 +40,17 @@ std::string ship::GetType() const
     return type;
 }
 
-void ship::SetDurab(const std::vector<int> durabty)
+void ship::SetDurability(const int durabty)
 {
     durability = durabty;
 }
 
-std::vector<int> ship::GetDurab() const
+int ship::GetDurability() const
 {
     return durability;
+}
+
+int ship::GetID() const
+{
+    return ID;
 }
