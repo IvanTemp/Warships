@@ -65,9 +65,3 @@ std::vector<int> ship::GetDurab() const
 {
     return durability;
 }
-
-void ship::SetXYType(const std::pair<int, int> cord, const std::string tp)
-{
-    coord[cord.first][cord.second] = tp;
-}
-

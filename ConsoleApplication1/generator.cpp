@@ -16,55 +16,49 @@ void Output_Field() {
 		}
 		std::cout << std::endl;
 	}
-
-	//for (int i = 0; i < width_height; i++) {
-	//	for (int j = 0; j < width_height; j++) {
-	//		Field[i][j] == 2 ? std::cout << "*" << "|" : Field[i][j] == 1 ? std::cout << " " << "|" : Field[i][j] == 0 ? std::cout << "#" << "|"
-			
-	//	}
-	//	std::cout << std::endl;
-	//}
 }
 
-void Generate_ships_in_random_places(int Count_battleships, int Count_cruisers, int Count_destroyers, int Count_boats) {
+void Generate_ships_in_random_places(ship ship1) {
 	srand(time(0));
-	for (int length = 4; length > 0; length--) {
-		bool stop = false, breaksIn = true;
-		int x = 0, y = 0, rotation = 0;
+	bool stop = false, breaksIn = true;
+	int x = 0, y = 0, rotation = 0;
+	if (ship1.GetType() == "Aircraft Carrier") {
 		//rotation: 0 - North, 1 - East, 2 - South - 3 - West
 		while (!stop) {
 			breaksIn = true;
 			x = -1 + rand() % width_height + 1, y = -1 + rand() % width_height + 1, rotation = 2;
 			std::cout << "x = " << x << " y = " << y << " " << rotation << std::endl; //TEST
 			switch (rotation) {
-				case 2: //South
-					if (x < width_height - length) {
-						for (int h = 0; h < length; h++) {
-							if (Field[x][y + h] != 0) breaksIn = false;
+			case 2: //South
+				if (x < width_height - length) {
+					for (int h = 0; h < length; h++) {
+						if (Field[x][y + h] != 0) breaksIn = false;
+					}
+					if (breaksIn) {
+						if (y > 0) {
+							if (x > 0 && Field[x - 1][y + 1] != 1) Field[x - 1][y + 1] = 2;
+							Field[x][y + 1] = 2;
+							if (x < width_height - 1 && Field[x + 1][y + 1]) Field[x + 1][y + 1] = 2;
 						}
-						if (breaksIn) {
-							if (y > 0) {
-								if (x > 0 && Field[x - 1][y + 1] != 1) Field[x - 1][y + 1] = 2;
-								Field[x][y + 1] = 2;
-								if (x < width_height - 1 && Field[x + 1][y + 1]) Field[x + 1][y + 1] = 2;
-							}
-							for (int temp_int = 0; temp_int < length; temp_int++) {
-								if (x > 0 && Field[x - 1][y + temp_int] != 1) Field[x - 1][y + temp_int] = 2;
-								Field[x][y + temp_int] = 1;
-								if (x < width_height - 1 && Field[x + 1][y + temp_int]) Field[x + 1][y + temp_int] = 2;
-							}
-							if (y < width_height - 1) {
-								if (x > 0 && Field[x - 1][y + length]) Field[x - 1][y + length] = 2;
-								Field[x][y + 1] = 2;
-								if (x < width_height - 1 && Field[x + 1][y + length]) Field[x + 1][y + length] = 2;
-							}
-							stop++;
+						for (int temp_int = 0; temp_int < length; temp_int++) {
+							if (x > 0 && Field[x - 1][y + temp_int] != 1) Field[x - 1][y + temp_int] = 2;
+							Field[x][y + temp_int] = 1;
+
+							if (x < width_height - 1 && Field[x + 1][y + temp_int]) Field[x + 1][y + temp_int] = 2;
 						}
-						else continue;
+						if (y < width_height - 1) {
+							if (x > 0 && Field[x - 1][y + length]) Field[x - 1][y + length] = 2;
+							Field[x][y + 1] = 2;
+							if (x < width_height - 1 && Field[x + 1][y + length]) Field[x + 1][y + length] = 2;
+						}
+						stop++;
 					}
 					else continue;
+				}
+				else continue;
 				break;
 			}
 		}
 	}
+	return ship1;
 }

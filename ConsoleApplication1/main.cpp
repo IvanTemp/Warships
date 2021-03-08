@@ -8,8 +8,6 @@
 
 int main()
 {
-
-	Generate_ships_in_random_places(1, 1, 1, 1);
 	std::cout << std::endl << std::endl << std::endl;
 	Output_Field();
 	std::cout << std::endl << std::endl << std::endl;
@@ -28,6 +26,7 @@ int main()
 	fleet.push_back({ "Flaffey2", "Small" });
 	fleet.push_back({ "Flaffey3", "Small" });
 	fleet.push_back({ "Flaffey4", "Small" });
+	Generate_ships_in_random_places(fleet[0]);
 	//ֲûגוהול פכמע
 	std::cout << "======Fleet=======" << std::endl;
 	for (const auto& x : fleet)
