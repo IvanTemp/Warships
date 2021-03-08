@@ -23,7 +23,7 @@ int main()
 	fleet.push_back({ "Flaffey2", "Small", 7 });
 	fleet.push_back({ "Flaffey3", "Small", 8 });
 	fleet.push_back({ "Flaffey4", "Small", 9 });
-	Generate_ships_in_random_places(fleet[0]);
+	Generate_ships_in_random_places(fleet[0], fleet[0].GetID());
 	std::cout << std::endl << std::endl << std::endl;
 	Output_Field();
 	std::cout << std::endl << std::endl << std::endl;

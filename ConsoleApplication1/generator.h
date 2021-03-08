@@ -7,4 +7,4 @@
 
 void Output_Field();
 
-void Generate_ships_in_random_places(ship ship1);
+void Generate_ships_in_random_places(ship ship1, int ID);
