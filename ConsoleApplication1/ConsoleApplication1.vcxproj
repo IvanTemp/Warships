@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="generator.cpp" />
     <ClCompile Include="ship.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
