@@ -4,7 +4,7 @@
 #include "ship.h"
 
 
-ship::ship(const std::string& nm, const std::string& tp, const int ID) :name(nm), type(tp), durability(0)
+ship::ship(const std::string& nm, const std::string& tp, const int IDen) :name(nm), type(tp), durability(0), ID(IDen)
 {
     //Вопрос правильно ли вот так. Ведь на лекции int age мы инициалиризрооваплиотмсиоамиролап выше (:name(nm), role(rl), age(0))
     if (tp == "Aircraft Carrier") durability = 16;
@@ -18,6 +18,7 @@ void ship::Print() const
     std::cout << "Ship name is " << name;
     std::cout << "(" << type << ")" << std::endl;
     std::cout << "Durability is " << durability << std::endl;
+    std::cout << "ID is " << ID << std::endl;
 }
 
 void ship::SetName(const std::string nm)

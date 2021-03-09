@@ -3,7 +3,14 @@
 #include <iostream>
 #include "generator.h"
 
-
+void PrintFleet(std::vector<ship> fleet321)
+{
+	std::cout << "=====Fleet=====" << std::endl;
+	for (int i = 0; i < fleet321.size(); i++)
+	{
+		fleet321[i].Print();
+	}
+}
 
 int main()
 {
@@ -23,6 +30,7 @@ int main()
 	fleet_1.push_back({ "Flaffey2", "Small", 8 });
 	fleet_1.push_back({ "Flaffey3", "Small", 9 });
 	fleet_1.push_back({ "Flaffey4", "Small", 10 });
+	PrintFleet(fleet_1);
 	Generate_ship(fleet_1[5], 0);
 	std::cout << std::endl << std::endl << std::endl;
 	std::cout << "ID: \n\n";
@@ -36,10 +44,6 @@ int main()
 	std::cout << std::endl << std::endl << std::endl;
 	Output_Field_tester(0);
 	//ֲûגוהול פכמע
-	std::cout << "======Fleet=======" << std::endl;
-	for (const auto& x : fleet_1)
-	{
-		x.Print();
-	}
+	PrintFleet(fleet_1);
 	return 0;
 }
