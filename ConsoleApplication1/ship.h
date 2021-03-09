@@ -10,13 +10,13 @@ public:
 	std::string GetName()const;
 	void SetType(const std::string type);
 	std::string GetType()const;
-	void SetDurability(const int durability);
-	int GetDurability()const;
+	void SetDurability (const std::vector<int> durability);
+	std::vector<int> GetDurability()const;
 	int GetID()const;
 
 private:
 	std::string name;
-	int durability;
+	std::vector<int> durability;
 	std::string type;
 	int ID = 0;
 };
