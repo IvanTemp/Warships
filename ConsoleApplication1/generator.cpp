@@ -4,24 +4,35 @@
 #include <map>
 #include "generator.h"
 
-std::tuple <int, int> Field_Final[width_height][width_height] = { std::make_tuple(0, 0) }; //Поля, которое видит игрок и Терминатор
-std::tuple <int, int> Field_ID[width_height][width_height] = { std::make_tuple(0, 0) }; //Поля с ID
+std::tuple <unsigned int, unsigned int> Field_Final[width_height][width_height] = { std::make_tuple(0, 0) }; //Поля, которое видит игрок и Терминатор
+std::tuple <unsigned int, unsigned int> Field_ID[width_height][width_height] = { std::make_tuple(0, 0) }; //Поля с ID
 std::tuple <bool, bool> Field_War[width_height][width_height] = { std::make_tuple(0, 0) }; //Поля с туманом войны
+std::tuple <unsigned int, unsigned int> Field_Durability[width_height][width_height] = { std::make_tuple(0, 0) }; //Поля с прочностью
 
-void Output_Field_Final(bool side) { //ДОДЕЛАТЬ
-	std::map <int, char> OutputMap = { {0, '#' }, {1, ' '}, {2, '*'}, {3, 'U'}, {4, 'L'}, {5, 'R'}, {6, 'D'} };
-	for (int y = 0; y < width_height; y++) {
+void Output_Field_Final(bool side) {
+	for (unsigned int y = 0; y < width_height; y++) {
 		std::cout << "         |";
-		for (int x = 0; x < width_height; x++) {
+		for (unsigned int x = 0; x < width_height; x++) {
 			if (side) {
-				if (std::get<0>(Field_War[x][y]) && std::get<0>(Field_ID[x][y]) > 0) {
-					std::cout << "          |";
-				}
+				if (std::get<0>(Field_War[x][y])) {
+					if (std::get<0>(Field_ID[x][y])) {
+						std::cout << std::get<0>(Field_Durability[x][y]) << "|";
+					}
+					else {
+						std::cout << " |";
+					}
+				} else std::cout << "#|";
 			}
 			else {
-				if (std::get<1>(Field_War[x][y]) && std::get<1>(Field_ID[x][y]) > 0) {
-					std::cout << "          |";
+				if (std::get<1>(Field_War[x][y])) {
+					if (std::get<1>(Field_ID[x][y])) {
+						std::cout << std::get<1>(Field_Durability[x][y]) << "|";
+					}
+					else {
+						std::cout << " |";
+					}
 				}
+				else std::cout << "#|";
 			}
 		}
 		std::cout << std::endl;
@@ -49,7 +60,7 @@ void Output_Field_War(bool side) {
 }
 
 
-void Generate_ships_in_random_places(ship sheep, bool side) {
+void Generate_ship(ship sheep, bool side) {
 	srand(time(0));
 	std::map <std::string, int> TypeToLength = { {"Aircraft Carrier", 4}, {"Heavy Cruiser", 3}, {"Tsundere", 2}, {"Small", 1} };
 	bool stop = false, breaksIn = true, kostil = true;
@@ -120,25 +131,29 @@ void Generate_ships_in_random_places(ship sheep, bool side) {
 						}
 					}
 					if (y < width_height - 1) {
-						if (side) {
-							std::get<1>(Field_ID[x - 1][y + length]) != 1 ? kostil = true : kostil = false;
+						if (x > 0) {
+							if (side) {
+								std::get<1>(Field_ID[x - 1][y + length]) != 1 ? kostil = true : kostil = false;
+							}
+							else {
+								std::get<0>(Field_ID[x - 1][y + length]) != 1 ? kostil = true : kostil = false;
+							}
 						}
-						else {
-							std::get<0>(Field_ID[x - 1][y + length]) != 1 ? kostil = true : kostil = false;
-						}
-						if (x > 0 && kostil) {
+						if (kostil) {
 							side ? std::get<1>(Field_ID[x - 1][y + length]) = 6 : std::get<0>(Field_ID[x - 1][y + length]) = 6;
 							side ? std::get<1>(Field_War[x - 1][y + length]) = 1 : std::get<0>(Field_War[x - 1][y + length]);
 						}
 						side ? std::get<1>(Field_ID[x][y + length]) = 6 : std::get<0>(Field_ID[x][y + length]) = 6;
 						side ? std::get<1>(Field_War[x][y + length]) = 1 : std::get<0>(Field_War[x][y + length]) = 1;
-						if (side) {
-							std::get<1>(Field_ID[x + 1][y + length]) != 1 ? kostil = true : kostil = false;
+						if (x < width_height - 1) {
+							if (side) {
+								std::get<1>(Field_ID[x + 1][y + length]) != 1 ? kostil = true : kostil = false;
+							}
+							else {
+								std::get<0>(Field_ID[x + 1][y + length]) != 1 ? kostil = true : kostil = false;
+							}
 						}
-						else {
-							std::get<0>(Field_ID[x + 1][y + length]) != 1 ? kostil = true : kostil = false;
-						}
-						if (x < width_height - 1 && kostil) {
+						if (kostil) {
 							side ? std::get<1>(Field_ID[x + 1][y + length]) = 6 : std::get<0>(Field_ID[x + 1][y + length]) = 6;
 							side ? std::get<1>(Field_War[x + 1][y + length]) = 1 : std::get<0>(Field_War[x + 1][y + length]) = 1;
 						}

@@ -18,5 +18,5 @@ private:
 	std::string name;
 	int durability;
 	std::string type;
-	int ID;
+	int ID = 0;
 };

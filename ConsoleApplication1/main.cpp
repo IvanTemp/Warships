@@ -1,7 +1,6 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include "ship.h"
 #include "generator.h"
 
 
@@ -24,7 +23,7 @@ int main()
 	fleet_1.push_back({ "Flaffey2", "Small", 7 });
 	fleet_1.push_back({ "Flaffey3", "Small", 8 });
 	fleet_1.push_back({ "Flaffey4", "Small", 9 });
-	Generate_ships_in_random_places(fleet_1[0], 1);
+	Generate_ship(fleet_1[0], 1);
 	std::cout << std::endl << std::endl << std::endl;
 	std::cout << "ID: \n\n";
 	Output_Field_ID(0);
@@ -41,6 +40,5 @@ int main()
 	{
 		x.Print();
 	}
-	system("pause");
 	return 0;
 }
