@@ -1,8 +1,8 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include "generator.h"
 #include "ship.h"
+#include "generator.h"
 
 void PrintFleet(std::vector<ship> fleet321)
 {
@@ -30,6 +30,7 @@ int main()
 	fleet_1.push_back({ "Flaffey2", "Small", 8 });
 	fleet_1.push_back({ "Flaffey3", "Small", 9 });
 	fleet_1.push_back({ "Flaffey4", "Small", 10 });
+
 	//Запихнем в вектор флот вражеские кораблики
 	fleet_2.push_back({ "Akagi", "Aircraft Carrier", 1 });
 	fleet_2.push_back({ "SAKURA_NAME1", "Heavy Cruiser", 2 });
@@ -41,17 +42,18 @@ int main()
 	fleet_2.push_back({ "Ayanami2", "Small", 8 });
 	fleet_2.push_back({ "Ayanami3", "Small", 9 });
 	fleet_2.push_back({ "Ayanami4", "Small", 10 });
-	//Generate_ship(fleet_1[0], 0);
-	//std::cout << std::endl << std::endl << std::endl;
-	//Output_Field_ID(0);
-	//std::cout << std::endl << std::endl << std::endl;
-	//Output_Field_War(0);
-	//std::cout << std::endl << std::endl << std::endl;
-	//Output_Field_Durability(0);
-	//std::cout << std::endl << std::endl << std::endl;
-	//Generate_Field_Final(0);
-	//std::cout << std::endl << std::endl << std::endl;
-	//Output_Field_Final(0);
+
+	Generate_ship(fleet_1[0], 0);
+	std::cout << std::endl << std::endl;
+	Output_Field_ID(0);
+	std::cout << std::endl << std::endl;
+	Output_Field_War(0);
+	std::cout << std::endl << std::endl;
+	Output_Field_Durability(0);
+	std::cout << std::endl << std::endl;
+	Generate_Field_Final(0);
+	std::cout << std::endl << std::endl;
+	Output_Field_Final(0);
 	//Выведем флот
 	PrintFleet(fleet_1);
 	PrintFleet(fleet_2);

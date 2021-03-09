@@ -4,29 +4,32 @@
 #include "ship.h"
 
 
-ship::ship(const std::string& nm, const std::string& tp, const int IDen) :name(nm), type(tp), durability(1, 3), ID(IDen)
+
+
+
+ship::ship(const std::string& nm, const std::string& tp, const int IDen) :name(nm), type(tp), durability(1, Small_Durability), ID(IDen)
 {
     //Вопрос правильно ли вот так. Ведь на лекции int age мы инициалиризрооваплиотмсиоамиролап выше (:name(nm), role(rl), age(0))
     if (tp == "Aircraft Carrier")
     {
         durability.resize(4);
-        std::fill(durability.begin(), durability.end(), 4);
+        std::fill(durability.begin(), durability.end(), Aircraft_Carrier_Durability);
     }
     else if (tp == "Heavy Cruiser")
     {
         durability.resize(3);
-        std::fill(durability.begin(), durability.end(), 5);
+        std::fill(durability.begin(), durability.end(), Heavy_Cruiser_Durability);
     }
     else if (tp == "Tsundere")
     {
         durability.resize(2);
-        std::fill(durability.begin(), durability.end(), 5);
+        std::fill(durability.begin(), durability.end(), Tsundere_Durability);
     }
 }
 
 void ship::Print() const
 {
-    std::cout << "\n------------------------------------------------------------\n";
+    std::cout << "\n---------------------------------------------------------------------\n";
     std::cout << "[" << ID << "] " << name << ": ";
     std::cout << "Class: " << type << "; ";
     std::cout << "Durability: ";
@@ -34,7 +37,7 @@ void ship::Print() const
     {
         std::cout << " " << durability[i];
     }
-    std::cout << "\n------------------------------------------------------------\n";
+    std::cout << "\n---------------------------------------------------------------------\n";
 }
 
 void ship::SetName(const std::string nm)

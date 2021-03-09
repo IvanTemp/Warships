@@ -1,5 +1,13 @@
 #pragma once
 
+//Настройки игры
+#define width_height 10 //Ширина высота поля
+
+#define Aircraft_Carrier_Durability 6
+#define Heavy_Cruiser_Durability 7
+#define Tsundere_Durability 5
+#define Small_Durability 4
+
 class ship
 {
 public:
