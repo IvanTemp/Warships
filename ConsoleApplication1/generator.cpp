@@ -4,45 +4,51 @@
 #include <map>
 #include "generator.h"
 
-std::tuple <unsigned int, unsigned int> Field_Final[width_height][width_height] = { std::make_tuple(0, 0) }; //Поля, которое видит игрок и Терминатор
+std::tuple <std::string, std::string> Field_Final[width_height][width_height] = { std::make_tuple("#", "#") }; //Поля, которое видит игрок и Терминатор
 std::tuple <unsigned int, unsigned int> Field_ID[width_height][width_height] = { std::make_tuple(0, 0) }; //Поля с ID
 std::tuple <bool, bool> Field_War[width_height][width_height] = { std::make_tuple(0, 0) }; //Поля с туманом войны
 std::tuple <unsigned int, unsigned int> Field_Durability[width_height][width_height] = { std::make_tuple(0, 0) }; //Поля с прочностью
 
 void Output_Field_Final(bool side) {
 	for (unsigned int y = 0; y < width_height; y++) {
-		std::cout << "         |";
 		for (unsigned int x = 0; x < width_height; x++) {
 			if (side) {
-				if (std::get<0>(Field_War[x][y])) {
-					if (std::get<0>(Field_ID[x][y])) {
-						std::cout << std::get<0>(Field_Durability[x][y]) << "|";
-					}
-					else {
-						std::cout << " |";
-					}
-				} else std::cout << "#|";
-			}
-			else {
 				if (std::get<1>(Field_War[x][y])) {
 					if (std::get<1>(Field_ID[x][y])) {
-						std::cout << std::get<1>(Field_Durability[x][y]) << "|";
+						std::get<1>(Field_Final[x][y]) = std::get<1>(Field_Durability[x][y]);
 					}
 					else {
-						std::cout << " |";
+						std::get<1>(Field_Final[x][y]);
+					}
+				} else std::get<1>(Field_Final[x][y]);
+			}
+			else {
+				if (std::get<0>(Field_War[x][y])) {
+					if (std::get<0>(Field_ID[x][y])) {
+						std::get<0>(Field_Final[x][y]) = std::get<0>(Field_Durability[x][y]);
+					}
+					else {
+						std::get<0>(Field_Final[x][y]);
 					}
 				}
-				else std::cout << "#|";
+				else std::get<0>(Field_Final[x][y]);
 			}
+		}
+	}
+
+	for (unsigned int y = 0; y < width_height; y++) {
+		std::cout << "         |";
+		for (unsigned int x = 0; x < width_height; x++) {
+			side ? std::cout << std::get<1>(Field_Final[x][y]) << "|" : std::cout << std::get<0>(Field_Final[x][y]) << "|";
 		}
 		std::cout << std::endl;
 	}
 }
 
 void Output_Field_ID(bool side) {
-	for (int y = 0; y < width_height; y++) {
+	for (unsigned int y = 0; y < width_height; y++) {
 		std::cout << "         |";
-		for (int x = 0; x < width_height; x++) {
+		for (unsigned int x = 0; x < width_height; x++) {
 			side ? std::cout << std::get<1>(Field_ID[x][y]) << "|" : std::cout << std::get<0>(Field_ID[x][y]) << "|";
 		}
 		std::cout << std::endl;
@@ -50,15 +56,23 @@ void Output_Field_ID(bool side) {
 }
 
 void Output_Field_War(bool side) {
-	for (int y = 0; y < width_height; y++) {
+	for (unsigned int y = 0; y < width_height; y++) {
 		std::cout << "         |";
-		for (int x = 0; x < width_height; x++) {
-			side ? std::cout << std::get<1>(Field_War[x][y]) << "|" : std::cout << std::get<1>(Field_War[x][y]) << "|";
+		for (unsigned int x = 0; x < width_height; x++) {
+			side ? std::cout << std::get<1>(Field_War[x][y]) << "|" : std::cout << std::get<0>(Field_War[x][y]) << "|";
 		}
 		std::cout << std::endl;
 	}
 }
 
+void Output_Field_tester(bool side) {
+	for (unsigned int y = 0; y < width_height; y++) {
+		for (unsigned int x = 0; x < width_height; x++) {
+			side ? std::cout << std::get<1>(Field_ID[x][y]) << " " : std::cout << std::get<0>(Field_ID[x][y]) << " ";
+		}
+		std::cout << std::endl;
+	}
+}
 
 void Generate_ship(ship sheep, bool side) {
 	srand(time(0));
@@ -90,10 +104,10 @@ void Generate_ship(ship sheep, bool side) {
 							std::get<0>(Field_ID[x - 1][y - 1]) != 1 ? kostil = true : kostil = false;
 						}
 						if (x > 0 && kostil) {
-							side ? std::get<1>(Field_ID[x - 1][y - 1]) = 3 : std::get<0>(Field_ID[x - 1][y - 1]) = 3;
-							side ? std::get<1>(Field_War[x - 1][y - 1]) = 1 : std::get<0>(Field_ID[x - 1][y - 1]) = 3;
+							side ? std::get<1>(Field_ID[x - 1][y - 1]) = ID : std::get<0>(Field_ID[x - 1][y - 1]) = ID;
+							side ? std::get<1>(Field_War[x - 1][y - 1]) = 1 : std::get<0>(Field_War[x - 1][y - 1]) = 1;
 						}
-						side ? std::get<1>(Field_ID[x][y - 1]) = 3 : std::get<1>(Field_ID[x][y - 1]) = 3;
+						side ? std::get<1>(Field_ID[x][y - 1]) = ID : std::get<1>(Field_ID[x][y - 1]) = ID;
 						side ? std::get<1>(Field_War[x][y - 1]) = 1 : std::get<0>(Field_War[x][y - 1]) = 1;
 						if (side) {
 							std::get<1>(Field_ID[x + 1][y - 1]) != 1 ? kostil = true : kostil = false;
@@ -102,7 +116,7 @@ void Generate_ship(ship sheep, bool side) {
 							std::get<0>(Field_ID[x + 1][y - 1]) != 1 ? kostil = true : kostil = false;
 						}
 						if (x < width_height - 1 && kostil) {
-							side ? std::get<1>(Field_ID[x + 1][y - 1]) = 3 : std::get<0>(Field_ID[x + 1][y - 1]) = 3;
+							side ? std::get<1>(Field_ID[x + 1][y - 1]) = ID : std::get<0>(Field_ID[x + 1][y - 1]) = ID;
 							side ? std::get<1>(Field_War[x + 1][y - 1]) = 1 : std::get<0>(Field_War[x + 1][y - 1]) = 1;
 						}
 					}
@@ -114,7 +128,7 @@ void Generate_ship(ship sheep, bool side) {
 							std::get<0>(Field_ID[x - 1][y + temp_int]) != 1 ? kostil = true : kostil = false;
 						}
 						if (x > 0 && kostil) {
-							side ? std::get<1>(Field_ID[x - 1][y + temp_int]) = 4 : std::get<0>(Field_ID[x - 1][y + temp_int]) = 4;
+							side ? std::get<1>(Field_ID[x - 1][y + temp_int]) = ID : std::get<0>(Field_ID[x - 1][y + temp_int]) = ID;
 							side ? std::get<1>(Field_War[x - 1][y + temp_int]) = 1 : std::get<0>(Field_War[x - 1][y + temp_int]) = 1;
 						}
 						side ? std::get<1>(Field_ID[x][y + temp_int]) = ID : std::get<0>(Field_ID[x][y + temp_int]) = ID;
@@ -126,7 +140,7 @@ void Generate_ship(ship sheep, bool side) {
 							std::get<0>(Field_ID[x + 1][y + temp_int]) != 1 ? kostil = true : kostil = false;
 						}
 						if (x < width_height - 1 && kostil) {
-							side ? std::get<1>(Field_ID[x + 1][y + temp_int]) = 5 : std::get<0>(Field_ID[x + 1][y + temp_int]) = 5;
+							side ? std::get<1>(Field_ID[x + 1][y + temp_int]) = ID : std::get<0>(Field_ID[x + 1][y + temp_int]) = ID;
 							side ? std::get<1>(Field_War[x + 1][y + temp_int]) = 1 : std::get<0>(Field_War[x + 1][y + temp_int]) = 1;
 						}
 					}
@@ -141,7 +155,7 @@ void Generate_ship(ship sheep, bool side) {
 						}
 						if (kostil) {
 							side ? std::get<1>(Field_ID[x - 1][y + length]) = 6 : std::get<0>(Field_ID[x - 1][y + length]) = 6;
-							side ? std::get<1>(Field_War[x - 1][y + length]) = 1 : std::get<0>(Field_War[x - 1][y + length]);
+							side ? std::get<1>(Field_War[x - 1][y + length]) = 1 : std::get<0>(Field_War[x - 1][y + length]) = 1;
 						}
 						side ? std::get<1>(Field_ID[x][y + length]) = 6 : std::get<0>(Field_ID[x][y + length]) = 6;
 						side ? std::get<1>(Field_War[x][y + length]) = 1 : std::get<0>(Field_War[x][y + length]) = 1;
