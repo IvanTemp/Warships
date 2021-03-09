@@ -15,10 +15,11 @@ ship::ship(const std::string& nm, const std::string& tp, const int IDen) :name(n
 
 void ship::Print() const
 {
-    std::cout << "Ship name is " << name;
-    std::cout << "(" << type << ")" << std::endl;
-    std::cout << "Durability is " << durability << std::endl;
-    std::cout << "ID is " << ID << std::endl;
+    std::cout << "\n------------------------------------------------------------\n";
+    std::cout << "[" << ID << "] " << name << ": ";
+    std::cout << "Class: " << type << "; ";
+    std::cout << "Durability: " << durability;
+    std::cout << "\n------------------------------------------------------------\n";
 }
 
 void ship::SetName(const std::string nm)

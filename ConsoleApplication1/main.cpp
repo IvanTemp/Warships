@@ -30,19 +30,17 @@ int main()
 	fleet_1.push_back({ "Flaffey2", "Small", 8 });
 	fleet_1.push_back({ "Flaffey3", "Small", 9 });
 	fleet_1.push_back({ "Flaffey4", "Small", 10 });
-	PrintFleet(fleet_1);
-	Generate_ship(fleet_1[5], 0);
+	Generate_ship(fleet_1[0], 0);
 	std::cout << std::endl << std::endl << std::endl;
-	std::cout << "ID: \n\n";
 	Output_Field_ID(0);
 	std::cout << std::endl << std::endl << std::endl;
-	std::cout << "War: \n\n";
 	Output_Field_War(0);
 	std::cout << std::endl << std::endl << std::endl;
-	std::cout << "Final: \n\n";
-	Output_Field_Final(0);
+	Output_Field_Durability(0);
 	std::cout << std::endl << std::endl << std::endl;
-	Output_Field_tester(0);
+	Generate_Field_Final(0);
+	std::cout << std::endl << std::endl << std::endl;
+	Output_Field_Final(0);
 	//ֲûגוהול פכמע
 	PrintFleet(fleet_1);
 	return 0;
