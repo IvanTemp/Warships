@@ -2,9 +2,10 @@
 #include <locale>
 #include <vector>
 #include <map>
+#include <string>
 #include "generator.h"
 
-std::tuple <std::string, std::string> Field_Final[width_height][width_height] = { std::make_tuple("#", "#") }; //Поля, которое видит игрок и Терминатор
+std::tuple <char, char> Field_Final[width_height][width_height] = { std::make_tuple('#', '#') }; //Поля, которое видит игрок и Терминатор
 std::tuple <unsigned int, unsigned int, unsigned int> Field_ID[width_height][width_height] = { std::make_tuple(0, 0, 0) }; //Поля с ID
 std::tuple <bool, bool> Field_War[width_height][width_height] = { std::make_tuple(0, 0) }; //Поля с туманом войны
 std::tuple <unsigned int, unsigned int> Field_Durability[width_height][width_height] = { std::make_tuple(0, 0) }; //Поля с прочностью
@@ -93,7 +94,7 @@ void Generate_ship(ship sheep, bool side) {
 	std::map <std::string, int> TypeToLength = { {"Aircraft Carrier", 4}, {"Heavy Cruiser", 3}, {"Tsundere", 2}, {"Small", 1} };
 	bool stop = false, breaksIn = true, kostil = true;
 	int x = 0, y = 0, rotation = 0, length = TypeToLength[sheep.GetType()], ID = sheep.GetID();
-	char durability = static_cast<char>(sheep.GetDurability()[0]);
+	std::string durability = std::to_string(sheep.GetDurability()[0]);
 	//rotation: 0 - North, 1 - East, 2 - South - 3 - West
 	while (!stop) {
 		breaksIn = true;
@@ -143,7 +144,7 @@ void Generate_ship(ship sheep, bool side) {
 							side ? std::get<1>(Field_War[x - 1][y + generated_length]) = 1 : std::get<0>(Field_War[x - 1][y + generated_length]) = 1;
 						}
 						side ? std::get<1>(Field_ID[x][y + generated_length]) = ID : std::get<0>(Field_ID[x][y + generated_length]) = ID;
-						side ? std::get<1>(Field_Durability[x][y + generated_length]) = durability : std::get<0>(Field_Durability[x][y + generated_length]) = durability;
+						side ? std::get<1>(Field_Durability[x][y + generated_length]) = durability[0] : std::get<0>(Field_Durability[x][y + generated_length]) = durability[0];
 						side ? std::get<1>(Field_War[x][y + generated_length]) = 1 : std::get<0>(Field_War[x][y + generated_length]) = 1;
 						if (side) {
 							std::get<1>(Field_ID[x + 1][y + generated_length]) != 1 ? kostil = true : kostil = false;
