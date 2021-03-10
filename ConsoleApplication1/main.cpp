@@ -6,7 +6,6 @@
 #include "generator.h"
 #include "Fleet.h"
 
-
 int main()
 {
 	ship ship1("Enterprise", "Aircraft Carrier", 2);
@@ -54,7 +53,7 @@ int main()
 
 
 	////Generate here
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 8; i++)
 	Generate_ship(fleet_2.GetshipByIndex(i), 0);
 	///////////////
 	

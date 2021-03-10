@@ -55,7 +55,7 @@ void Output_Field_Final(bool side) {
 
 void Output_Field_ID_Indexes(bool side) {
 	if (DEBUG_MODE) {
-		std::cout << "ID(NOT FOR USER): \n\n";
+		std::cout << "ID[" << side << "](NOT FOR USER): \n\n";
 		for (unsigned int y = 0; y < width_height; y++) {
 			std::cout << "         |";
 			for (unsigned int x = 0; x < width_height; x++) {
@@ -64,7 +64,7 @@ void Output_Field_ID_Indexes(bool side) {
 			std::cout << std::endl;
 		}
 		std::cout << std::endl << std::endl << std::endl;
-		std::cout << "Indexes(NOT FOR USER): \n\n";
+		std::cout << "Indexes[" << side << "](NOT FOR USER): \n\n";
 		for (unsigned int y = 0; y < width_height; y++) {
 			std::cout << "         |";
 			for (unsigned int x = 0; x < width_height; x++) {
@@ -78,7 +78,7 @@ void Output_Field_ID_Indexes(bool side) {
 
 void Output_Field_War(bool side) {
 	if (DEBUG_MODE) {
-		std::cout << "War(NOT FOR USER): \n\n";
+		std::cout << "War[" << side << "](NOT FOR USER): \n\n";
 		for (unsigned int y = 0; y < width_height; y++) {
 			std::cout << "         |";
 			for (unsigned int x = 0; x < width_height; x++) {
@@ -92,7 +92,7 @@ void Output_Field_War(bool side) {
 
 void Output_Field_Durability(bool side) {
 	if (DEBUG_MODE) {
-		std::cout << "Durability(NOT FOR USER): \n\n";
+		std::cout << "Durability[" << side << "](NOT FOR USER): \n\n";
 		for (unsigned int y = 0; y < width_height; y++) {
 			std::cout << "         |";
 			for (unsigned int x = 0; x < width_height; x++) {
@@ -127,7 +127,7 @@ void Generate_ship(ship sheep, bool side) {
 		if (x) { leftIsClear = true; } if (y) { upIsClear = true; } if (x < width_height - 1) { rightIsClear = true; } if (y < width_height - 1) { downIsClear = true; } //checking for space on all sides
 		if (rotation == 0 || rotation == 2) { //vertical
 			if (OT > 0) { if (y + length >= width_height - 1) { breaksIn = false; } } else { if (y - length < 0) { breaksIn = false; } } //check for the ability to place the ship
-			for (int h = 0; h < length; h++) { if (Field_ID[side][x][y + h * OT].first > 1) { breaksIn = false; } } //check for the ability to place the ship part 2
+			for (int h = 0; h < length; h++) { if (Field_ID[side][x][y + h * OT].first > 0) { breaksIn = false; } } //check for the ability to place the ship part 2
 			if (breaksIn) {
 				OT > 0 ? breaksIn = upIsClear : breaksIn = downIsClear;
 				if (breaksIn) {
@@ -154,7 +154,7 @@ void Generate_ship(ship sheep, bool side) {
 		else { //horizontal
 			if (OT > 0) { if (x + length >= width_height - 1) { breaksIn = false; } }
 			else { if (x - length < 0) { breaksIn = false; } } //check for the ability to place the ship
-			for (int h = 0; h < length; h++) { if (Field_ID[side][x + h * OT][y].first > 1) { breaksIn = false; } } //check for the ability to place the ship part 2
+			for (int h = 0; h < length; h++) { if (Field_ID[side][x + h * OT][y].first > 0) { breaksIn = false; } } //check for the ability to place the ship part 2
 			if (breaksIn) {
 				OT > 0 ? breaksIn = leftIsClear : breaksIn = rightIsClear;
 				if (breaksIn) {
