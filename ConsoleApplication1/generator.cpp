@@ -6,37 +6,24 @@
 #include "generator.h"
 
 std::tuple <char, char> Field_Final[width_height][width_height] = { std::make_tuple('#', '#') }; //Поля, которое видит игрок и Терминатор
-std::tuple <std::pair<unsigned int, unsigned int>, std::pair<unsigned int, unsigned int>> Field_ID[width_height][width_height] = { std::make_tuple(std::make_pair(0, 0), std::make_pair(0, 0)) }; //Поля с ID
-std::tuple <bool, bool> Field_War[width_height][width_height] = { std::make_tuple(0, 0) }; //Поля с туманом войны
-std::tuple <unsigned int, unsigned int> Field_Durability[width_height][width_height] = { std::make_tuple(0, 0) }; //Поля с прочностью
+std::pair<unsigned int, unsigned int> Field_ID[2][width_height][width_height] = { std::make_pair(0, 0) }; //Поля с ID
+bool Field_War[2][width_height][width_height] = { 0, 0, 0 }; //Поля с туманом войны
+unsigned int Field_Durability[2][width_height][width_height] = { 0, 0, 0 }; //Поля с прочностью
 
 std::map <std::string, char> design = { {"Unknown", '#'}, {"Clear", ' '} };
 
 void Generate_Field_Final(bool side) {
 	for (unsigned int y = 0; y < width_height; y++) {
 		for (unsigned int x = 0; x < width_height; x++) {
-			if (side) {
-				if (std::get<1>(Field_War[x][y])) {
-					if (std::get<1>(Field_ID[x][y]).first) {
-						std::get<1>(Field_Final[x][y]) = std::get<1>(Field_Durability[x][y]);
-					}
-					else {
-						std::get<1>(Field_Final[x][y]) = design["Clear"];
-					}
+			if (Field_War[side][x][y]) {
+				if (Field_ID[side][x][y].first) {
+					std::get<1>(Field_Final[x][y]) = Field_Durability[side][x][y];
 				}
-				else std::get<1>(Field_Final[x][y]) = design["Unknown"];
-			}
-			else {
-				if (std::get<0>(Field_War[x][y])) {
-					if (std::get<0>(Field_ID[x][y]).first) {
-						std::get<0>(Field_Final[x][y]) = std::get<0>(Field_Durability[x][y]);
-					}
-					else {
-						std::get<0>(Field_Final[x][y]) = design["Clear"];
-					}
+				else {
+					std::get<1>(Field_Final[x][y]) = design["Clear"];
 				}
-				else std::get<0>(Field_Final[x][y]) = design["Unknown"];
 			}
+			else std::get<1>(Field_Final[x][y]) = design["Unknown"];
 		}
 	}
 }
@@ -46,7 +33,7 @@ void Output_Field_ID(bool side) {
 	for (unsigned int y = 0; y < width_height; y++) {
 		std::cout << "         |";
 		for (unsigned int x = 0; x < width_height; x++) {
-			side ? std::cout << std::get<1>(Field_ID[x][y]).first << "|" : std::cout << std::get<0>(Field_ID[x][y]).first << "|";
+			std::cout << Field_ID[side][x][y].first << "|";
 		}
 		std::cout << std::endl;
 	}
@@ -58,7 +45,7 @@ void Output_Field_Indexes(bool side) {
 	for (unsigned int y = 0; y < width_height; y++) {
 		std::cout << "         |";
 		for (unsigned int x = 0; x < width_height; x++) {
-			side ? std::cout << std::get<1>(Field_ID[x][y]).second << "|" : std::cout << std::get<0>(Field_ID[x][y]).second << "|";
+			std::cout << Field_ID[side][x][y].second << "|";
 		}
 		std::cout << std::endl;
 	}
@@ -70,7 +57,7 @@ void Output_Field_War(bool side) {
 	for (unsigned int y = 0; y < width_height; y++) {
 		std::cout << "         |";
 		for (unsigned int x = 0; x < width_height; x++) {
-			side ? std::cout << std::get<1>(Field_War[x][y]) << "|" : std::cout << std::get<0>(Field_War[x][y]) << "|";
+			std::cout << Field_War[side][x][y] << "|";
 		}
 		std::cout << std::endl;
 	}
@@ -97,93 +84,79 @@ void Generate_ship(ship sheep, bool side) {
 	std::string durability = std::to_string(sheep.GetDurability()[0]);
 	//rotation: 0 - North, 1 - East, 2 - South - 3 - West
 	while (!stop) {
-		breaksIn = true;
-		x = - 1 + rand() % width_height + 1, y = -1 + rand() % width_height + 1, rotation = 0;
-		//////////////////
+		x = -1 + rand() % width_height + 1; y = -1 + rand() % width_height + 1, rotation = - 1 + rand() % 5 + 1;
+		
+		//TEST YOUR OUTPUT
+		//x = 5;
+		//y = 3;
+		//rotation = 0;
+
+		//////////////////Optimization
 		std::map <int, int> optimization_map = { {0, -1}, {2, 1} };
-		int OT = optimization_map[rotation]; //Optimization
+		int OT = optimization_map[rotation];
+		bool breaksIn = true;
+		bool leftIsClear = false, rightIsClear = false, upIsClear = false, downIsClear = false;
 		//////////////////
-		std::cout << "x = " << x << " y = " << y << " rotation = " << rotation << " ID: " << ID << " Durability: " << durability << " OT: " << OT << std::endl; //TEST
 
-			if (y < width_height - length) {
-				for (int h = 0; h < length; h++) {
-					if (side) {
-						if (std::get<1>(Field_ID[x][y + h * OT]).first != 0) breaksIn = false;
-					}
-					else {
-						if (std::get<0>(Field_ID[x][y + h * OT]).first != 0) breaksIn = false;
-					}
-				}
-				if (breaksIn) {
-					if (y) {
-						if (x) {
-							if (side) {
-								if (std::get<1>(Field_ID[x - 1 * OT][y - 1 * OT]).first == 0) { std::get<1>(Field_ID[x - 1 * OT][y - 1 * OT]).first = 1; };
-							}
-							else {
-								if (std::get<0>(Field_ID[x - 1 * OT][y - 1 * OT]).first == 0) { std::get<0>(Field_ID[x - 1 * OT][y - 1 * OT]).first = 1; };
-							}
-						}
-						if (side) {
-							if (std::get<1>(Field_ID[x][y + 1 * OT]).first == 0) { std::get<1>(Field_ID[x][y + 1 * OT]).first = 1; }
-						}
-						else {
-							if (std::get<0>(Field_ID[x][y - 1 * OT]).first == 0) { std::get<0>(Field_ID[x][y - 1 * OT]).first = 1; }
-						}
-						if (x < width_height - 1) {
-							if (side) {
-								if (std::get<1>(Field_ID[x + 1 * OT][y - 1 * OT]).first == 0) { std::get<1>(Field_ID[x + 1 * OT][y - 1 * OT]).first = 1; }
-							}
-							else {
-								if (std::get<0>(Field_ID[x + 1 * OT][y - 1 * OT]).first == 0) { std::get<0>(Field_ID[x + 1 * OT][y - 1 * OT]).first = 1; }
-							}
-						}
-					}
-					for (int generated_length = 0; generated_length < length; generated_length++) {
-						if (x) {
-							if (side) {
-								if (std::get<1>(Field_ID[x - 1 * OT][y + generated_length * OT]).first == 0) { std::get<1>(Field_ID[x - 1 * OT][y + generated_length * OT]).first = 1; };
-							}
-							else {
-								if (std::get<0>(Field_ID[x - 1 * OT][y + generated_length * OT]).first == 0) { std::get<0>(Field_ID[x - 1 * OT][y + generated_length * OT]).first = 1; };
-							}
-						}
+		std::cout << "x = " << x << " y = " << y << " rotation = " << rotation << " ID: " << ID << " Durability: " << durability << std::endl; //TEST
 
-						side ? std::get<1>(Field_ID[x][y + generated_length * OT]).first = ID : std::get<0>(Field_ID[x][y + generated_length * OT]).first = ID;
-						side ? std::get<1>(Field_ID[x][y + generated_length * OT]).second = generated_length : std::get<0>(Field_ID[x][y + generated_length * OT]).second = generated_length;
-						
-						if (x < width_height - 1) {
-							if (side) {
-								if (std::get<1>(Field_ID[x + 1 * OT][y + generated_length * OT]).first == 0) { std::get<1>(Field_ID[x + 1 * OT][y + generated_length * OT]).first = 1; };
-							}
-							else {
-								if (std::get<0>(Field_ID[x + 1 * OT][y + generated_length * OT]).first == 0) { std::get<0>(Field_ID[x + 1 * OT][y + generated_length * OT]).first = 1; };
-							}
-						}
-					}
-					if (y < width_height - 1) {
-						if (x) {
-							if (side) {
-								if (std::get<1>(Field_ID[x - 1][y + length * OT]).first == 0) { std::get<1>(Field_ID[x - 1][y + length * OT]).first = 1; }
-							}
-							else {
-								if (std::get<0>(Field_ID[x - 1][y + length * OT]).first == 0) { std::get<0>(Field_ID[x - 1][y + length * OT]).first = 1; }
-							}
-						}
-						side ? std::get<1>(Field_ID[x][y + length * OT]).first = 1 : std::get<0>(Field_ID[x][y + length * OT]).first = 1;
-						if (x < width_height - 1) {
-							if (side) {
-								if (std::get<1>(Field_ID[x + 1][y + length * OT]).first = 1) { std::get<1>(Field_ID[x + 1][y + length * OT]).first = 1; }
-							}
-							else {
-								if (std::get<0>(Field_ID[x + 1][y + length * OT]).first = 1) { std::get<0>(Field_ID[x + 1][y + length * OT]).first = 1; }
-							}
-						}
-					}
-					stop += 1;
-				}
-				else continue;
+		if (x) { leftIsClear = true; } if (y) { upIsClear = true; } if (x < width_height - 1) { rightIsClear = true; } if (y < width_height - 1) { downIsClear = true; } //checking for space on all sides
+		if (OT > 0) { if (y + length >= width_height - 1) { breaksIn = false; }	} else { if (y - length < 0) { breaksIn = false; } } //check for the ability to place the ship
+		for (int h = 0; h < length; h++) { if (Field_ID[side][x][y + h * OT].first > 1 ) { breaksIn = false; } } //check for the ability to place the ship part 2
+		if (breaksIn) {
+			OT > 0 ? breaksIn = upIsClear : breaksIn = downIsClear;
+			if (breaksIn) {
+				if (leftIsClear) { if (Field_ID[side][x - 1][y - 1 * OT].first == 0) { Field_ID[side][x - 1][y - 1 * OT].first = 1; } }
+				if (Field_ID[side][x][y - 1 * OT].first == 0) { Field_ID[side][x][y - 1 * OT].first = 1; }
+				if (rightIsClear) { if (Field_ID[side][x + 1][y - 1 * OT].first == 0) { Field_ID[side][x + 1][y - 1 * OT].first = 1; } }
 			}
-			else continue;
+			for (int counter = 0; counter < length; counter++) {
+				if (leftIsClear) { if (Field_ID[side][x - 1][y + counter * OT].first == 0) { Field_ID[side][x - 1][y + counter * OT].first = 1; } }
+				Field_ID[side][x][y + counter * OT].first = ID;
+				Field_ID[side][x][y + counter * OT].second = counter;
+				if (rightIsClear) { if (Field_ID[side][x + 1][y + counter * OT].first == 0) { Field_ID[side][x + 1][y + counter * OT].first = 1; } }
+			}
+			OT > 0 ? breaksIn = downIsClear : breaksIn = upIsClear;
+			if (breaksIn) {
+				if (leftIsClear) { if (Field_ID[side][x - 1][y + length * OT].first == 0) { Field_ID[side][x - 1][y + length * OT].first = 1; } }
+				if (Field_ID[side][x][y + length * OT].first == 0) { Field_ID[side][x][y + length * OT].first = 1; }
+				if (rightIsClear) { if (Field_ID[side][x + 1][y + length * OT].first == 0) { Field_ID[side][x + 1][y + length * OT].first = 1; } }
+			}
+			stop = true;
+		}
+
+		
+
+
+
+
+				//if (breaksIn) {
+				//	if (y) {
+				//		if (x) {
+				//			if (Field_ID[side][x - 1 * OT][y - 1 * OT].first == 0) { Field_ID[side][x - 1 * OT][y - 1 * OT].first = 1; };
+				//		}
+				//		if (Field_ID[side][x][y + 1 * OT].first == 0) { Field_ID[side][x][y + 1 * OT].first = 1; }
+				//		if (x < width_height - 1) {
+				//			if (Field_ID[side][x + 1 * OT][y - 1 * OT].first == 0) { Field_ID[side][x + 1 * OT][y - 1 * OT].first = 1; }
+				//		}
+				//	}
+				//	for (int generated_length = 0; generated_length < length; generated_length++) {
+				//		if (x) {
+				//			if (Field_ID[side][x - 1][y + generated_length * OT].first == 0) { Field_ID[side][x - 1][y + generated_length * OT].first = 1; };
+				//		}
+
+				//		Field_ID[side][x][y + generated_length * OT].first = ID;
+				//		Field_ID[side][x][y + generated_length * OT].second = generated_length;
+				//		
+				//		if (x < width_height - 1) { if (Field_ID[side][x + 1][y + generated_length * OT].first == 0) { Field_ID[side][x + 1][y + generated_length * OT].first = 1; } }
+				//	}
+				//	if (y < width_height - 1) {
+				//		if (x) { if (Field_ID[side][x - 1][y + length * OT].first == 0) { Field_ID[side][x - 1][y + length * OT].first = 5; }
+				//		}
+				//		Field_ID[side][x][y + length * OT].first = 6;
+				//		if (x < width_height - 1) { if (Field_ID[side][x + 1][y + length * OT].first = 1) { Field_ID[side][x + 1][y + length * OT].first = 7; } }
+				//	}
+				//	stop += 1;
+				//}
 	}
 }
