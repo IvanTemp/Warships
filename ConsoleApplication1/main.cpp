@@ -43,16 +43,29 @@ int main()
 	fleet_2.push_back({ "Ayanami3", "Small", 10 });
 	fleet_2.push_back({ "Ayanami4", "Small", 11 });
 
+	//Generate here
 	Generate_ship(fleet_1[0], 0);
+	///////////////
+	
+	//DEBUG FUNCTIONS
+	if (DEBUG_MODE) std::cout << "WARNING! DEBUG MODE ON! \n" << std::endl;
+	Output_Field_ID_Indexes(0);
+	Output_Field_Durability(0);
+	Output_Field_War(0);
+	Output_Field_ID_Indexes(1);
+	Output_Field_Durability(1);
+	Output_Field_War(1);
+	/////////////////
+
+	//INITIALISATION FIELDS (DO IT AFTER INITIALIZATION OF ALL SHIPS)
+	Initialize_Field_Final(0);
 	std::cout << std::endl << std::endl;
-	Output_Field_ID(0);
-	Output_Field_Indexes(0);
-	//std::cout << std::endl << std::endl;
-	//Output_Field_War(0);
-	//std::cout << std::endl << std::endl;
-	//Generate_Field_Final(0);
-	//std::cout << std::endl << std::endl;
-	//Output_Field_Final(0);
+	Initialize_Field_Final(1);
+	///////////////////////
+
+	Output_Field_Final(0);
+	std::cout << std::endl << std::endl;
+	Output_Field_Final(1);
 	////ֲûגוהול פכמע
 	//PrintFleet(fleet_1);
 	//PrintFleet(fleet_2);

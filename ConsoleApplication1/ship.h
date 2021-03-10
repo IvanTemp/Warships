@@ -7,6 +7,7 @@
 #define Heavy_Cruiser_Durability 7
 #define Tsundere_Durability 5
 #define Small_Durability 4
+#define DEBUG_MODE 0
 
 class ship
 {
