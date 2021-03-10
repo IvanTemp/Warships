@@ -2,11 +2,13 @@
 #include <vector>
 #include <iostream>
 #include <stdexcept>
+#include <fstream>
 #include "ship.h"
 #include "generator.h"
 #include "Fleet.h"
 
-int main()
+
+int main(int argc, char * argv[])
 {
 	ship ship1("Enterprise", "Aircraft Carrier", 2);
 	//Создадим вектор флот
@@ -26,7 +28,6 @@ int main()
 	Fleet fleet_1("Eagle Union", fleet_11);
 
 
-
 	Fleet fleet_2("Sakura Empire");
 	fleet_2.AddshipToFleet({ "Akagi", "Aircraft Carrier", 2 });
 	fleet_2.AddshipToFleet({ "SAKURA_NAME1", "Heavy Cruiser", 3 });
@@ -38,18 +39,38 @@ int main()
 	fleet_2.AddshipToFleet({ "Ayanami2", "Small", 9 });
 	fleet_2.AddshipToFleet({ "Ayanami3", "Small", 10 });
 	fleet_2.AddshipToFleet({ "Ayanami4", "Small", 11 });
-	//fleet_1.Print();
-	//fleet_2.Print();
+	fleet_1.Print(std::cout);
+	fleet_2.Print(std::cout);
 
-	//Удаление файлов с проверкой выхода за границы
-	try
+
+
+	if (argc > 1)
 	{
-		fleet_1.GetshipByIndex(15).Print();
+		std::ofstream fout(argv[1]);
+		fleet_1.Print(fout);
+		fout.close();
 	}
-	catch (std::out_of_range)
+
+	if (argc > 2)
 	{
-		std::cout << "OUT OF RANGE" << std::endl;
+		Fleet fleet_3("Temp");
+		std::ifstream fin(argv[2]);
+		fleet_3.Read(fin);
+		fin.close();
+		fleet_3.Print(std::cout);
 	}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 	////Generate here
@@ -67,15 +88,14 @@ int main()
 	Output_Field_War(1);
 	/////////////////
 
-	//INITIALISATION FIELDS (DO IT AFTER INITIALIZATION OF ALL SHIPS)
-	Initialize_Field_Final(0);
-	std::cout << std::endl << std::endl;
-	Initialize_Field_Final(1);
-	///////////////////////
+	////INITIALISATION FIELDS (DO IT AFTER INITIALIZATION OF ALL SHIPS)
+	//Initialize_Field_Final(0);
+	//Initialize_Field_Final(1);
+	/////////////////////////
 
-	Output_Field_Final(0);
-	std::cout << std::endl << std::endl;
-	Output_Field_Final(1);
+	//Output_Field_Final(0);
+	//std::cout << std::endl << std::endl;
+	//Output_Field_Final(1);
 
 	return 0;
 }

@@ -7,14 +7,18 @@
 #define Heavy_Cruiser_Durability 7
 #define Tsundere_Durability 5
 #define Small_Durability 4
-#define DEBUG_MODE 1
+#define DEBUG_MODE 0
+
+
 
 class ship
 {
 public:
+	ship();
 	ship(const std::string& name, const std::string& type, const int ID);
 
-	void Print()const;
+	void Print(std::ostream& out)const;
+	void Read(std::istream& in);
 	void SetName(const std::string name);
 	std::string GetName()const;
 	void SetType(const std::string type);

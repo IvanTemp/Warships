@@ -16,20 +16,43 @@ Fleet::Fleet(const std::string& nm, const std::vector<ship>& v): name(nm), fleet
 {
 }
 
-void Fleet::Print() const
+void Fleet::Print(std::ostream& out) const
 {
-	std::cout << "=====Fleet " << name << "=====" << std::endl;
+	out << "=====Fleet " << name << "=====" << std::endl;
 	if (fleet.size())
 	{
 		for (const auto& x : fleet)
 		{
-			x.Print();
+			x.Print(out);
 		}
 	}
 	else
 	{
-		std::cout << "Fleet is empty" << std::endl;
+		out << "Fleet is empty" << std::endl;
 	}
+}
+
+void Fleet::Read(std::istream& in)
+{
+	getline(in,name);
+	std::string count = "";
+	getline(in,count);
+	for (int i = 0; i < count[0] - '0'; i++)
+	{
+		ship newShip;
+		newShip.Read(in);
+		AddshipToFleet(newShip);
+	}
+}
+
+void Fleet::SetName(int index,const std::string nm)
+{
+	fleet.at(index).SetName(nm);
+}
+
+std::vector<ship> Fleet::GetFleet() const
+{
+	return fleet;
 }
 
 bool Fleet::AddshipToFleet(const ship& shp)

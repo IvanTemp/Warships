@@ -1,0 +1,9 @@
+	////”даление корабл€ с проверкой выхода за границы
+	//try
+	//{
+	//	fleet_1.GetshipByIndex(15).Print(std::cout);
+	//}
+	//catch (std::out_of_range)
+	//{
+	//	std::cout << "OUT OF RANGE" << std::endl;
+	//}

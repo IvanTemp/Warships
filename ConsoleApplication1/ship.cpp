@@ -2,46 +2,55 @@
 #include <string>
 #include <vector>
 #include <algorithm>
-
+#include <map>
 #include "ship.h"
 
 
 
 
 
+
+
+ship::ship()
+{
+}
+
 ship::ship(const std::string& nm, const std::string& tp, const int IDen):name(nm), type(tp), durability(1, Small_Durability), ID(IDen)
 {
     //Вопрос правильно ли вот так. Ведь на лекции int age мы инициалиризрооваплиотмсиоамиролап выше (:name(nm), role(rl), age(0))
-    if (tp == "Aircraft Carrier")
-    {
-        durability.resize(4);
-        std::fill(durability.begin(), durability.end(), Aircraft_Carrier_Durability);
-    }
-    else if (tp == "Heavy Cruiser")
-    {
-        durability.resize(3);
-        std::fill(durability.begin(), durability.end(), Heavy_Cruiser_Durability);
-    }
-    else if (tp == "Tsundere")
-    {
-        durability.resize(2);
-        std::fill(durability.begin(), durability.end(), Tsundere_Durability);
-    }
+    std::map<std::string, int> tptosize = { {"Aircraft Carrier", 4}, {"Heavy Cruiser", 3}, {"Tsundere", 2}, {"Small", 1} };
+    durability.resize(tptosize[type]);
+    std::map<std::string, int> tptodur = { {"Aircraft Carrier", Aircraft_Carrier_Durability}, {"Heavy Cruiser", Heavy_Cruiser_Durability}, {"Tsundere", Tsundere_Durability}, {"Small", Small_Durability} };
+    std::fill(durability.begin(), durability.end(), tptodur[type]);
 }
 
-void ship::Print() const
+void ship::Print(std::ostream& out) const
 {
-    std::cout << "[" << ID << "]\t";
-    std::cout << name << "\t";
-    if (name.size() < 8) std::cout << "\t";
-    std::cout << "Type: " << type << "\t";
-    if (type.size() < 9) std::cout << "\t";
-    std::cout << "Durability: ";
+    out << "[" << ID << "]\t";
+    out << name << "\t";
+    if (name.size() < 6) out << "\t";
+    out << "Type: " << type << "\t";
+    if (type.size() < 9) out << "\t";
+    out << "Durability: ";
     for (int i = 0; i < durability.size(); i++)
     {
-        std::cout << " " << durability[i];
+        out << " " << durability[i];
     }
-    std::cout << std::endl;
+    out << std::endl;
+}
+
+void ship::Read(std::istream& in)
+{
+    std::string temp = "";
+    std::getline(in, temp);
+    ID = std::stoi(temp);
+    std::getline(in, name);
+    std::getline(in, type);
+    //Вопрос правильно ли вот так. Инициализация после рида.
+    std::map<std::string, int> tptosize = { {"Aircraft Carrier", 4}, {"Heavy Cruiser", 3}, {"Tsundere", 2}, {"Small", 1} };
+    durability.resize(tptosize[type]);
+    std::map<std::string, int> tptodur = { {"Aircraft Carrier", Aircraft_Carrier_Durability}, {"Heavy Cruiser", Heavy_Cruiser_Durability}, {"Tsundere", Tsundere_Durability}, {"Small", Small_Durability} };
+    std::fill(durability.begin(), durability.end(), tptodur[type]);
 }
 
 void ship::SetName(const std::string nm)

@@ -151,6 +151,9 @@
     <ClInclude Include="generator.h" />
     <ClInclude Include="ship.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="int main.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
