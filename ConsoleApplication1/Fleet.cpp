@@ -1,41 +1,87 @@
 #include <string>
 #include <algorithm>
+#include <stdexcept>
+#include <iostream>
 #include "Fleet.h"
 
 Fleet::Fleet()
 {
 }
 
-Fleet::Fleet(const std::vector<ship>& v):fleet(v)
+Fleet::Fleet(const std::string& nm):name(nm)
+{
+}
+
+Fleet::Fleet(const std::string& nm, const std::vector<ship>& v): name(nm), fleet(v)
 {
 }
 
 void Fleet::Print() const
 {
-	for (const auto& x : fleet)
+	std::cout << "=====Fleet " << name << "=====" << std::endl;
+	if (fleet.size())
 	{
-		x.Print();
+		for (const auto& x : fleet)
+		{
+			x.Print();
+		}
+	}
+	else
+	{
+		std::cout << "Fleet is empty" << std::endl;
 	}
 }
 
-bool Fleet::AddshipToFleet(const ship& ship)
+bool Fleet::AddshipToFleet(const ship& shp)
 {
-	for (const auto& x : fleet)
+	for (int i = 0; i < fleet.size(); i++)
 	{
-		if(ship.IsEqual(ship))
+		if (fleet[i] == shp)
+		{
+			std::cout << "Ship is already added" << std::endl;
 			return false;
+		}
 	}
-	fleet.push_back(ship);
+	fleet.push_back(shp);
 	return true;
 }
 
-bool Fleet::RemoveshipFromFleet(const ship& ship)
+bool Fleet::RemoveshipFromFleet(const ship& shp)
 {
-	fleet.erase(std::remove(fleet.begin(), fleet.end(), ship));
-	return true;
+	//Проверка на пустой
+	int len = fleet.size();
+	if (fleet.begin() == fleet.end())
+		return false;
+	//Добавим проверку удаления несуществующего
+	bool flag = 0;
+	for (int i = 0; i < fleet.size(); i++)
+	{
+		if (fleet[i] == shp)
+		{
+			//Само удаление
+			fleet.erase(std::remove(fleet.begin(), fleet.end(), shp));
+			flag = 1;
+			std::cout << "One ship removed!" << std::endl;
+			return (len > fleet.size());
+		}
+	}
+	if (!flag)
+	{
+		std::cout << "No ship to delete" << std::endl;
+		return false;
+	}
 }
 
 ship& Fleet::GetshipByIndex(int index)
 {
-	// TODO: вставьте здесь оператор return
+	return fleet.at(index);
+	//try
+	//{
+	//	return fleet.at(index);
+	//}
+	//catch (std::out_of_range)
+	//{
+	//	std::cout << "Index out of range" << std::endl;
+	//	throw;
+	//}
 }

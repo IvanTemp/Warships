@@ -1,6 +1,8 @@
 ﻿#include <iostream>
 #include <string>
 #include <vector>
+#include <algorithm>
+
 #include "ship.h"
 
 
@@ -29,15 +31,17 @@ ship::ship(const std::string& nm, const std::string& tp, const int IDen):name(nm
 
 void ship::Print() const
 {
-    std::cout << "\n---------------------------------------------------------------------\n";
-    std::cout << "[" << ID << "] " << name << ": ";
-    std::cout << "Class: " << type << "; ";
+    std::cout << "[" << ID << "]\t";
+    std::cout << name << "\t";
+    if (name.size() < 8) std::cout << "\t";
+    std::cout << "Type: " << type << "\t";
+    if (type.size() < 9) std::cout << "\t";
     std::cout << "Durability: ";
     for (int i = 0; i < durability.size(); i++)
     {
         std::cout << " " << durability[i];
     }
-    std::cout << "\n---------------------------------------------------------------------\n";
+    std::cout << std::endl;
 }
 
 void ship::SetName(const std::string nm)
@@ -75,10 +79,24 @@ int ship::GetID() const
     return ID;
 }
 
-bool ship::IsEqual(const ship& right) const
+bool ship::operator==(const ship& right) const
 {
-    //bool flag = false;
-    //for (const auto& x : durability)
-    //    flag = (durability[x] && right.durability[x]);
-    //return (name == right.name && type == right.type && ID == right.ID && flag);
+    bool durabilityIsEqual = false;
+    std::string s = std::to_string(durability.size()) + std::to_string(right.durability.size());
+    std::sort(s.begin(), s.end());
+    for (int x = 0; x < s[0] - '0'; x++)
+    {
+        if (durability[x] == right.durability[x])
+        {
+            durabilityIsEqual = 1;
+        }
+        else
+        {
+            durabilityIsEqual = 0;
+            break;
+        }
+    }
+    return (name == right.name && type == right.type && ID == right.ID && durabilityIsEqual);
 }
+
+

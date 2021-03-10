@@ -22,7 +22,7 @@ public:
 	void SetDurability (const std::vector<int> durability);
 	std::vector<int> GetDurability()const;
 	int GetID()const;
-	bool IsEqual(const ship& right)const;
+	bool operator == (const ship& right)const;
 
 private:
 	std::string name;
