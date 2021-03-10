@@ -7,7 +7,7 @@
 
 
 
-ship::ship(const std::string& nm, const std::string& tp, const int IDen) :name(nm), type(tp), durability(1, Small_Durability), ID(IDen)
+ship::ship(const std::string& nm, const std::string& tp, const int IDen):name(nm), type(tp), durability(1, Small_Durability), ID(IDen)
 {
     //Вопрос правильно ли вот так. Ведь на лекции int age мы инициалиризрооваплиотмсиоамиролап выше (:name(nm), role(rl), age(0))
     if (tp == "Aircraft Carrier")
@@ -73,4 +73,12 @@ std::vector<int> ship::GetDurability() const
 int ship::GetID() const
 {
     return ID;
+}
+
+bool ship::IsEqual(const ship& right) const
+{
+    //bool flag = false;
+    //for (const auto& x : durability)
+    //    flag = (durability[x] && right.durability[x]);
+    //return (name == right.name && type == right.type && ID == right.ID && flag);
 }

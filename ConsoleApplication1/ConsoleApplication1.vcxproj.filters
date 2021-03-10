@@ -24,12 +24,18 @@
     <ClCompile Include="generator.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="Fleet.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ship.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="generator.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Fleet.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

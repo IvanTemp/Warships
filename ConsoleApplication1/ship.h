@@ -22,10 +22,11 @@ public:
 	void SetDurability (const std::vector<int> durability);
 	std::vector<int> GetDurability()const;
 	int GetID()const;
+	bool IsEqual(const ship& right)const;
 
 private:
 	std::string name;
 	std::vector<int> durability;
 	std::string type;
-	int ID = 0;
+	int ID;
 };
