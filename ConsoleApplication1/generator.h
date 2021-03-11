@@ -1,7 +1,9 @@
 #pragma once
 #include "ship.h"
 
-void 
+unsigned int ReturnFieldID(bool side, int x, int y);
+
+unsigned int ReturnFieldIndex(bool side, int x, int y);
 
 void Initialize_Field_Final(bool side);
 

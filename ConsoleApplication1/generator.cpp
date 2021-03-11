@@ -12,6 +12,16 @@ std::pair<unsigned int, unsigned int> Field_ID[2][width_height][width_height] = 
 bool Field_War[2][width_height][width_height] = { 0, 0, 0 }; //The field with fog of war
 unsigned int Field_Durability[2][width_height][width_height] = { 0, 0, 0 }; //The field with durability
 
+unsigned int ReturnFieldID(bool side, int x, int y)
+{
+	return Field_ID[side][x][y].first;
+}
+
+unsigned int ReturnFieldIndex(bool side, int x, int y)
+{
+	return Field_ID[side][x][y].second;
+}
+
 void Initialize_Field_Final(bool side) {
 	for (unsigned int y = 0; y < width_height; y++) {
 		for (unsigned int x = 0; x < width_height; x++) {
