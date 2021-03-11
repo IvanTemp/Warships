@@ -10,6 +10,7 @@
 
 int main(int argc, char * argv[])
 {
+	if (DEBUG_MODE) std::cout << "WARNING! DEBUG MODE ON! \n" << std::endl;
 	ship ship1("Enterprise", "Aircraft Carrier", 2);
 	//Создадим вектор флот
 	std::vector<ship> fleet_11;
@@ -64,30 +65,15 @@ int main(int argc, char * argv[])
 	fleet_4.Read(std::cin);
 	fleet_4.Print(std::cout);*/
 
-	std::cout << "Ships count: " << ship1.GetCount() << std::endl;
+	if (DEBUG_MODE) { std::cout << "\nShips count: " << ship1.GetCount() << std::endl << std::endl; }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	/*
 	////Generate here
-	for (int i = 0; i < 8; i++)
-	Generate_ship(fleet_2.GetshipByIndex(i), 0);
+	for (int i = 0; i < 10; i++) {
+		Generate_ship(fleet_2.GetshipByIndex(i), 0);
+	}
 	///////////////
 	
 	//DEBUG FUNCTIONS
-	if (DEBUG_MODE) std::cout << "WARNING! DEBUG MODE ON! \n" << std::endl;
 	Output_Field_ID_Indexes(0);
 	Output_Field_Durability(0);
 	Output_Field_War(0);
@@ -101,19 +87,19 @@ int main(int argc, char * argv[])
 	Initialize_Field_Final(1);
 	/////////////////////////
 
+	std::cout << std::endl << std::endl;
 	Output_Field_Final(0);
 	std::cout << std::endl << std::endl;
 	Output_Field_Final(1);
 
-	fleet_1.GetshipByIndex(3).SetDurability({ fleet_1.GetshipByIndex(3).GetDurability()[0], fleet_1.GetshipByIndex(3).GetDurability()[0] - 1 });
+	////Changing durability
+	//fleet_1.GetshipByIndex(0).SetDurability({ fleet_1.GetshipByIndex(0).GetDurability()[0], fleet_1.GetshipByIndex(0).GetDurability()[0] - 2, fleet_1.GetshipByIndex(0).GetDurability()[0] - 2, fleet_1.GetshipByIndex(0).GetDurability()[0] });
 
-	//Field_Refresh(fleet_1.GetshipByIndex(3), 0);
+	//Field_Refresh_Durability(fleet_1.GetshipByIndex(0), 0); //Must have after any damage
 
-	//кароче не работает ничо :_(
+	//Output_Field_Final(0);
+	//std::cout << std::endl << std::endl;
+	//Output_Field_Final(1);
 
-	Output_Field_Final(0);
-	std::cout << std::endl << std::endl;
-	Output_Field_Final(1);
-	*/
 	return 0;
 }

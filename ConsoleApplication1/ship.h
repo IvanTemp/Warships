@@ -1,8 +1,7 @@
 #pragma once
 
 //Game settings
-#define width_height 10 //Width / Height of field
-
+#define width_height 10 //Width & height of field
 #define Aircraft_Carrier_Durability 6
 #define Heavy_Cruiser_Durability 7
 #define Tsundere_Durability 5

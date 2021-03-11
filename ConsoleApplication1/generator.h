@@ -9,7 +9,7 @@ void Output_Field_War(bool side);
 
 void Output_Field_Durability(bool side);
 
-void Field_Refresh(ship shop, bool side);
+void Field_Refresh_Durability(ship shop, bool side);
 
 void Output_Field_Final(bool side);
 

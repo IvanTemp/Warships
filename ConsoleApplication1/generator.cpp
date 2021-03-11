@@ -9,10 +9,10 @@
 
 std::map <std::string, std::string> design = { {"Unknown", "#"}, {"Clear", " "} };
 
-std::string Field_Final[2][width_height][width_height] = { design["Unknown"], design["Unknown"], design["Unknown"] }; //Поля, которое видит игрок и Терминатор
-std::pair<unsigned int, unsigned int> Field_ID[2][width_height][width_height] = { std::make_pair(0, 0) }; //Поля с ID
-bool Field_War[2][width_height][width_height] = { 0, 0, 0 }; //Поля с туманом войны
-unsigned int Field_Durability[2][width_height][width_height] = { 0, 0, 0 }; //Поля с прочностью
+std::string Field_Final[2][width_height][width_height] = { design["Unknown"], design["Unknown"], design["Unknown"] }; //The field seen by the player and the AI
+std::pair<unsigned int, unsigned int> Field_ID[2][width_height][width_height] = { std::make_pair(0, 0) }; //The field with ID and indexes
+bool Field_War[2][width_height][width_height] = { 0, 0, 0 }; //The field with fog of war
+unsigned int Field_Durability[2][width_height][width_height] = { 0, 0, 0 }; //The field with durability
 
 void Initialize_Field_Final(bool side) {
 	for (unsigned int y = 0; y < width_height; y++) {
@@ -95,10 +95,10 @@ void Output_Field_Durability(bool side) {
 	}
 }
 
-void Field_Refresh(ship shop, bool side) {
+void Field_Refresh_Durability(ship shop, bool side) {
 	for (unsigned int y = 0; y < width_height; y++) {
 		for (unsigned int x = 0; x < width_height; x++) {
-			if (Field_ID[side][x][y].first > 1) { Field_Durability[side][x][y] = shop.GetDurability()[Field_ID[side][x][y].second]; }
+			if (Field_ID[side][x][y].first == shop.GetID()) { Field_Durability[side][x][y] = shop.GetDurability()[Field_ID[side][x][y].second]; }
 		}
 	}
 	Initialize_Field_Final(side);
@@ -110,15 +110,11 @@ void Generate_ship(ship sheep, bool side) {
 	bool stop = false, breaksIn = true, kostil = true;
 	int x = 0, y = 0, rotation = 0, length = TypeToLength[sheep.GetType()], ID = sheep.GetID();
 	unsigned int durability = sheep.GetDurability()[0];
-	//rotation: 0 - North, 1 - East, 2 - South - 3 - West
 	while (!stop) {
 		x = -1 + rand() % width_height + 1; y = -1 + rand() % width_height + 1, rotation = - 1 + rand() % 4 + 1;
-		
-		//TEST YOUR OUTPUT
-		//x = 9;
-		//y = 9;
-		//rotation = 0;
-		if (DEBUG_MODE) std::cout << "x = " << x << " y = " << y << " rotation = " << rotation << " ID: " << ID << " Durability: " << durability << std::endl; //TEST
+		//TEST YOUR OUTPUT HERE // rotation: 0 - North, 1 - East, 2 - South - 3 - West
+		//x = 9; y = 9; rotation = 0;
+		if (DEBUG_MODE) std::cout << "x = " << x << "; y = " << y << "; rotation = " << rotation << "; ID: " << ID << "; Length: " << length << "; Default durability: " << durability << std::endl; //TEST
 
 		std::map <int, int> optimization_map = { {0, -1}, {1, 1}, {2, 1}, {3, -1} };
 		int OT = optimization_map[rotation];
