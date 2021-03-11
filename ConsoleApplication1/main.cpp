@@ -45,10 +45,8 @@ int main(int argc, char * argv[]) {
 	fleet_2.AddShipToFleet({ "Ayanami3", "Small", 10 });
 	fleet_2.AddShipToFleet({ "Ayanami4", "Small", 11 });
 	//Выведем оба флота
-	if (DEBUG_MODE) {
-		fleet_1.Print(std::cout);
-		fleet_2.Print(std::cout);
-	}
+	fleet_1.Print(std::cout);
+	fleet_2.Print(std::cout);
 	//Выведем их в файл output.txt (имена в параметрах проекта)
 	if (argc > 1)
 	{
@@ -71,6 +69,22 @@ int main(int argc, char * argv[]) {
 	/*Fleet fleet_4;
 	fleet_4.Read(std::cin);
 	fleet_4.Print(std::cout);*/
+
+	fleet_1.GetShipByIndex(0).DmgtoInd(3, 3);
+
+	fleet_1.Print(std::cout);
+
+
+
+
+
+
+
+
+
+
+
+
 
 	if (DEBUG_MODE) { std::cout << "\nShips count: " << ship1.GetCount() << std::endl << std::endl; }
 

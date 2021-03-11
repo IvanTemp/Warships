@@ -23,6 +23,7 @@ public:
 	std::string GetType()const;
 	void SetDurability (const std::vector<int> durability);
 	std::vector<int> GetDurability()const;
+	void DmgtoInd(const int damage, const int index);
 	int GetID()const;
 	bool operator == (const ship& right)const;
 	ship& operator= (const ship& right);

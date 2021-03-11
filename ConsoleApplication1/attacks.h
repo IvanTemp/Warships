@@ -1,3 +1,3 @@
 #pragma once
 
-void Simple_Attack(bool side, int x, int y, int dmg);
+void Simple_Attack(const bool side,const int x,const int y,const int dmg);

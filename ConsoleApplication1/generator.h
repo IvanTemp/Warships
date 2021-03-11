@@ -1,6 +1,8 @@
 #pragma once
 #include "ship.h"
 
+void 
+
 void Initialize_Field_Final(bool side);
 
 void Output_Field_ID_Indexes(bool side);
