@@ -1,5 +1,9 @@
 #pragma once
 
+#include <string>
+#include <vector>
+
+
 //Game settings
 #define width_height 10 //Width & height of field
 #define Aircraft_Carrier_Durability 6
