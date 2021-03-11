@@ -14,20 +14,11 @@ std::pair<unsigned int, unsigned int> Field_ID[2][width_height][width_height] = 
 bool Field_War[2][width_height][width_height] = { 0, 0, 0 }; //Поля с туманом войны
 unsigned int Field_Durability[2][width_height][width_height] = { 0, 0, 0 }; //Поля с прочностью
 
-void Clear_Field_Id(bool side) { //after use it isn't recommended to use Generate_Ship()
-	for (unsigned int y = 0; y < width_height; y++) {
-		for (unsigned int x = 0; x < width_height; x++) {
-			if (Field_ID[side][x][y].first == 1) Field_ID[side][x][y].first = 0;
-		}
-	}
-}
-
 void Initialize_Field_Final(bool side) {
-	Clear_Field_Id(side);
 	for (unsigned int y = 0; y < width_height; y++) {
 		for (unsigned int x = 0; x < width_height; x++) {
 			if (!side || DEBUG_MODE) {
-				if (Field_ID[side][x][y].first) {
+				if (Field_ID[side][x][y].first > 1) {
 					Field_Final[side][x][y] = std::to_string(Field_Durability[side][x][y]);
 				}
 				else {
@@ -101,6 +92,14 @@ void Output_Field_Durability(bool side) {
 			std::cout << std::endl;
 		}
 		std::cout << std::endl;
+	}
+}
+
+void Field_Refresh(ship shop, bool side) {
+	for (unsigned int y = 0; y < width_height; y++) {
+		for (unsigned int x = 0; x < width_height; x++) {
+			if (Field_ID[side][x][y].first > 1) { Field_Durability[side][x][y] = shop.GetDurability()[Field_ID[side][x][y].second]; }
+		}
 	}
 }
 
