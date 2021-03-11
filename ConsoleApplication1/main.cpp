@@ -88,14 +88,24 @@ int main(int argc, char * argv[])
 	Output_Field_War(1);
 	/////////////////
 
-	////INITIALISATION FIELDS (DO IT AFTER INITIALIZATION OF ALL SHIPS)
-	//Initialize_Field_Final(0);
-	//Initialize_Field_Final(1);
+	////INITIALISATION FIELDS
+	Initialize_Field_Final(0);
+	Initialize_Field_Final(1);
 	/////////////////////////
 
-	//Output_Field_Final(0);
-	//std::cout << std::endl << std::endl;
-	//Output_Field_Final(1);
+	Output_Field_Final(0);
+	std::cout << std::endl << std::endl;
+	Output_Field_Final(1);
+
+	fleet_1.GetshipByIndex(3).SetDurability({ fleet_1.GetshipByIndex(3).GetDurability()[0], fleet_1.GetshipByIndex(3).GetDurability()[0] - 1 });
+
+	//Field_Refresh(fleet_1.GetshipByIndex(3), 0);
+
+	//кароче не работает ничо :_(
+
+	Output_Field_Final(0);
+	std::cout << std::endl << std::endl;
+	Output_Field_Final(1);
 
 	return 0;
 }

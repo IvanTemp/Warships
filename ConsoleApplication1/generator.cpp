@@ -101,6 +101,7 @@ void Field_Refresh(ship shop, bool side) {
 			if (Field_ID[side][x][y].first > 1) { Field_Durability[side][x][y] = shop.GetDurability()[Field_ID[side][x][y].second]; }
 		}
 	}
+	Initialize_Field_Final(side);
 }
 
 void Generate_ship(ship sheep, bool side) {
