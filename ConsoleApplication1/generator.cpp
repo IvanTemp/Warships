@@ -5,8 +5,6 @@
 #include <string>
 #include "generator.h"
 
-
-
 std::map <std::string, std::string> design = { {"Unknown", "#"}, {"Clear", " "} };
 
 std::string Field_Final[2][width_height][width_height] = { design["Unknown"], design["Unknown"], design["Unknown"] }; //The field seen by the player and the AI
@@ -105,7 +103,6 @@ void Field_Refresh_Durability(ship shop, bool side) {
 }
 
 void Generate_ship(ship sheep, bool side) {
-	srand(time(0));
 	std::map <std::string, int> TypeToLength = { {"Aircraft Carrier", 4}, {"Heavy Cruiser", 3}, {"Tsundere", 2}, {"Small", 1} };
 	bool stop = false, breaksIn = true, kostil = true;
 	int x = 0, y = 0, rotation = 0, length = TypeToLength[sheep.GetType()], ID = sheep.GetID();

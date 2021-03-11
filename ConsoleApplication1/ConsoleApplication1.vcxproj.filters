@@ -24,7 +24,10 @@
     <ClCompile Include="generator.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Fleet.cpp">
+    <ClCompile Include="fleet.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="attacks.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -35,12 +38,15 @@
     <ClInclude Include="generator.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Fleet.h">
+    <ClInclude Include="fleet.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="attacks.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="int main.txt">
+    <Text Include="notes.txt">
       <Filter>Исходные файлы</Filter>
     </Text>
     <Text Include="TODO.txt">

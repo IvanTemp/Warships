@@ -12,9 +12,9 @@ public:
 	void Read(std::istream& in);
 	void SetName(int index, const std::string name);
 	std::vector<ship> GetFleet()const;
-	bool AddshipToFleet(const ship& ship);
-	bool RemoveshipFromFleet(const ship& ship);
-	ship& GetshipByIndex(int index);
+	bool AddShipToFleet(const ship& ship);
+	bool RemoveShipFromFleet(const ship& ship);
+	ship& GetShipByIndex(int index);
 
 private:
 	std::string name;

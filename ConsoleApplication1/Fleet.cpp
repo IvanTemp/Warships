@@ -41,7 +41,7 @@ void Fleet::Read(std::istream& in)
 	{
 		ship newShip;
 		newShip.Read(in);
-		AddshipToFleet(newShip);
+		AddShipToFleet(newShip);
 	}
 }
 
@@ -55,7 +55,7 @@ std::vector<ship> Fleet::GetFleet() const
 	return fleet;
 }
 
-bool Fleet::AddshipToFleet(const ship& shp)
+bool Fleet::AddShipToFleet(const ship& shp)
 {
 	for (int i = 0; i < fleet.size(); i++)
 	{
@@ -69,7 +69,7 @@ bool Fleet::AddshipToFleet(const ship& shp)
 	return true;
 }
 
-bool Fleet::RemoveshipFromFleet(const ship& shp)
+bool Fleet::RemoveShipFromFleet(const ship& shp)
 {
 	//Проверка на пустой
 	int len = fleet.size();
@@ -95,7 +95,7 @@ bool Fleet::RemoveshipFromFleet(const ship& shp)
 	}
 }
 
-ship& Fleet::GetshipByIndex(int index)
+ship& Fleet::GetShipByIndex(int index)
 {
 	return fleet.at(index);
 	//try

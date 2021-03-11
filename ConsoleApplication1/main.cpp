@@ -5,11 +5,16 @@
 #include <fstream>
 #include "ship.h"
 #include "generator.h"
-#include "Fleet.h"
+#include "fleet.h"
+#include "attacks.h"
+
+void setup() {
+	srand(time(0));
+}
 
 
-int main(int argc, char * argv[])
-{
+int main(int argc, char * argv[]) {
+	setup();
 	if (DEBUG_MODE) std::cout << "WARNING! DEBUG MODE ON! \n" << std::endl;
 	ship ship1("Enterprise", "Aircraft Carrier", 2);
 	//Создадим вектор флот
@@ -29,19 +34,21 @@ int main(int argc, char * argv[])
 	Fleet fleet_1("Eagle Union", fleet_11);
 	//Создадим второй флот
 	Fleet fleet_2("Sakura Empire");
-	fleet_2.AddshipToFleet({ "Akagi", "Aircraft Carrier", 2 });
-	fleet_2.AddshipToFleet({ "SAKURA_NAME1", "Heavy Cruiser", 3 });
-	fleet_2.AddshipToFleet({ "SAKURA_NAME2", "Heavy Cruiser", 4 });
-	fleet_2.AddshipToFleet({ "SAKURA_NAME3", "Tsundere", 5 });
-	fleet_2.AddshipToFleet({ "SAKURA_NAME4", "Tsundere", 6 });
-	fleet_2.AddshipToFleet({ "SAKURA_NAME5", "Tsundere", 7 });
-	fleet_2.AddshipToFleet({ "Ayanami1", "Small", 8 });
-	fleet_2.AddshipToFleet({ "Ayanami2", "Small", 9 });
-	fleet_2.AddshipToFleet({ "Ayanami3", "Small", 10 });
-	fleet_2.AddshipToFleet({ "Ayanami4", "Small", 11 });
+	fleet_2.AddShipToFleet({ "Akagi", "Aircraft Carrier", 2 });
+	fleet_2.AddShipToFleet({ "SAKURA_NAME1", "Heavy Cruiser", 3 });
+	fleet_2.AddShipToFleet({ "SAKURA_NAME2", "Heavy Cruiser", 4 });
+	fleet_2.AddShipToFleet({ "SAKURA_NAME3", "Tsundere", 5 });
+	fleet_2.AddShipToFleet({ "SAKURA_NAME4", "Tsundere", 6 });
+	fleet_2.AddShipToFleet({ "SAKURA_NAME5", "Tsundere", 7 });
+	fleet_2.AddShipToFleet({ "Ayanami1", "Small", 8 });
+	fleet_2.AddShipToFleet({ "Ayanami2", "Small", 9 });
+	fleet_2.AddShipToFleet({ "Ayanami3", "Small", 10 });
+	fleet_2.AddShipToFleet({ "Ayanami4", "Small", 11 });
 	//Выведем оба флота
-	fleet_1.Print(std::cout);
-	fleet_2.Print(std::cout);
+	if (DEBUG_MODE) {
+		fleet_1.Print(std::cout);
+		fleet_2.Print(std::cout);
+	}
 	//Выведем их в файл output.txt (имена в параметрах проекта)
 	if (argc > 1)
 	{
@@ -69,7 +76,7 @@ int main(int argc, char * argv[])
 
 	////Generate here
 	for (int i = 0; i < 10; i++) {
-		Generate_ship(fleet_2.GetshipByIndex(i), 0);
+		Generate_ship(fleet_2.GetShipByIndex(i), 0);
 	}
 	///////////////
 	
@@ -93,11 +100,11 @@ int main(int argc, char * argv[])
 	Output_Field_Final(1);
 
 	////Changing durability
-	//fleet_1.GetshipByIndex(0).SetDurability({ fleet_1.GetshipByIndex(0).GetDurability()[0], fleet_1.GetshipByIndex(0).GetDurability()[0] - 2, fleet_1.GetshipByIndex(0).GetDurability()[0] - 2, fleet_1.GetshipByIndex(0).GetDurability()[0] });
+	fleet_1.GetShipByIndex(0).SetDurability({ fleet_1.GetShipByIndex(0).GetDurability()[0], fleet_1.GetShipByIndex(0).GetDurability()[1] - 2, fleet_1.GetShipByIndex(0).GetDurability()[2] - 2, fleet_1.GetShipByIndex(0).GetDurability()[3] });
 
-	//Field_Refresh_Durability(fleet_1.GetshipByIndex(0), 0); //Must have after any damage
+	Field_Refresh_Durability(fleet_1.GetShipByIndex(0), 0); //Must have after any damage
 
-	//Output_Field_Final(0);
+	Output_Field_Final(0);
 	//std::cout << std::endl << std::endl;
 	//Output_Field_Final(1);
 

@@ -141,21 +141,28 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Fleet.cpp" />
+    <ClCompile Include="attacks.cpp" />
+    <ClCompile Include="fleet.cpp" />
     <ClCompile Include="generator.cpp" />
     <ClCompile Include="ship.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Fleet.h" />
+    <ClInclude Include="attacks.h" />
+    <ClInclude Include="fleet.h" />
     <ClInclude Include="generator.h" />
     <ClInclude Include="ship.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="int main.txt" />
+    <Text Include="notes.txt" />
     <Text Include="TODO.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>
