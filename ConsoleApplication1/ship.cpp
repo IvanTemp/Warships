@@ -6,16 +6,9 @@
 #include "ship.h"
 
 
+int ship::count = 0;
 
-
-
-
-
-ship::ship()
-{
-}
-
-ship::ship(const std::string& nm, const std::string& tp, const int IDen):name(nm), type(tp), durability(1, Small_Durability), ID(IDen)
+ship::ship(const std::string& nm, const std::string& tp, const int IDen):name(nm), type(tp), durability(1, Small_Durability), ID(IDen), cID(count++)
 {
     //Вопрос правильно ли вот так. Ведь на лекции int age мы инициалиризрооваплиотмсиоамиролап выше (:name(nm), role(rl), age(0))
     std::map<std::string, int> tptosize = { {"Aircraft Carrier", 4}, {"Heavy Cruiser", 3}, {"Tsundere", 2}, {"Small", 1} };
@@ -106,6 +99,17 @@ bool ship::operator==(const ship& right) const
         }
     }
     return (name == right.name && type == right.type && ID == right.ID && durabilityIsEqual);
+}
+
+ship& ship::operator=(const ship& right)
+{
+    if (this != &right)
+    {
+        name = right.name;
+        type = right.type;
+        durability = right.durability;
+    }
+    return *this;
 }
 
 

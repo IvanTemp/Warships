@@ -9,3 +9,14 @@
 [9]	Flaffey2	Type: Small		Durability:  4
 [10]	Flaffey3	Type: Small		Durability:  4
 [11]	Flaffey4	Type: Small		Durability:  4
+=====Fleet Sakura Empire=====
+[2]	Akagi		Type: Aircraft Carrier	Durability:  6 6 6 6
+[3]	SAKURA_NAME1	Type: Heavy Cruiser	Durability:  7 7 7
+[4]	SAKURA_NAME2	Type: Heavy Cruiser	Durability:  7 7 7
+[5]	SAKURA_NAME3	Type: Tsundere		Durability:  5 5
+[6]	SAKURA_NAME4	Type: Tsundere		Durability:  5 5
+[7]	SAKURA_NAME5	Type: Tsundere		Durability:  5 5
+[8]	Ayanami1	Type: Small		Durability:  4
+[9]	Ayanami2	Type: Small		Durability:  4
+[10]	Ayanami3	Type: Small		Durability:  4
+[11]	Ayanami4	Type: Small		Durability:  4

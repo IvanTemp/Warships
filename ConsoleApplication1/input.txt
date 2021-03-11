@@ -1,7 +1,7 @@
-TEST
+from file
 2
 2
-Enterprise	
+Enterprise
 Aircraft Carrier
 3
 Prinz Eugene

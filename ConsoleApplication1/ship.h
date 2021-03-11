@@ -10,12 +10,12 @@
 #define DEBUG_MODE 0
 
 
-
 class ship
 {
 public:
-	ship();
+	ship() :cID(count++) {};
 	ship(const std::string& name, const std::string& type, const int ID);
+	~ship() { }
 
 	void Print(std::ostream& out)const;
 	void Read(std::istream& in);
@@ -27,10 +27,14 @@ public:
 	std::vector<int> GetDurability()const;
 	int GetID()const;
 	bool operator == (const ship& right)const;
+	ship& operator= (const ship& right);
+	static int GetCount() { return count; }
 
 private:
 	std::string name;
 	std::vector<int> durability;
 	std::string type;
 	int ID;
+	static int count;
+	const int cID;
 };

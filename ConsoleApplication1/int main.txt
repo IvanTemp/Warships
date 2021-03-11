@@ -7,3 +7,15 @@
 	//{
 	//	std::cout << "OUT OF RANGE" << std::endl;
 	//}
+
+
+	Не робит 
+	//Проверяю конструктор/деструктор
+	std::cout << "ship temp added" << std::endl;
+	ship* temp = new ship();
+
+	std::cout << "ships count " << ship1.GetCount() << std::endl;
+	std::cout << "ship temp deleted" << std::endl;
+	delete temp;
+
+	std::cout << "ships count " << ship1.GetCount() << std::endl;

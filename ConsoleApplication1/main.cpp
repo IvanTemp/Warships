@@ -14,7 +14,7 @@ int main(int argc, char * argv[])
 	//Создадим вектор флот
 	std::vector<ship> fleet_11;
 	//Запихнем в вектор флот наши кораблики
-	fleet_11.push_back({ "Enterprise", "Aircraft Carrier", 2 });
+	fleet_11.push_back(ship1);
 	fleet_11.push_back({ "Prinz Eugene", "Heavy Cruiser", 3 });
 	fleet_11.push_back({ "Atago", "Heavy Cruiser", 4 });
 	fleet_11.push_back({ "FLX1", "Tsundere", 5 });
@@ -26,8 +26,7 @@ int main(int argc, char * argv[])
 	fleet_11.push_back({ "Flaffey4", "Small", 11 });
 	//Запихнем в вектор флот свои кораблики
 	Fleet fleet_1("Eagle Union", fleet_11);
-
-
+	//Создадим второй флот
 	Fleet fleet_2("Sakura Empire");
 	fleet_2.AddshipToFleet({ "Akagi", "Aircraft Carrier", 2 });
 	fleet_2.AddshipToFleet({ "SAKURA_NAME1", "Heavy Cruiser", 3 });
@@ -39,26 +38,33 @@ int main(int argc, char * argv[])
 	fleet_2.AddshipToFleet({ "Ayanami2", "Small", 9 });
 	fleet_2.AddshipToFleet({ "Ayanami3", "Small", 10 });
 	fleet_2.AddshipToFleet({ "Ayanami4", "Small", 11 });
+	//Выведем оба флота
 	fleet_1.Print(std::cout);
 	fleet_2.Print(std::cout);
-
-
-
+	//Выведем их в файл output.txt (имена в параметрах проекта)
 	if (argc > 1)
 	{
 		std::ofstream fout(argv[1]);
 		fleet_1.Print(fout);
+		fleet_2.Print(fout);
 		fout.close();
 	}
-
+	//Считаем флот из файла input.txt (имена в параметрах проекта)
 	if (argc > 2)
 	{
-		Fleet fleet_3("Temp");
+		Fleet fleet_3;
 		std::ifstream fin(argv[2]);
 		fleet_3.Read(fin);
 		fin.close();
+		//Выведем флот из файла
 		fleet_3.Print(std::cout);
 	}
+	//Считаем флот из консоли
+	/*Fleet fleet_4;
+	fleet_4.Read(std::cin);
+	fleet_4.Print(std::cout);*/
+
+	std::cout << "Ships count: " << ship1.GetCount() << std::endl;
 
 
 
@@ -73,6 +79,8 @@ int main(int argc, char * argv[])
 
 
 
+
+	/*
 	////Generate here
 	for (int i = 0; i < 8; i++)
 	Generate_ship(fleet_2.GetshipByIndex(i), 0);
@@ -106,6 +114,6 @@ int main(int argc, char * argv[])
 	Output_Field_Final(0);
 	std::cout << std::endl << std::endl;
 	Output_Field_Final(1);
-
+	*/
 	return 0;
 }
