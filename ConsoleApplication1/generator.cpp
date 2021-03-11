@@ -114,7 +114,7 @@ void Generate_ship(ship sheep, bool side) {
 		x = -1 + rand() % width_height + 1; y = -1 + rand() % width_height + 1, rotation = - 1 + rand() % 4 + 1;
 		//TEST YOUR OUTPUT HERE // rotation: 0 - North, 1 - East, 2 - South - 3 - West
 		//x = 9; y = 9; rotation = 0;
-		if (DEBUG_MODE) std::cout << "x = " << x << "; y = " << y << "; rotation = " << rotation << "; ID: " << ID << "; Length: " << length << "; Default durability: " << durability << std::endl; //TEST
+		if (DEBUG_MODE) std::cout << "Trying to: x = " << x << "; y = " << y << "; rotation = " << rotation << "; ID: " << ID << "; Length: " << length << "; Default durability: " << durability << std::endl; //TEST
 
 		std::map <int, int> optimization_map = { {0, -1}, {1, 1}, {2, 1}, {3, -1} };
 		int OT = optimization_map[rotation];
@@ -122,7 +122,10 @@ void Generate_ship(ship sheep, bool side) {
 		bool leftIsClear = false, rightIsClear = false, upIsClear = false, downIsClear = false;
 		if (x) { leftIsClear = true; } if (y) { upIsClear = true; } if (x < width_height - 1) { rightIsClear = true; } if (y < width_height - 1) { downIsClear = true; } //checking for space on all sides
 		if (rotation == 0 || rotation == 2) { //vertical
-			if (OT > 0) { if (y + length >= width_height - 1) { breaksIn = false; } } else { if (y - length < 0) { breaksIn = false; } } //check for the ability to place the ship
+			if (length > 1) {
+				if (OT > 0) { if (y + length >= width_height - 1) { breaksIn = false; } }
+				else { if (y - length < 0) { breaksIn = false; } } //check for the ability to place the ship
+			}
 			for (int h = 0; h < length; h++) { if (Field_ID[side][x][y + h * OT].first > 0) { breaksIn = false; } } //check for the ability to place the ship part 2
 			if (breaksIn) {
 				OT > 0 ? breaksIn = upIsClear : breaksIn = downIsClear;
@@ -148,8 +151,10 @@ void Generate_ship(ship sheep, bool side) {
 			}
 		}
 		else { //horizontal
-			if (OT > 0) { if (x + length >= width_height - 1) { breaksIn = false; } }
-			else { if (x - length < 0) { breaksIn = false; } } //check for the ability to place the ship
+			if (length > 1) {
+				if (OT > 0) { if (x + length >= width_height - 1) { breaksIn = false; } }
+				else { if (x - length < 0) { breaksIn = false; } } //check for the ability to place the ship
+			}
 			for (int h = 0; h < length; h++) { if (Field_ID[side][x + h * OT][y].first > 0) { breaksIn = false; } } //check for the ability to place the ship part 2
 			if (breaksIn) {
 				OT > 0 ? breaksIn = leftIsClear : breaksIn = rightIsClear;
