@@ -43,5 +43,8 @@
     <Text Include="int main.txt">
       <Filter>Исходные файлы</Filter>
     </Text>
+    <Text Include="TODO.txt">
+      <Filter>Исходные файлы</Filter>
+    </Text>
   </ItemGroup>
 </Project>
