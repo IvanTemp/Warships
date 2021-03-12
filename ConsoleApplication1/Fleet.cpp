@@ -40,7 +40,7 @@ void Fleet::Read(std::istream& in)
 	getline(in,count);
 	for (int i = 0; i < stoi(count); i++)
 	{
-		ship newShip({ (count[0] - '0') + 2});
+		ship newShip;
 		newShip.Read(in);
 		AddShipToFleet(newShip);
 	}

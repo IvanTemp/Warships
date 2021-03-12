@@ -1,22 +1,32 @@
 Sakura Empire
 10
+2
 Akagi
 Aircraft Carrier
+3
 SAKURA_NAME1
 Heavy Cruiser
+4
 SAKURA_NAME2
 Heavy Cruiser
+5
 SAKURA_NAME3
 Tsundere
+6
 SAKURA_NAME4
 Tsundere
+7
 SAKURA_NAME5
 Tsundere
+8
 Ayanami1
 Small
+9
 Ayanami2
 Small
+10
 Ayanami3
 Small
+11
 Ayanami4
 Small

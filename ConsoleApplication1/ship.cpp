@@ -40,6 +40,8 @@ void ship::Print(std::ostream& out) const
 void ship::Read(std::istream& in)
 {
     std::string temp = "";
+    std::getline(in, temp);
+    ID = stoi(temp);
     std::getline(in, name);
     std::getline(in, type);
     //Вопрос правильно ли вот так. Инициализация после рида.
