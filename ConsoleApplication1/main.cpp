@@ -53,17 +53,17 @@ int main(int argc, char * argv[]) {
 
 
 
-	/*					Тут заканчивается наша первая лабораторная работа					*/
+	/*				Тут заканчивается наша первая лабораторная работа(по словам Вани)				*/
 	if (DEBUG_MODE) { std::cout << "Ships count: " << ship1.GetCount() << std::endl << std::endl; }
 
-	////Generate here
-	//for (int i = 0; i < fleet_1.GetFleet().size(); i++) {
-		//Generate_ship(fleet_1.GetShipByIndex(i), fleet_1.GetSide());
-	//}
+	//Generate here
+	for (int i = 0; i < fleet_1.GetFleet().size(); i++) {
+		Generate_ship(fleet_1.GetShipByIndex(i), fleet_1.GetSide());
+	}
 
-	//for (int i = 0; i < fleet_2.GetFleet().size(); i++) {
-		Generate_ship(fleet_2.GetShipByIndex(0), fleet_2.GetSide());
-	//}
+	for (int i = 0; i < fleet_2.GetFleet().size(); i++) {
+		Generate_ship(fleet_2.GetShipByIndex(i), fleet_2.GetSide());
+	}
 	///////////////
 	
 	//Print in console
@@ -87,6 +87,8 @@ int main(int argc, char * argv[]) {
 
 	//DAMAGE TEST
 	if (DEBUG_MODE) {
+		std::cout << "DAMAGE TEST:" << std::endl << std::endl;
+		std::cout << "Before attack in 5 5:" << std::endl << std::endl;
 		Output_Field_Final(0, 0);
 		std::cout << std::endl << std::endl;
 		Output_Field_Final(1, 1);
@@ -94,6 +96,7 @@ int main(int argc, char * argv[]) {
 		fleet_2.DmgToInd(5, 5, 3);
 		fleet_2.Print(std::cout);
 
+		std::cout << "After attack in 5 5:" << std::endl << std::endl;
 		std::cout << std::endl;
 		Output_Field_Final(0, 0);
 		std::cout << std::endl << std::endl;
@@ -103,6 +106,7 @@ int main(int argc, char * argv[]) {
 
 	//FOG OF WAR TEST
 	if (DEBUG_MODE) {
+		std::cout << "FOG OF WAR TEST:" << std::endl << std::endl;
 		std::cout << "FOR PLAYER: " << std::endl;
 		Output_Field_Final(0, 0);
 		Output_Field_Final(1, 0);
@@ -111,6 +115,6 @@ int main(int argc, char * argv[]) {
 		Output_Field_Final(0, 1);
 		Output_Field_Final(1, 1);
 	}
-
+	/////////////////
 	return 0;
 }
