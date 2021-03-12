@@ -1,8 +1,22 @@
-from file
+Sakura Empire
 2
-2
-Enterprise
+Akagi
 Aircraft Carrier
-3
-Prinz Eugene
+SAKURA_NAME1
 Heavy Cruiser
+SAKURA_NAME2
+Heavy Cruiser
+SAKURA_NAME3
+Tsundere
+SAKURA_NAME4
+Tsundere
+SAKURA_NAME5
+Tsundere
+Ayanami1
+Small
+Ayanami2
+Small
+Ayanami3
+Small
+Ayanami4
+Small

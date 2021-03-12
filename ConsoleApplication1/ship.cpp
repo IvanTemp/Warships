@@ -8,6 +8,11 @@
 
 int ship::count = 0;
 
+
+ship::ship(const int IDen) : ID(IDen), cID(count++)
+{
+}
+
 ship::ship(const std::string& nm, const std::string& tp, const int IDen):name(nm), type(tp), durability(1, Small_Durability), ID(IDen), cID(count++)
 {
     //Вопрос правильно ли вот так. Ведь на лекции int age мы инициалиризрооваплиотмсиоамиролап выше (:name(nm), role(rl), age(0))
@@ -35,8 +40,6 @@ void ship::Print(std::ostream& out) const
 void ship::Read(std::istream& in)
 {
     std::string temp = "";
-    std::getline(in, temp);
-    ID = std::stoi(temp);
     std::getline(in, name);
     std::getline(in, type);
     //Вопрос правильно ли вот так. Инициализация после рида.
@@ -71,12 +74,6 @@ void ship::SetDurability(const std::vector<int> durabty)
     durability = durabty;
 }
 
-void ship::GetDamage(const int dmg, const int i) {
-    if (DEBUG_MODE) { std::cout << "Damage in: INDEX[" << i << "] <= " << dmg << " DMG" << std::endl << "Previous durability: " << durability[i] << std::endl; }
-    durability[i] -= dmg;
-    if (DEBUG_MODE) std::cout << "Final durability: " << durability[i] << std::endl;
-}
-
 std::vector<int> ship::GetDurability() const
 {
     return durability;
@@ -84,9 +81,7 @@ std::vector<int> ship::GetDurability() const
 
 void ship::DmgtoInd(const int dmg, const int ind)
 {
-    std::cout << durability[ind] << std::endl;
     durability[ind] = durability[ind] - dmg;
-    std::cout << durability[ind] << std::endl;
 }
 
 int ship::GetID() const

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <string>
 #include <vector>
 
 
@@ -16,6 +15,7 @@ class ship
 {
 public:
 	ship() :cID(count++) {};
+	ship(const int ID);
 	ship(const std::string& name, const std::string& type, const int ID);
 	~ship() { }
 
@@ -26,7 +26,6 @@ public:
 	void SetType(const std::string type);
 	std::string GetType()const;
 	void SetDurability (const std::vector<int> durability);
-	void GetDamage(const int dmg, const int index);
 	std::vector<int> GetDurability()const;
 	void DmgtoInd(const int damage, const int index);
 	int GetID()const;

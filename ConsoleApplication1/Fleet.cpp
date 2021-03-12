@@ -1,8 +1,10 @@
 #include <string>
 #include <algorithm>
 #include <stdexcept>
+#include <vector>
 #include <iostream>
 #include "Fleet.h"
+#include "generator.h"
 
 Fleet::Fleet()
 {
@@ -43,7 +45,7 @@ void Fleet::Read(std::istream& in)
 	getline(in,count);
 	for (int i = 0; i < count[0] - '0'; i++)
 	{
-		ship newShip;
+		ship newShip({ (count[0] - '0') + 2});
 		newShip.Read(in);
 		AddShipToFleet(newShip);
 	}
@@ -52,6 +54,11 @@ void Fleet::Read(std::istream& in)
 void Fleet::SetName(int index,const std::string nm)
 {
 	fleet.at(index).SetName(nm);
+}
+
+std::string Fleet::GetName() const
+{
+	return name;
 }
 
 void Fleet::SetSide(bool s) {
@@ -107,7 +114,7 @@ bool Fleet::GetSide()const {
 	return side;
 }
 
-ship Fleet::GetShipByIndex(int ID)const {
+ship Fleet::GetShipByIndex(const int ID)const {
 	return fleet.at(ID);
 	//try
 	//{
@@ -122,6 +129,24 @@ ship Fleet::GetShipByIndex(int ID)const {
 
 int Fleet::GetFleetSize() const {
 	return fleet.size();
+}
+
+void Fleet::DmgToInd(const int x, const int y, const int dmg)
+{
+	int Index = ReturnFieldID(side, x, y) -2;
+	int DurabtyIndex = ReturnFieldIndex(side, x, y);
+	fleet[Index].DmgtoInd(dmg, DurabtyIndex);
+	Field_Refresh_Durability(fleet[Index], side);
+	if (DEBUG_MODE)
+	{
+		std::cout << "Fleet: " << name;
+		std::cout << "; new durability =";
+		for (int i = 0; i < fleet[Index].GetDurability().size(); i++)
+		{
+			std::cout << " " << fleet[Index].GetDurability()[i];
+		}
+		std::cout << std::endl;
+	}
 }
 
 
