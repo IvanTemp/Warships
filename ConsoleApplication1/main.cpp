@@ -29,9 +29,8 @@ int main(int argc, char * argv[]) {
 	fleet_11.push_back({ "Flaffey2", "Small", 9 });
 	fleet_11.push_back({ "Flaffey3", "Small", 10 });
 	fleet_11.push_back({ "Flaffey4", "Small", 11 });
-	//Запихнем флот в класс
 	Fleet fleet_1("Eagle Union", fleet_11);
-	fleet_1.SetSide(0);
+	//Запихнем флот в класс
 	//Считаем флот из файла input.txt (имена в параметрах проекта)
 	Fleet fleet_2;
 	if (argc > 2)
@@ -39,8 +38,6 @@ int main(int argc, char * argv[]) {
 		std::ifstream fin(argv[2]);
 		fleet_2.Read(fin);
 		fin.close();
-		//Выведем флот из файла
-		fleet_2.Print(std::cout);
 	}
 	//Выведем их в файл output.txt (имена в параметрах проекта)
 	if (argc > 1)
@@ -50,7 +47,6 @@ int main(int argc, char * argv[]) {
 		fleet_2.Print(fout);
 		fout.close();
 	}
-
 	//Считаем флот из консоли
 	/*Fleet fleet_4;
 	fleet_4.Read(std::cin);
@@ -58,13 +54,12 @@ int main(int argc, char * argv[]) {
 
 
 
-
-
-	if (DEBUG_MODE) { std::cout << "\nShips count: " << ship1.GetCount() << std::endl << std::endl; }
+	/*								Тут начинается наш курсовик (морской бой)				*/
+	if (DEBUG_MODE) { std::cout << "Ships count: " << ship1.GetCount() << std::endl << std::endl; }
 
 	////Generate here
-	for (int i = 0; i < 1; i++) {
-		Generate_ship(fleet_1.GetShipByIndex(i), 0);
+	for (int i = 0; i < fleet_1.GetFleet().size(); i++) {
+		Generate_ship(fleet_1.GetShipByIndex(i), fleet_1.GetSide());
 	}
 	///////////////
 	
@@ -87,21 +82,12 @@ int main(int argc, char * argv[]) {
 	std::cout << std::endl << std::endl;
 	//Output_Field_Final(1);
 
-	////Changing durability
-	//fleet_1.GetShipByIndex(0).SetDurability({ fleet_1.GetShipByIndex(0).GetDurability()[0], fleet_1.GetShipByIndex(0).GetDurability()[1] - 2, fleet_1.GetShipByIndex(0).GetDurability()[2] - 2, fleet_1.GetShipByIndex(0).GetDurability()[3] });
-	//Field_Refresh_Durability(fleet_1.GetShipByID(0), 0); //Must have after any damage
-
-	//Damage
-	//Simple_Attack(fleet_1, 5, 5, 2);
-	//fleet_1.GetShipByIndex(0).DmgtoInd(2, 3);
-	////////
 
 	Output_Field_Final(0);
 	std::cout << std::endl << std::endl;
 	Output_Field_Final(1);
 
-	fleet_1.DmgToInd(5, 5, -3);
-
+	fleet_1.DmgToInd(5, 5, 3);
 	fleet_1.Print(std::cout);
 
 

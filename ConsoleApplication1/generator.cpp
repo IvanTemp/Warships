@@ -119,7 +119,7 @@ void Generate_ship(ship sheep, bool side) {
 	while (!stop) {
 		x = -1 + rand() % width_height + 1; y = -1 + rand() % width_height + 1, rotation = - 1 + rand() % 4 + 1;
 		//TEST YOUR OUTPUT HERE //rotation: 0 - North, 1 - East, 2 - South - 3 - West
-		x = 5; y = 5;// rotation = 0;
+		//x = 5; y = 5;// rotation = 0;
 		if (DEBUG_MODE) std::cout << "Trying to: x = " << x << "; y = " << y << "; rotation = " << rotation << "; ID: " << ID << "; Length: " << length << "; Default durability: " << sheep.GetDurability()[0] << std::endl; //TEST
 
 		std::map <int, int> optimization_map = { {0, -1}, {1, 1}, {2, 1}, {3, -1} };

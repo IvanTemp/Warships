@@ -6,19 +6,14 @@
 #include "Fleet.h"
 #include "generator.h"
 
-Fleet::Fleet()
+int Fleet::count = 0;
+
+
+Fleet::Fleet(const std::string& nm):name(nm), side(count++)
 {
 }
 
-Fleet::Fleet(const std::string& nm):name(nm)
-{
-}
-
-Fleet::Fleet(const std::string& nm, const std::vector<ship>& v): name(nm), fleet(v)
-{
-}
-
-Fleet::Fleet(const std::string& name, const std::vector<ship>& v, const bool& side)
+Fleet::Fleet(const std::string& nm, const std::vector<ship>& v): name(nm), fleet(v), side(count++)
 {
 }
 
@@ -43,7 +38,7 @@ void Fleet::Read(std::istream& in)
 	getline(in,name);
 	std::string count = "";
 	getline(in,count);
-	for (int i = 0; i < count[0] - '0'; i++)
+	for (int i = 0; i < stoi(count); i++)
 	{
 		ship newShip({ (count[0] - '0') + 2});
 		newShip.Read(in);
@@ -59,10 +54,6 @@ void Fleet::SetName(int index,const std::string nm)
 std::string Fleet::GetName() const
 {
 	return name;
-}
-
-void Fleet::SetSide(bool s) {
-	side = s;
 }
 
 std::vector<ship> Fleet::GetFleet() const
@@ -127,25 +118,26 @@ ship Fleet::GetShipByIndex(const int ID)const {
 	//}
 }
 
-int Fleet::GetFleetSize() const {
-	return fleet.size();
-}
 
 void Fleet::DmgToInd(const int x, const int y, const int dmg)
 {
-	int Index = ReturnFieldID(side, x, y) -2;
-	int DurabtyIndex = ReturnFieldIndex(side, x, y);
-	fleet[Index].DmgtoInd(dmg, DurabtyIndex);
-	Field_Refresh_Durability(fleet[Index], side);
-	if (DEBUG_MODE)
+	if (ReturnFieldID(side, x, y) > 1)
 	{
-		std::cout << "Fleet: " << name;
-		std::cout << "; new durability =";
-		for (int i = 0; i < fleet[Index].GetDurability().size(); i++)
+		int Index = ReturnFieldID(side, x, y) - 2;
+		int DurabtyIndex = ReturnFieldIndex(side, x, y);
+		fleet[Index].DmgtoInd(dmg, DurabtyIndex);
+		Field_Refresh_Durability(fleet[Index], side);
+		if (DEBUG_MODE)
 		{
-			std::cout << " " << fleet[Index].GetDurability()[i];
+			std::cout << "Fleet: " << name;
+			std::cout << "; new durability =";
+			for (int i = 0; i < fleet[Index].GetDurability().size(); i++)
+			{
+				std::cout << " " << fleet[Index].GetDurability()[i];
+			}
+			std::cout << std::endl;
 		}
-		std::cout << std::endl;
+		Field_Refresh_Durability(side);
 	}
 }
 

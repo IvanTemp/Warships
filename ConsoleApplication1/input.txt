@@ -1,5 +1,5 @@
 Sakura Empire
-2
+10
 Akagi
 Aircraft Carrier
 SAKURA_NAME1
