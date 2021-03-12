@@ -10,7 +10,7 @@
 #define Heavy_Cruiser_Durability 7
 #define Tsundere_Durability 5
 #define Small_Durability 4
-#define DEBUG_MODE 0
+#define DEBUG_MODE 1
 
 class ship
 {
@@ -26,6 +26,7 @@ public:
 	void SetType(const std::string type);
 	std::string GetType()const;
 	void SetDurability (const std::vector<int> durability);
+	void GetDamage(const int dmg, const int index);
 	std::vector<int> GetDurability()const;
 	void DmgtoInd(const int damage, const int index);
 	int GetID()const;

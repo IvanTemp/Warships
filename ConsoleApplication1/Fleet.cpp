@@ -16,6 +16,10 @@ Fleet::Fleet(const std::string& nm, const std::vector<ship>& v): name(nm), fleet
 {
 }
 
+Fleet::Fleet(const std::string& name, const std::vector<ship>& v, const bool& side)
+{
+}
+
 void Fleet::Print(std::ostream& out) const
 {
 	out << "=====Fleet " << name << "=====" << std::endl;
@@ -48,6 +52,10 @@ void Fleet::Read(std::istream& in)
 void Fleet::SetName(int index,const std::string nm)
 {
 	fleet.at(index).SetName(nm);
+}
+
+void Fleet::SetSide(bool s) {
+	side = s;
 }
 
 std::vector<ship> Fleet::GetFleet() const
@@ -95,9 +103,12 @@ bool Fleet::RemoveShipFromFleet(const ship& shp)
 	}
 }
 
-ship& Fleet::GetShipByIndex(int index)
-{
-	return fleet.at(index);
+bool Fleet::GetSide()const {
+	return side;
+}
+
+ship Fleet::GetShipByIndex(int ID)const {
+	return fleet.at(ID);
 	//try
 	//{
 	//	return fleet.at(index);
@@ -107,6 +118,10 @@ ship& Fleet::GetShipByIndex(int index)
 	//	std::cout << "Index out of range" << std::endl;
 	//	throw;
 	//}
+}
+
+int Fleet::GetFleetSize() const {
+	return fleet.size();
 }
 
 

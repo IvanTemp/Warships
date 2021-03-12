@@ -71,6 +71,12 @@ void ship::SetDurability(const std::vector<int> durabty)
     durability = durabty;
 }
 
+void ship::GetDamage(const int dmg, const int i) {
+    if (DEBUG_MODE) { std::cout << "Damage in: INDEX[" << i << "] <= " << dmg << " DMG" << std::endl << "Previous durability: " << durability[i] << std::endl; }
+    durability[i] -= dmg;
+    if (DEBUG_MODE) std::cout << "Final durability: " << durability[i] << std::endl;
+}
+
 std::vector<int> ship::GetDurability() const
 {
     return durability;
@@ -78,7 +84,9 @@ std::vector<int> ship::GetDurability() const
 
 void ship::DmgtoInd(const int dmg, const int ind)
 {
+    std::cout << durability[ind] << std::endl;
     durability[ind] = durability[ind] - dmg;
+    std::cout << durability[ind] << std::endl;
 }
 
 int ship::GetID() const

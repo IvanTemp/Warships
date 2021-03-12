@@ -8,13 +8,9 @@
 #include "fleet.h"
 #include "attacks.h"
 
-void setup() {
-	srand(time(0));
-}
-
 
 int main(int argc, char * argv[]) {
-	setup();
+	srand(time(0));
 	if (DEBUG_MODE) std::cout << "WARNING! DEBUG MODE ON! \n" << std::endl;
 	ship ship1("Enterprise", "Aircraft Carrier", 2);
 	//Создадим вектор флот
@@ -32,8 +28,10 @@ int main(int argc, char * argv[]) {
 	fleet_11.push_back({ "Flaffey4", "Small", 11 });
 	//Запихнем в вектор флот свои кораблики
 	Fleet fleet_1("Eagle Union", fleet_11);
+	fleet_1.SetSide(0);
 	//Создадим второй флот
 	Fleet fleet_2("Sakura Empire");
+	fleet_2.SetSide(1);
 	fleet_2.AddShipToFleet({ "Akagi", "Aircraft Carrier", 2 });
 	fleet_2.AddShipToFleet({ "SAKURA_NAME1", "Heavy Cruiser", 3 });
 	fleet_2.AddShipToFleet({ "SAKURA_NAME2", "Heavy Cruiser", 4 });
@@ -70,11 +68,6 @@ int main(int argc, char * argv[]) {
 	fleet_4.Read(std::cin);
 	fleet_4.Print(std::cout);*/
 
-	fleet_1.GetShipByIndex(0).DmgtoInd(3, 3);
-
-	fleet_1.Print(std::cout);
-
-
 
 
 
@@ -89,8 +82,8 @@ int main(int argc, char * argv[]) {
 	if (DEBUG_MODE) { std::cout << "\nShips count: " << ship1.GetCount() << std::endl << std::endl; }
 
 	////Generate here
-	for (int i = 0; i < 10; i++) {
-		Generate_ship(fleet_2.GetShipByIndex(i), 0);
+	for (int i = 0; i < 1; i++) {
+		Generate_ship(fleet_1.GetShipByIndex(i), 0);
 	}
 	///////////////
 	
@@ -109,18 +102,22 @@ int main(int argc, char * argv[]) {
 	/////////////////////////
 
 	std::cout << std::endl << std::endl;
+	//Output_Field_Final(0);
+	std::cout << std::endl << std::endl;
+	//Output_Field_Final(1);
+
+	////Changing durability
+	//fleet_1.GetShipByIndex(0).SetDurability({ fleet_1.GetShipByIndex(0).GetDurability()[0], fleet_1.GetShipByIndex(0).GetDurability()[1] - 2, fleet_1.GetShipByIndex(0).GetDurability()[2] - 2, fleet_1.GetShipByIndex(0).GetDurability()[3] });
+	//Field_Refresh_Durability(fleet_1.GetShipByID(0), 0); //Must have after any damage
+
+	//Damage
+	Simple_Attack(fleet_1, 5, 5, 2);
+	//fleet_1.GetShipByIndex(0).DmgtoInd(2, 3);
+	////////
+
 	Output_Field_Final(0);
 	std::cout << std::endl << std::endl;
 	Output_Field_Final(1);
-
-	////Changing durability
-	fleet_1.GetShipByIndex(0).SetDurability({ fleet_1.GetShipByIndex(0).GetDurability()[0], fleet_1.GetShipByIndex(0).GetDurability()[1] - 2, fleet_1.GetShipByIndex(0).GetDurability()[2] - 2, fleet_1.GetShipByIndex(0).GetDurability()[3] });
-
-	Field_Refresh_Durability(fleet_1.GetShipByIndex(0), 0); //Must have after any damage
-
-	Output_Field_Final(0);
-	//std::cout << std::endl << std::endl;
-	//Output_Field_Final(1);
 
 	return 0;
 }

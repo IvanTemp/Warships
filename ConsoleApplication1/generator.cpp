@@ -116,12 +116,11 @@ void Generate_ship(ship sheep, bool side) {
 	std::map <std::string, int> TypeToLength = { {"Aircraft Carrier", 4}, {"Heavy Cruiser", 3}, {"Tsundere", 2}, {"Small", 1} };
 	bool stop = false, breaksIn = true, kostil = true;
 	int x = 0, y = 0, rotation = 0, length = TypeToLength[sheep.GetType()], ID = sheep.GetID();
-	unsigned int durability = sheep.GetDurability()[0];
 	while (!stop) {
 		x = -1 + rand() % width_height + 1; y = -1 + rand() % width_height + 1, rotation = - 1 + rand() % 4 + 1;
-		//TEST YOUR OUTPUT HERE // rotation: 0 - North, 1 - East, 2 - South - 3 - West
-		//x = 9; y = 9; rotation = 0;
-		if (DEBUG_MODE) std::cout << "Trying to: x = " << x << "; y = " << y << "; rotation = " << rotation << "; ID: " << ID << "; Length: " << length << "; Default durability: " << durability << std::endl; //TEST
+		//TEST YOUR OUTPUT HERE //rotation: 0 - North, 1 - East, 2 - South - 3 - West
+		x = 5; y = 5;// rotation = 0;
+		if (DEBUG_MODE) std::cout << "Trying to: x = " << x << "; y = " << y << "; rotation = " << rotation << "; ID: " << ID << "; Length: " << length << "; Default durability: " << sheep.GetDurability()[0] << std::endl; //TEST
 
 		std::map <int, int> optimization_map = { {0, -1}, {1, 1}, {2, 1}, {3, -1} };
 		int OT = optimization_map[rotation];
@@ -145,7 +144,7 @@ void Generate_ship(ship sheep, bool side) {
 					if (leftIsClear) { if (Field_ID[side][x - 1][y + counter * OT].first == 0) { Field_ID[side][x - 1][y + counter * OT].first = 1; } }
 					Field_ID[side][x][y + counter * OT].first = ID;
 					Field_ID[side][x][y + counter * OT].second = counter;
-					Field_Durability[side][x][y + counter * OT] = durability;
+					Field_Durability[side][x][y + counter * OT] = sheep.GetDurability()[counter];
 					if (rightIsClear) { if (Field_ID[side][x + 1][y + counter * OT].first == 0) { Field_ID[side][x + 1][y + counter * OT].first = 1; } }
 				}
 				OT > 0 ? breaksIn = downIsClear : breaksIn = upIsClear;
@@ -174,7 +173,7 @@ void Generate_ship(ship sheep, bool side) {
 					if (upIsClear) { if (Field_ID[side][x + counter * OT][y - 1].first == 0) { Field_ID[side][x + counter * OT][y - 1].first = 1; } }
 					Field_ID[side][x + counter * OT][y].first = ID;
 					Field_ID[side][x + counter * OT][y].second = counter;
-					Field_Durability[side][x + counter * OT][y] = durability;
+					Field_Durability[side][x + counter * OT][y] = sheep.GetDurability()[counter];
 					if (downIsClear) { if (Field_ID[side][x + counter * OT][y + 1].first == 0) { Field_ID[side][x + counter * OT][y + 1].first = 1; } }
 				}
 				OT > 0 ? breaksIn = rightIsClear : breaksIn = leftIsClear;
