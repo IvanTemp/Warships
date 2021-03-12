@@ -141,14 +141,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="attacks.cpp" />
     <ClCompile Include="fleet.cpp" />
     <ClCompile Include="generator.cpp" />
     <ClCompile Include="ship.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="attacks.h" />
     <ClInclude Include="fleet.h" />
     <ClInclude Include="generator.h" />
     <ClInclude Include="ship.h" />

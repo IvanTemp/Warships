@@ -126,7 +126,6 @@ void Fleet::DmgToInd(const int x, const int y, const int dmg)
 		int Index = ReturnFieldID(side, x, y) - 2;
 		int DurabtyIndex = ReturnFieldIndex(side, x, y);
 		fleet[Index].DmgtoInd(dmg, DurabtyIndex);
-		Field_Refresh_Durability(fleet[Index], side);
 		if (DEBUG_MODE)
 		{
 			std::cout << "Fleet: " << name;
@@ -137,7 +136,8 @@ void Fleet::DmgToInd(const int x, const int y, const int dmg)
 			}
 			std::cout << std::endl;
 		}
-		Field_Refresh_Durability(side);
+		Field_Get_Vision(x, y, !side);
+		Field_Refresh_Durability(fleet, side);
 	}
 }
 

@@ -6,7 +6,6 @@
 #include "ship.h"
 #include "generator.h"
 #include "fleet.h"
-//#include "attacks.h"
 
 
 int main(int argc, char * argv[]) {
@@ -54,15 +53,24 @@ int main(int argc, char * argv[]) {
 
 
 
-	/*								“ут начинаетс€ наш курсовик (морской бой)				*/
+	/*					“ут заканчиваетс€ наша перва€ лабораторна€ работа					*/
 	if (DEBUG_MODE) { std::cout << "Ships count: " << ship1.GetCount() << std::endl << std::endl; }
 
 	////Generate here
-	for (int i = 0; i < fleet_1.GetFleet().size(); i++) {
-		Generate_ship(fleet_1.GetShipByIndex(i), fleet_1.GetSide());
-	}
+	//for (int i = 0; i < fleet_1.GetFleet().size(); i++) {
+		//Generate_ship(fleet_1.GetShipByIndex(i), fleet_1.GetSide());
+	//}
+
+	//for (int i = 0; i < fleet_2.GetFleet().size(); i++) {
+		Generate_ship(fleet_2.GetShipByIndex(0), fleet_2.GetSide());
+	//}
 	///////////////
 	
+	//Print in console
+	fleet_1.Print(std::cout);
+	fleet_2.Print(std::cout);
+	//////////////////
+
 	//DEBUG FUNCTIONS
 	Output_Field_ID_Indexes(0);
 	Output_Field_Durability(0);
@@ -77,19 +85,32 @@ int main(int argc, char * argv[]) {
 	Initialize_Field_Final(1);
 	/////////////////////////
 
-	std::cout << std::endl << std::endl;
-	//Output_Field_Final(0);
-	std::cout << std::endl << std::endl;
-	//Output_Field_Final(1);
+	//DAMAGE TEST
+	if (DEBUG_MODE) {
+		Output_Field_Final(0, 0);
+		std::cout << std::endl << std::endl;
+		Output_Field_Final(1, 1);
 
+		fleet_2.DmgToInd(5, 5, 3);
+		fleet_2.Print(std::cout);
 
-	Output_Field_Final(0);
-	std::cout << std::endl << std::endl;
-	Output_Field_Final(1);
+		std::cout << std::endl;
+		Output_Field_Final(0, 0);
+		std::cout << std::endl << std::endl;
+		Output_Field_Final(1, 1);
+	}
+	/////////////
 
-	fleet_1.DmgToInd(5, 5, 3);
-	fleet_1.Print(std::cout);
+	//FOG OF WAR TEST
+	if (DEBUG_MODE) {
+		std::cout << "FOR PLAYER: " << std::endl;
+		Output_Field_Final(0, 0);
+		Output_Field_Final(1, 0);
 
+		std::cout << "FOR BOT: " << std::endl;
+		Output_Field_Final(0, 1);
+		Output_Field_Final(1, 1);
+	}
 
 	return 0;
 }

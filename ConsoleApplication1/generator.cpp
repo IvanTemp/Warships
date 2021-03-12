@@ -12,47 +12,55 @@ std::pair<unsigned int, unsigned int> Field_ID[2][width_height][width_height] = 
 bool Field_War[2][width_height][width_height] = { 0, 0, 0 }; //The field with fog of war
 unsigned int Field_Durability[2][width_height][width_height] = { 0, 0, 0 }; //The field with durability
 
-unsigned int ReturnFieldID(bool side, int x, int y)
+unsigned int ReturnFieldID(const bool side, int x, int y)
 {
 	return Field_ID[side][x][y].first;
 }
 
-unsigned int ReturnFieldIndex(bool side, int x, int y)
+unsigned int ReturnFieldIndex(const bool side, int x, int y)
 {
 	return Field_ID[side][x][y].second;
 }
 
-void Initialize_Field_Final(bool side) {
+void Initialize_Field_Final(const bool side) {
 	for (unsigned int y = 0; y < width_height; y++) {
 		for (unsigned int x = 0; x < width_height; x++) {
-			if (!side || DEBUG_MODE) {
-				if (Field_ID[side][x][y].first > 1) {
-					Field_Final[side][x][y] = std::to_string(Field_Durability[side][x][y]);
-				}
-				else {
-					Field_Final[side][x][y] = design["Clear"];
+			if (Field_ID[side][x][y].first > 1) {
+				Field_Final[side][x][y] = std::to_string(Field_Durability[side][x][y]);
+			}
+			else {
+				Field_Final[side][x][y] = design["Clear"];
+			}
+		}
+	}
+}
+
+void Output_Field_Final(const bool side, const bool for_whom) {
+	std::cout << "Final[" << side << "] for [" << for_whom << "]: \n\n";
+			if (side != for_whom) {
+				for (unsigned int y = 0; y < width_height; y++) {
+					std::cout << "         |";
+					for (unsigned int x = 0; x < width_height; x++) {
+						if (Field_War[side][x][y]) { std::cout << Field_Final[side][x][y] << "|"; }
+						else { std::cout << design["Unknown"] << "|"; }
+					}
+					std::cout << std::endl;
 				}
 			}
 			else {
-				Field_Final[side][x][y] = design["Unknown"];
+				for (unsigned int y = 0; y < width_height; y++) {
+					std::cout << "         |";
+					for (unsigned int x = 0; x < width_height; x++) {
+						std::cout << Field_Final[side][x][y] << "|";
+					}
+					std::cout << std::endl;
+
+				}
 			}
-		}
-	}
+			std::cout << std::endl;
 }
 
-void Output_Field_Final(bool side) {
-	std::cout << "Final[" << side << "] \n\n";
-	for (unsigned int y = 0; y < width_height; y++) {
-		std::cout << "         |";
-		for (unsigned int x = 0; x < width_height; x++) {
-			std::cout << Field_Final[side][x][y] << "|";
-		}
-		std::cout << std::endl;
-	}
-	std::cout << std::endl;
-}
-
-void Output_Field_ID_Indexes(bool side) {
+void Output_Field_ID_Indexes(const bool side) {
 	if (DEBUG_MODE) {
 		std::cout << "ID[" << side << "](NOT FOR USER): \n\n";
 		for (unsigned int y = 0; y < width_height; y++) {
@@ -75,7 +83,7 @@ void Output_Field_ID_Indexes(bool side) {
 	}
 }
 
-void Output_Field_War(bool side) {
+void Output_Field_War(const bool side) {
 	if (DEBUG_MODE) {
 		std::cout << "War[" << side << "](NOT FOR USER): \n\n";
 		for (unsigned int y = 0; y < width_height; y++) {
@@ -89,7 +97,7 @@ void Output_Field_War(bool side) {
 	}
 }
 
-void Output_Field_Durability(bool side) {
+void Output_Field_Durability(const bool side) {
 	if (DEBUG_MODE) {
 		std::cout << "Durability[" << side << "](NOT FOR USER): \n\n";
 		for (unsigned int y = 0; y < width_height; y++) {
@@ -103,14 +111,17 @@ void Output_Field_Durability(bool side) {
 	}
 }
 
-void Field_Refresh_Durability(ship shop, bool side) {
+void Field_Refresh_Durability(std::vector<ship> fleet, const bool side) {
 	for (unsigned int y = 0; y < width_height; y++) {
 		for (unsigned int x = 0; x < width_height; x++) {
-			if (Field_ID[side][x][y].first == shop.GetID()) { Field_Durability[side][x][y] = shop.GetDurability()[Field_ID[side][x][y].second]; }
+			std::cout << x << " " << y << " " << Field_ID[side][x][y].second << " " << Field_ID[side][x][y].first - 2 << std::endl;
+			if (Field_ID[side][x][y].first > 1) { Field_Durability[side][x][y] = fleet[Field_ID[side][x][y].first - 2].GetDurability()[Field_ID[side][x][y].second]; }
 		}
 	}
 	Initialize_Field_Final(side);
 }
+
+void Field_Get_Vision(const int x, const int y, const bool side) { Field_War[side][x][y] = 1; }
 
 void Generate_ship(ship sheep, bool side) {
 	std::map <std::string, int> TypeToLength = { {"Aircraft Carrier", 4}, {"Heavy Cruiser", 3}, {"Tsundere", 2}, {"Small", 1} };
@@ -119,8 +130,8 @@ void Generate_ship(ship sheep, bool side) {
 	while (!stop) {
 		x = -1 + rand() % width_height + 1; y = -1 + rand() % width_height + 1, rotation = - 1 + rand() % 4 + 1;
 		//TEST YOUR OUTPUT HERE //rotation: 0 - North, 1 - East, 2 - South - 3 - West
-		//x = 5; y = 5;// rotation = 0;
-		if (DEBUG_MODE) std::cout << "Trying to: x = " << x << "; y = " << y << "; rotation = " << rotation << "; ID: " << ID << "; Length: " << length << "; Default durability: " << sheep.GetDurability()[0] << std::endl; //TEST
+		x = 5; y = 5; rotation = 0;
+		if (DEBUG_MODE) std::cout << "Trying to: x = " << x << "; y = " << y << "; rotation = " << rotation << "; ID: " << ID << "; Length: " << length << "; Default durability: " << sheep.GetDurability()[0] << "; Status: ";
 
 		std::map <int, int> optimization_map = { {0, -1}, {1, 1}, {2, 1}, {3, -1} };
 		int OT = optimization_map[rotation];
@@ -153,6 +164,7 @@ void Generate_ship(ship sheep, bool side) {
 					if (Field_ID[side][x][y + length * OT].first == 0) { Field_ID[side][x][y + length * OT].first = 1; }
 					if (rightIsClear) { if (Field_ID[side][x + 1][y + length * OT].first == 0) { Field_ID[side][x + 1][y + length * OT].first = 1; } }
 				}
+				if (DEBUG_MODE) { std::cout << "Successfully!" << std::endl; }
 				stop = true;
 			}
 		}
@@ -182,8 +194,10 @@ void Generate_ship(ship sheep, bool side) {
 					if (Field_ID[side][x + length * OT][y].first == 0) { Field_ID[side][x + length * OT][y].first = 1; }
 					if (upIsClear) { if (Field_ID[side][x + length * OT][y - 1].first == 0) { Field_ID[side][x + length * OT][y - 1].first = 1; } }
 				}
+				if (DEBUG_MODE) { std::cout << "Successfully!" << std::endl; }
 				stop = true;
 			}
 		}
+		if (DEBUG_MODE && !stop) { std::cout << "Failed!" << std::endl; }
 	}
 }
