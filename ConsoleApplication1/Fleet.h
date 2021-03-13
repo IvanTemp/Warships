@@ -18,6 +18,7 @@ public:
 	bool GetSide() const;
 	ship GetShipByIndex(const int ID)const;
 	void DmgToInd(const int x, const int y, const int dmg);
+	void ConsDmgToInd();
 
 private:
 	static int count;

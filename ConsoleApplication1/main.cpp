@@ -116,5 +116,32 @@ int main(int argc, char * argv[]) {
 		Output_Field_Final(1, 1);
 	}
 	/////////////////
+
+
+
+
+	//ѕросит из консоли по 3 числа (x, y, dmg) x,y начинаютс€ с 0!
+	fleet_1.ConsDmgToInd();
+	fleet_1.ConsDmgToInd();
+	fleet_1.ConsDmgToInd();
+	fleet_1.ConsDmgToInd();
+	fleet_1.ConsDmgToInd();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	return 0;
 }

@@ -141,4 +141,33 @@ void Fleet::DmgToInd(const int x, const int y, const int dmg)
 	}
 }
 
+void Fleet::ConsDmgToInd()
+{
+	int x = 0, y = 0, dmg = 0;
+	std::cin >> x >> y >> dmg;
+	if (ReturnFieldID(side, x, y) > 1)
+	{
+		int Index = ReturnFieldID(side, x, y) - 2;
+		int DurabtyIndex = ReturnFieldIndex(side, x, y);
+		fleet[Index].DmgtoInd(dmg, DurabtyIndex);
+		if (DEBUG_MODE)
+		{
+			std::cout << "Fleet: " << name;
+			std::cout << "Ship name: " << fleet[Index].GetName();
+			std::cout << "; new durability =";
+			for (int i = 0; i < fleet[Index].GetDurability().size(); i++)
+			{
+				std::cout << " " << fleet[Index].GetDurability()[i];
+			}
+			std::cout << std::endl;
+		}
+		Field_Get_Vision(x, y, !side);
+		Field_Refresh_Durability(fleet, side);
+	}
+	else
+	{
+		std::cout << "Miss! X = " << x << "; Y = "<< y << std::endl;
+	}
+}
+
 
