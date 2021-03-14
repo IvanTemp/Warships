@@ -130,7 +130,7 @@ int main(int argc, char * argv[]) {
 	std::cout << "Start game?   ";
 	system("pause");
 	system("cls");
-	while (fleet_1.GetHealth() or fleet_2.GetHealth())
+	while (fleet_1.GetHealth() and fleet_2.GetHealth())
 	{
 		//Смена хода
 		std::cout << fleet_1.GetName() << " turn" << std::endl;
