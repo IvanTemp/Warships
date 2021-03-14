@@ -61,6 +61,19 @@ std::vector<ship> Fleet::GetFleet() const
 	return fleet;
 }
 
+unsigned int Fleet::GetHealth() const
+{
+	unsigned int hp = 0;
+	for (int i = 0; i < fleet.size(); i++)
+	{
+		for (int j = 0; j < fleet[0].GetDurability().size(); j++)
+		{
+			hp += fleet[0].GetDurability()[j];
+		}
+	}
+	return hp;
+}
+
 bool Fleet::AddShipToFleet(const ship& shp)
 {
 	for (int i = 0; i < fleet.size(); i++)
@@ -137,7 +150,6 @@ void Fleet::DmgToInd(const int x, const int y, const int dmg)
 			std::cout << std::endl;
 		}
 		Field_Get_Vision(x, y, !side);
-		Field_Refresh_Durability(fleet, side);
 	}
 }
 
@@ -145,13 +157,13 @@ void Fleet::ConsDmgToInd()
 {
 	int x = 0, y = 0, dmg = 0;
 	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	char stry;
-	std::cin >> x >> stry >> dmg;
+	char strx;
+	std::cin >> dmg >> strx >> y;
 	for (int i = 0; i < alf.size(); i++)
 	{
-		if (alf[i] == stry)
+		if (alf[i] == strx)
 		{
-			y = i;
+			x = i;
 			break;
 		}
 	}
@@ -160,6 +172,7 @@ void Fleet::ConsDmgToInd()
 		int Index = ReturnFieldID(side, x, y) - 2;
 		int DurabtyIndex = ReturnFieldIndex(side, x, y);
 		fleet[Index].DmgtoInd(dmg, DurabtyIndex);
+		std::cout << "Nice shot" << std::endl;
 		if (DEBUG_MODE)
 		{
 			std::cout << "Fleet: " << name;
@@ -171,13 +184,12 @@ void Fleet::ConsDmgToInd()
 			}
 			std::cout << std::endl;
 		}
-		Field_Get_Vision(x, y, !side);
-		Field_Refresh_Durability(fleet, side);
 	}
 	else
 	{
-		std::cout << "Miss! X = " << x << "; Y = "<< y << std::endl;
+		std::cout << "Miss! X = " << strx << "; Y = "<< y << std::endl;
 	}
+	Field_Get_Vision(x, y, side);
 }
 
 

@@ -19,6 +19,8 @@ void Output_Field_Durability(bool side);
 
 void Field_Refresh_Durability(std::vector<ship> fleet, bool side);
 
+void Persi_Field_Refresh_Durability(Fleet fleet);
+
 void Field_Get_Vision(const int x, const int y, const bool side);
 
 void Generate_ship(ship sheep, bool side);

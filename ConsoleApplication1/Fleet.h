@@ -13,6 +13,7 @@ public:
 	void SetName(int index, const std::string name);
 	std::string GetName()const;
 	std::vector<ship> GetFleet()const;
+	unsigned int GetHealth()const;
 	bool AddShipToFleet(const ship& ship);
 	bool RemoveShipFromFleet(const ship& ship);
 	bool GetSide() const;

@@ -89,14 +89,7 @@ void Persi_Output_Field_Final(const bool side)
 		std::cout << "\t" << y << "||";
 		for (unsigned int x = 0; x < width_height; x++)
 		{
-			if (Field_War[side][x][y])
-			{
-				std::cout << Field_Final[side][x][y] << "|";
-			}
-			else
-			{
-				std::cout << design["Clear"] << "|";
-			}
+			std::cout << Field_Final[side][x][y] << "|";
 		}
 		std::cout << "\t" << y << "||";
 		for (unsigned int x = 0; x < width_height; x++)
@@ -109,17 +102,6 @@ void Persi_Output_Field_Final(const bool side)
 			{
 				std::cout << design["Unknown"] << "|";
 			}
-		}
-		std::cout << std::endl;
-	}
-	std::cout << std::endl;
-
-
-	for (unsigned int i = 0; i < width_height; i++)
-	{
-		for (unsigned int j = 0; j < width_height; j++)
-		{
-			std::cout << Field_Final[1][i][j];
 		}
 		std::cout << std::endl;
 	}
@@ -185,6 +167,21 @@ void Field_Refresh_Durability(std::vector<ship> fleet, const bool side) {
 		}
 	}
 	Initialize_Field_Final(side);
+}
+
+void Persi_Field_Refresh_Durability(Fleet flet)
+{
+	for (unsigned int y = 0; y < width_height; y++)
+	{
+		for (unsigned int x = 0; x < width_height; x++)
+		{
+			if (Field_ID[flet.GetSide()][x][y].first > 1)
+			{
+				Field_Durability[flet.GetSide()][x][y] = flet.GetFleet()[Field_ID[flet.GetSide()][x][y].first - 2].GetDurability()[Field_ID[flet.GetSide()][x][y].second];
+			}
+		}
+	}
+	Initialize_Field_Final(flet.GetSide());
 }
 
 void Field_Get_Vision(const int x, const int y, const bool side) { Field_War[side][x][y] = 1; }
@@ -267,3 +264,6 @@ void Generate_ship(ship sheep, bool side) {
 		if (DEBUG_MODE && !stop) { std::cout << "Failed!" << std::endl; }
 	}
 }
+
+
+

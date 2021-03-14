@@ -30,8 +30,8 @@ int main(int argc, char * argv[]) {
 	fleet_11.push_back({ "Flaffey2", "Small", 9 });
 	fleet_11.push_back({ "Flaffey3", "Small", 10 });
 	fleet_11.push_back({ "Flaffey4", "Small", 11 });
-	Fleet fleet_1("Eagle Union", fleet_11);
 	//Запихнем флот в класс
+	Fleet fleet_1("Eagle Union", fleet_11);
 	//Считаем флот из файла input.txt (имена в параметрах проекта)
 	Fleet fleet_2;
 	if (argc > 2)
@@ -52,14 +52,19 @@ int main(int argc, char * argv[]) {
 	/*Fleet fleet_4;
 	fleet_4.Read(std::cin);
 	fleet_4.Print(std::cout);*/
+	//Выведем количество кораблей (по факту это количество вызовов конструктора... поэтому можно вызывать у любого корабля и плюс, и минус)
+	std::cout << "Ships count: " << ship1.GetCount() << std::endl << std::endl; //(Для Алексея)Да, это надо в лабу!
 
-	//Ванины тесты
-	std::cout << "=========================================" << std::endl;
-	Persi_Output_Field_Final(1);
 
-	std::cout << "=========================================" << std::endl;
+
 	/*				Тут заканчивается наша первая лабораторная работа(по словам Вани)				*/
-	if (DEBUG_MODE) { std::cout << "Ships count: " << ship1.GetCount() << std::endl << std::endl; }
+	
+	if (DEBUG_MODE) 
+	{
+		fleet_1.Print(std::cout);
+		fleet_2.Print(std::cout);
+		std::cout << "Ships count: " << ship1.GetCount() << std::endl;
+	}
 
 	//Generate here
 	for (int i = 0; i < fleet_1.GetFleet().size(); i++) {
@@ -70,20 +75,17 @@ int main(int argc, char * argv[]) {
 		Generate_ship(fleet_2.GetShipByIndex(i), fleet_2.GetSide());
 	}
 	///////////////
-	
-	//Print in console
-	fleet_1.Print(std::cout);
-	fleet_2.Print(std::cout);
-	std::cout << std::endl;
-	//////////////////
 
 	//DEBUG FUNCTIONS
-	Output_Field_ID_Indexes(0);
-	Output_Field_Durability(0);
-	Output_Field_War(0);
-	Output_Field_ID_Indexes(1);
-	Output_Field_Durability(1);
-	Output_Field_War(1);
+	if (DEBUG_MODE)
+	{
+		Output_Field_ID_Indexes(0);
+		Output_Field_Durability(0);
+		Output_Field_War(0);
+		Output_Field_ID_Indexes(1);
+		Output_Field_Durability(1);
+		Output_Field_War(1);
+	}
 	/////////////////
 
 	////INITIALISATION FIELDS
@@ -92,7 +94,7 @@ int main(int argc, char * argv[]) {
 	/////////////////////////
 
 	//DAMAGE TEST
-	if (DEBUG_MODE) {
+	/*if (DEBUG_MODE) {
 		std::cout << "DAMAGE TEST:" << std::endl << std::endl;
 		std::cout << "Before attack in 5 5:" << std::endl << std::endl;
 		Output_Field_Final(0, 0);
@@ -106,7 +108,7 @@ int main(int argc, char * argv[]) {
 		Output_Field_Final(0, 0);
 		std::cout << std::endl << std::endl;
 		Output_Field_Final(1, 1);
-	}
+	}*/
 	/////////////
 
 	//FOG OF WAR TEST
@@ -125,6 +127,37 @@ int main(int argc, char * argv[]) {
 	Output_Field_Final(0, 0);
 	Output_Field_Final(1, 0);
 
-	
+	//Начинается цикл игры
+	std::cout << "Start game?   ";
+	system("pause");
+	system("cls");
+	while (fleet_1.GetHealth() or fleet_2.GetHealth())
+	{
+		//Смена хода
+		std::cout << fleet_1.GetName() << " turn" << std::endl;
+		system("pause");
+		system("cls");
+		//Вывод поля игрока 0
+		Persi_Output_Field_Final(0);
+		//Выстрел игрока 0
+		std::cout << "Your turn is? (Damage X Y) ";
+		fleet_2.ConsDmgToInd();
+		Persi_Field_Refresh_Durability(fleet_2);
+		system("pause");
+		system("cls");
+		//Смена хода
+		std::cout << fleet_2.GetName() << " turn " << std::endl;
+		system("pause");
+		system("cls");
+		//Вывод поля игрока 1
+		Persi_Output_Field_Final(1);
+		//Выстрел игрока 1
+		std::cout << "Your turn is? (Damage X Y) ";
+		fleet_1.ConsDmgToInd();
+		Persi_Field_Refresh_Durability(fleet_1);
+		system("pause");
+		system("cls");
+	}
+	std::cout << "Someone won";
 	return 0;
 }
