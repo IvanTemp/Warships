@@ -36,10 +36,18 @@ void Initialize_Field_Final(const bool side) {
 }
 
 void Output_Field_Final(const bool side, const bool for_whom) {
-	std::cout << "Final[" << side << "] for [" << for_whom << "]: \n\n";
+	std::cout << "Final[" << side << "]";
+	if (DEBUG_MODE) { std::cout << " for [" << for_whom << "]"; }
+	std::cout << ": \n\n";
+	std::cout << "          ||";
+	std::string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	for (unsigned int x = 0; x < width_height; x++) {
+		std::cout << letters[x] << "|";
+	}
+	std::cout << std::endl;
 			if (side != for_whom) {
 				for (unsigned int y = 0; y < width_height; y++) {
-					std::cout << "         |";
+					std::cout << "         " << y << "||";
 					for (unsigned int x = 0; x < width_height; x++) {
 						if (Field_War[side][x][y]) { std::cout << Field_Final[side][x][y] << "|"; }
 						else { std::cout << design["Unknown"] << "|"; }
@@ -49,7 +57,7 @@ void Output_Field_Final(const bool side, const bool for_whom) {
 			}
 			else {
 				for (unsigned int y = 0; y < width_height; y++) {
-					std::cout << "         |";
+					std::cout << "         " << y << "||";
 					for (unsigned int x = 0; x < width_height; x++) {
 						std::cout << Field_Final[side][x][y] << "|";
 					}

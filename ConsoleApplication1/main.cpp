@@ -9,9 +9,11 @@
 
 
 int main(int argc, char * argv[]) {
-	srand(time(0));
-	if (DEBUG_MODE) std::cout << "WARNING! DEBUG MODE ON! \n" << std::endl;
+	std::cout << "This is a alpha build! Most of the implemented features will be enabled only after enabling DEBUG_MODE in ship.h!" << std::endl << std::endl;
 
+	srand(time(0));
+
+	if (DEBUG_MODE) std::cout << "WARNING! DEBUG MODE ON! \n" << std::endl;
 
 	ship ship1("Enterprise", "Aircraft Carrier", 2);
 	//Создадим вектор флот
@@ -69,6 +71,7 @@ int main(int argc, char * argv[]) {
 	//Print in console
 	fleet_1.Print(std::cout);
 	fleet_2.Print(std::cout);
+	std::cout << std::endl;
 	//////////////////
 
 	//DEBUG FUNCTIONS
@@ -117,31 +120,7 @@ int main(int argc, char * argv[]) {
 	}
 	/////////////////
 
-
-
-
-	//Просит из консоли по 3 числа (x, y, dmg) x,y начинаются с 0!
-	fleet_1.ConsDmgToInd();
-	fleet_1.ConsDmgToInd();
-	fleet_1.ConsDmgToInd();
-	fleet_1.ConsDmgToInd();
-	fleet_1.ConsDmgToInd();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	Output_Field_Final(0, 0);
+	Output_Field_Final(1, 0);
 	return 0;
 }
