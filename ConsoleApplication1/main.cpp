@@ -9,7 +9,7 @@
 
 
 int main(int argc, char * argv[]) {
-	std::cout << "This is a alpha build! Most of the implemented features will be enabled only after enabling DEBUG_MODE in ship.h!" << std::endl << std::endl;
+	std::cout << "This is a alpha build! Most of the implemented features will be enabled only after enabling DEBUG_MODE in ship.h!\n\n";
 
 	srand(time(0));
 
@@ -53,8 +53,11 @@ int main(int argc, char * argv[]) {
 	fleet_4.Read(std::cin);
 	fleet_4.Print(std::cout);*/
 
+	//Ванины тесты
+	std::cout << "=========================================" << std::endl;
+	Persi_Output_Field_Final(1);
 
-
+	std::cout << "=========================================" << std::endl;
 	/*				Тут заканчивается наша первая лабораторная работа(по словам Вани)				*/
 	if (DEBUG_MODE) { std::cout << "Ships count: " << ship1.GetCount() << std::endl << std::endl; }
 
@@ -97,7 +100,6 @@ int main(int argc, char * argv[]) {
 		Output_Field_Final(1, 1);
 
 		fleet_2.DmgToInd(5, 5, 3);
-		fleet_2.Print(std::cout);
 
 		std::cout << "After attack in 5 5:" << std::endl << std::endl;
 		std::cout << std::endl;
@@ -122,5 +124,7 @@ int main(int argc, char * argv[]) {
 
 	Output_Field_Final(0, 0);
 	Output_Field_Final(1, 0);
+
+	
 	return 0;
 }

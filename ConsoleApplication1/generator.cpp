@@ -68,6 +68,64 @@ void Output_Field_Final(const bool side, const bool for_whom) {
 			std::cout << std::endl;
 }
 
+void Persi_Output_Field_Final(const bool side)
+{
+	std::string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	std::map<int, std::string> sidetoname = { { 0, "Eagle Union" }, {1, "Sakura Empire"} };
+	std::cout << "Side: " << sidetoname[side] << std::endl;
+	std::cout << "\t ||";
+	for (unsigned int x = 0; x < width_height; x++) 
+	{
+		std::cout << letters[x] << "|";
+	}
+	std::cout << "\t   ";
+	for (unsigned int x = 0; x < width_height; x++) 
+	{
+		std::cout << letters[x] << "|";
+	}
+	std::cout << std::endl;
+	for (unsigned int y = 0; y < width_height; y++)
+	{
+		std::cout << "\t" << y << "||";
+		for (unsigned int x = 0; x < width_height; x++)
+		{
+			if (Field_War[side][x][y])
+			{
+				std::cout << Field_Final[side][x][y] << "|";
+			}
+			else
+			{
+				std::cout << design["Clear"] << "|";
+			}
+		}
+		std::cout << "\t" << y << "||";
+		for (unsigned int x = 0; x < width_height; x++)
+		{
+			if (Field_War[!side][x][y])
+			{
+				std::cout << Field_Final[!side][x][y] << "|";
+			}
+			else
+			{
+				std::cout << design["Unknown"] << "|";
+			}
+		}
+		std::cout << std::endl;
+	}
+	std::cout << std::endl;
+
+
+	for (unsigned int i = 0; i < width_height; i++)
+	{
+		for (unsigned int j = 0; j < width_height; j++)
+		{
+			std::cout << Field_Final[1][i][j];
+		}
+		std::cout << std::endl;
+	}
+	std::cout << std::endl;
+}
+
 void Output_Field_ID_Indexes(const bool side) {
 	if (DEBUG_MODE) {
 		std::cout << "ID[" << side << "](NOT FOR USER): \n\n";

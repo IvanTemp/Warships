@@ -144,7 +144,17 @@ void Fleet::DmgToInd(const int x, const int y, const int dmg)
 void Fleet::ConsDmgToInd()
 {
 	int x = 0, y = 0, dmg = 0;
-	std::cin >> x >> y >> dmg;
+	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	char stry;
+	std::cin >> x >> stry >> dmg;
+	for (int i = 0; i < alf.size(); i++)
+	{
+		if (alf[i] == stry)
+		{
+			y = i;
+			break;
+		}
+	}
 	if (ReturnFieldID(side, x, y) > 1)
 	{
 		int Index = ReturnFieldID(side, x, y) - 2;
