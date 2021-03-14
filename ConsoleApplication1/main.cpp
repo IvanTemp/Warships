@@ -53,7 +53,7 @@ int main(int argc, char * argv[]) {
 	fleet_4.Read(std::cin);
 	fleet_4.Print(std::cout);*/
 	//Выведем количество кораблей (по факту это количество вызовов конструктора... поэтому можно вызывать у любого корабля и плюс, и минус)
-	std::cout << "Ships count: " << ship1.GetCount() << std::endl << std::endl; //(Для Алексея)Да, это надо в лабу!
+	std::cout << "Ships count: " << ship1.GetCount() << std::endl << std::endl; //(Для Алексея)Да, это надо в лабу!(Для Вани)Эх, ну лааадно :(
 
 
 
@@ -63,7 +63,6 @@ int main(int argc, char * argv[]) {
 	{
 		fleet_1.Print(std::cout);
 		fleet_2.Print(std::cout);
-		std::cout << "Ships count: " << ship1.GetCount() << std::endl;
 	}
 
 	//Generate here
@@ -138,7 +137,7 @@ int main(int argc, char * argv[]) {
 		system("pause");
 		system("cls");
 		//Вывод поля игрока 0
-		Persi_Output_Field_Final(0);
+		Pepsi_Output_Field_Final(0);
 		//Выстрел игрока 0
 		std::cout << "Your turn is? (Damage X Y) ";
 		fleet_2.ConsDmgToInd();
@@ -150,7 +149,7 @@ int main(int argc, char * argv[]) {
 		system("pause");
 		system("cls");
 		//Вывод поля игрока 1
-		Persi_Output_Field_Final(1);
+		Pepsi_Output_Field_Final(1);
 		//Выстрел игрока 1
 		std::cout << "Your turn is? (Damage X Y) ";
 		fleet_1.ConsDmgToInd();

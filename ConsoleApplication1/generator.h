@@ -9,7 +9,7 @@ void Initialize_Field_Final(bool side);
 
 void Output_Field_Final(const bool side, const bool for_whom);
 
-void Persi_Output_Field_Final(const bool side);
+void Pepsi_Output_Field_Final(const bool side);
 
 void Output_Field_ID_Indexes(bool side);
 

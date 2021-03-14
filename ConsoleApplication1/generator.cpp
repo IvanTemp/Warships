@@ -68,11 +68,11 @@ void Output_Field_Final(const bool side, const bool for_whom) {
 			std::cout << std::endl;
 }
 
-void Persi_Output_Field_Final(const bool side)
+void Pepsi_Output_Field_Final(const bool side)
 {
 	std::string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	std::map<int, std::string> sidetoname = { { 0, "Eagle Union" }, {1, "Sakura Empire"} };
-	std::cout << "Side: " << sidetoname[side] << std::endl;
+	std::map<int, std::string> SideToName = { { 0, "Eagle Union" }, {1, "Sakura Empire"} };
+	std::cout << "Side: " << SideToName[side] << std::endl;
 	std::cout << "\t ||";
 	for (unsigned int x = 0; x < width_height; x++) 
 	{
