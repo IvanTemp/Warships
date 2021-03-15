@@ -149,8 +149,6 @@ void Fleet::ConsDmgToIndBot(const int dmg, const int difficulty) {
 		}
 	}
 
-	NUCLEAR_BOMB(side);
-
 	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ", strx = "";
 	strx = alf[x];
 
@@ -160,7 +158,7 @@ void Fleet::ConsDmgToIndBot(const int dmg, const int difficulty) {
 		int DurabtyIndex = ReturnFieldIndex(1, x, y);
 		int drbltSum = 0;
 		fleet[Index].DmgtoInd(dmg, DurabtyIndex);
-		std::cout << "The enemy hit your ship in " << strx << " " << y << std::endl;
+		std::cout << "The enemy hit your ship in " << strx << " " << y + 1 << std::endl;
 		if (ReturnFieldDurability(side, x, y) > 1) { BOTRoDC.push_back({ x, y }); } //Memorizing an unfinished cell
 		if (DEBUG_MODE) {
 			std::cout << "[DEBUG INFO]Fleet: " << name;
@@ -235,6 +233,12 @@ void Fleet::ConsDmgToIndPlayer(const int dmg)
 			std::cout << "Miss! X = " << strx << "; Y = " << y << std::endl;
 		}
 		Field_Get_Vision(x, y, side);
+	}
+}
+
+void Fleet::NUCLEAR_BOMB() {
+	for (int i = 0; i < fleet.size(); i++) {
+		fleet[i].NUCLEAR_BOMB();
 	}
 }
 

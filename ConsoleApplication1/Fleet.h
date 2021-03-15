@@ -20,6 +20,7 @@ public:
 	ship GetShipByIndex(const int ID)const;
 	void ConsDmgToIndBot(const int dmg, const int difficulty);
 	void ConsDmgToIndPlayer(const int dmg);
+	void NUCLEAR_BOMB();
 
 private:
 	static int count;

@@ -122,4 +122,10 @@ ship& ship::operator=(const ship& right)
     return *this;
 }
 
+void ship::NUCLEAR_BOMB() {
+    for (int i = 0; i < durability.size(); i++) {
+        durability[i] = 0;
+    }
+}
+
 

@@ -45,6 +45,7 @@ int main(int argc, char * argv[]) {
 	{
 		std::ifstream fin(argv[2]);
 		fleet_2.Read(fin);
+		std::cout << fleet_2.GetName() << " is loaded from file!" << std::endl << std::endl;
 		fin.close();
 	}
 	//Выведем их в файл output.txt (имена в параметрах проекта)
@@ -132,8 +133,8 @@ int main(int argc, char * argv[]) {
 
 	if (DEBUG_MODE) {
 		std::cout << "Game Fields:" << std::endl << std::endl;
-		Output_Field_Final(0, 0);
-		Output_Field_Final(1, 1);
+		Output_Field_Final(0);
+		Output_Field_Final(1);
 	}
 
 	//Начинается цикл игры
@@ -154,7 +155,7 @@ int main(int argc, char * argv[]) {
 				//Смена хода
 				std::cout << fleet_1.GetName() << " turn." << std::endl << std::endl;
 				//Вывод поля игрока 1
-				Pepsi_Output_Field_Final(0);
+				Output_Field_Final(0);
 				//Выстрел игрока 1
 				std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
 				fleet_2.ConsDmgToIndPlayer(2);
@@ -165,7 +166,7 @@ int main(int argc, char * argv[]) {
 				//Смена хода
 				std::cout << fleet_2.GetName() << " turn." << std::endl << std::endl;
 				//Вывод поля игрока 2
-				Pepsi_Output_Field_Final(1);
+				Output_Field_Final(1);
 				//Выстрел игрока 2
 				std::cout << "Order, commander! (Write X and Y coordinates): ";
 				fleet_1.ConsDmgToIndPlayer(2);
@@ -188,19 +189,19 @@ int main(int argc, char * argv[]) {
 				if (!difficulty) { //Normal difficulty
 					system("cls");
 					while (fleet_1.GetHealth() && fleet_2.GetHealth()) {
-						if (DEBUG_MODE) { std::cout << "[DEBUB INFO] fleet_1 Health = " << fleet_1.GetHealth() << "; fleet_2 Health = " << fleet_2.GetHealth() << std::endl; }
+						std::cout << "fleet_1 Health = " << fleet_1.GetHealth() << "; fleet_2 Health = " << fleet_2.GetHealth() << std::endl;
 						switch (first % 2) {
 							case 0:
 								//Смена хода
 								std::cout << fleet_1.GetName() << " turn." << std::endl << std::endl;
 								//Вывод поля для игрока 1
-								Pepsi_Output_Field_Final(0);
+								Output_Field_Final(0);
 								//Выстрел игрока 1
 								std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
 								fleet_2.ConsDmgToIndPlayer(2);
 								Field_Refresh_Durability_REFORGED(fleet_2);
 								system("pause");
-								system("cls");
+								if (!DEBUG_MODE) { system("cls"); }
 								first++;
 								break;
 							case 1:
@@ -210,7 +211,7 @@ int main(int argc, char * argv[]) {
 								fleet_1.ConsDmgToIndBot(2, difficulty);
 								Field_Refresh_Durability_REFORGED(fleet_1);
 								system("pause");
-								system("cls");
+								if (!DEBUG_MODE) { system("cls"); }
 								first++;
 								break;
 						}
@@ -229,7 +230,9 @@ int main(int argc, char * argv[]) {
 			system("pause");
 		}
 	}
-
-	std::cout << "Someone won";
+	if (fleet_1.GetHealth() > fleet_2.GetHealth()) { std::cout << fleet_1.GetName(); }
+	else if (fleet_1.GetHealth() < fleet_2.GetHealth()) { std::cout << fleet_2.GetName(); }
+	else { std::cout << "Friendship"; }
+	std::cout << " won";
 	return 0;
 }

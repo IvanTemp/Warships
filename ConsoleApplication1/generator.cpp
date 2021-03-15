@@ -10,14 +10,6 @@ std::pair<unsigned int, unsigned int> Field_ID[2][width_height][width_height] = 
 bool Field_War[2][width_height][width_height] = { 0, 0, 0 }; //The field with fog of war
 unsigned int Field_Durability[2][width_height][width_height] = { 0, 0, 0 }; //The field with durability
 
-void NUCLEAR_BOMB(const int side) { //Using for test of game over
-	for (unsigned int y = 0; y < width_height; y++) {
-		for (unsigned int x = 0; x < width_height; x++) {
-			Field_Durability[side][x][y] = 0;
-		}
-	}
-}
-
 unsigned int ReturnFieldID(const bool side, const int x, const int y)
 {
 	return Field_ID[side][x][y].first;
@@ -64,50 +56,16 @@ void Initialize_Field_Final(const bool side) {
 	}
 }
 
-void Output_Field_Final(const bool side, const bool for_whom) {
-	std::cout << "Final[" << side << "]";
-	if (DEBUG_MODE) { std::cout << " for [" << for_whom << "]"; }
-	std::cout << ": \n\n";
-	std::cout << "          ||";
-	std::string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	for (unsigned int x = 0; x < width_height; x++) {
-		std::cout << letters[x] << "|";
-	}
-	std::cout << std::endl;
-			if (side != for_whom) {
-				for (unsigned int y = 0; y < width_height; y++) {
-					std::cout << "         " << y << "||";
-					for (unsigned int x = 0; x < width_height; x++) {
-						if (Field_War[side][x][y]) { std::cout << Field_Final[side][x][y] << "|"; }
-						else { std::cout << "#" << "|"; }
-					}
-					std::cout << std::endl;
-				}
-			}
-			else {
-				for (unsigned int y = 0; y < width_height; y++) {
-					std::cout << "         " << y << "||";
-					for (unsigned int x = 0; x < width_height; x++) {
-						std::cout << Field_Final[side][x][y] << "|";
-					}
-					std::cout << std::endl;
-
-				}
-			}
-			std::cout << std::endl;
-}
-
-void Pepsi_Output_Field_Final(const bool side)
-{
+void Output_Field_Final(const bool side) {
 	std::string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	std::map<int, std::string> SideToName = { { 0, "Eagle Union" }, {1, "Sakura Empire"} };
-	std::cout << "Side: " << SideToName[side] << std::endl;
+	std::cout << "\tSide: " << SideToName[side] << "\t\tSide: " << SideToName[!side] << std::endl;
 	std::cout << "\t ||";
 	for (unsigned int x = 0; x < width_height; x++) 
 	{
 		std::cout << letters[x] << "|";
 	}
-	std::cout << "\t   ";
+	std::cout << "\t\t   ";
 	for (unsigned int x = 0; x < width_height; x++) 
 	{
 		std::cout << letters[x] << "|";
@@ -120,7 +78,7 @@ void Pepsi_Output_Field_Final(const bool side)
 		{
 			std::cout << Field_Final[side][x][y] << "|";
 		}
-		std::cout << "\t" << y << "||";
+		std::cout << "\t\t" << y << "||";
 		for (unsigned int x = 0; x < width_height; x++)
 		{
 			if (Field_War[!side][x][y])

@@ -9,7 +9,7 @@
 #define Heavy_Cruiser_Durability 7
 #define Tsundere_Durability 5
 #define Small_Durability 4
-#define DEBUG_MODE 1
+#define DEBUG_MODE 0
 
 class ship
 {
@@ -32,6 +32,7 @@ public:
 	bool operator == (const ship& right)const;
 	ship& operator= (const ship& right);
 	static int GetCount() { return count; }
+	void NUCLEAR_BOMB();
 
 private:
 	std::string name;
