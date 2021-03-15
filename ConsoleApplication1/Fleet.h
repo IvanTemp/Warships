@@ -18,8 +18,8 @@ public:
 	bool RemoveShipFromFleet(const ship& ship);
 	bool GetSide() const;
 	ship GetShipByIndex(const int ID)const;
-	void DmgToInd(const int x, const int y, const int dmg);
-	void ConsDmgToInd();
+	void ConsDmgToIndBot(const int dmg);
+	void ConsDmgToIndPlayer(const int dmg);
 
 private:
 	static int count;

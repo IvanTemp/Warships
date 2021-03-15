@@ -9,11 +9,18 @@
 
 
 int main(int argc, char * argv[]) {
-	std::cout << "This is a alpha build! Most of the implemented features will be enabled only after enabling DEBUG_MODE in ship.h!\n\n";
-
 	srand(time(0));
 
-	if (DEBUG_MODE) std::cout << "WARNING! DEBUG MODE ON! \n" << std::endl;
+	if (!DEBUG_MODE) {
+		std::cout << "This is a playable build! Most of the implemented features will be enabled only after enabling DEBUG_MODE in ship.h!\n\n";
+	} else {
+		std::cout << "WARNING! DEBUG MODE ON! \n" << std::endl;
+	}
+
+	if (width_height > 26) {
+		std::cout << "Warning! The game is not designed for such a large field size! Please limit yourself to 26 cells!" << std::endl;
+		return -26;
+	}
 
 	ship ship1("Enterprise", "Aircraft Carrier", 2);
 	//Создадим вектор флот
@@ -95,14 +102,14 @@ int main(int argc, char * argv[]) {
 	//DAMAGE TEST
 	/*if (DEBUG_MODE) {
 		std::cout << "DAMAGE TEST:" << std::endl << std::endl;
-		std::cout << "Before attack in 5 5:" << std::endl << std::endl;
+		std::cout << "Before attack in random place:" << std::endl << std::endl;
 		Output_Field_Final(0, 0);
 		std::cout << std::endl << std::endl;
 		Output_Field_Final(1, 1);
 
-		fleet_2.DmgToInd(5, 5, 3);
+		fleet_2.ConsDmgToIndBot(2); //Wasn't tested after rework
 
-		std::cout << "After attack in 5 5:" << std::endl << std::endl;
+		std::cout << "After attack in random place:" << std::endl << std::endl;
 		std::cout << std::endl;
 		Output_Field_Final(0, 0);
 		std::cout << std::endl << std::endl;
@@ -111,52 +118,117 @@ int main(int argc, char * argv[]) {
 	/////////////
 
 	//FOG OF WAR TEST
-	if (DEBUG_MODE) {
-		std::cout << "FOG OF WAR TEST:" << std::endl << std::endl;
-		std::cout << "FOR PLAYER: " << std::endl;
-		Output_Field_Final(0, 0);
-		Output_Field_Final(1, 0);
+	//if (DEBUG_MODE) {
+	//	std::cout << "FOG OF WAR TEST:" << std::endl << std::endl;
+	//	std::cout << "FOR PLAYER: " << std::endl;
+	//	Output_Field_Final(0, 0);
+	//	Output_Field_Final(1, 0);
 
-		std::cout << "FOR BOT: " << std::endl;
-		Output_Field_Final(0, 1);
-		Output_Field_Final(1, 1);
-	}
+	//	std::cout << "FOR BOT: " << std::endl;
+	//	Output_Field_Final(0, 1);
+	//	Output_Field_Final(1, 1);
+	//}
 	/////////////////
 
-	Output_Field_Final(0, 0);
-	Output_Field_Final(1, 0);
+	if (DEBUG_MODE) {
+		std::cout << "Game Fields:" << std::endl << std::endl;
+		Output_Field_Final(0, 0);
+		Output_Field_Final(1, 1);
+	}
 
 	//Начинается цикл игры
-	std::cout << "Start game?   ";
+	std::cout << "Start game?\n\n";
 	system("pause");
-	system("cls");
-	while (fleet_1.GetHealth() and fleet_2.GetHealth())
-	{
-		//Смена хода
-		std::cout << fleet_1.GetName() << " turn" << std::endl;
-		system("pause");
+
+	while (fleet_1.GetHealth() && fleet_2.GetHealth()) {
 		system("cls");
-		//Вывод поля игрока 0
-		Pepsi_Output_Field_Final(0);
-		//Выстрел игрока 0
-		std::cout << "Your turn is? (Damage X Y) ";
-		fleet_2.ConsDmgToInd();
-		Persi_Field_Refresh_Durability(fleet_2);
-		system("pause");
-		system("cls");
-		//Смена хода
-		std::cout << fleet_2.GetName() << " turn " << std::endl;
-		system("pause");
-		system("cls");
-		//Вывод поля игрока 1
-		Pepsi_Output_Field_Final(1);
-		//Выстрел игрока 1
-		std::cout << "Your turn is? (Damage X Y) ";
-		fleet_1.ConsDmgToInd();
-		Persi_Field_Refresh_Durability(fleet_1);
-		system("pause");
-		system("cls");
+		std::string BattleMode = "";
+		std::cout << "Select battle mode (PvE / PvP): ";
+		std::cin >> BattleMode;
+		BattleMode = hahaYouAreSmallNow(BattleMode);
+
+		int first = -1 + rand() % 2 + 1;
+		if (BattleMode == "pvp") {
+			system("cls");
+			while (fleet_1.GetHealth() && fleet_2.GetHealth()) {
+				//Смена хода
+				std::cout << fleet_1.GetName() << " turn." << std::endl << std::endl;
+				//Вывод поля игрока 1
+				Pepsi_Output_Field_Final(0);
+				//Выстрел игрока 1
+				std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
+				fleet_2.ConsDmgToIndPlayer(2);
+				Field_Refresh_Durability_REFORGED(fleet_2);
+				system("pause");
+				system("cls");
+
+				//Смена хода
+				std::cout << fleet_2.GetName() << " turn." << std::endl << std::endl;
+				//Вывод поля игрока 2
+				Pepsi_Output_Field_Final(1);
+				//Выстрел игрока 2
+				std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
+				fleet_1.ConsDmgToIndPlayer(2);
+				Field_Refresh_Durability_REFORGED(fleet_1);
+				system("pause");
+				system("cls");
+			}
+		} else if (BattleMode == "pve") {
+			while (fleet_1.GetHealth() && fleet_2.GetHealth()) {
+				int Difficulty = 0;
+				system("cls");
+				std::cout << "Select difficulty level number: " << std::endl;
+				std::cout << "1)Normal" << std::endl;
+				std::cout << "2)Hard(WORK IN PROGRESS)" << std::endl;
+				std::cout << "3)Impossible(WORK IN PROGRESS)" << std::endl << std::endl;
+				std::cout << "Difficulty: ";
+				std::cin >> Difficulty;
+				Difficulty--;
+
+				if (!Difficulty) { //Normal difficulty
+					system("cls");
+					while (fleet_1.GetHealth() && fleet_2.GetHealth()) {
+						switch (first % 2) {
+							case 0:
+								//Смена хода
+								std::cout << fleet_1.GetName() << " turn." << std::endl << std::endl;
+								//Вывод поля для игрока 1
+								Pepsi_Output_Field_Final(0);
+								//Выстрел игрока 1
+								std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
+								fleet_2.ConsDmgToIndPlayer(2);
+								Field_Refresh_Durability_REFORGED(fleet_2);
+								system("pause");
+								system("cls");
+								first++;
+								break;
+							case 1:
+								//Смена хода
+								std::cout << fleet_2.GetName() << " turn." << std::endl << std::endl;
+								//Выстрел бота
+								fleet_1.ConsDmgToIndBot(2);
+								Field_Refresh_Durability_REFORGED(fleet_1);
+								system("pause");
+								system("cls");
+								first++;
+								break;
+						}
+					}
+				} else {
+					system("cls");
+					std::cout << "E-error! This is inapporopriate... I... What should I...?" << std::endl << std::endl;
+					std::cout << "You scared the program with your wrong input. Be careful next time." << std::endl << std::endl;
+					system("pause");
+				}
+			}
+		} else {
+			system("cls");
+			std::cout << "E-error! This is inapporopriate... I... What should I...?" << std::endl << std::endl;
+			std::cout << "You scared the program with your wrong input. Be careful next time." << std::endl << std::endl;
+			system("pause");
+		}
 	}
+
 	std::cout << "Someone won";
 	return 0;
 }
