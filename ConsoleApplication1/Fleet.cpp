@@ -63,9 +63,9 @@ unsigned int Fleet::GetHealth() const
 	unsigned int hp = 0;
 	for (int i = 0; i < fleet.size(); i++)
 	{
-		for (int j = 0; j < fleet[0].GetDurability().size(); j++)
+		for (int j = 0; j < fleet[i].GetDurability().size(); j++)
 		{
-			hp += fleet[0].GetDurability()[j];
+			hp += fleet[i].GetDurability()[j];
 		}
 	}
 	return hp;
