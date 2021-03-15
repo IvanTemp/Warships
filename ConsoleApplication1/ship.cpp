@@ -83,6 +83,7 @@ std::vector<int> ship::GetDurability() const
 
 void ship::DmgtoInd(const int dmg, const int ind) {
     if (durability[ind] - dmg > 0) { durability[ind] -= dmg; }
+    else { durability[ind] = 0; }
 }
 
 int ship::GetID() const

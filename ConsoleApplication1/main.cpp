@@ -167,7 +167,7 @@ int main(int argc, char * argv[]) {
 				//Вывод поля игрока 2
 				Pepsi_Output_Field_Final(1);
 				//Выстрел игрока 2
-				std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
+				std::cout << "Order, commander! (Write X and Y coordinates): ";
 				fleet_1.ConsDmgToIndPlayer(2);
 				Field_Refresh_Durability_REFORGED(fleet_1);
 				system("pause");
@@ -175,19 +175,20 @@ int main(int argc, char * argv[]) {
 			}
 		} else if (BattleMode == "pve") {
 			while (fleet_1.GetHealth() && fleet_2.GetHealth()) {
-				int Difficulty = 0;
+				int difficulty = 0;
 				system("cls");
 				std::cout << "Select difficulty level number: " << std::endl;
 				std::cout << "1)Normal" << std::endl;
-				std::cout << "2)Hard(WORK IN PROGRESS)" << std::endl;
-				std::cout << "3)Impossible(WORK IN PROGRESS)" << std::endl << std::endl;
+				std::cout << "2)Hard(SOON)" << std::endl;
+				std::cout << "3)Impossible(SOON)" << std::endl << std::endl;
 				std::cout << "Difficulty: ";
-				std::cin >> Difficulty;
-				Difficulty--;
+				std::cin >> difficulty;
+				difficulty--;
 
-				if (!Difficulty) { //Normal difficulty
+				if (!difficulty) { //Normal difficulty
 					system("cls");
 					while (fleet_1.GetHealth() && fleet_2.GetHealth()) {
+						std::cout << "[DEBUB INFO] fleet_1 Health = " << fleet_1.GetHealth() << "; fleet_2 Health = " << fleet_2.GetHealth() << std::endl;
 						switch (first % 2) {
 							case 0:
 								//Смена хода
@@ -206,7 +207,7 @@ int main(int argc, char * argv[]) {
 								//Смена хода
 								std::cout << fleet_2.GetName() << " turn." << std::endl << std::endl;
 								//Выстрел бота
-								fleet_1.ConsDmgToIndBot(2);
+								fleet_1.ConsDmgToIndBot(2, difficulty);
 								Field_Refresh_Durability_REFORGED(fleet_1);
 								system("pause");
 								system("cls");

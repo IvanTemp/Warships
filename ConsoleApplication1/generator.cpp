@@ -10,6 +10,14 @@ std::pair<unsigned int, unsigned int> Field_ID[2][width_height][width_height] = 
 bool Field_War[2][width_height][width_height] = { 0, 0, 0 }; //The field with fog of war
 unsigned int Field_Durability[2][width_height][width_height] = { 0, 0, 0 }; //The field with durability
 
+void NUCLEAR_BOMB(const int side) { //Using for test of game over
+	for (unsigned int y = 0; y < width_height; y++) {
+		for (unsigned int x = 0; x < width_height; x++) {
+			Field_Durability[side][x][y] = 0;
+		}
+	}
+}
+
 unsigned int ReturnFieldID(const bool side, const int x, const int y)
 {
 	return Field_ID[side][x][y].first;
@@ -47,7 +55,9 @@ void Initialize_Field_Final(const bool side) {
 			if (Field_ID[side][x][y].first > 1) {
 				Field_Final[side][x][y] = std::to_string(Field_Durability[side][x][y]);
 			}
-			else {
+			else if (Field_War[side][x][y]) {
+				Field_Final[side][x][y] = "X";
+			} else {
 				Field_Final[side][x][y] = " ";
 			}
 		}

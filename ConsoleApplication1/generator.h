@@ -1,6 +1,8 @@
 #pragma once
 #include "Fleet.h"
 
+void NUCLEAR_BOMB(const int side);
+
 unsigned int ReturnFieldID(bool side, int x, int y);
 
 unsigned int ReturnFieldIndex(bool side, int x, int y);

@@ -18,7 +18,7 @@ public:
 	bool RemoveShipFromFleet(const ship& ship);
 	bool GetSide() const;
 	ship GetShipByIndex(const int ID)const;
-	void ConsDmgToIndBot(const int dmg);
+	void ConsDmgToIndBot(const int dmg, const int difficulty);
 	void ConsDmgToIndPlayer(const int dmg);
 
 private:
