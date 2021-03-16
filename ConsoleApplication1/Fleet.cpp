@@ -136,7 +136,7 @@ void Fleet::ConsDmgToIndBot(const int dmg, const int difficulty) {
 		//Gura AI(c). All rights reserved.
 		bool GwSUtPaLT = true; //Gura was still unable to plant a large tree
 		while (GwSUtPaLT) {
-			x = -1 + rand() % width_height + 1, y = -1 + rand() % width_height + 1;
+			x = rand() % width_height, y = rand() % width_height;
 			if (DEBUG_MODE) std::cout << "[DEBUG INFO]Trying to: x = " << x << "; y = " << y << std::endl;
 			if (BOTRoDC.size()) {
 				x = BOTRoDC[0].first, y = BOTRoDC[0].second;
@@ -158,7 +158,7 @@ void Fleet::ConsDmgToIndBot(const int dmg, const int difficulty) {
 		int DurabtyIndex = ReturnFieldIndex(1, x, y);
 		int drbltSum = 0;
 		fleet[Index].DmgtoInd(dmg, DurabtyIndex);
-		std::cout << "The enemy hit your ship in " << strx << " " << y + 1 << std::endl;
+		std::cout << "The enemy hit your ship in " << strx << " " << y << std::endl;
 		if (fleet[Index].GetDurability()[DurabtyIndex] > 0) { BOTRoDC.push_back({ x, y }); } //Memorizing an unfinished cell
 		if (DEBUG_MODE) {
 			std::cout << "[DEBUG INFO]Fleet: " << name;

@@ -148,7 +148,7 @@ int main(int argc, char * argv[]) {
 		std::cin >> BattleMode;
 		BattleMode = hahaYouAreSmallNow(BattleMode);
 
-		int first = -1 + rand() % 2 + 1;
+		int first = rand() % 2;
 		if (BattleMode == "pvp") {
 			system("cls");
 			while (fleet_1.GetHealth() && fleet_2.GetHealth()) {
