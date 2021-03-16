@@ -189,7 +189,7 @@ int main(int argc, char * argv[]) {
 				if (!difficulty) { //Normal difficulty
 					system("cls");
 					while (fleet_1.GetHealth() && fleet_2.GetHealth()) {
-						std::cout << "fleet_1 Health = " << fleet_1.GetHealth() << "; fleet_2 Health = " << fleet_2.GetHealth() << std::endl;
+						std::cout << fleet_1.GetName() << " Health = " << fleet_1.GetHealth() << "; " << fleet_2.GetName() << " Health = " << fleet_2.GetHealth() << std::endl;
 						switch (first % 2) {
 							case 0:
 								//Смена хода

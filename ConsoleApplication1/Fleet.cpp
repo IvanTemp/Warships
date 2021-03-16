@@ -145,7 +145,7 @@ void Fleet::ConsDmgToIndBot(const int dmg, const int difficulty) {
 			} else {
 				if (ReturnFieldWar(side, x, y) == 0 || ReturnFieldDurability(side, x, y) > 0) { break; } // II)Protection against shooting at empty cells
 			}
-			if (DEBUG_MODE) std::cout << "[DEBUG INFO]Gura(c) decided that: x = " << x << "; y = " << y << std::endl;
+			if (DEBUG_MODE) std::cout << "[DEBUG INFO]Gura AI(c) decided that: x = " << x << "; y = " << y << std::endl;
 		}
 	}
 
@@ -159,7 +159,7 @@ void Fleet::ConsDmgToIndBot(const int dmg, const int difficulty) {
 		int drbltSum = 0;
 		fleet[Index].DmgtoInd(dmg, DurabtyIndex);
 		std::cout << "The enemy hit your ship in " << strx << " " << y + 1 << std::endl;
-		if (ReturnFieldDurability(side, x, y) > 1) { BOTRoDC.push_back({ x, y }); } //Memorizing an unfinished cell
+		if (fleet[Index].GetDurability()[DurabtyIndex] > 0) { BOTRoDC.push_back({ x, y }); } //Memorizing an unfinished cell
 		if (DEBUG_MODE) {
 			std::cout << "[DEBUG INFO]Fleet: " << name;
 			std::cout << "; Ship name: " << fleet[Index].GetName();
@@ -171,10 +171,6 @@ void Fleet::ConsDmgToIndBot(const int dmg, const int difficulty) {
 		}
 		for (int i = 0; i < fleet[Index].GetDurability().size(); i++) {
 			drbltSum += fleet[Index].GetDurability()[i];
-		}
-		if (!drbltSum) {
-			std::cout << "Captain! Your ship has been sunk!" << std::endl;
-			//ÑÞÄÀ ÊÎÄ ÎÒÊÐÛÒÈß ÊËÅÒÎÊ ÏÎÑËÅ ÏÎÒÎÏËÅÍÈß ÊÎÐÀÁËß
 		}
 	}
 	else
