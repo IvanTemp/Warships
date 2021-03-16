@@ -56,7 +56,7 @@ void Initialize_Field_Final(const bool side) {
 	}
 }
 
-void Output_Field_Final(const bool side) {
+void Output_Field_Final_REFORGED(const bool side) {
 	std::string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	std::map<int, std::string> SideToName = { { 0, "Eagle Union" }, {1, "Sakura Empire"} };
 	std::cout << "\tSide: " << SideToName[side] << "\t\tSide: " << SideToName[!side] << std::endl;
@@ -83,7 +83,8 @@ void Output_Field_Final(const bool side) {
 		{
 			if (Field_War[!side][x][y])
 			{
-				std::cout << Field_Final[!side][x][y] << "|";
+				if (Field_ID[!side][x][y].first > 1) { std::cout << Field_Final[!side][x][y] << "|"; }
+				else { std::cout << " |"; }
 			}
 			else
 			{
@@ -96,54 +97,48 @@ void Output_Field_Final(const bool side) {
 }
 
 void Output_Field_ID_Indexes(const bool side) {
-	if (DEBUG_MODE) {
-		std::cout << "ID[" << side << "](NOT FOR USER): \n\n";
-		for (unsigned int y = 0; y < width_height; y++) {
-			std::cout << "         |";
-			for (unsigned int x = 0; x < width_height; x++) {
-				std::cout << Field_ID[side][x][y].first << "|";
-			}
-			std::cout << std::endl;
-		}
-		std::cout << std::endl << std::endl << std::endl;
-		std::cout << "Indexes[" << side << "](NOT FOR USER): \n\n";
-		for (unsigned int y = 0; y < width_height; y++) {
-			std::cout << "         |";
-			for (unsigned int x = 0; x < width_height; x++) {
-				std::cout << Field_ID[side][x][y].second << "|";
-			}
-			std::cout << std::endl;
+	std::cout << "ID[" << side << "](NOT FOR USER): \n\n";
+	for (unsigned int y = 0; y < width_height; y++) {
+		std::cout << "         |";
+		for (unsigned int x = 0; x < width_height; x++) {
+			std::cout << Field_ID[side][x][y].first << "|";
 		}
 		std::cout << std::endl;
 	}
+	std::cout << std::endl << std::endl << std::endl;
+	std::cout << "Indexes[" << side << "](NOT FOR USER): \n\n";
+	for (unsigned int y = 0; y < width_height; y++) {
+		std::cout << "         |";
+		for (unsigned int x = 0; x < width_height; x++) {
+			std::cout << Field_ID[side][x][y].second << "|";
+		}
+		std::cout << std::endl;
+	}
+	std::cout << std::endl;
 }
 
 void Output_Field_War(const bool side) {
-	if (DEBUG_MODE) {
-		std::cout << "War[" << side << "](NOT FOR USER): \n\n";
-		for (unsigned int y = 0; y < width_height; y++) {
-			std::cout << "         |";
-			for (unsigned int x = 0; x < width_height; x++) {
-				std::cout << Field_War[side][x][y] << "|";
-			}
-			std::cout << std::endl;
+	std::cout << "War[" << side << "](NOT FOR USER): \n\n";
+	for (unsigned int y = 0; y < width_height; y++) {
+		std::cout << "         |";
+		for (unsigned int x = 0; x < width_height; x++) {
+			std::cout << Field_War[side][x][y] << "|";
 		}
 		std::cout << std::endl;
 	}
+	std::cout << std::endl;
 }
 
 void Output_Field_Durability(const bool side) {
-	if (DEBUG_MODE) {
-		std::cout << "Durability[" << side << "](NOT FOR USER): \n\n";
-		for (unsigned int y = 0; y < width_height; y++) {
-			std::cout << "         |";
-			for (unsigned int x = 0; x < width_height; x++) {
-				std::cout << Field_Durability[side][x][y] << "|";
-			}
-			std::cout << std::endl;
+	std::cout << "Durability[" << side << "](NOT FOR USER): \n\n";
+	for (unsigned int y = 0; y < width_height; y++) {
+		std::cout << "         |";
+		for (unsigned int x = 0; x < width_height; x++) {
+			std::cout << Field_Durability[side][x][y] << "|";
 		}
 		std::cout << std::endl;
 	}
+	std::cout << std::endl;
 }
 
 void Field_Refresh_Durability_REFORGED(Fleet flet) {

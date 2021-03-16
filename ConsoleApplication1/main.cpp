@@ -104,17 +104,17 @@ int main(int argc, char * argv[]) {
 	/*if (DEBUG_MODE) {
 		std::cout << "DAMAGE TEST:" << std::endl << std::endl;
 		std::cout << "Before attack in random place:" << std::endl << std::endl;
-		Output_Field_Final(0, 0);
+		Output_Field_Final_REFORGED(0);
 		std::cout << std::endl << std::endl;
-		Output_Field_Final(1, 1);
+		Output_Field_Final_REFORGED(1);
 
 		fleet_2.ConsDmgToIndBot(2); //Wasn't tested after rework
 
 		std::cout << "After attack in random place:" << std::endl << std::endl;
 		std::cout << std::endl;
-		Output_Field_Final(0, 0);
+		Output_Field_Final_REFORGED(0);
 		std::cout << std::endl << std::endl;
-		Output_Field_Final(1, 1);
+		Output_Field_Final_REFORGED(1);
 	}*/
 	/////////////
 
@@ -122,19 +122,19 @@ int main(int argc, char * argv[]) {
 	//if (DEBUG_MODE) {
 	//	std::cout << "FOG OF WAR TEST:" << std::endl << std::endl;
 	//	std::cout << "FOR PLAYER: " << std::endl;
-	//	Output_Field_Final(0, 0);
-	//	Output_Field_Final(1, 0);
+	//	Output_Field_Final_REFORGED(0, 0);
+	//	Output_Field_Final_REFORGED(1, 0);
 
 	//	std::cout << "FOR BOT: " << std::endl;
-	//	Output_Field_Final(0, 1);
-	//	Output_Field_Final(1, 1);
+	//	Output_Field_Final_REFORGED(0);
+	//	Output_Field_Final_REFORGED(1);
 	//}
 	/////////////////
 
 	if (DEBUG_MODE) {
 		std::cout << "Game Fields:" << std::endl << std::endl;
-		Output_Field_Final(0);
-		Output_Field_Final(1);
+		Output_Field_Final_REFORGED(0);
+		Output_Field_Final_REFORGED(1);
 	}
 
 	//Начинается цикл игры
@@ -155,7 +155,7 @@ int main(int argc, char * argv[]) {
 				//Смена хода
 				std::cout << fleet_1.GetName() << " turn." << std::endl << std::endl;
 				//Вывод поля игрока 1
-				Output_Field_Final(0);
+				Output_Field_Final_REFORGED(0);
 				//Выстрел игрока 1
 				std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
 				fleet_2.ConsDmgToIndPlayer(2);
@@ -166,7 +166,7 @@ int main(int argc, char * argv[]) {
 				//Смена хода
 				std::cout << fleet_2.GetName() << " turn." << std::endl << std::endl;
 				//Вывод поля игрока 2
-				Output_Field_Final(1);
+				Output_Field_Final_REFORGED(1);
 				//Выстрел игрока 2
 				std::cout << "Order, commander! (Write X and Y coordinates): ";
 				fleet_1.ConsDmgToIndPlayer(2);
@@ -195,7 +195,7 @@ int main(int argc, char * argv[]) {
 								//Смена хода
 								std::cout << fleet_1.GetName() << " turn." << std::endl << std::endl;
 								//Вывод поля для игрока 1
-								Output_Field_Final(0);
+								Output_Field_Final_REFORGED(0);
 								//Выстрел игрока 1
 								std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
 								fleet_2.ConsDmgToIndPlayer(2);
@@ -233,6 +233,6 @@ int main(int argc, char * argv[]) {
 	if (fleet_1.GetHealth() > fleet_2.GetHealth()) { std::cout << fleet_1.GetName(); }
 	else if (fleet_1.GetHealth() < fleet_2.GetHealth()) { std::cout << fleet_2.GetName(); }
 	else { std::cout << "Friendship"; }
-	std::cout << " won";
+	std::cout << " won!";
 	return 0;
 }

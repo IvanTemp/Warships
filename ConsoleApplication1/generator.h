@@ -15,7 +15,7 @@ std::string hahaYouAreSmallNow(std::string str);
 
 void Initialize_Field_Final(bool side);
 
-void Output_Field_Final(const bool side);
+void Output_Field_Final_REFORGED(const bool side);
 
 void Output_Field_ID_Indexes(bool side);
 
