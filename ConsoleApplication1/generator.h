@@ -1,8 +1,6 @@
 #pragma once
 #include "Fleet.h"
 
-void NUCLEAR_BOMB(const int side);
-
 unsigned int ReturnFieldID(bool side, int x, int y);
 
 unsigned int ReturnFieldIndex(bool side, int x, int y);
@@ -19,6 +17,6 @@ void Output_Field_ID_Indexes(bool side);
 
 void Output_Field_War(bool side);
 
-void Field_Get_Vision(const int x, const int y, const bool side);
+void Field_Get_Vision(const unsigned int x, const unsigned int y, const bool side);
 
 void Generate_ship(ship sheep, bool side);

@@ -199,6 +199,7 @@ int main(int argc, char * argv[]) {
 								//Выстрел игрока 1
 								std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
 								fleet_2.ConsDmgToIndPlayer(2);
+								Initialize_Field_Final(fleet_2); //MUST HAVE AFTER ANY DAMAGE
 								system("pause");
 								if (!DEBUG_MODE) { system("cls"); }
 								first++;
@@ -208,6 +209,7 @@ int main(int argc, char * argv[]) {
 								std::cout << fleet_2.GetName() << " turn." << std::endl << std::endl;
 								//Выстрел бота
 								fleet_1.ConsDmgToIndBot(2, difficulty);
+								Initialize_Field_Final(fleet_2); //MUST HAVE AFTER ANY DAMAGE
 								system("pause");
 								if (!DEBUG_MODE) { system("cls"); }
 								first++;

@@ -142,7 +142,8 @@ void Fleet::ConsDmgToIndBot(const int dmg, const int difficulty) {
 				x = BOTRoDC[0].first, y = BOTRoDC[0].second;
 				BOTRoDC.erase(BOTRoDC.begin());
 				GwSUtPaLT = false; // :)
-			} else {
+			}
+			else {
 				if (ReturnFieldWar(side, x, y) == 0 || fleet[ReturnFieldID(side, x, y)].GetDurability()[ReturnFieldIndex(side, x, y)] > 0) { break; } // II)Protection against shooting at empty cells
 			}
 			if (DEBUG_MODE) std::cout << "[DEBUG INFO]Gura AI(c) decided that: x = " << x << "; y = " << y << std::endl;
@@ -160,17 +161,28 @@ void Fleet::ConsDmgToIndBot(const int dmg, const int difficulty) {
 		fleet[Index].DmgtoInd(dmg, DurabtyIndex);
 		std::cout << "The enemy hit your ship in " << strx << " " << y << std::endl;
 		if (fleet[Index].GetDurability()[DurabtyIndex] > 0) { BOTRoDC.push_back({ x, y }); } //Memorizing an unfinished cell
+
+		std::vector <std::pair<unsigned int, unsigned int>> coords;
+
 		if (DEBUG_MODE) {
 			std::cout << "[DEBUG INFO]Fleet: " << name;
 			std::cout << "; Ship name: " << fleet[Index].GetName();
 			std::cout << "; new durability =";
+
 			for (int i = 0; i < fleet[Index].GetDurability().size(); i++) {
 				std::cout << " " << fleet[Index].GetDurability()[i];
 			}
+
 			std::cout << std::endl;
 		}
+
 		for (int i = 0; i < fleet[Index].GetDurability().size(); i++) {
 			drbltSum += fleet[Index].GetDurability()[i];
+			coords.push_back(std::make_pair(x, y));
+		}
+
+		if (!drbltSum) {
+			fleet[Index].Klee(coords, side);
 		}
 	}
 	else
@@ -208,18 +220,32 @@ void Fleet::ConsDmgToIndPlayer(const int dmg) {
 	if (ReturnFieldID(side, x, y) > 1)	{
 		int Index = ReturnFieldID(side, x, y) - 2;
 		int DurabtyIndex = ReturnFieldIndex(side, x, y);
+		int drbltSum = 0;
 		fleet[Index].DmgtoInd(dmg, DurabtyIndex);
 		std::cout << "Dodge this! You are hit!" << std::endl;
 		std::cout << "You hit him in " << alf[x] << " " << y << std::endl;
+
+		std::vector <std::pair<unsigned int, unsigned int>> coords;
+
 		if (DEBUG_MODE) {
 			std::cout << "[DEBUG INFO]Fleet: " << name;
 			std::cout << "; Ship name: " << fleet[Index].GetName();
 			std::cout << "; new durability =";
-			for (int i = 0; i < fleet[Index].GetDurability().size(); i++)
-			{
+
+			for (int i = 0; i < fleet[Index].GetDurability().size(); i++) {
 				std::cout << " " << fleet[Index].GetDurability()[i];
 			}
+
 			std::cout << std::endl;
+		}
+
+		for (int i = 0; i < fleet[Index].GetDurability().size(); i++) {
+			drbltSum += fleet[Index].GetDurability()[i];
+			coords.push_back(std::make_pair(x, y));
+		}
+
+		if (!drbltSum) {
+			fleet[Index].Klee(coords, side);
 		}
 	}
 		else

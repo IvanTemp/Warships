@@ -122,6 +122,36 @@ ship& ship::operator=(const ship& right)
     return *this;
 }
 
+void ship::Klee(const std::vector <std::pair<unsigned int, unsigned int>> coords, const bool side)const {
+    extern void Field_Get_Vision(const unsigned int x, const unsigned int y, const bool side);
+    for (int i = 0; i < coords.size(); i++) {
+        if (coords[i].first) {
+            if (coords[i].second) {
+                Field_Get_Vision(coords[i].first - 1, coords[i].second - 1, side);
+            }
+            Field_Get_Vision(coords[i].first - 1, coords[i].second, side);
+            if (coords[i].second < width_height - 1) {
+                Field_Get_Vision(coords[i].first - 1, coords[i].second + 1, side);
+            }
+        }
+        if (coords[i].second) {
+            Field_Get_Vision(coords[i].first, coords[i].second - 1, side);
+        }
+        if (coords[i].second < width_height - 1) {
+            Field_Get_Vision(coords[i].first, coords[i].second + 1, side);
+        }
+        if (coords[i].first < width_height - 1) {
+            if (coords[i].second) {
+                Field_Get_Vision(coords[i].first + 1, coords[i].second - 1, side);
+            }
+            Field_Get_Vision(coords[i].first + 1, coords[i].second, side);
+            if (coords[i].second < width_height - 1) {
+                Field_Get_Vision(coords[i].first + 1, coords[i].second + 1, side);
+            }
+        }
+    }
+}
+
 void ship::NUCLEAR_BOMB() {
     for (int i = 0; i < durability.size(); i++) {
         durability[i] = 0;

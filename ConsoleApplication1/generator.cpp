@@ -124,7 +124,9 @@ void Output_Field_War(const bool side) { //DEBUG FUNC
 	std::cout << std::endl;
 }
 
-void Field_Get_Vision(const int x, const int y, const bool side) { Field_War[side][x][y] = 1; }
+void Field_Get_Vision(const unsigned int x, const unsigned int y, const bool side) {
+	Field_War[side][x][y] = 1;
+}
 
 void Generate_ship(ship sheep, bool side) {
 	std::map <std::string, int> TypeToLength = { {"Aircraft Carrier", 4}, {"Heavy Cruiser", 3}, {"Tsundere", 2}, {"Small", 1} };

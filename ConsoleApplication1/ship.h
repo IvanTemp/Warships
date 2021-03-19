@@ -31,6 +31,7 @@ public:
 	int GetID()const;
 	bool operator == (const ship& right)const;
 	ship& operator= (const ship& right);
+	void Klee(const std::vector<std::pair<unsigned int, unsigned int>> coords, const bool side) const;
 	static int GetCount() { return count; }
 	void NUCLEAR_BOMB();
 
