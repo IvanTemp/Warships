@@ -143,7 +143,7 @@ void Fleet::ConsDmgToIndBot(const int dmg, const int difficulty) {
 				BOTRoDC.erase(BOTRoDC.begin());
 				GwSUtPaLT = false; // :)
 			} else {
-				if (ReturnFieldWar(side, x, y) == 0 || ReturnFieldDurability(side, x, y) > 0) { break; } // II)Protection against shooting at empty cells
+				if (ReturnFieldWar(side, x, y) == 0 || fleet[ReturnFieldID(side, x, y)].GetDurability()[ReturnFieldIndex(side, x, y)] > 0) { break; } // II)Protection against shooting at empty cells
 			}
 			if (DEBUG_MODE) std::cout << "[DEBUG INFO]Gura AI(c) decided that: x = " << x << "; y = " << y << std::endl;
 		}
@@ -155,7 +155,7 @@ void Fleet::ConsDmgToIndBot(const int dmg, const int difficulty) {
 	if (ReturnFieldID(side, x, y) > 1)
 	{
 		int Index = ReturnFieldID(side, x, y) - 2;
-		int DurabtyIndex = ReturnFieldIndex(1, x, y);
+		int DurabtyIndex = ReturnFieldIndex(side, x, y);
 		int drbltSum = 0;
 		fleet[Index].DmgtoInd(dmg, DurabtyIndex);
 		std::cout << "The enemy hit your ship in " << strx << " " << y << std::endl;
@@ -180,56 +180,53 @@ void Fleet::ConsDmgToIndBot(const int dmg, const int difficulty) {
 	Field_Get_Vision(x, y, side);
 }
 
-void Fleet::ConsDmgToIndPlayer(const int dmg)
-{
+void Fleet::ConsDmgToIndPlayer(const int dmg) {
 	int x = 0, y = -1;
-	bool notDumbUser = true;
-	std::string alf = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz";
-	char strx;
-	std::cin >> strx >> y;
+	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	char charx;
+	std::cin >> charx >> y;
+	if (DEBUG_MODE) std::cout << "[DEBUG INFO]X = " << charx << "; Y = " << y << std::endl;
 
 	if (y > width_height) {
 		std::cout << "Captain! You shot out of bounds!" << std::endl;
-		notDumbUser = false;
 		return;
 	}
-	for (int i = 0; i < width_height * 2; i++)
-	{
-		if (alf[i] == strx) {
-			x = i / 2;
+	charx = std::toupper(charx);
+	for (int i = 0; i < width_height; i++) {
+		if (alf[i] == charx) {
+			x = i;
 			break;
 		}
-		if (i == width_height * 2 - 1) {
+		if (i == width_height - 1) {
 			std::cout << "Captain! You shot out of bounds!" << std::endl;
-			notDumbUser = false;
-			break;
+			return;
 		}
 	}
-	if (DEBUG_MODE) { std::cout << "X = " << x << " Y = " << y << std::endl; }
-	if (notDumbUser) {
-		if (ReturnFieldID(side, x, y) > 1)
-		{
-			int Index = ReturnFieldID(side, x, y) - 2;
-			int DurabtyIndex = ReturnFieldIndex(side, x, y);
-			fleet[Index].DmgtoInd(dmg, DurabtyIndex);
-			std::cout << "Dodge this! You are hit!" << std::endl;
-			if (DEBUG_MODE) {
-				std::cout << "[DEBUG INFO]Fleet: " << name;
-				std::cout << "; Ship name: " << fleet[Index].GetName();
-				std::cout << "; new durability =";
-				for (int i = 0; i < fleet[Index].GetDurability().size(); i++)
-				{
-					std::cout << " " << fleet[Index].GetDurability()[i];
-				}
-				std::cout << std::endl;
+
+	if (DEBUG_MODE) { std::cout << "[DEBUG INFO]int X = " << x << " Y = " << y << std::endl; }
+
+	if (ReturnFieldID(side, x, y) > 1)	{
+		int Index = ReturnFieldID(side, x, y) - 2;
+		int DurabtyIndex = ReturnFieldIndex(side, x, y);
+		fleet[Index].DmgtoInd(dmg, DurabtyIndex);
+		std::cout << "Dodge this! You are hit!" << std::endl;
+		std::cout << "You hit him in " << alf[x] << " " << y << std::endl;
+		if (DEBUG_MODE) {
+			std::cout << "[DEBUG INFO]Fleet: " << name;
+			std::cout << "; Ship name: " << fleet[Index].GetName();
+			std::cout << "; new durability =";
+			for (int i = 0; i < fleet[Index].GetDurability().size(); i++)
+			{
+				std::cout << " " << fleet[Index].GetDurability()[i];
 			}
+			std::cout << std::endl;
 		}
+	}
 		else
 		{
-			std::cout << "Miss! X = " << strx << "; Y = " << y << std::endl;
+			std::cout << "Miss! X = " << alf[x] << "; Y = " << y << std::endl;
 		}
 		Field_Get_Vision(x, y, side);
-	}
 }
 
 void Fleet::NUCLEAR_BOMB() {

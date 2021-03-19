@@ -64,7 +64,7 @@ int main(int argc, char * argv[]) {
 	std::cout << "Ships count: " << ship1.GetCount() << std::endl << std::endl; //(Для Алексея)Да, это надо в лабу!(Для Вани)Эх, ну лааадно :(
 
 
-
+	if (!fleet_2.GetFleet().size()) { std::cout << "Warning! Connect the file with the second fleet!" << std::endl; return 2; }
 	/*				Тут заканчивается наша первая лабораторная работа(по словам Вани)				*/
 	
 	if (DEBUG_MODE) 
@@ -87,17 +87,15 @@ int main(int argc, char * argv[]) {
 	if (DEBUG_MODE)
 	{
 		Output_Field_ID_Indexes(0);
-		Output_Field_Durability(0);
 		Output_Field_War(0);
 		Output_Field_ID_Indexes(1);
-		Output_Field_Durability(1);
 		Output_Field_War(1);
 	}
 	/////////////////
 
 	////INITIALISATION FIELDS
-	Initialize_Field_Final(0);
-	Initialize_Field_Final(1);
+	Initialize_Field_Final(fleet_1);
+	Initialize_Field_Final(fleet_2);
 	/////////////////////////
 
 	//DAMAGE TEST
@@ -133,8 +131,8 @@ int main(int argc, char * argv[]) {
 
 	if (DEBUG_MODE) {
 		std::cout << "Game Fields:" << std::endl << std::endl;
-		Output_Field_Final_REFORGED(0);
-		Output_Field_Final_REFORGED(1);
+		Output_Field_Final_REFORGED(0, fleet_1.GetName(), fleet_2.GetName());
+		Output_Field_Final_REFORGED(1, fleet_1.GetName(), fleet_2.GetName());
 	}
 
 	//Начинается цикл игры
@@ -153,24 +151,24 @@ int main(int argc, char * argv[]) {
 			system("cls");
 			while (fleet_1.GetHealth() && fleet_2.GetHealth()) {
 				//Смена хода
+				Initialize_Field_Final(fleet_1);
 				std::cout << fleet_1.GetName() << " turn." << std::endl << std::endl;
 				//Вывод поля игрока 1
-				Output_Field_Final_REFORGED(0);
+				Output_Field_Final_REFORGED(0, fleet_1.GetName(), fleet_2.GetName());
 				//Выстрел игрока 1
 				std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
 				fleet_2.ConsDmgToIndPlayer(2);
-				Field_Refresh_Durability_REFORGED(fleet_2);
 				system("pause");
 				system("cls");
 
 				//Смена хода
+				Initialize_Field_Final(fleet_2);
 				std::cout << fleet_2.GetName() << " turn." << std::endl << std::endl;
 				//Вывод поля игрока 2
-				Output_Field_Final_REFORGED(1);
+				Output_Field_Final_REFORGED(1, fleet_1.GetName(), fleet_2.GetName());
 				//Выстрел игрока 2
 				std::cout << "Order, commander! (Write X and Y coordinates): ";
 				fleet_1.ConsDmgToIndPlayer(2);
-				Field_Refresh_Durability_REFORGED(fleet_1);
 				system("pause");
 				system("cls");
 			}
@@ -178,7 +176,7 @@ int main(int argc, char * argv[]) {
 			while (fleet_1.GetHealth() && fleet_2.GetHealth()) {
 				int difficulty = 0;
 				system("cls");
-				std::cout << "Select difficulty level number: " << std::endl;
+				std::cout << "Select difficulty level NUMBER: " << std::endl;
 				std::cout << "1)Normal" << std::endl;
 				std::cout << "2)Hard(SOON)" << std::endl;
 				std::cout << "3)Impossible(SOON)" << std::endl << std::endl;
@@ -188,18 +186,19 @@ int main(int argc, char * argv[]) {
 
 				if (!difficulty) { //Normal difficulty
 					system("cls");
+					if (DEBUG_MODE) { Output_Field_ID_Indexes(0); Output_Field_ID_Indexes(1); }
 					while (fleet_1.GetHealth() && fleet_2.GetHealth()) {
 						std::cout << fleet_1.GetName() << " Health = " << fleet_1.GetHealth() << "; " << fleet_2.GetName() << " Health = " << fleet_2.GetHealth() << std::endl;
 						switch (first % 2) {
 							case 0:
 								//Смена хода
+								Initialize_Field_Final(fleet_1);
 								std::cout << fleet_1.GetName() << " turn." << std::endl << std::endl;
 								//Вывод поля для игрока 1
-								Output_Field_Final_REFORGED(0);
+								Output_Field_Final_REFORGED(0, fleet_1.GetName(), fleet_2.GetName());
 								//Выстрел игрока 1
 								std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
 								fleet_2.ConsDmgToIndPlayer(2);
-								Field_Refresh_Durability_REFORGED(fleet_2);
 								system("pause");
 								if (!DEBUG_MODE) { system("cls"); }
 								first++;
@@ -209,7 +208,6 @@ int main(int argc, char * argv[]) {
 								std::cout << fleet_2.GetName() << " turn." << std::endl << std::endl;
 								//Выстрел бота
 								fleet_1.ConsDmgToIndBot(2, difficulty);
-								Field_Refresh_Durability_REFORGED(fleet_1);
 								system("pause");
 								if (!DEBUG_MODE) { system("cls"); }
 								first++;
