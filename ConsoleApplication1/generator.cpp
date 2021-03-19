@@ -130,76 +130,217 @@ void Field_Get_Vision(const unsigned int x, const unsigned int y, const bool sid
 
 void Generate_ship(ship sheep, bool side) {
 	std::map <std::string, int> TypeToLength = { {"Aircraft Carrier", 4}, {"Heavy Cruiser", 3}, {"Tsundere", 2}, {"Small", 1} };
-	bool stop = false, breaksIn = true, kostil = true;
+	bool stop = false, breaksIn = true;
 	int x = 0, y = 0, rotation = 0, length = TypeToLength[sheep.GetType()], ID = sheep.GetID();
 	while (!stop) {
-		x = rand() % width_height; y = rand() % width_height, rotation = rand() % 4;
+		x = rand() % width_height;
+		y = rand() % width_height;
+		rotation = rand() % 4;
 		//TEST YOUR OUTPUT HERE //rotation: 0 - North, 1 - East, 2 - South - 3 - West
 		//x = 5; y = 5; rotation = 0;
-		if (DEBUG_MODE) std::cout << "[DEBUG INFO]Trying to: x = " << x << "; y = " << y << "; rotation = " << rotation << "; ID: " << ID << "; Length: " << length << "; Default durability: " << sheep.GetDurability()[0] << "; Status: ";
+		if (DEBUG_MODE) {
+			std::cout << "[DEBUG INFO]Trying to: x = " << x;
+			std::cout << "; y = " << y;
+			std::cout << "; rotation = " << rotation;
+			std::cout << "; ID: " << ID;
+			std::cout << "; Length: " << length;
+			std::cout << "; Default durability: " << sheep.GetDurability()[0];
+			std::cout << "; Status: ";
+		}
+		
 		std::map <int, int> optimization_map = { {0, -1}, {1, 1}, {2, 1}, {3, -1} };
+
 		int OT = optimization_map[rotation];
+
 		bool breaksIn = true;
-		bool leftIsClear = false, rightIsClear = false, upIsClear = false, downIsClear = false;
-		if (x) { leftIsClear = true; } if (y) { upIsClear = true; } if (x < width_height - 1) { rightIsClear = true; } if (y < width_height - 1) { downIsClear = true; } //checking for space on all sides
+		bool leftIsClear = false,
+		rightIsClear = false,
+		upIsClear = false,
+		downIsClear = false;
+
+		//checking for space on all sides
+		if (x) {
+			leftIsClear = true;
+		}
+
+		if (y) {
+			upIsClear = true;
+		}
+
+		if (x < width_height - 1) {
+			rightIsClear = true;
+		}
+
+		if (y < width_height - 1) {
+			downIsClear = true;
+		}
+		/////////////////////////////////
+
 		if (rotation == 0 || rotation == 2) { //vertical
-			if (length > 1) {
-				if (OT > 0) { if (y + length >= width_height - 1) { breaksIn = false; } }
-				else { if (y - length < 0) { breaksIn = false; } } //check for the ability to place the ship
+
+			if (length > 1) { //check for the ability to place the ship
+				if (OT > 0) {
+					if (y + length >= width_height - 1) {
+						breaksIn = false;
+					}
+				}
+				else {
+					if (y - length < 0) {
+						breaksIn = false;
+					}
+				}
 			}
-			for (int h = 0; h < length; h++) { if (Field_ID[side][x][y + h * OT].first > 0) { breaksIn = false; } } //check for the ability to place the ship part 2
+
+			for (int h = 0; h < length; h++) { //check for the ability to place the ship part 2
+				if (Field_ID[side][x][y + h * OT].first > 0) {
+					breaksIn = false;
+				}
+			}
+
 			if (breaksIn) {
 				OT > 0 ? breaksIn = upIsClear : breaksIn = downIsClear;
 				if (breaksIn) {
-					if (leftIsClear) { if (Field_ID[side][x - 1][y - 1 * OT].first == 0) { Field_ID[side][x - 1][y - 1 * OT].first = 1; } }
-					if (Field_ID[side][x][y - 1 * OT].first == 0) { Field_ID[side][x][y - 1 * OT].first = 1; }
-					if (rightIsClear) { if (Field_ID[side][x + 1][y - 1 * OT].first == 0) { Field_ID[side][x + 1][y - 1 * OT].first = 1; } }
+					if (leftIsClear) {
+						if (Field_ID[side][x - 1][y - 1 * OT].first == 0) {
+							Field_ID[side][x - 1][y - 1 * OT].first = 1;
+						}
+					}
+
+					if (Field_ID[side][x][y - 1 * OT].first == 0) {
+						Field_ID[side][x][y - 1 * OT].first = 1;
+					}
+
+					if (rightIsClear) {
+						if (Field_ID[side][x + 1][y - 1 * OT].first == 0) {
+							Field_ID[side][x + 1][y - 1 * OT].first = 1;
+						}
+					}
 				}
+
 				for (int counter = 0; counter < length; counter++) {
-					if (leftIsClear) { if (Field_ID[side][x - 1][y + counter * OT].first == 0) { Field_ID[side][x - 1][y + counter * OT].first = 1; } }
+					if (leftIsClear) {
+						if (Field_ID[side][x - 1][y + counter * OT].first == 0) {
+							Field_ID[side][x - 1][y + counter * OT].first = 1;
+						}
+					}
+
 					Field_ID[side][x][y + counter * OT].first = ID;
 					Field_ID[side][x][y + counter * OT].second = counter;
-					if (rightIsClear) { if (Field_ID[side][x + 1][y + counter * OT].first == 0) { Field_ID[side][x + 1][y + counter * OT].first = 1; } }
+
+					if (rightIsClear) {
+						if (Field_ID[side][x + 1][y + counter * OT].first == 0) {
+							Field_ID[side][x + 1][y + counter * OT].first = 1;
+						}
+					}
 				}
+
 				OT > 0 ? breaksIn = downIsClear : breaksIn = upIsClear;
 				if (breaksIn) {
-					if (leftIsClear) { if (Field_ID[side][x - 1][y + length * OT].first == 0) { Field_ID[side][x - 1][y + length * OT].first = 1; } }
-					if (Field_ID[side][x][y + length * OT].first == 0) { Field_ID[side][x][y + length * OT].first = 1; }
-					if (rightIsClear) { if (Field_ID[side][x + 1][y + length * OT].first == 0) { Field_ID[side][x + 1][y + length * OT].first = 1; } }
+					if (leftIsClear) {
+						if (Field_ID[side][x - 1][y + length * OT].first == 0) {
+							Field_ID[side][x - 1][y + length * OT].first = 1;
+						}
+					}
+
+					if (Field_ID[side][x][y + length * OT].first == 0) {
+						Field_ID[side][x][y + length * OT].first = 1;
+					}
+
+					if (rightIsClear) {
+						if (Field_ID[side][x + 1][y + length * OT].first == 0) {
+							Field_ID[side][x + 1][y + length * OT].first = 1;
+						}
+					}
+
 				}
-				if (DEBUG_MODE) { std::cout << "Successfully!" << std::endl; }
+				if (DEBUG_MODE) {
+					std::cout << "Successfully!" << std::endl;
+				}
 				stop = true;
 			}
 		}
 		else { //horizontal
-			if (length > 1) {
-				if (OT > 0) { if (x + length >= width_height - 1) { breaksIn = false; } }
-				else { if (x - length < 0) { breaksIn = false; } } //check for the ability to place the ship
+			if (length > 1) { //check for the ability to place the ship
+				if (OT > 0) {
+					if (x + length >= width_height - 1) {
+						breaksIn = false;
+					}
+				}
+				else {
+					if (x - length < 0) {
+						breaksIn = false;
+					}
+				}
 			}
-			for (int h = 0; h < length; h++) { if (Field_ID[side][x + h * OT][y].first > 0) { breaksIn = false; } } //check for the ability to place the ship part 2
+
+			for (int h = 0; h < length; h++) { //check for the ability to place the ship part 2
+				if (Field_ID[side][x + h * OT][y].first > 0) {
+					breaksIn = false;
+				}
+			}
+
 			if (breaksIn) {
 				OT > 0 ? breaksIn = leftIsClear : breaksIn = rightIsClear;
 				if (breaksIn) {
-					if (downIsClear) { if (Field_ID[side][x - 1 * OT][y + 1].first == 0) { Field_ID[side][x - 1 * OT][y + 1].first = 1; } }
-					if (Field_ID[side][x - 1 * OT][y].first == 0) { Field_ID[side][x - 1 * OT][y].first = 1; }
-					if (upIsClear) { if (Field_ID[side][x - 1 * OT][y - 1].first == 0) { Field_ID[side][x - 1 * OT][y - 1].first = 1; } }
+					if (downIsClear) {
+						if (Field_ID[side][x - 1 * OT][y + 1].first == 0) {
+							Field_ID[side][x - 1 * OT][y + 1].first = 1;
+						}
+					}
+
+					if (Field_ID[side][x - 1 * OT][y].first == 0) {
+						Field_ID[side][x - 1 * OT][y].first = 1;
+					}
+
+					if (upIsClear) {
+						if (Field_ID[side][x - 1 * OT][y - 1].first == 0) {
+							Field_ID[side][x - 1 * OT][y - 1].first = 1;
+						}
+					}
 				}
 				for (int counter = 0; counter < length; counter++) {
-					if (upIsClear) { if (Field_ID[side][x + counter * OT][y - 1].first == 0) { Field_ID[side][x + counter * OT][y - 1].first = 1; } }
+					if (upIsClear) {
+						if (Field_ID[side][x + counter * OT][y - 1].first == 0) {
+							Field_ID[side][x + counter * OT][y - 1].first = 1;
+						}
+					}
+
 					Field_ID[side][x + counter * OT][y].first = ID;
 					Field_ID[side][x + counter * OT][y].second = counter;
-					if (downIsClear) { if (Field_ID[side][x + counter * OT][y + 1].first == 0) { Field_ID[side][x + counter * OT][y + 1].first = 1; } }
+
+					if (downIsClear) {
+						if (Field_ID[side][x + counter * OT][y + 1].first == 0) {
+							Field_ID[side][x + counter * OT][y + 1].first = 1;
+						}
+					}
 				}
+
 				OT > 0 ? breaksIn = rightIsClear : breaksIn = leftIsClear;
 				if (breaksIn) {
-					if (downIsClear) { if (Field_ID[side][x + length * OT][y + 1].first == 0) { Field_ID[side][x + length * OT][y + 1].first = 1; } }
-					if (Field_ID[side][x + length * OT][y].first == 0) { Field_ID[side][x + length * OT][y].first = 1; }
-					if (upIsClear) { if (Field_ID[side][x + length * OT][y - 1].first == 0) { Field_ID[side][x + length * OT][y - 1].first = 1; } }
+					if (downIsClear) {
+						if (Field_ID[side][x + length * OT][y + 1].first == 0) {
+							Field_ID[side][x + length * OT][y + 1].first = 1;
+						}
+					}
+
+					if (Field_ID[side][x + length * OT][y].first == 0) {
+						Field_ID[side][x + length * OT][y].first = 1;
+					}
+
+					if (upIsClear) {
+						if (Field_ID[side][x + length * OT][y - 1].first == 0) {
+							Field_ID[side][x + length * OT][y - 1].first = 1;
+						}
+					}
 				}
-				if (DEBUG_MODE) { std::cout << "Successfully!" << std::endl; }
+				if (DEBUG_MODE) {
+					std::cout << "Successfully!" << std::endl;
+				}
 				stop = true;
 			}
 		}
-		if (DEBUG_MODE && !stop) { std::cout << "Failed!" << std::endl; }
+		if (DEBUG_MODE && !stop) {
+			std::cout << "Failed!" << std::endl;
+		}
 	}
 }
