@@ -7,6 +7,9 @@
 #include "generator.h"
 #include "fleet.h"
 
+/*Список найденных багов(на русском, ибо кому-то лень пропускать это через переводчик):
+1)Если игрок введёт сначала число, а затем букву, то выстрел пройдёт по X = цифре Y = 0, а в дальнейшем игрок не сможет вводить координаты до конца игры
+*/
 
 int main(int argc, char * argv[]) {
 	srand(time(0));
@@ -64,7 +67,7 @@ int main(int argc, char * argv[]) {
 	std::cout << "Ships count: " << ship1.GetCount() << std::endl << std::endl; //(Для Алексея)Да, это надо в лабу!(Для Вани)Эх, ну лааадно :(
 
 
-	if (!fleet_2.GetFleet().size()) { std::cout << "Warning! Connect the file with the second fleet!" << std::endl; return 2; }
+	if (!fleet_2.GetFleet().size()) { std::cout << "Warning! Connect the file with the second fleet!" << std::endl; return -2; }
 	/*				Тут заканчивается наша первая лабораторная работа(по словам Вани)				*/
 	
 	if (DEBUG_MODE) 
@@ -149,54 +152,72 @@ int main(int argc, char * argv[]) {
 		int first = rand() % 2;
 		if (BattleMode == "pvp") {
 			system("cls");
+			if (DEBUG_MODE) {
+				std::cout << "First side: " << first << std::endl;
+			}
 			while (fleet_1.GetHealth() && fleet_2.GetHealth()) {
-				//Смена хода
-				Initialize_Field_Final(fleet_1);
-				std::cout << fleet_1.GetName() << " turn." << std::endl << std::endl;
-				//Вывод поля игрока 1
-				Output_Field_Final_REFORGED(0, fleet_1.GetName(), fleet_2.GetName());
-				//Выстрел игрока 1
-				std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
-				fleet_2.ConsDmgToIndPlayer(2);
-				system("pause");
-				system("cls");
-
-				//Смена хода
-				Initialize_Field_Final(fleet_2);
-				std::cout << fleet_2.GetName() << " turn." << std::endl << std::endl;
-				//Вывод поля игрока 2
-				Output_Field_Final_REFORGED(1, fleet_1.GetName(), fleet_2.GetName());
-				//Выстрел игрока 2
-				std::cout << "Order, commander! (Write X and Y coordinates): ";
-				fleet_1.ConsDmgToIndPlayer(2);
-				system("pause");
-				system("cls");
+				switch (first % 2) {
+					case 0:
+						//Смена хода
+						Initialize_Field_Final(fleet_1);
+						std::cout << fleet_1.GetName() << " turn." << std::endl << std::endl;
+						//Вывод поля игрока 1
+						Output_Field_Final_REFORGED(0, fleet_1.GetName(), fleet_2.GetName());
+						//Выстрел игрока 1
+						std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
+						fleet_2.ConsDmgToIndPlayer(2);
+						Initialize_Field_Final(fleet_2);
+						system("pause");
+						system("cls");
+						first++;
+						break;
+					case 1:
+						//Смена хода
+						Initialize_Field_Final(fleet_2);
+						std::cout << fleet_2.GetName() << " turn." << std::endl << std::endl;
+						//Вывод поля игрока 2
+						Output_Field_Final_REFORGED(1, fleet_1.GetName(), fleet_2.GetName());
+						//Выстрел игрока 2
+						std::cout << "Order, commander! (Write X and Y coordinates): ";
+						fleet_1.ConsDmgToIndPlayer(2);
+						Initialize_Field_Final(fleet_1);
+						system("pause");
+						system("cls");
+						first++;
+						break;
+				}
 			}
 		} else if (BattleMode == "pve") {
 			while (fleet_1.GetHealth() && fleet_2.GetHealth()) {
 				int difficulty = 0;
 				system("cls");
 				std::cout << "Select difficulty level NUMBER: " << std::endl;
-				std::cout << "1)Normal" << std::endl;
-				std::cout << "2)Hard(SOON)" << std::endl;
-				std::cout << "3)Impossible(SOON)" << std::endl << std::endl;
+				std::cout << "1)Normal" << std::endl; //Everything is fair
+				std::cout << "2)Hard" << std::endl; //Bot has the right to make mistake
+				std::cout << "3)Impossible" << std::endl << std::endl; //Bot will try until it hits, and it will always go first
 				std::cout << "Difficulty: ";
 				std::cin >> difficulty;
 				difficulty--;
 
-				if (!difficulty) { //Normal difficulty
+				if (difficulty == 2) {
+					first = 1; //Bot will always go first
+				}
+
+				if (difficulty >= 0 && difficulty <= 2) { //0 - 2(1 - 3 for user)
 					system("cls");
-					if (DEBUG_MODE) { Output_Field_ID_Indexes(0); Output_Field_ID_Indexes(1); }
+					if (DEBUG_MODE) {
+						std::cout << "First side: " << first << std::endl;
+						Output_Field_ID_Indexes(0); Output_Field_ID_Indexes(1);
+					}
 					while (fleet_1.GetHealth() && fleet_2.GetHealth()) {
 						std::cout << fleet_1.GetName() << " Health = " << fleet_1.GetHealth() << "; " << fleet_2.GetName() << " Health = " << fleet_2.GetHealth() << std::endl;
 						switch (first % 2) {
-							case 0:
-								//Смена хода
+							case 0: //Player
 								Initialize_Field_Final(fleet_1);
 								std::cout << fleet_1.GetName() << " turn." << std::endl << std::endl;
 								//Вывод поля для игрока 1
 								Output_Field_Final_REFORGED(0, fleet_1.GetName(), fleet_2.GetName());
-								//Выстрел игрока 1
+								//Shot
 								std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
 								fleet_2.ConsDmgToIndPlayer(2);
 								Initialize_Field_Final(fleet_2); //MUST HAVE AFTER ANY DAMAGE
@@ -204,12 +225,11 @@ int main(int argc, char * argv[]) {
 								if (!DEBUG_MODE) { system("cls"); }
 								first++;
 								break;
-							case 1:
-								//Смена хода
+							case 1: //Bot
 								std::cout << fleet_2.GetName() << " turn." << std::endl << std::endl;
-								//Выстрел бота
+								//Shot
 								fleet_1.ConsDmgToIndBot(2, difficulty);
-								Initialize_Field_Final(fleet_2); //MUST HAVE AFTER ANY DAMAGE
+								Initialize_Field_Final(fleet_1); //MUST HAVE AFTER ANY DAMAGE
 								system("pause");
 								if (!DEBUG_MODE) { system("cls"); }
 								first++;

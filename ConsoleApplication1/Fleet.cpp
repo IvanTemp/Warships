@@ -132,29 +132,42 @@ ship Fleet::GetShipByIndex(const int ID)const {
 void Fleet::ConsDmgToIndBot(const int dmg, const int difficulty) {
 	srand(time(0));
 	int x = 0, y = 0;
-	if (difficulty != 2) {
-		//Gura AI(c). All rights reserved.
-		bool GwSUtPaLT = true; //Gura was still unable to plant a large tree
-		while (GwSUtPaLT) {
-			x = rand() % width_height, y = rand() % width_height;
-			if (DEBUG_MODE) std::cout << "[DEBUG INFO]Trying to: x = " << x << "; y = " << y << std::endl;
-			if (BOTRoDC.size()) {
-				x = BOTRoDC[0].first, y = BOTRoDC[0].second;
-				BOTRoDC.erase(BOTRoDC.begin());
-				GwSUtPaLT = false; // :)
+	//Gura AI(c). All rights not reserved.
+	bool GwSUtPaLT = true; //Gura was still unable to plant a large tree
+	unsigned int attempts = difficulty;
+	while (GwSUtPaLT) {
+		x = rand() % width_height, y = rand() % width_height;
+		if (DEBUG_MODE) std::cout << "[DEBUG INFO]Trying to: x = " << x << "; y = " << y << std::endl;
+
+		if (BOTRoDC.size()) { //I)Finishing off found ships
+			x = BOTRoDC[0].first, y = BOTRoDC[0].second;
+			BOTRoDC.erase(BOTRoDC.begin());
+			GwSUtPaLT = false;
+		}
+		else {
+			if (ReturnFieldWar(side, x, y) == 0) { // II)Protection against shooting at empty cells
+				if (attempts) {
+					if (ReturnFieldID(side, x, y) < 2) {
+						if (difficulty < 2) {
+							attempts--;
+						}
+					}
+					else {
+						GwSUtPaLT = false;
+					}
+				}
+				else {
+					GwSUtPaLT = false;
+				}
 			}
-			else {
-				if (ReturnFieldWar(side, x, y) == 0 || fleet[ReturnFieldID(side, x, y)].GetDurability()[ReturnFieldIndex(side, x, y)] > 0) { break; } // II)Protection against shooting at empty cells
-			}
-			if (DEBUG_MODE) std::cout << "[DEBUG INFO]Gura AI(c) decided that: x = " << x << "; y = " << y << std::endl;
 		}
 	}
+	if (DEBUG_MODE) std::cout << "[DEBUG INFO]Gura AI(c) decided that: x = " << x << "; y = " << y << std::endl;
 
 	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ", strx = "";
 	strx = alf[x];
 
-	if (ReturnFieldID(side, x, y) > 1)
-	{
+	if (ReturnFieldID(side, x, y) > 1) {
 		int Index = ReturnFieldID(side, x, y) - 2;
 		int DurabtyIndex = ReturnFieldIndex(side, x, y);
 		int drbltSum = 0;
@@ -185,8 +198,7 @@ void Fleet::ConsDmgToIndBot(const int dmg, const int difficulty) {
 			fleet[Index].Klee(coords, side);
 		}
 	}
-	else
-	{
+	else {
 		std::cout << "The enemy missed! X = " << strx << "; Y = " << y << std::endl;
 	}
 	Field_Get_Vision(x, y, side);
