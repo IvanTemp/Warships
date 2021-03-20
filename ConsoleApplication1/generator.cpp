@@ -10,6 +10,13 @@ std::string Field_Final[2][width_height][width_height] = { "#", "#", "#" }; //Th
 std::pair<unsigned int, unsigned int> Field_ID[2][width_height][width_height] = { std::make_pair(0, 0) }; //The field with ID and indexes
 bool Field_War[2][width_height][width_height] = { 0, 0, 0 }; //The field with fog of war
 
+void OutputAchievementInfo(std::vector <std::pair<std::string, bool>> achievement_vector) {
+	std::cout << "[DEBUG INFO]Achievements: " << std::endl;
+	for (int i = 0; i < achievement_vector.size(); i++) {
+		std::cout << achievement_vector[i].first << ": " << achievement_vector[i].second << std::endl;
+	}
+}
+
 unsigned int ReturnFieldID(const bool side, const int x, const int y)
 {
 	return Field_ID[side][x][y].first;

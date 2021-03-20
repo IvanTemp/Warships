@@ -17,7 +17,7 @@ int main(int argc, char * argv[]) {
 	srand(time(0));
 
 	if (!DEBUG_MODE) {
-		std::cout << "This is a playable build! Most of the implemented features will be enabled only after enabling DEBUG_MODE in ship.h!\n\n";
+		std::cout << "This is a playable build! Most of the information unnecessary to the player will be shown only after enabling DEBUG_MODE in ship.h!\n\n";
 	} else {
 		std::cout << "WARNING! DEBUG MODE ON! \n" << std::endl;
 	}
@@ -26,6 +26,23 @@ int main(int argc, char * argv[]) {
 		std::cout << "Warning! The game is not designed for such a large field size! Please limit yourself to 26 cells!" << std::endl;
 		return -26;
 	}
+
+	//[IN DEVELOPMENT]ACHIEVEMENTS
+	//TODO: код тупо чистит файл с ачивками, если там что-то было
+	//std::vector <std::pair<std::string, bool>> achievement_vector;
+	//int i = -1;
+	//std::string achievement_status = "";
+	//std::ofstream achievements_file1("achievements.save");
+	//achievements_file1.close();
+	//std::ifstream achievements_file2("achievements.save", std::ios::in | std::ios::out);
+	//while (!achievements_file2.eof()) {
+	//	i++;
+	//	achievement_vector.push_back(std::make_pair("", 0));
+	//	std::getline(achievements_file2, achievement_vector[i].first);
+	//	std::getline(achievements_file2, achievement_status);
+	//	achievement_status == "1" ? achievement_vector[i].second = 1 : achievement_vector[i].second = 0;
+	//}
+	//////////////////////////////
 
 	ship ship1("Enterprise", "Aircraft Carrier", 2);
 	//Создадим вектор флот
@@ -83,8 +100,8 @@ int main(int argc, char * argv[]) {
 	///////////////
 
 	//DEBUG FUNCTIONS
-	if (DEBUG_MODE)
-	{
+	if (DEBUG_MODE) {
+		OutputAchievementInfo(achievement_vector);
 		fleet_1.Print(std::cout);
 		fleet_2.Print(std::cout);
 		Output_Field_ID_Indexes(0);

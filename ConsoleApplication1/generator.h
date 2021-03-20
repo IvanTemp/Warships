@@ -1,6 +1,8 @@
 #pragma once
 #include "Fleet.h"
 
+void OutputAchievementInfo(std::vector<std::pair<std::string, bool>> achievement_vector);
+
 unsigned int ReturnFieldID(bool side, int x, int y);
 
 unsigned int ReturnFieldIndex(bool side, int x, int y);
