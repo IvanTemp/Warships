@@ -20,3 +20,5 @@ void Output_Field_War(bool side);
 void Field_Get_Vision(const unsigned int x, const unsigned int y, const bool side);
 
 void Generate_ship(ship sheep, bool side);
+
+std::vector <unsigned int> First_order(Fleet& fleet1, Fleet& fleet2);

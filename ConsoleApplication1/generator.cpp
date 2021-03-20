@@ -344,3 +344,36 @@ void Generate_ship(ship sheep, bool side) {
 		}
 	}
 }
+
+std::vector <unsigned int> First_order(Fleet &fleet1, Fleet &fleet2) {
+	std::vector <unsigned int> orderList;
+	bool buleidu = false; //if index hasn't already been
+
+	unsigned int max = std::max(fleet1.GetFleet().size(), fleet2.GetFleet().size());
+
+	for (int i = 0; i < max; i++) {
+		buleidu = true;
+		unsigned int random_index = rand() % max;
+		for (int j = 0; j < orderList.size(); j++) {
+			if (random_index == orderList[j]) {
+				buleidu = false;
+			}
+		}
+		if (buleidu) {
+			orderList.push_back(random_index);
+		}
+		else {
+			i--;
+		}
+	}
+
+	if (DEBUG_MODE) {
+		std::cout << "[DEBUG INFO]Indexes order list:";
+		for (int i = 0; i < orderList.size(); i++) {
+			std::cout << " " << orderList[i];
+		}
+		std::cout << std::endl << std::endl;
+	}
+
+	return orderList;
+}

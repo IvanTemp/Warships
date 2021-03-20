@@ -7,6 +7,8 @@
 #include "generator.h"
 #include "fleet.h"
 
+bool Ironman = 1;
+
 /*Список найденных багов(на русском, ибо кому-то лень пропускать это через переводчик):
 1)Если игрок введёт сначала число, а затем букву, то выстрел пройдёт по X = цифре Y = 0, а в дальнейшем игрок не сможет вводить координаты до конца игры
 */
@@ -70,12 +72,6 @@ int main(int argc, char * argv[]) {
 	if (!fleet_2.GetFleet().size()) { std::cout << "Warning! Connect the file with the second fleet!" << std::endl; return -2; }
 	/*				Тут заканчивается наша первая лабораторная работа(по словам Вани)				*/
 	
-	if (DEBUG_MODE) 
-	{
-		fleet_1.Print(std::cout);
-		fleet_2.Print(std::cout);
-	}
-
 	//Generate here
 	for (int i = 0; i < fleet_1.GetFleet().size(); i++) {
 		Generate_ship(fleet_1.GetShipByIndex(i), fleet_1.GetSide());
@@ -89,6 +85,8 @@ int main(int argc, char * argv[]) {
 	//DEBUG FUNCTIONS
 	if (DEBUG_MODE)
 	{
+		fleet_1.Print(std::cout);
+		fleet_2.Print(std::cout);
 		Output_Field_ID_Indexes(0);
 		Output_Field_War(0);
 		Output_Field_ID_Indexes(1);
@@ -137,6 +135,13 @@ int main(int argc, char * argv[]) {
 		Output_Field_Final_REFORGED(0, fleet_1.GetName(), fleet_2.GetName());
 		Output_Field_Final_REFORGED(1, fleet_1.GetName(), fleet_2.GetName());
 	}
+
+	if (fleet_1.GetFleet().size() != fleet_2.GetFleet().size()) {
+		std::cout << "Warning! Different number of ships in fleets! Ironman mode is disabled." << std::endl << std::endl;
+		Ironman = 0;
+	}
+
+	First_order(fleet_1, fleet_2);
 
 	//Начинается цикл игры
 	std::cout << "Start game?\n\n";
