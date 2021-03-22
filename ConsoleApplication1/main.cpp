@@ -96,13 +96,16 @@ int main(int argc, char * argv[]) {
 		Output_Field_War(0);
 		Output_Field_ID_Indexes(1);
 		Output_Field_War(1);
+		////INITIALISATION FIELDS
+		Initialize_Field_Final(fleet_1);
+		Initialize_Field_Final(fleet_2);
+		/////////////////////////
+		std::cout << "Game Fields:" << std::endl << std::endl;
+		Output_Field_Final_REFORGED(0, fleet_1.GetName(), fleet_2.GetName());
+		Output_Field_Final_REFORGED(1, fleet_1.GetName(), fleet_2.GetName());
 	}
 	/////////////////
 
-	////INITIALISATION FIELDS
-	Initialize_Field_Final(fleet_1);
-	Initialize_Field_Final(fleet_2);
-	/////////////////////////
 
 	//DAMAGE TEST
 	/*if (DEBUG_MODE) {
@@ -135,18 +138,12 @@ int main(int argc, char * argv[]) {
 	//}
 	/////////////////
 
-	if (DEBUG_MODE) {
-		std::cout << "Game Fields:" << std::endl << std::endl;
-		Output_Field_Final_REFORGED(0, fleet_1.GetName(), fleet_2.GetName());
-		Output_Field_Final_REFORGED(1, fleet_1.GetName(), fleet_2.GetName());
-	}
-
 	if (fleet_1.GetFleet().size() != fleet_2.GetFleet().size()) {
 		std::cout << "Warning! Different number of ships in fleets! Ironman mode is disabled." << std::endl << std::endl;
 		Ironman = 0;
 	}
 
-	First_order(fleet_1, fleet_2);
+	First_order(fleet_1, fleet_2); //IN DEVELOPMENT
 
 	//Начинается цикл игры
 	std::cout << "Start game?\n\n";
@@ -263,7 +260,7 @@ int main(int argc, char * argv[]) {
 	}
 	if (fleet_1.GetHealth() > fleet_2.GetHealth()) {
 		std::cout << fleet_1.GetName();
-		if (BattleMode == "pve") {
+		if (BattleMode == "pve" && Ironman) {
 			RefreshAchievements(difficulty);
 		}
 	}
