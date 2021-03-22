@@ -89,7 +89,6 @@ int main(int argc, char * argv[]) {
 
 	//DEBUG FUNCTIONS
 	if (DEBUG_MODE) {
-		OutputAchievementInfo(achievement_array);
 		fleet_1.Print(std::cout);
 		fleet_2.Print(std::cout);
 		Output_Field_ID_Indexes(0);
@@ -106,6 +105,9 @@ int main(int argc, char * argv[]) {
 	}
 	/////////////////
 
+	//Achievements
+	OutputAchievementInfo(achievement_array);
+	//////////////
 
 	//DAMAGE TEST
 	/*if (DEBUG_MODE) {

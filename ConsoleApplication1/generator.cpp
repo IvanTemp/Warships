@@ -17,6 +17,7 @@ void OutputAchievementInfo(std::vector <std::pair<std::string, bool>> achievemen
 		std::cout << i + 1 << ")" << achievement_array[i].first << ": ";
 		achievement_array[i].second ? std::cout << "Received\n" : std::cout << "Not received\n";
 	}
+	std::cout << std::endl;
 }
 
 std::vector <std::pair<std::string, bool>> ReadAchievements() {
