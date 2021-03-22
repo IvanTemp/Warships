@@ -27,22 +27,40 @@ int main(int argc, char * argv[]) {
 		return -26;
 	}
 
+
 	//[IN DEVELOPMENT]ACHIEVEMENTS
 	//TODO: код тупо чистит файл с ачивками, если там что-то было
-	//std::vector <std::pair<std::string, bool>> achievement_vector;
-	//int i = -1;
-	//std::string achievement_status = "";
-	//std::ofstream achievements_file1("achievements.save");
-	//achievements_file1.close();
-	//std::ifstream achievements_file2("achievements.save", std::ios::in | std::ios::out);
-	//while (!achievements_file2.eof()) {
-	//	i++;
-	//	achievement_vector.push_back(std::make_pair("", 0));
-	//	std::getline(achievements_file2, achievement_vector[i].first);
-	//	std::getline(achievements_file2, achievement_status);
-	//	achievement_status == "1" ? achievement_vector[i].second = 1 : achievement_vector[i].second = 0;
-	//}
-	//////////////////////////////
+	std::vector <std::pair<std::string, bool>> achievement_vector;
+	achievement_vector.push_back(std::make_pair("Achiv1", 0));
+	achievement_vector.push_back(std::make_pair("Achiv2", 0));
+	achievement_vector.push_back(std::make_pair("Achiv3", 0));
+	std::ofstream kostil("achievements.txt", std::ios::in | std::ios::out | std::ios::app | std::ios::binary | std::ios::ate);
+	kostil.close();
+	std::ifstream achivIn("achievements.txt"/*хахахаха*/);
+	std::string strin = "";
+	getline(achivIn, strin);
+	for (int i = 0; i < strin.length(); i++)
+	{
+		strin[i] == '1' ? achievement_vector[i].second = 1 : achievement_vector[i].second = 0;
+	}
+	achivIn.close();
+	////////////////////////////
+	OutputAchievementInfo(achievement_vector);
+	std::ofstream achivOut("achievements.txt");
+	for (int i = 0; i < achievement_vector.size(); i++)
+	{
+		achivOut << achievement_vector[i].second;
+
+	}
+	achivOut.close();
+
+	
+
+
+
+
+
+
 
 	ship ship1("Enterprise", "Aircraft Carrier", 2);
 	//Создадим вектор флот
