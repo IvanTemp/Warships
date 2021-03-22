@@ -235,7 +235,6 @@ int main(int argc, char * argv[]) {
 								system("pause");
 								if (!DEBUG_MODE) { system("cls"); }
 								first++;
-								fleet_2.NUCLEAR_BOMB(); //DEEEEEEEEEEEEEEEEEEEEEEEELEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEETE
 								break;
 							case 1: //Bot
 								std::cout << fleet_2.GetName() << " turn." << std::endl << std::endl;
