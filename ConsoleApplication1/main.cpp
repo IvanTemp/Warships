@@ -261,7 +261,7 @@ int main(int argc, char * argv[]) {
 	if (fleet_1.GetHealth() > fleet_2.GetHealth()) {
 		std::cout << fleet_1.GetName();
 		if (BattleMode == "pve" && Ironman) {
-			RefreshAchievements(difficulty);
+			GiveAchievement(difficulty);
 		}
 	}
 	else if (fleet_1.GetHealth() < fleet_2.GetHealth()) {
@@ -271,5 +271,8 @@ int main(int argc, char * argv[]) {
 		std::cout << "Friendship";
 	}
 	std::cout << " won!";
+	if (BattleMode == "pvp" && Ironman) {
+		GiveAchievement(3);
+	}
 	return 0;
 }

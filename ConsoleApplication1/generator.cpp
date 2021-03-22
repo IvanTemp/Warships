@@ -12,9 +12,9 @@ std::pair<unsigned int, unsigned int> Field_ID[2][width_height][width_height] = 
 bool Field_War[2][width_height][width_height] = { 0, 0, 0 }; //The field with fog of war
 
 void OutputAchievementInfo(std::vector <std::pair<std::string, bool>> achievement_array) {
-	std::cout << "[DEBUG INFO]Achievements: " << std::endl;
+	std::cout << "Achievements: " << std::endl;
 	for (int i = 0; i < achievement_array.size(); i++) {
-		std::cout << achievement_array[i].first << ": ";
+		std::cout << i + 1 << ")" << achievement_array[i].first << ": ";
 		achievement_array[i].second ? std::cout << "Received\n" : std::cout << "Not received\n";
 	}
 }
@@ -25,6 +25,7 @@ std::vector <std::pair<std::string, bool>> ReadAchievements() {
 	achievement_array.push_back(std::make_pair("Win a PVE match on Normal difficulty", 0));
 	achievement_array.push_back(std::make_pair("Win a PVE match on Hard difficulty", 0));
 	achievement_array.push_back(std::make_pair("Try to win a PVE match on Impossible difficulty", 0));
+	achievement_array.push_back(std::make_pair("Play PVP match", 0));
 	/////////////////////////////
 	std::ofstream nekostil("achievements.db", std::ios::in | std::ios::out | std::ios::app | std::ios::binary | std::ios::ate);
 	nekostil.close();
@@ -44,7 +45,7 @@ std::vector <std::pair<std::string, bool>> ReadAchievements() {
 	return achievement_array;
 }
 
-void RefreshAchievements(int achivement_plus) {
+void GiveAchievement(int achivement_plus) {
 	std::vector <std::pair<std::string, bool>> achievement_array;
 	//Place your achivements here
 	achievement_array.push_back(std::make_pair("Achiv1", 0));

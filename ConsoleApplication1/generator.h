@@ -5,7 +5,7 @@ void OutputAchievementInfo(std::vector<std::pair<std::string, bool>> achievement
 
 std::vector <std::pair<std::string, bool>> ReadAchievements();
 
-void RefreshAchievements(int achivement_plus);
+void GiveAchievement(int achivement_plus);
 
 unsigned int ReturnFieldID(bool side, int x, int y);
 
