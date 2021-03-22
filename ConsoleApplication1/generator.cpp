@@ -1,8 +1,9 @@
-#include <iostream>
+ï»¿#include <iostream>
 #include <locale>
 #include <vector>
 #include <map>
 #include <string>
+#include <fstream>
 #include "generator.h"
 #include "Fleet.h"
 
@@ -10,20 +11,68 @@ std::string Field_Final[2][width_height][width_height] = { "#", "#", "#" }; //Th
 std::pair<unsigned int, unsigned int> Field_ID[2][width_height][width_height] = { std::make_pair(0, 0) }; //The field with ID and indexes
 bool Field_War[2][width_height][width_height] = { 0, 0, 0 }; //The field with fog of war
 
-void OutputAchievementInfo(std::vector <std::pair<std::string, bool>> achievement_vector) {
+void OutputAchievementInfo(std::vector <std::pair<std::string, bool>> achievement_array) {
 	std::cout << "[DEBUG INFO]Achievements: " << std::endl;
-	for (int i = 0; i < achievement_vector.size(); i++) {
-		std::cout << achievement_vector[i].first << ": " << achievement_vector[i].second << std::endl;
+	for (int i = 0; i < achievement_array.size(); i++) {
+		std::cout << achievement_array[i].first << ": ";
+		achievement_array[i].second ? std::cout << "Received\n" : std::cout << "Not received\n";
 	}
 }
 
-unsigned int ReturnFieldID(const bool side, const int x, const int y)
-{
+std::vector <std::pair<std::string, bool>> ReadAchievements() {
+	std::vector <std::pair<std::string, bool>> achievement_array;
+	//Place your achivements here
+	achievement_array.push_back(std::make_pair("Win a PVE match on Normal difficulty", 0));
+	achievement_array.push_back(std::make_pair("Win a PVE match on Hard difficulty", 0));
+	achievement_array.push_back(std::make_pair("Try to win a PVE match on Impossible difficulty", 0));
+	/////////////////////////////
+	std::ofstream nekostil("achievements.db", std::ios::in | std::ios::out | std::ios::app | std::ios::binary | std::ios::ate);
+	nekostil.close();
+	std::ifstream achivIn("achievements.db");
+	std::string strin = "";
+	getline(achivIn, strin);
+	for (int i = 0; i < strin.length(); i++) {
+		strin[i] == '1' ? achievement_array[i].second = 1 : achievement_array[i].second = 0;
+	}
+	achivIn.close();
+	std::ofstream achivOut("achievements.db");
+	for (int i = 0; i < achievement_array.size(); i++) {
+		achivOut << achievement_array[i].second;
+
+	}
+	achivOut.close();
+	return achievement_array;
+}
+
+void RefreshAchievements(int achivement_plus) {
+	std::vector <std::pair<std::string, bool>> achievement_array;
+	//Place your achivements here
+	achievement_array.push_back(std::make_pair("Achiv1", 0));
+	achievement_array.push_back(std::make_pair("Achiv2", 0));
+	achievement_array.push_back(std::make_pair("Achiv3", 0));
+	/////////////////////////////
+	std::ofstream nekostil("achievements.db", std::ios::in | std::ios::out | std::ios::app | std::ios::binary | std::ios::ate);
+	nekostil.close();
+	std::ifstream achivIn("achievements.db");
+	std::string strin = "";
+	getline(achivIn, strin);
+	for (int i = 0; i < strin.length(); i++) {
+		strin[i] == '1' ? achievement_array[i].second = 1 : achievement_array[i].second = 0;
+	}
+	achivIn.close();
+	achievement_array[achivement_plus].second = true;
+	std::ofstream achivOut("achievements.db");
+	for (int i = 0; i < achievement_array.size(); i++) {
+		achivOut << achievement_array[i].second;
+	}
+	achivOut.close();
+}
+
+unsigned int ReturnFieldID(const bool side, const int x, const int y) {
 	return Field_ID[side][x][y].first;
 }
 
-unsigned int ReturnFieldIndex(const bool side, const int x, const int y)
-{
+unsigned int ReturnFieldIndex(const bool side, const int x, const int y) {
 	return Field_ID[side][x][y].second;
 }
 
@@ -58,7 +107,7 @@ void Initialize_Field_Final(const Fleet fleet) {
 	}
 }
 
-void Output_Field_Final_REFORGED(const bool side, std::string name1, std::string name2) { //TODO ÑÄÅËÀÒÜ
+void Output_Field_Final_REFORGED(const bool side, std::string name1, std::string name2) { //TODO Ð¡Ð”Ð•Ð›ÐÐ¢Ð¬
 	std::string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	std::map<int, std::string> SideToName = { { 0, name1 }, {1, name2} };
 	std::cout << "\tSide: " << SideToName[side] << "\t\tSide: " << SideToName[!side] << std::endl;

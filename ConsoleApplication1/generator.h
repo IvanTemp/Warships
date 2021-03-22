@@ -3,6 +3,10 @@
 
 void OutputAchievementInfo(std::vector<std::pair<std::string, bool>> achievement_vector);
 
+std::vector <std::pair<std::string, bool>> ReadAchievements();
+
+void RefreshAchievements(int achivement_plus);
+
 unsigned int ReturnFieldID(bool side, int x, int y);
 
 unsigned int ReturnFieldIndex(bool side, int x, int y);

@@ -28,39 +28,9 @@ int main(int argc, char * argv[]) {
 	}
 
 
-	//[IN DEVELOPMENT]ACHIEVEMENTS
-	//TODO: код тупо чистит файл с ачивками, если там что-то было
-	std::vector <std::pair<std::string, bool>> achievement_vector;
-	achievement_vector.push_back(std::make_pair("Achiv1", 0));
-	achievement_vector.push_back(std::make_pair("Achiv2", 0));
-	achievement_vector.push_back(std::make_pair("Achiv3", 0));
-	std::ofstream kostil("achievements.txt", std::ios::in | std::ios::out | std::ios::app | std::ios::binary | std::ios::ate);
-	kostil.close();
-	std::ifstream achivIn("achievements.txt"/*хахахаха*/);
-	std::string strin = "";
-	getline(achivIn, strin);
-	for (int i = 0; i < strin.length(); i++)
-	{
-		strin[i] == '1' ? achievement_vector[i].second = 1 : achievement_vector[i].second = 0;
-	}
-	achivIn.close();
-	////////////////////////////
-	OutputAchievementInfo(achievement_vector);
-	std::ofstream achivOut("achievements.txt");
-	for (int i = 0; i < achievement_vector.size(); i++)
-	{
-		achivOut << achievement_vector[i].second;
-
-	}
-	achivOut.close();
-
-	
-
-
-
-
-
-
+	//ACHIEVEMENTS
+	std::vector <std::pair<std::string, bool>> achievement_array = ReadAchievements();
+	//////////////
 
 	ship ship1("Enterprise", "Aircraft Carrier", 2);
 	//Создадим вектор флот
@@ -119,7 +89,7 @@ int main(int argc, char * argv[]) {
 
 	//DEBUG FUNCTIONS
 	if (DEBUG_MODE) {
-		OutputAchievementInfo(achievement_vector);
+		OutputAchievementInfo(achievement_array);
 		fleet_1.Print(std::cout);
 		fleet_2.Print(std::cout);
 		Output_Field_ID_Indexes(0);
@@ -182,9 +152,11 @@ int main(int argc, char * argv[]) {
 	std::cout << "Start game?\n\n";
 	system("pause");
 
+	std::string BattleMode = "";
+	int difficulty = 0;
+
 	while (fleet_1.GetHealth() && fleet_2.GetHealth()) {
 		system("cls");
-		std::string BattleMode = "";
 		std::cout << "Select battle mode (PvE / PvP): ";
 		std::cin >> BattleMode;
 		BattleMode = hahaYouAreSmallNow(BattleMode);
@@ -229,7 +201,6 @@ int main(int argc, char * argv[]) {
 			}
 		} else if (BattleMode == "pve") {
 			while (fleet_1.GetHealth() && fleet_2.GetHealth()) {
-				int difficulty = 0;
 				system("cls");
 				std::cout << "Select difficulty level NUMBER: " << std::endl;
 				std::cout << "1)Normal" << std::endl; //Everything is fair
@@ -264,6 +235,7 @@ int main(int argc, char * argv[]) {
 								system("pause");
 								if (!DEBUG_MODE) { system("cls"); }
 								first++;
+								fleet_2.NUCLEAR_BOMB(); //DEEEEEEEEEEEEEEEEEEEEEEEELEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEETE
 								break;
 							case 1: //Bot
 								std::cout << fleet_2.GetName() << " turn." << std::endl << std::endl;
@@ -290,9 +262,18 @@ int main(int argc, char * argv[]) {
 			system("pause");
 		}
 	}
-	if (fleet_1.GetHealth() > fleet_2.GetHealth()) { std::cout << fleet_1.GetName(); }
-	else if (fleet_1.GetHealth() < fleet_2.GetHealth()) { std::cout << fleet_2.GetName(); }
-	else { std::cout << "Friendship"; }
+	if (fleet_1.GetHealth() > fleet_2.GetHealth()) {
+		std::cout << fleet_1.GetName();
+		if (BattleMode == "pve") {
+			RefreshAchievements(difficulty);
+		}
+	}
+	else if (fleet_1.GetHealth() < fleet_2.GetHealth()) {
+		std::cout << fleet_2.GetName();
+	}
+	else { //IDK when it will be work :/
+		std::cout << "Friendship";
+	}
 	std::cout << " won!";
 	return 0;
 }
