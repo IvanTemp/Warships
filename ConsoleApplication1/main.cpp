@@ -155,14 +155,14 @@ int main(int argc, char * argv[]) {
 	int difficulty = 0;
 
 	while (fleet_1.GetHealth() && fleet_2.GetHealth()) {
-		system("cls");
+		if (!DEBUG_MODE) { system("cls"); }
 		std::cout << "Select battle mode (PvE / PvP): ";
 		std::cin >> BattleMode;
 		BattleMode = hahaYouAreSmallNow(BattleMode);
 
 		int first = rand() % 2;
 		if (BattleMode == "pvp") {
-			system("cls");
+			if (!DEBUG_MODE) { system("cls"); }
 			if (DEBUG_MODE) {
 				std::cout << "First side: " << first << std::endl;
 			}
@@ -176,10 +176,13 @@ int main(int argc, char * argv[]) {
 						Output_Field_Final_REFORGED(0, fleet_1.GetName(), fleet_2.GetName());
 						//Выстрел игрока 1
 						std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
-						fleet_2.ConsDmgToIndPlayer(2);
+						fleet_2.ConsDmgToIndPlayer(Default_Damage);
 						Initialize_Field_Final(fleet_2);
 						system("pause");
-						system("cls");
+						if (!DEBUG_MODE) { system("cls"); }
+						std::cout << "Pass the mainframe to your opponent!\n\n";
+						system("pause");
+						if (!DEBUG_MODE) { system("cls"); }
 						first++;
 						break;
 					case 1:
@@ -190,17 +193,20 @@ int main(int argc, char * argv[]) {
 						Output_Field_Final_REFORGED(1, fleet_1.GetName(), fleet_2.GetName());
 						//Выстрел игрока 2
 						std::cout << "Order, commander! (Write X and Y coordinates): ";
-						fleet_1.ConsDmgToIndPlayer(2);
+						fleet_1.ConsDmgToIndPlayer(Default_Damage);
 						Initialize_Field_Final(fleet_1);
 						system("pause");
-						system("cls");
+						if (!DEBUG_MODE) { system("cls"); }
+						std::cout << "Pass the mainframe to your opponent!\n\n";
+						system("pause");
+						if (!DEBUG_MODE) { system("cls"); }
 						first++;
 						break;
 				}
 			}
 		} else if (BattleMode == "pve") {
 			while (fleet_1.GetHealth() && fleet_2.GetHealth()) {
-				system("cls");
+				if (!DEBUG_MODE) { system("cls"); }
 				std::cout << "Select difficulty level NUMBER: " << std::endl;
 				std::cout << "1)Normal" << std::endl; //Everything is fair
 				std::cout << "2)Hard" << std::endl; //Bot has the right to make mistake
@@ -214,7 +220,7 @@ int main(int argc, char * argv[]) {
 				}
 
 				if (difficulty >= 0 && difficulty <= 2) { //0 - 2(1 - 3 for user)
-					system("cls");
+					if (!DEBUG_MODE) { system("cls"); }
 					if (DEBUG_MODE) {
 						std::cout << "First side: " << first << std::endl;
 						Output_Field_ID_Indexes(0); Output_Field_ID_Indexes(1);
@@ -229,7 +235,7 @@ int main(int argc, char * argv[]) {
 								Output_Field_Final_REFORGED(0, fleet_1.GetName(), fleet_2.GetName());
 								//Shot
 								std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
-								fleet_2.ConsDmgToIndPlayer(2);
+								fleet_2.ConsDmgToIndPlayer(Default_Damage);
 								Initialize_Field_Final(fleet_2); //MUST HAVE AFTER ANY DAMAGE
 								system("pause");
 								if (!DEBUG_MODE) { system("cls"); }
@@ -238,7 +244,7 @@ int main(int argc, char * argv[]) {
 							case 1: //Bot
 								std::cout << fleet_2.GetName() << " turn." << std::endl << std::endl;
 								//Shot
-								fleet_1.ConsDmgToIndBot(2, difficulty);
+								fleet_1.ConsDmgToIndBot(Default_Damage, difficulty);
 								Initialize_Field_Final(fleet_1); //MUST HAVE AFTER ANY DAMAGE
 								system("pause");
 								if (!DEBUG_MODE) { system("cls"); }

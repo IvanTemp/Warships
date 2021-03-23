@@ -124,6 +124,12 @@ ship& ship::operator=(const ship& right)
 
 void ship::Klee(const std::vector <std::pair<unsigned int, unsigned int>> coords, const bool side)const {
     extern void Field_Get_Vision(const unsigned int x, const unsigned int y, const bool side);
+    if (DEBUG_MODE) {
+        for (int i = 0; i < coords.size(); i++) {
+            std::cout << "[DEBUG INFO]" << i << ": X = " << coords[i].first << "; Y = " << coords[i].second << std::endl;
+        }
+        std::cout << std::endl;
+    }
     for (int i = 0; i < coords.size(); i++) {
         if (coords[i].first) {
             if (coords[i].second) {

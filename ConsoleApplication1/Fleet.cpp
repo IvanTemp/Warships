@@ -7,6 +7,7 @@
 #include "generator.h"
 
 std::vector <std::pair <unsigned int, unsigned int>> BOTRoDC; //BOT Repository Of Detected Cells
+int drbltSum = 0;
 
 int Fleet::count = 0;
 
@@ -170,7 +171,6 @@ void Fleet::ConsDmgToIndBot(const int dmg, const int difficulty) {
 	if (ReturnFieldID(side, x, y) > 1) {
 		int Index = ReturnFieldID(side, x, y) - 2;
 		int DurabtyIndex = ReturnFieldIndex(side, x, y);
-		int drbltSum = 0;
 		fleet[Index].DmgtoInd(dmg, DurabtyIndex);
 		std::cout << "The enemy hit your ship in " << strx << " " << y << std::endl;
 		if (fleet[Index].GetDurability()[DurabtyIndex] > 0) { BOTRoDC.push_back({ x, y }); } //Memorizing an unfinished cell
@@ -189,13 +189,12 @@ void Fleet::ConsDmgToIndBot(const int dmg, const int difficulty) {
 			std::cout << std::endl;
 		}
 
-		for (int i = 0; i < fleet[Index].GetDurability().size(); i++) {
-			drbltSum += fleet[Index].GetDurability()[i];
-			coords.push_back(std::make_pair(x, y));
-		}
+		drbltSum += fleet[Index].GetDurability()[DurabtyIndex];
+		coords.push_back(std::make_pair(x, y));
 
 		if (!drbltSum) {
 			fleet[Index].Klee(coords, side);
+			coords.clear();
 		}
 	}
 	else {
@@ -229,41 +228,51 @@ void Fleet::ConsDmgToIndPlayer(const int dmg) {
 
 	if (DEBUG_MODE) { std::cout << "[DEBUG INFO]int X = " << x << " Y = " << y << std::endl; }
 
-	if (ReturnFieldID(side, x, y) > 1)	{
-		int Index = ReturnFieldID(side, x, y) - 2;
-		int DurabtyIndex = ReturnFieldIndex(side, x, y);
-		int drbltSum = 0;
-		fleet[Index].DmgtoInd(dmg, DurabtyIndex);
-		std::cout << "Dodge this! You are hit!" << std::endl;
-		std::cout << "You hit him in " << alf[x] << " " << y << std::endl;
+	if (ReturnFieldID(side, x, y) > 1) {
+		if (fleet[ReturnFieldID(side, x, y) - 2].GetDurability()[ReturnFieldIndex(side, x, y)]) {
+			int Index = ReturnFieldID(side, x, y) - 2;
+			int DurabtyIndex = ReturnFieldIndex(side, x, y);
+			int drbltSum = 0;
+			fleet[Index].DmgtoInd(dmg, DurabtyIndex);
+			std::cout << "Dodge this! You are hit!" << std::endl;
+			std::cout << "You hit him in " << alf[x] << " " << y << std::endl;
 
-		std::vector <std::pair<unsigned int, unsigned int>> coords;
+			std::vector <std::pair<unsigned int, unsigned int>> coords;
 
-		if (DEBUG_MODE) {
-			std::cout << "[DEBUG INFO]Fleet: " << name;
-			std::cout << "; Ship name: " << fleet[Index].GetName();
-			std::cout << "; new durability =";
+			if (DEBUG_MODE) {
+				std::cout << "[DEBUG INFO]Fleet: " << name;
+				std::cout << "; Ship name: " << fleet[Index].GetName();
+				std::cout << "; new durability =";
 
-			for (int i = 0; i < fleet[Index].GetDurability().size(); i++) {
-				std::cout << " " << fleet[Index].GetDurability()[i];
+				for (int i = 0; i < fleet[Index].GetDurability().size(); i++) {
+					std::cout << " " << fleet[Index].GetDurability()[i];
+				}
+
+				std::cout << std::endl;
 			}
 
-			std::cout << std::endl;
-		}
+			for (int i = 0; i < fleet[Index].GetDurability().size(); i++) {
+				drbltSum += fleet[Index].GetDurability()[i];
+			}
 
-		for (int i = 0; i < fleet[Index].GetDurability().size(); i++) {
-			drbltSum += fleet[Index].GetDurability()[i];
-			coords.push_back(std::make_pair(x, y));
+			if (!drbltSum) {
+				for (int x = 0; x < width_height; x++) {
+					for (int y = 0; y < width_height; y++) {
+						if (ReturnFieldID(side, x, y) == Index + 2) {
+							coords.push_back(std::make_pair(x, y));
+						}
+					}
+				}
+				fleet[Index].Klee(coords, side);
+			}
 		}
-
-		if (!drbltSum) {
-			fleet[Index].Klee(coords, side);
+		else {
+			std::cout << "Why did you shoot at an already sunk ship?" << std::endl;
 		}
 	}
-		else
-		{
-			std::cout << "Miss! X = " << alf[x] << "; Y = " << y << std::endl;
-		}
+	else {
+		std::cout << "Miss! X = " << alf[x] << "; Y = " << y << std::endl;
+	}
 		Field_Get_Vision(x, y, side);
 }
 

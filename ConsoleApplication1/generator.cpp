@@ -197,7 +197,7 @@ void Generate_ship(ship sheep, bool side) {
 		//TEST YOUR OUTPUT HERE //rotation: 0 - North, 1 - East, 2 - South - 3 - West
 		//x = 5; y = 5; rotation = 0;
 		if (DEBUG_MODE) {
-			std::cout << "[DEBUG INFO]Trying to: x = " << x;
+			std::cout << "[Generator]Trying to: x = " << x;
 			std::cout << "; y = " << y;
 			std::cout << "; rotation = " << rotation;
 			std::cout << "; ID: " << ID;
