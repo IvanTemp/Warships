@@ -109,7 +109,7 @@ void Initialize_Field_Final(const Fleet fleet) {
 	}
 }
 
-void Output_Field_Final_REFORGED(const bool side, std::string name1, std::string name2) { //TODO СДЕЛАТЬ
+void Output_Field_Final_REFORGED(const bool side, std::string name1, std::string name2) {
 	std::string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	std::map<int, std::string> SideToName = { { 0, name1 }, {1, name2} };
 	std::cout << "\tSide: " << SideToName[side] << "\t\tSide: " << SideToName[!side] << std::endl;

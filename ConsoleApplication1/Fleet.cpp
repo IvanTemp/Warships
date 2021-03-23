@@ -189,12 +189,19 @@ void Fleet::ConsDmgToIndBot(const int dmg, const int difficulty) {
 			std::cout << std::endl;
 		}
 
-		drbltSum += fleet[Index].GetDurability()[DurabtyIndex];
-		coords.push_back(std::make_pair(x, y));
+		for (int i = 0; i < fleet[Index].GetDurability().size(); i++) {
+			drbltSum += fleet[Index].GetDurability()[i];
+		}
 
 		if (!drbltSum) {
+			for (int x = 0; x < width_height; x++) {
+				for (int y = 0; y < width_height; y++) {
+					if (ReturnFieldID(side, x, y) == Index + 2) {
+						coords.push_back(std::make_pair(x, y));
+					}
+				}
+			}
 			fleet[Index].Klee(coords, side);
-			coords.clear();
 		}
 	}
 	else {
