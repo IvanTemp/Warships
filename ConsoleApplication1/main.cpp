@@ -145,23 +145,25 @@ int main(int argc, char * argv[]) {
 		Ironman = 0;
 	}
 
-	First_order(fleet_1, fleet_2); //IN DEVELOPMENT
+	std::vector <unsigned int> order = { 7 }; //First_order(fleet_1, fleet_2);
 
 	//Начинается цикл игры
 	std::cout << "Start game?\n\n";
 	system("pause");
 
 	std::string BattleMode = "";
-	int difficulty = 0;
+	int difficulty = 0, round = 0;
+	std::string action = "";
 
 	while (fleet_1.GetHealth() && fleet_2.GetHealth()) {
 		if (!DEBUG_MODE) { system("cls"); }
+
 		std::cout << "Select battle mode (PvE / PvP): ";
 		std::cin >> BattleMode;
 		BattleMode = hahaYouAreSmallNow(BattleMode);
 
 		int first = rand() % 2;
-		if (BattleMode == "pvp") {
+		if (BattleMode == "pvp") { //PVP
 			if (!DEBUG_MODE) { system("cls"); }
 			if (DEBUG_MODE) {
 				std::cout << "First side: " << first << std::endl;
@@ -184,6 +186,10 @@ int main(int argc, char * argv[]) {
 						system("pause");
 						if (!DEBUG_MODE) { system("cls"); }
 						first++;
+						round++;
+						if (round == order.size()) {
+							round = 0;
+						}
 						break;
 					case 1:
 						//Смена хода
@@ -201,10 +207,14 @@ int main(int argc, char * argv[]) {
 						system("pause");
 						if (!DEBUG_MODE) { system("cls"); }
 						first++;
+						round++;
+						if (round == order.size()) {
+							round = 0;
+						}
 						break;
 				}
 			}
-		} else if (BattleMode == "pve") {
+		} else if (BattleMode == "pve") { //PVE
 			while (fleet_1.GetHealth() && fleet_2.GetHealth()) {
 				if (!DEBUG_MODE) { system("cls"); }
 				std::cout << "Select difficulty level NUMBER: " << std::endl;
@@ -230,18 +240,60 @@ int main(int argc, char * argv[]) {
 						switch (first % 2) {
 							case 0: //Player
 								Initialize_Field_Final(fleet_1);
+
 								std::cout << fleet_1.GetName() << " turn." << std::endl << std::endl;
 								//Вывод поля для игрока 1
 								Output_Field_Final_REFORGED(0, fleet_1.GetName(), fleet_2.GetName());
-								//Shot
-								std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
-								fleet_2.ConsDmgToIndPlayer(Default_Damage);
-								Initialize_Field_Final(fleet_2); //MUST HAVE AFTER ANY DAMAGE
+
+								while (true) { //IN DEVELOPMENT
+									if (DEBUG_MODE) { std::cout << "[DEBUG INFO]order[round] = " << order[round] << std::endl; }
+									std::cout << "Current position: " << IntToLetter(Return_X_Y(order[round] + 2, first % 2).first) << " " << Return_X_Y(order[round] + 2, first % 2).second << std::endl;
+									std::cout << "What do you want?\n\n";
+									if (fleet_1.GetShipByIndex(order[round]).GetType() == "Small") { //single-deck abilities
+										std::cout << "-Shoot\n-Move\n" << std::endl;
+										std::cin >> action;
+										action = hahaYouAreSmallNow(action);
+										if (action == "shoot" && action == "") {
+											//Shot
+											std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
+											fleet_2.ConsDmgToIndPlayer(Small_Damage);
+											round++;
+											if (round == order.size()) {
+												round = 0;
+											}
+											break;
+										}
+										else if (action == "move") {
+											Small_Move(order[round], fleet_1.GetSide());
+											Initialize_Field_Final(fleet_1);
+											round++;
+											if (round == order.size()) {
+												round = 0;
+											}
+											break;
+										}
+										else {
+											std::cout << "Wrong command!" << std::endl;
+											system("pause");
+											continue;
+										}
+									}
+									else {
+										std::cout << "ANOTHER SHIPS IN DEVELOPMENT!" << std::endl;
+										fleet_2.ConsDmgToIndPlayer(Default_Damage);
+									}
+								}
+
 								system("pause");
 								if (!DEBUG_MODE) { system("cls"); }
 								first++;
+								round++;
+								if (round == order.size()) {
+									round = 0;
+								}
 								break;
 							case 1: //Bot
+								Initialize_Field_Final(fleet_2);
 								std::cout << fleet_2.GetName() << " turn." << std::endl << std::endl;
 								//Shot
 								fleet_1.ConsDmgToIndBot(Default_Damage, difficulty);
@@ -249,18 +301,22 @@ int main(int argc, char * argv[]) {
 								system("pause");
 								if (!DEBUG_MODE) { system("cls"); }
 								first++;
+								round++;
+								if (round == order.size()) {
+									round = 0;
+								}
 								break;
 						}
 					}
 				} else {
-					system("cls");
+					if (!DEBUG_MODE) { system("cls"); }
 					std::cout << "E-error! This is inapporopriate... I... What should I...?" << std::endl << std::endl;
 					std::cout << "You scared the program with your wrong input. Be careful next time." << std::endl << std::endl;
 					system("pause");
 				}
 			}
 		} else {
-			system("cls");
+			if (!DEBUG_MODE) { system("cls"); }
 			std::cout << "E-error! This is inapporopriate... I... What should I...?" << std::endl << std::endl;
 			std::cout << "You scared the program with your wrong input. Be careful next time." << std::endl << std::endl;
 			system("pause");

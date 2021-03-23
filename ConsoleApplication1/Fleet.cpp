@@ -165,43 +165,42 @@ void Fleet::ConsDmgToIndBot(const int dmg, const int difficulty) {
 	}
 	if (DEBUG_MODE) std::cout << "[DEBUG INFO]Gura AI(c) decided that: x = " << x << "; y = " << y << std::endl;
 
-	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ", strx = "";
-	strx = alf[x];
+	char strx = IntToLetter(x);
 
 	if (ReturnFieldID(side, x, y) > 1) {
-		int Index = ReturnFieldID(side, x, y) - 2;
+		int index = ReturnFieldID(side, x, y) - 2;
 		int DurabtyIndex = ReturnFieldIndex(side, x, y);
-		fleet[Index].DmgtoInd(dmg, DurabtyIndex);
+		fleet[index].DmgtoInd(dmg, DurabtyIndex);
 		std::cout << "The enemy hit your ship in " << strx << " " << y << std::endl;
-		if (fleet[Index].GetDurability()[DurabtyIndex] > 0) { BOTRoDC.push_back({ x, y }); } //Memorizing an unfinished cell
+		if (fleet[index].GetDurability()[DurabtyIndex] > 0) { BOTRoDC.push_back({ x, y }); } //Memorizing an unfinished cell
 
 		std::vector <std::pair<unsigned int, unsigned int>> coords;
 
 		if (DEBUG_MODE) {
 			std::cout << "[DEBUG INFO]Fleet: " << name;
-			std::cout << "; Ship name: " << fleet[Index].GetName();
+			std::cout << "; Ship name: " << fleet[index].GetName();
 			std::cout << "; new durability =";
 
-			for (int i = 0; i < fleet[Index].GetDurability().size(); i++) {
-				std::cout << " " << fleet[Index].GetDurability()[i];
+			for (int i = 0; i < fleet[index].GetDurability().size(); i++) {
+				std::cout << " " << fleet[index].GetDurability()[i];
 			}
 
 			std::cout << std::endl;
 		}
 
-		for (int i = 0; i < fleet[Index].GetDurability().size(); i++) {
-			drbltSum += fleet[Index].GetDurability()[i];
+		for (int i = 0; i < fleet[index].GetDurability().size(); i++) {
+			drbltSum += fleet[index].GetDurability()[i];
 		}
 
 		if (!drbltSum) {
 			for (int x = 0; x < width_height; x++) {
 				for (int y = 0; y < width_height; y++) {
-					if (ReturnFieldID(side, x, y) == Index + 2) {
+					if (ReturnFieldID(side, x, y) == index + 2) {
 						coords.push_back(std::make_pair(x, y));
 					}
 				}
 			}
-			fleet[Index].Klee(coords, side);
+			fleet[index].Klee(coords, side);
 		}
 	}
 	else {
@@ -221,6 +220,7 @@ void Fleet::ConsDmgToIndPlayer(const int dmg) {
 		std::cout << "Captain! You shot out of bounds!" << std::endl;
 		return;
 	}
+
 	charx = std::toupper(charx);
 	for (int i = 0; i < width_height; i++) {
 		if (alf[i] == charx) {

@@ -28,3 +28,9 @@ void Field_Get_Vision(const unsigned int x, const unsigned int y, const bool sid
 void Generate_ship(ship sheep, bool side);
 
 std::vector <unsigned int> First_order(Fleet& fleet1, Fleet& fleet2);
+
+std::pair<unsigned int, unsigned int> Return_X_Y(const unsigned int index, const int side);
+
+char IntToLetter(const int Int);
+
+void Small_Move(const unsigned int index, const int side);

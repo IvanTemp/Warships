@@ -109,7 +109,7 @@ void Initialize_Field_Final(const Fleet fleet) {
 	}
 }
 
-void Output_Field_Final_REFORGED(const bool side, std::string name1, std::string name2) {
+void Output_Field_Final_REFORGED(const bool side, const std::string name1, const std::string name2) {
 	std::string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	std::map<int, std::string> SideToName = { { 0, name1 }, {1, name2} };
 	std::cout << "\tSide: " << SideToName[side] << "\t\tSide: " << SideToName[!side] << std::endl;
@@ -434,4 +434,160 @@ std::vector <unsigned int> First_order(Fleet &fleet1, Fleet &fleet2) {
 	}
 
 	return orderList;
+}
+
+std::pair <unsigned int, unsigned int> Return_X_Y(const unsigned int ID, const int side) {
+	unsigned int start_x = 0, start_y = 0;
+	for (unsigned int y = 0; y < width_height; y++) {
+		for (unsigned int x = 0; x < width_height; x++) {
+			if (Field_ID[side][x][y].first == ID) {
+				start_x = x;
+				start_y = y;
+				return std::make_pair(start_x, start_y);
+			}
+		}
+	}
+	return std::make_pair(start_x, start_y);;
+}
+
+char IntToLetter(const int Int) {
+	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	return alf[Int];
+}
+
+bool AreaIsClear(const bool side, const unsigned int x, const unsigned int y) {
+	if (y) {
+		if (x) {
+			if (Field_ID[side][x - 1][y - 1].first > 1) return false;
+		}
+		if (Field_ID[side][x][y - 1].first > 1) return false;
+		if (x < width_height - 1) {
+			if (Field_ID[side][x + 1][y - 1].first > 1) return false;
+		}
+	}
+	if (x) {
+		if (Field_ID[side][x - 1][y].first > 1) return false;
+	}
+	if (x < width_height - 1) {
+		if (Field_ID[side][x + 1][y].first > 1) return false;
+	}
+	if (y < width_height - 1) {
+		if (x) {
+			if (Field_ID[side][x - 1][y + 1].first > 1) return false;
+		}
+		if (Field_ID[side][x][y + 1].first > 1) return false;
+		if (x < width_height - 1) {
+			if (Field_ID[side][x + 1][y + 1].first > 1) return false;
+		}
+	}
+	return true;
+}
+
+void Small_Move(const unsigned int index, const int side) {
+	int x = 0, y = -1;
+	std::cout << "Where are we going? (Write X and Y coordinates): ";
+	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	char strx;
+	std::cin >> strx >> y;
+	if (DEBUG_MODE) std::cout << "[Move small]X = " << strx << "; Y = " << y << std::endl;
+
+	if (y > width_height) {
+		std::cout << "Captain! Are you trying to steer the ship out of the battlefield?\n" << std::endl;
+		system("pause");
+		Small_Move(index, side);
+		return;
+	}
+	strx = std::toupper(strx);
+	for (int i = 0; i < width_height; i++) {
+		if (alf[i] == strx) {
+			x = i;
+			break;
+		}
+		if (i == width_height - 1) {
+			std::cout << "Captain! Are you trying to steer the ship out of the battlefield?\n" << std::endl;
+			system("pause");
+			Small_Move(index, side);
+			return;
+		}
+	}
+
+	std::pair <unsigned int, unsigned int> start = Return_X_Y(index + 2, side);
+
+	if (DEBUG_MODE) {
+		std::cout << "[Move small]Start X = " << start.first << "; Start Y = " << start.second << std::endl;
+		std::cout << "[Move small]X = " << x << "; Y = " << y << std::endl;
+		std::cout << "[Move small]if: " << start.first - x << " " << start.second - y << " " << std::endl;
+	}
+
+	if ((start.first - x <= 1 || start.first - x >= UINT_MAX - 1) && (start.second - y <= 1 || start.second - y >= UINT_MAX - 1)) {
+		Field_ID[side][start.first][start.second].first = 0;
+		if (AreaIsClear(side, x, y)) {
+			if (start.second) {
+				if (start.first) {
+					if (AreaIsClear(side, start.first - 1, start.second - 1)) Field_ID[side][start.first - 1][start.second - 1].first = 0;
+				}
+				if (AreaIsClear(side, start.first, start.second - 1)) Field_ID[side][start.first][start.second - 1].first = 0;
+				if (start.first < width_height) {
+					if (AreaIsClear(side, start.first + 1, start.second - 1)) Field_ID[side][start.first + 1][start.second - 1].first = 0;
+				}
+			}
+			if (start.first) {
+				if (AreaIsClear(side, start.first - 1, start.second)) Field_ID[side][start.first - 1][start.second].first = 0;
+			}
+			if (start.first < width_height - 1) {
+				if (AreaIsClear(side, start.first + 1, start.second)) Field_ID[side][start.first + 1][start.second].first = 0;
+			}
+			if (start.second < width_height - 1) {
+				if (start.first) {
+					if (AreaIsClear(side, start.first - 1, start.second + 1)) Field_ID[side][start.first - 1][start.second + 1].first = 0;
+				}
+				if (AreaIsClear(side, start.first, start.second + 1)) Field_ID[side][start.first][start.second + 1].first = 0;
+				if (start.first < width_height - 1) {
+					if (AreaIsClear(side, start.first + 1, start.second + 1)) Field_ID[side][start.first + 1][start.second + 1].first = 0;
+				}
+			}
+
+			if (y) {
+				if (x) {
+					Field_ID[side][x - 1][y - 1].first = 1;
+				}
+				Field_ID[side][x][y - 1].first = 1;
+				if (x < width_height) {
+					Field_ID[side][x + 1][y - 1].first = 1;
+				}
+			}
+			if (x) {
+				Field_ID[side][x - 1][y].first = 1;
+			}
+			if (x < width_height - 1) {
+				Field_ID[side][x + 1][y].first = 1;
+			}
+			if (y < width_height - 1) {
+				if (x) {
+					Field_ID[side][x - 1][y + 1].first = 1;
+				}
+				Field_ID[side][x][y + 1].first = 1;
+				if (x < width_height - 1) {
+					Field_ID[side][x + 1][y + 1].first = 1;
+				}
+			}
+
+			Field_ID[side][x][y].first = index + 2;
+		}
+		else {
+			Field_ID[side][start.first][start.second].first = index + 1;
+			std::cout << "Captain! This square is already taken!\n" << std::endl;
+			system("pause");
+			if (!DEBUG_MODE) { system("cls"); }
+			Small_Move(index, side);
+			return;
+		}
+	}
+	else {
+		std::cout << "Captain! This is not a <<Meteor>> for you, a single-decker can only move one square.\n" << std::endl;
+		system("pause");
+		if (!DEBUG_MODE) { system("cls"); }
+		Small_Move(index, side);
+		return;
+	}
 }
