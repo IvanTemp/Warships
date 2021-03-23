@@ -158,7 +158,7 @@ int main(int argc, char * argv[]) {
 	while (fleet_1.GetHealth() && fleet_2.GetHealth()) {
 		if (!DEBUG_MODE) { system("cls"); }
 
-		std::cout << "Select battle mode (PvE / PvP): ";
+		std::cout << "Select battle mode (PvE / PvP): "; //USE PVP FOR ATTACKS TESTS
 		std::cin >> BattleMode;
 		BattleMode = hahaYouAreSmallNow(BattleMode);
 
@@ -176,20 +176,45 @@ int main(int argc, char * argv[]) {
 						std::cout << fleet_1.GetName() << " turn." << std::endl << std::endl;
 						//Вывод поля игрока 1
 						Output_Field_Final_REFORGED(0, fleet_1.GetName(), fleet_2.GetName());
-						//Выстрел игрока 1
-						std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
-						fleet_2.ConsDmgToIndPlayer(Default_Damage);
-						Initialize_Field_Final(fleet_2);
-						system("pause");
-						if (!DEBUG_MODE) { system("cls"); }
-						std::cout << "Pass the mainframe to your opponent!\n\n";
+						while (true) { //IN DEVELOPMENT
+							if (DEBUG_MODE) { std::cout << "[DEBUG INFO]order[round] = " << order[round] << std::endl; }
+							std::cout << "Current position: " << IntToLetter(Return_X_Y(order[round] + 2, first % 2).first) << " " << Return_X_Y(order[round] + 2, first % 2).second << std::endl;
+							std::cout << "What do you want?\n\n";
+							if (!fleet_1.GetShipByIndex(order[round]).GetDurabilitySum()) {
+								if (fleet_1.GetShipByIndex(order[round]).GetType() == "Small") { //single-deck abilities
+									std::cout << "-Shoot\n-Move\n" << std::endl;
+									std::cin >> action;
+									action = hahaYouAreSmallNow(action);
+									if (action == "shoot" || action == "") {
+										//Shot
+										std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
+										fleet_2.ConsDmgToIndPlayer(Small_Damage);
+										break;
+									}
+									else if (action == "move") {
+										Small_Move(order[round], fleet_1.GetSide());
+										Initialize_Field_Final(fleet_1);
+										break;
+									}
+									else {
+										std::cout << "Wrong command!" << std::endl;
+										system("pause");
+										continue;
+									}
+								}
+								else {
+									std::cout << "ANOTHER SHIPS IN DEVELOPMENT!" << std::endl;
+									fleet_2.ConsDmgToIndPlayer(Default_Damage);
+								}
+							}
+							else {
+								std::cout << "This ship is sunk, you miss this turn." << std::endl;
+								break;
+							}
+						}
 						system("pause");
 						if (!DEBUG_MODE) { system("cls"); }
 						first++;
-						round++;
-						if (round == order.size()) {
-							round = 0;
-						}
 						break;
 					case 1:
 						//Смена хода
@@ -197,13 +222,54 @@ int main(int argc, char * argv[]) {
 						std::cout << fleet_2.GetName() << " turn." << std::endl << std::endl;
 						//Вывод поля игрока 2
 						Output_Field_Final_REFORGED(1, fleet_1.GetName(), fleet_2.GetName());
-						//Выстрел игрока 2
-						std::cout << "Order, commander! (Write X and Y coordinates): ";
-						fleet_1.ConsDmgToIndPlayer(Default_Damage);
-						Initialize_Field_Final(fleet_1);
-						system("pause");
-						if (!DEBUG_MODE) { system("cls"); }
-						std::cout << "Pass the mainframe to your opponent!\n\n";
+						while (true) { //IN DEVELOPMENT
+							if (DEBUG_MODE) { std::cout << "[DEBUG INFO]order[round] = " << order[round] << std::endl; }
+							std::cout << "Current position: " << IntToLetter(Return_X_Y(order[round] + 2, first % 2).first) << " " << Return_X_Y(order[round] + 2, first % 2).second << std::endl;
+							std::cout << "What do you want?\n\n";
+							if (!fleet_1.GetShipByIndex(order[round]).GetDurabilitySum()) {
+								if (fleet_2.GetShipByIndex(order[round]).GetType() == "Small") { //single-deck abilities
+									std::cout << "-Shoot\n-Move\n" << std::endl;
+									std::cin >> action;
+									action = hahaYouAreSmallNow(action);
+									if (action == "shoot" || action == "") {
+										//Shot
+										std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
+										fleet_1.ConsDmgToIndPlayer(Small_Damage);
+										round++;
+										if (round == order.size()) {
+											round = 0;
+										}
+										break;
+									}
+									else if (action == "move") {
+										Small_Move(order[round], fleet_2.GetSide());
+										Initialize_Field_Final(fleet_2);
+										round++;
+										if (round == order.size()) {
+											round = 0;
+										}
+										break;
+									}
+									else {
+										std::cout << "Wrong command!" << std::endl;
+										system("pause");
+										continue;
+									}
+								}
+								else {
+									std::cout << "ANOTHER SHIPS IN DEVELOPMENT!" << std::endl;
+									fleet_2.ConsDmgToIndPlayer(Default_Damage);
+								}
+							}
+							else {
+								std::cout << "This ship is sunk, you miss this turn." << std::endl;
+								round++;
+								if (round == order.size()) {
+									round = 0;
+								}
+								break;
+							}
+						}
 						system("pause");
 						if (!DEBUG_MODE) { system("cls"); }
 						first++;
@@ -253,7 +319,7 @@ int main(int argc, char * argv[]) {
 										std::cout << "-Shoot\n-Move\n" << std::endl;
 										std::cin >> action;
 										action = hahaYouAreSmallNow(action);
-										if (action == "shoot" && action == "") {
+										if (action == "shoot" || action == "") {
 											//Shot
 											std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
 											fleet_2.ConsDmgToIndPlayer(Small_Damage);

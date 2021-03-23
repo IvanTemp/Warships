@@ -76,6 +76,14 @@ void ship::SetDurability(const std::vector<int> durabty)
     durability = durabty;
 }
 
+unsigned int ship::GetDurabilitySum() const {
+    unsigned int sum = 0;
+    for (unsigned int i = 0; i < durability.size(); i++) {
+        sum += durability[i];
+    }
+    return sum;
+}
+
 std::vector<int> ship::GetDurability() const
 {
     return durability;

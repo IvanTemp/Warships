@@ -10,8 +10,11 @@
 #define Tsundere_Durability 5
 #define Small_Durability 4
 #define Default_Damage 2 //TEMP
+#define Aircraft_Carrier_Damage 3
+#define Heavy_Cruiser_Damage 5
+#define Tsundere_Damage 3
 #define Small_Damage 2
-#define DEBUG_MODE 0
+#define DEBUG_MODE 1
 
 class ship
 {
@@ -28,6 +31,7 @@ public:
 	void SetType(const std::string type);
 	std::string GetType()const;
 	void SetDurability (const std::vector<int> durability);
+	unsigned int GetDurabilitySum()const;
 	std::vector<int> GetDurability()const;
 	void DmgtoInd(const int damage, const int index);
 	int GetID()const;

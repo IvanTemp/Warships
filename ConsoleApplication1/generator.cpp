@@ -516,7 +516,7 @@ void Small_Move(const unsigned int index, const int side) {
 	if (DEBUG_MODE) {
 		std::cout << "[Move small]Start X = " << start.first << "; Start Y = " << start.second << std::endl;
 		std::cout << "[Move small]X = " << x << "; Y = " << y << std::endl;
-		std::cout << "[Move small]if: " << start.first - x << " " << start.second - y << " " << std::endl;
+		std::cout << "[Move small]shift: " << start.first - x << " " << start.second - y << " " << std::endl;
 	}
 
 	if ((start.first - x <= 1 || start.first - x >= UINT_MAX - 1) && (start.second - y <= 1 || start.second - y >= UINT_MAX - 1)) {
@@ -575,19 +575,19 @@ void Small_Move(const unsigned int index, const int side) {
 			Field_ID[side][x][y].first = index + 2;
 		}
 		else {
-			Field_ID[side][start.first][start.second].first = index + 1;
+			Field_ID[side][start.first][start.second].first = index + 2;
 			std::cout << "Captain! This square is already taken!\n" << std::endl;
 			system("pause");
-			if (!DEBUG_MODE) { system("cls"); }
 			Small_Move(index, side);
 			return;
 		}
 	}
 	else {
+		Field_ID[side][start.first][start.second].first = index + 2;
 		std::cout << "Captain! This is not a <<Meteor>> for you, a single-decker can only move one square.\n" << std::endl;
 		system("pause");
-		if (!DEBUG_MODE) { system("cls"); }
 		Small_Move(index, side);
 		return;
 	}
+	std::cout << "Complete!\n\n";
 }
