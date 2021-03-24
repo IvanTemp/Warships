@@ -171,5 +171,3 @@ void ship::NUCLEAR_BOMB() {
         durability[i] = 0;
     }
 }
-
-

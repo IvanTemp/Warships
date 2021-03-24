@@ -220,5 +220,3 @@ void Fleet::NUCLEAR_BOMB() {
 		fleet[i].NUCLEAR_BOMB();
 	}
 }
-
-
