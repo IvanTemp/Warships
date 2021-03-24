@@ -34,3 +34,5 @@ std::pair<unsigned int, unsigned int> Return_X_Y(const unsigned int index, const
 char IntToLetter(const int Int);
 
 void Small_Move(const unsigned int index, const int side);
+
+void GetDamage(const bool side, const unsigned int x, const unsigned int y, const int dmg, std::vector<ship> &fleet);

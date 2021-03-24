@@ -167,36 +167,7 @@ void Fleet::ConsDmgToIndBot(const int dmg, const int difficulty) {
 	char strx = IntToLetter(x);
 
 	if (ReturnFieldID(side, x, y) > 1) {
-		int index = ReturnFieldID(side, x, y) - 2;
-		int DurabtyIndex = ReturnFieldIndex(side, x, y);
-		fleet[index].DmgtoInd(dmg, DurabtyIndex);
-		std::cout << "The enemy hit your ship in " << strx << " " << y << std::endl;
-		if (fleet[index].GetDurability()[DurabtyIndex] > 0) { BOTRoDC.push_back({ x, y }); } //Memorizing an unfinished cell
-
-		std::vector <std::pair<unsigned int, unsigned int>> coords;
-
-		if (DEBUG_MODE) {
-			std::cout << "[DEBUG INFO]Fleet: " << name;
-			std::cout << "; Ship name: " << fleet[index].GetName();
-			std::cout << "; new durability =";
-
-			for (int i = 0; i < fleet[index].GetDurability().size(); i++) {
-				std::cout << " " << fleet[index].GetDurability()[i];
-			}
-
-			std::cout << std::endl;
-		}
-
-		if (!fleet[index].GetDurabilitySum()) {
-			for (int x = 0; x < width_height; x++) {
-				for (int y = 0; y < width_height; y++) {
-					if (ReturnFieldID(side, x, y) == index + 2) {
-						coords.push_back(std::make_pair(x, y));
-					}
-				}
-			}
-			fleet[index].Klee(coords, side);
-		}
+		GetDamage(side, x, y, dmg, fleet);
 	}
 	else {
 		std::cout << "The enemy missed! X = " << strx << "; Y = " << y << std::endl;
@@ -232,36 +203,7 @@ void Fleet::ConsDmgToIndPlayer(const int dmg) {
 
 	if (ReturnFieldID(side, x, y) > 1) {
 		if (fleet[ReturnFieldID(side, x, y) - 2].GetDurability()[ReturnFieldIndex(side, x, y)]) {
-			int index = ReturnFieldID(side, x, y) - 2;
-			int DurabtyIndex = ReturnFieldIndex(side, x, y);
-			fleet[index].DmgtoInd(dmg, DurabtyIndex);
-			std::cout << "Dodge this! You are hit!" << std::endl;
-			std::cout << "You hit him in " << alf[x] << " " << y << std::endl;
-
-			std::vector <std::pair<unsigned int, unsigned int>> coords;
-
-			if (DEBUG_MODE) {
-				std::cout << "[DEBUG INFO]Fleet: " << name;
-				std::cout << "; Ship name: " << fleet[index].GetName();
-				std::cout << "; new durability =";
-
-				for (int i = 0; i < fleet[index].GetDurability().size(); i++) {
-					std::cout << " " << fleet[index].GetDurability()[i];
-				}
-
-				std::cout << std::endl;
-			}
-
-			if (!fleet[index].GetDurabilitySum()) {
-				for (int x = 0; x < width_height; x++) {
-					for (int y = 0; y < width_height; y++) {
-						if (ReturnFieldID(side, x, y) == index + 2) {
-							coords.push_back(std::make_pair(x, y));
-						}
-					}
-				}
-				fleet[index].Klee(coords, side);
-			}
+			GetDamage(side, x, y, dmg, fleet);
 		}
 		else {
 			std::cout << "Why did you shoot at an already sunk ship?" << std::endl;

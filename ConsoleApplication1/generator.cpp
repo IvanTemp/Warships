@@ -409,7 +409,7 @@ std::vector <unsigned int> First_order(Fleet &fleet1, Fleet &fleet2) {
 
 	unsigned int max = std::max(fleet1.GetFleet().size(), fleet2.GetFleet().size());
 
-	for (int i = 0; i < max; i++) {
+	for (unsigned int i = 0; i < max; i++) {
 		buleidu = true;
 		unsigned int random_index = rand() % max;
 		for (int j = 0; j < orderList.size(); j++) {
@@ -590,4 +590,36 @@ void Small_Move(const unsigned int index, const int side) {
 		return;
 	}
 	std::cout << "Complete!\n\n";
+}
+
+void GetDamage(const bool side, const unsigned int x, const unsigned int y, const int dmg, std::vector <ship> &fleet) {
+	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	int index = Field_ID[side][x][y].first - 2;
+	fleet[index].DmgtoInd(dmg, Field_ID[side][x][y].second);
+	std::cout << "Dodge this! You are hit!" << std::endl;
+	std::cout << "You hit him in " << alf[x] << " " << y << std::endl;
+
+	std::vector <std::pair<unsigned int, unsigned int>> coords;
+
+	if (DEBUG_MODE) {
+		std::cout << "[DEBUG INFO]Ship name: " << fleet[index].GetName();
+		std::cout << "; new durability =";
+
+		for (int i = 0; i < fleet[index].GetDurability().size(); i++) {
+			std::cout << " " << fleet[index].GetDurability()[i];
+		}
+
+		std::cout << std::endl;
+	}
+
+	if (!fleet[index].GetDurabilitySum()) {
+		for (int x = 0; x < width_height; x++) {
+			for (int y = 0; y < width_height; y++) {
+				if (ReturnFieldID(side, x, y) == index + 2) {
+					coords.push_back(std::make_pair(x, y));
+				}
+			}
+		}
+		fleet[index].Klee(coords, side);
+	}
 }

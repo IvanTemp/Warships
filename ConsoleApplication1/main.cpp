@@ -180,7 +180,7 @@ int main(int argc, char * argv[]) {
 							if (DEBUG_MODE) { std::cout << "[DEBUG INFO]order[round] = " << order[round] << std::endl; }
 							std::cout << "Current position: " << IntToLetter(Return_X_Y(order[round] + 2, first % 2).first) << " " << Return_X_Y(order[round] + 2, first % 2).second << std::endl;
 							std::cout << "What do you want?\n\n";
-							if (!fleet_1.GetShipByIndex(order[round]).GetDurabilitySum()) {
+							if (fleet_1.GetShipByIndex(order[round]).GetDurabilitySum()) {
 								if (fleet_1.GetShipByIndex(order[round]).GetType() == "Small") { //single-deck abilities
 									std::cout << "-Shoot\n-Move\n" << std::endl;
 									std::cin >> action;
@@ -226,7 +226,7 @@ int main(int argc, char * argv[]) {
 							if (DEBUG_MODE) { std::cout << "[DEBUG INFO]order[round] = " << order[round] << std::endl; }
 							std::cout << "Current position: " << IntToLetter(Return_X_Y(order[round] + 2, first % 2).first) << " " << Return_X_Y(order[round] + 2, first % 2).second << std::endl;
 							std::cout << "What do you want?\n\n";
-							if (!fleet_1.GetShipByIndex(order[round]).GetDurabilitySum()) {
+							if (fleet_1.GetShipByIndex(order[round]).GetDurabilitySum()) {
 								if (fleet_2.GetShipByIndex(order[round]).GetType() == "Small") { //single-deck abilities
 									std::cout << "-Shoot\n-Move\n" << std::endl;
 									std::cin >> action;
@@ -243,7 +243,7 @@ int main(int argc, char * argv[]) {
 									}
 									else if (action == "move") {
 										Small_Move(order[round], fleet_2.GetSide());
-										Initialize_Field_Final(fleet_2);
+										Initialize_Field_Final(fleet_1);
 										round++;
 										if (round == order.size()) {
 											round = 0;
