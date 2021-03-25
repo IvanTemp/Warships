@@ -252,8 +252,8 @@ int main(int argc, char * argv[]) {
 									}
 								}
 								else {
-									std::cout << "ANOTHER SHIPS IN DEVELOPMENT!" << std::endl;
-									fleet_2.ConsDmgToIndPlayer(Default_Damage);
+									std::cout << "ERROR! Unknown type of ship! Please contact the team leader, he will make sure that Vanya gets into a corner for poor testing." << std::endl;
+									return -90;
 								}
 							}
 							else {

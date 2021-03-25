@@ -45,7 +45,7 @@ private:
 	std::string name;
 	std::vector<int> durability;
 	std::string type;
-	int ID;
+	int ID; //Удалить к курсовой
 	static int count;
 	const int cID;
 };
