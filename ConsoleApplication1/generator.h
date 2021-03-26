@@ -5,7 +5,7 @@ void OutputAchievementInfo(std::vector<std::pair<std::string, bool>> achievement
 
 std::vector <std::pair<std::string, bool>> ReadAchievements();
 
-void GiveAchievement(int achivement_plus);
+void GiveAchievement(std::vector<std::pair<std::string, bool>>& achievement_array, int achivement_plus);
 
 void MakeAction(Fleet& whose, Fleet& whom, std::string& action, std::vector<unsigned int>& order, int& round, int& first);
 

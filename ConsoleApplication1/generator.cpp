@@ -46,23 +46,7 @@ std::vector <std::pair<std::string, bool>> ReadAchievements() {
 	return achievement_array;
 }
 
-void GiveAchievement(int achivement_plus) {
-	std::vector <std::pair<std::string, bool>> achievement_array;
-	//Place your achivements here
-	achievement_array.push_back(std::make_pair("Win a PVE match on Normal difficulty", 0));
-	achievement_array.push_back(std::make_pair("Win a PVE match on Hard difficulty", 0));
-	achievement_array.push_back(std::make_pair("Try to win a PVE match on Impossible difficulty", 0));
-	achievement_array.push_back(std::make_pair("Play PVP match", 0));
-	/////////////////////////////
-	std::ofstream nekostil("achievements.db", std::ios::in | std::ios::out | std::ios::app | std::ios::binary | std::ios::ate);
-	nekostil.close();
-	std::ifstream achivIn("achievements.db");
-	std::string strin = "";
-	getline(achivIn, strin);
-	for (int i = 0; i < strin.length(); i++) {
-		strin[i] == '1' ? achievement_array[i].second = 1 : achievement_array[i].second = 0;
-	}
-	achivIn.close();
+void GiveAchievement(std::vector <std::pair<std::string, bool>> &achievement_array, int achivement_plus) {
 	achievement_array[achivement_plus].second = true;
 	std::ofstream achivOut("achievements.db");
 	for (int i = 0; i < achievement_array.size(); i++) {
