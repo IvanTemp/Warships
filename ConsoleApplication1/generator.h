@@ -1,5 +1,5 @@
 #pragma once
-#include "Fleet.h"
+#include "fleet.h"
 
 void OutputAchievementInfo(std::vector<std::pair<std::string, bool>> achievement_vector);
 
@@ -7,7 +7,7 @@ std::vector <std::pair<std::string, bool>> ReadAchievements();
 
 void GiveAchievement(std::vector<std::pair<std::string, bool>>& achievement_array, int achivement_plus);
 
-void MakeAction(Fleet& whose, Fleet& whom, std::string& action, std::vector<unsigned int>& order, int& round, int& first);
+void DoAction(Fleet& whose, Fleet& whom, std::vector<unsigned int>& order, int& round, int& first);
 
 unsigned int ReturnFieldID(bool side, int x, int y);
 

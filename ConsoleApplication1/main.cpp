@@ -153,7 +153,6 @@ int main(int argc, char * argv[]) {
 
 	std::string BattleMode = "";
 	int difficulty = 0, round = 0;
-	std::string action = "";
 
 	while (fleet_1.GetHealth() && fleet_2.GetHealth()) {
 		if (!DEBUG_MODE) { system("cls"); }
@@ -177,7 +176,7 @@ int main(int argc, char * argv[]) {
 						std::cout << fleet_1.GetName() << " turn." << std::endl << std::endl;
 						//Вывод поля игрока 1
 						Output_Field_Final_REFORGED(0, fleet_1.GetName(), fleet_2.GetName());
-						MakeAction(fleet_1, fleet_2, action, order, round, first);
+						DoAction(fleet_1, fleet_2, order, round, first);
 						break;
 					case 1:
 						//Смена хода
@@ -185,7 +184,7 @@ int main(int argc, char * argv[]) {
 						std::cout << fleet_2.GetName() << " turn." << std::endl << std::endl;
 						//Вывод поля игрока 2
 						Output_Field_Final_REFORGED(1, fleet_1.GetName(), fleet_2.GetName());
-						MakeAction(fleet_2, fleet_1, action, order, round, first);
+						DoAction(fleet_2, fleet_1, order, round, first);
 						break;
 				}
 			}
@@ -219,7 +218,7 @@ int main(int argc, char * argv[]) {
 								std::cout << fleet_1.GetName() << " turn." << std::endl << std::endl;
 								//Вывод поля для игрока 1
 								Output_Field_Final_REFORGED(0, fleet_1.GetName(), fleet_2.GetName());
-								MakeAction(fleet_1, fleet_2, action, order, round, first);
+								DoAction(fleet_1, fleet_2, order, round, first);
 								break;
 							case 1: //Bot(ON REWORK)
 								Initialize_Field_Final(fleet_2);

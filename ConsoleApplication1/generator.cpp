@@ -5,7 +5,7 @@
 #include <string>
 #include <fstream>
 #include "generator.h"
-#include "Fleet.h"
+#include "fleet.h"
 
 std::string Field_Final[2][width_height][width_height] = { "#", "#", "#" }; //The field seen by the player and the AI
 std::pair<unsigned int, unsigned int> Field_ID[2][width_height][width_height] = { std::make_pair(0, 0) }; //The field with ID and indexes
@@ -55,10 +55,11 @@ void GiveAchievement(std::vector <std::pair<std::string, bool>> &achievement_arr
 	achivOut.close();
 }
 
-void MakeAction(Fleet &whose, Fleet &whom, std::string &action, std::vector<unsigned int> &order, int &round, int &first) {
+void DoAction(Fleet &whose, Fleet &whom, std::vector<unsigned int> &order, int &round, int &first) {
 		if (DEBUG_MODE) { std::cout << "[DEBUG INFO]order[round] = " << order[round] << std::endl; }
 		std::cout << "Current position: " << IntToLetter(Return_X_Y(order[round] + 2, first % 2).first) << " " << Return_X_Y(order[round] + 2, first % 2).second << std::endl;
 		std::cout << "What do you want?\n\n";
+		std::string action = "";
 		while (true) { //IN DEVELOPMENT
 		if (whose.GetShipByIndex(order[round]).GetDurabilitySum()) {
 			if (whose.GetShipByIndex(order[round]).GetType() == "Small") { //single-deck abilities
