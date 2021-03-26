@@ -160,7 +160,7 @@ int main(int argc, char * argv[]) {
 		//std::cout << "Select battle mode (PvE / PvP): "; //USE PVP FOR ATTACKS TESTS
 		std::cout << "Select battle mode (PVE / PvP): "; //USE PVP FOR ATTACKS TESTS
 		std::cin >> BattleMode;
-		BattleMode = hahaYouAreSmallNow(BattleMode);
+		hahaYouAreSmallNow(BattleMode);
 
 		int first = rand() % 2;
 		if (BattleMode == "pvp") { //PVP

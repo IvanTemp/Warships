@@ -145,9 +145,9 @@ void Fleet::ConsDmgToIndBot(const int dmg, const int difficulty) {
 			GwSUtPaLT = false;
 		}
 		else {
-			if (ReturnFieldWar(side, x, y) == 0) { // II)Protection against shooting at empty cells
+			if (Return_Field_War_Value(side, x, y) == 0) { // II)Protection against shooting at empty cells
 				if (attempts) {
-					if (ReturnFieldID(side, x, y) < 2) {
+					if (Return_Field_ID_Value(side, x, y) < 2) {
 						if (difficulty < 2) {
 							attempts--;
 						}
@@ -166,7 +166,7 @@ void Fleet::ConsDmgToIndBot(const int dmg, const int difficulty) {
 
 	char strx = IntToLetter(x);
 
-	if (ReturnFieldID(side, x, y) > 1) {
+	if (Return_Field_ID_Value(side, x, y) > 1) {
 		GetDamage(side, x, y, dmg, fleet);
 	}
 	else {
@@ -201,8 +201,8 @@ void Fleet::ConsDmgToIndPlayer(const int dmg) {
 
 	if (DEBUG_MODE) { std::cout << "[DEBUG INFO]int X = " << x << " Y = " << y << std::endl; }
 
-	if (ReturnFieldID(side, x, y) > 1) {
-		if (fleet[ReturnFieldID(side, x, y) - 2].GetDurability()[ReturnFieldIndex(side, x, y)]) {
+	if (Return_Field_ID_Value(side, x, y) > 1) {
+		if (fleet[Return_Field_ID_Value(side, x, y) - 2].GetDurability()[Return_Field_Index_Value(side, x, y)]) {
 			GetDamage(side, x, y, dmg, fleet);
 		}
 		else {

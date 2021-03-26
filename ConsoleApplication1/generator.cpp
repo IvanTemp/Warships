@@ -11,7 +11,7 @@ std::string Field_Final[2][width_height][width_height] = { "#", "#", "#" }; //Th
 std::pair<unsigned int, unsigned int> Field_ID[2][width_height][width_height] = { std::make_pair(0, 0) }; //The field with ID and indexes
 bool Field_War[2][width_height][width_height] = { 0, 0, 0 }; //The field with fog of war
 
-void OutputAchievementInfo(std::vector <std::pair<std::string, bool>> achievement_array) {
+void OutputAchievementInfo(const std::vector <std::pair<std::string, bool>> achievement_array) {
 	std::cout << "Achievements: " << std::endl;
 	for (int i = 0; i < achievement_array.size(); i++) {
 		std::cout << i + 1 << ")" << achievement_array[i].first << ": ";
@@ -46,7 +46,7 @@ std::vector <std::pair<std::string, bool>> ReadAchievements() {
 	return achievement_array;
 }
 
-void GiveAchievement(std::vector <std::pair<std::string, bool>> &achievement_array, int achivement_plus) {
+void GiveAchievement(std::vector <std::pair<std::string, bool>> &achievement_array, const int achivement_plus) {
 	achievement_array[achivement_plus].second = true;
 	std::ofstream achivOut(achievement_file);
 	for (int i = 0; i < achievement_array.size(); i++) {
@@ -55,7 +55,7 @@ void GiveAchievement(std::vector <std::pair<std::string, bool>> &achievement_arr
 	achivOut.close();
 }
 
-void DoAction(Fleet &whose, Fleet &whom, std::vector<unsigned int> &order, int &round) {
+void DoAction(Fleet &whose, Fleet &whom, const std::vector<unsigned int> &order, const int &round) {
 		if (DEBUG_MODE) { std::cout << "[DEBUG INFO]order[round] = " << order[round] << std::endl; }
 		std::cout << "Current position: " << IntToLetter(Return_X_Y(order[round] + 2, whose.GetSide()).first) << " " << Return_X_Y(order[round] + 2, whose.GetSide()).second << std::endl;
 		std::cout << "What do you want?\n\n";
@@ -65,7 +65,7 @@ void DoAction(Fleet &whose, Fleet &whom, std::vector<unsigned int> &order, int &
 			if (whose.GetShipByIndex(order[round]).GetType() == "Small") { //single-deck abilities
 				std::cout << "-Shoot\n-Move\n" << std::endl;
 				std::cin >> action;
-				action = hahaYouAreSmallNow(action);
+				hahaYouAreSmallNow(action);
 				if (action == "shoot") {
 					//Shot
 					std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
@@ -86,7 +86,7 @@ void DoAction(Fleet &whose, Fleet &whom, std::vector<unsigned int> &order, int &
 			else if (whose.GetShipByIndex(order[round]).GetType() == "Tsundere") {
 				std::cout << "-Shoot\n" << std::endl;
 				std::cin >> action;
-				action = hahaYouAreSmallNow(action);
+				hahaYouAreSmallNow(action);
 				if (action == "shoot") {
 					//Shot
 					std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
@@ -102,7 +102,7 @@ void DoAction(Fleet &whose, Fleet &whom, std::vector<unsigned int> &order, int &
 			else if (whose.GetShipByIndex(order[round]).GetType() == "Heavy Cruiser") {
 				std::cout << "-Shoot\n" << std::endl;
 				std::cin >> action;
-				action = hahaYouAreSmallNow(action);
+				hahaYouAreSmallNow(action);
 				if (action == "shoot") {
 					//Shot
 					std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
@@ -118,7 +118,7 @@ void DoAction(Fleet &whose, Fleet &whom, std::vector<unsigned int> &order, int &
 			else if (whose.GetShipByIndex(order[round]).GetType() == "Aircraft Carrier") {
 				std::cout << "-Shoot\n" << std::endl;
 				std::cin >> action;
-				action = hahaYouAreSmallNow(action);
+				hahaYouAreSmallNow(action);
 				if (action == "shoot") {
 					//Shot
 					std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
@@ -146,19 +146,19 @@ void DoAction(Fleet &whose, Fleet &whom, std::vector<unsigned int> &order, int &
 	if (!DEBUG_MODE) { system("cls"); }
 }
 
-unsigned int ReturnFieldID(const bool side, const int x, const int y) {
+unsigned int Return_Field_ID_Value(const bool side, const int x, const int y) {
 	return Field_ID[side][x][y].first;
 }
 
-unsigned int ReturnFieldIndex(const bool side, const int x, const int y) {
+unsigned int Return_Field_Index_Value(const bool side, const int x, const int y) {
 	return Field_ID[side][x][y].second;
 }
 
-bool ReturnFieldWar(const bool side, const int x, const int y) {
+bool Return_Field_War_Value(const bool side, const int x, const int y) {
 	return Field_War[side][x][y];
 }
 
-std::string hahaYouAreSmallNow(std::string str) {
+void hahaYouAreSmallNow(std::string &str) {
 	std::string small = "abcdefghijklmnopqrstuvwxyz";
 	std::string big = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	for (int i = 0; i < str.length(); i++) {
@@ -167,7 +167,6 @@ std::string hahaYouAreSmallNow(std::string str) {
 				str[i] = small[j];
 		}
 	}
-	return str;
 }
 
 void Initialize_Field_Final(const Fleet fleet) {
@@ -526,9 +525,9 @@ std::pair <unsigned int, unsigned int> Return_X_Y(const unsigned int ID, const i
 	return std::make_pair(start_x, start_y);;
 }
 
-char IntToLetter(const int Int) {
+char IntToLetter(const int i) {
 	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	return alf[Int];
+	return alf[i];
 }
 
 bool AreaIsClear(const bool side, const unsigned int x, const unsigned int y) {
@@ -691,7 +690,7 @@ void GetDamage(const bool side, const unsigned int x, const unsigned int y, cons
 	if (!fleet[index].GetDurabilitySum()) {
 		for (int x = 0; x < width_height; x++) {
 			for (int y = 0; y < width_height; y++) {
-				if (ReturnFieldID(side, x, y) == index + 2) {
+				if (Return_Field_ID_Value(side, x, y) == index + 2) {
 					coords.push_back(std::make_pair(x, y));
 				}
 			}
