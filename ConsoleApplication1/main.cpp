@@ -221,7 +221,7 @@ int main(int argc, char * argv[]) {
 								Output_Field_Final_REFORGED(0, fleet_1.GetName(), fleet_2.GetName());
 								MakeAction(fleet_1, fleet_2, action, order, round, first);
 								break;
-							case 1: //Bot
+							case 1: //Bot(ON REWORK)
 								Initialize_Field_Final(fleet_2);
 								std::cout << fleet_2.GetName() << " turn." << std::endl << std::endl;
 								//Shot

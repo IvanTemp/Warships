@@ -28,16 +28,16 @@ std::vector <std::pair<std::string, bool>> ReadAchievements() {
 	achievement_array.push_back(std::make_pair("Try to win a PVE match on Impossible difficulty", 0));
 	achievement_array.push_back(std::make_pair("Play PVP match", 0));
 	/////////////////////////////
-	std::ofstream nekostil("achievements.db", std::ios::in | std::ios::out | std::ios::app | std::ios::binary | std::ios::ate);
+	std::ofstream nekostil(achievement_file, std::ios::in | std::ios::out | std::ios::app | std::ios::binary | std::ios::ate);
 	nekostil.close();
-	std::ifstream achivIn("achievements.db");
+	std::ifstream achivIn(achievement_file);
 	std::string strin = "";
 	getline(achivIn, strin);
 	for (int i = 0; i < strin.length(); i++) {
 		strin[i] == '1' ? achievement_array[i].second = 1 : achievement_array[i].second = 0;
 	}
 	achivIn.close();
-	std::ofstream achivOut("achievements.db");
+	std::ofstream achivOut(achievement_file);
 	for (int i = 0; i < achievement_array.size(); i++) {
 		achivOut << achievement_array[i].second;
 
@@ -48,7 +48,7 @@ std::vector <std::pair<std::string, bool>> ReadAchievements() {
 
 void GiveAchievement(std::vector <std::pair<std::string, bool>> &achievement_array, int achivement_plus) {
 	achievement_array[achivement_plus].second = true;
-	std::ofstream achivOut("achievements.db");
+	std::ofstream achivOut(achievement_file);
 	for (int i = 0; i < achievement_array.size(); i++) {
 		achivOut << achievement_array[i].second;
 	}

@@ -9,7 +9,10 @@
 #define Heavy_Cruiser_Durability 7
 #define Tsundere_Durability 5
 #define Small_Durability 4
-#define Default_Damage 2 //TEMP
+
+#define achievement_file "achievements.db"
+
+#define Default_Damage 2
 #define Aircraft_Carrier_Damage 3
 #define Heavy_Cruiser_Damage 5
 #define Tsundere_Damage 3
