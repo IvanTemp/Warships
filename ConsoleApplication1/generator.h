@@ -7,6 +7,8 @@ std::vector <std::pair<std::string, bool>> ReadAchievements();
 
 void GiveAchievement(int achivement_plus);
 
+void MakeAction(Fleet& whose, Fleet& whom, std::string& action, std::vector<unsigned int>& order, int& round, int& first);
+
 unsigned int ReturnFieldID(bool side, int x, int y);
 
 unsigned int ReturnFieldIndex(bool side, int x, int y);

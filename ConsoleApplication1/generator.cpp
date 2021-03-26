@@ -71,6 +71,97 @@ void GiveAchievement(int achivement_plus) {
 	achivOut.close();
 }
 
+void MakeAction(Fleet &whose, Fleet &whom, std::string &action, std::vector<unsigned int> &order, int &round, int &first) {
+		if (DEBUG_MODE) { std::cout << "[DEBUG INFO]order[round] = " << order[round] << std::endl; }
+		std::cout << "Current position: " << IntToLetter(Return_X_Y(order[round] + 2, first % 2).first) << " " << Return_X_Y(order[round] + 2, first % 2).second << std::endl;
+		std::cout << "What do you want?\n\n";
+		while (true) { //IN DEVELOPMENT
+		if (whose.GetShipByIndex(order[round]).GetDurabilitySum()) {
+			if (whose.GetShipByIndex(order[round]).GetType() == "Small") { //single-deck abilities
+				std::cout << "-Shoot\n-Move\n" << std::endl;
+				std::cin >> action;
+				action = hahaYouAreSmallNow(action);
+				if (action == "shoot") {
+					//Shot
+					std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
+					whom.ConsDmgToIndPlayer(Small_Damage);
+					break;
+				}
+				else if (action == "move") {
+					Small_Move(order[round], whose.GetSide());
+					Initialize_Field_Final(whose);
+					break;
+				}
+				else {
+					std::cout << "Wrong command!" << std::endl;
+					system("pause");
+					continue;
+				}
+			}
+			else if (whose.GetShipByIndex(order[round]).GetType() == "Tsundere") {
+				std::cout << "-Shoot\n" << std::endl;
+				std::cin >> action;
+				action = hahaYouAreSmallNow(action);
+				if (action == "shoot") {
+					//Shot
+					std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
+					whom.ConsDmgToIndPlayer(Tsundere_Damage);
+					break;
+				}
+				else {
+					std::cout << "Wrong command!" << std::endl;
+					system("pause");
+					continue;
+				}
+			}
+			else if (whose.GetShipByIndex(order[round]).GetType() == "Heavy Cruiser") {
+				std::cout << "-Shoot\n" << std::endl;
+				std::cin >> action;
+				action = hahaYouAreSmallNow(action);
+				if (action == "shoot") {
+					//Shot
+					std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
+					whom.ConsDmgToIndPlayer(Heavy_Cruiser_Damage);
+					break;
+				}
+				else {
+					std::cout << "Wrong command!" << std::endl;
+					system("pause");
+					continue;
+				}
+			}
+			else if (whose.GetShipByIndex(order[round]).GetType() == "Aircraft Carrier") {
+				std::cout << "-Shoot\n" << std::endl;
+				std::cin >> action;
+				action = hahaYouAreSmallNow(action);
+				if (action == "shoot") {
+					//Shot
+					std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
+					whom.ConsDmgToIndPlayer(Aircraft_Carrier_Damage);
+					break;
+				}
+				else {
+					std::cout << "Wrong command!" << std::endl;
+					system("pause");
+					continue;
+				}
+			}
+			else {
+				std::cout << "ERROR! Unknown type of ship! Please contact the team leader, he will make sure that Vanya gets into a corner for poor testing. Get into a waiting pose if you don't want to miss the party." << std::endl;
+				system("pause");
+				return;
+			}
+		}
+		else {
+			std::cout << "This ship is sunk, you miss this turn." << std::endl;
+			return;
+		}
+	}
+	system("pause");
+	if (!DEBUG_MODE) { system("cls"); }
+	first++;
+}
+
 unsigned int ReturnFieldID(const bool side, const int x, const int y) {
 	return Field_ID[side][x][y].first;
 }

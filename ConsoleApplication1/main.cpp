@@ -159,7 +159,7 @@ int main(int argc, char * argv[]) {
 		if (!DEBUG_MODE) { system("cls"); }
 
 		//std::cout << "Select battle mode (PvE / PvP): "; //USE PVP FOR ATTACKS TESTS
-		std::cout << "Select battle mode (PvP): "; //USE PVP FOR ATTACKS TESTS
+		std::cout << "Select battle mode (PVE / PvP): "; //USE PVP FOR ATTACKS TESTS
 		std::cin >> BattleMode;
 		BattleMode = hahaYouAreSmallNow(BattleMode);
 
@@ -177,93 +177,7 @@ int main(int argc, char * argv[]) {
 						std::cout << fleet_1.GetName() << " turn." << std::endl << std::endl;
 						//Вывод поля игрока 1
 						Output_Field_Final_REFORGED(0, fleet_1.GetName(), fleet_2.GetName());
-						while (true) { //IN DEVELOPMENT
-							if (DEBUG_MODE) { std::cout << "[DEBUG INFO]order[round] = " << order[round] << std::endl; }
-							std::cout << "Current position: " << IntToLetter(Return_X_Y(order[round] + 2, first % 2).first) << " " << Return_X_Y(order[round] + 2, first % 2).second << std::endl;
-							std::cout << "What do you want?\n\n";
-							if (fleet_1.GetShipByIndex(order[round]).GetDurabilitySum()) {
-								if (fleet_1.GetShipByIndex(order[round]).GetType() == "Small") { //single-deck abilities
-									std::cout << "-Shoot\n-Move\n" << std::endl;
-									std::cin >> action;
-									action = hahaYouAreSmallNow(action);
-									if (action == "shoot") {
-										//Shot
-										std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
-										fleet_2.ConsDmgToIndPlayer(Small_Damage);
-										break;
-									}
-									else if (action == "move") {
-										Small_Move(order[round], fleet_1.GetSide());
-										Initialize_Field_Final(fleet_1);
-										break;
-									}
-									else {
-										std::cout << "Wrong command!" << std::endl;
-										system("pause");
-										continue;
-									}
-								}
-								else if (fleet_1.GetShipByIndex(order[round]).GetType() == "Tsundere") {
-									std::cout << "-Shoot\n" << std::endl;
-									std::cin >> action;
-									action = hahaYouAreSmallNow(action);
-									if (action == "shoot") {
-										//Shot
-										std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
-										fleet_2.ConsDmgToIndPlayer(Small_Damage);
-										break;
-									}
-									else {
-										std::cout << "Wrong command!" << std::endl;
-										system("pause");
-										continue;
-									}
-								}
-								else if (fleet_1.GetShipByIndex(order[round]).GetType() == "Heavy Cruiser") {
-									std::cout << "-Shoot\n" << std::endl;
-									std::cin >> action;
-									action = hahaYouAreSmallNow(action);
-									if (action == "shoot") {
-										//Shot
-										std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
-										fleet_2.ConsDmgToIndPlayer(Small_Damage);
-										break;
-									}
-									else {
-										std::cout << "Wrong command!" << std::endl;
-										system("pause");
-										continue;
-									}
-								}
-								else if (fleet_1.GetShipByIndex(order[round]).GetType() == "Aircraft Carrier") {
-									std::cout << "-Shoot\n" << std::endl;
-									std::cin >> action;
-									action = hahaYouAreSmallNow(action);
-									if (action == "shoot") {
-										//Shot
-										std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
-										fleet_2.ConsDmgToIndPlayer(Small_Damage);
-										break;
-									}
-									else {
-										std::cout << "Wrong command!" << std::endl;
-										system("pause");
-										continue;
-									}
-								}
-								else {
-									std::cout << "ERROR! Unknown type of ship! Please contact the team leader, he will make sure that Vanya gets into a corner for poor testing." << std::endl;
-									return -90;
-								}
-							}
-							else {
-								std::cout << "This ship is sunk, you miss this turn." << std::endl;
-								break;
-							}
-						}
-						system("pause");
-						if (!DEBUG_MODE) { system("cls"); }
-						first++;
+						MakeAction(fleet_1, fleet_2, action, order, round, first);
 						break;
 					case 1:
 						//Смена хода
@@ -271,113 +185,11 @@ int main(int argc, char * argv[]) {
 						std::cout << fleet_2.GetName() << " turn." << std::endl << std::endl;
 						//Вывод поля игрока 2
 						Output_Field_Final_REFORGED(1, fleet_1.GetName(), fleet_2.GetName());
-						while (true) { //IN DEVELOPMENT
-							if (DEBUG_MODE) { std::cout << "[DEBUG INFO]order[round] = " << order[round] << std::endl; }
-							std::cout << "Current position: " << IntToLetter(Return_X_Y(order[round] + 2, first % 2).first) << " " << Return_X_Y(order[round] + 2, first % 2).second << std::endl;
-							std::cout << "What do you want?\n\n";
-							if (fleet_1.GetShipByIndex(order[round]).GetDurabilitySum()) {
-								if (fleet_2.GetShipByIndex(order[round]).GetType() == "Small") { //single-deck abilities
-									std::cout << "-Shoot\n-Move\n" << std::endl;
-									std::cin >> action;
-									action = hahaYouAreSmallNow(action);
-									if (action == "shoot") {
-										//Shot
-										std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
-										fleet_1.ConsDmgToIndPlayer(Small_Damage);
-										round++;
-										if (round == order.size()) {
-											round = 0;
-										}
-										break;
-									}
-									else if (action == "move") {
-										Small_Move(order[round], fleet_2.GetSide());
-										Initialize_Field_Final(fleet_1);
-										round++;
-										if (round == order.size()) {
-											round = 0;
-										}
-										break;
-									}
-									else {
-										std::cout << "Wrong command!" << std::endl;
-										system("pause");
-										continue;
-									}
-								}
-								else if (fleet_2.GetShipByIndex(order[round]).GetType() == "Tsundere") {
-									std::cout << "-Shoot\n" << std::endl;
-									std::cin >> action;
-									action = hahaYouAreSmallNow(action);
-									if (action == "shoot") {
-										//Shot
-										std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
-										fleet_1.ConsDmgToIndPlayer(Small_Damage);
-										break;
-									}
-									else {
-										std::cout << "Wrong command!" << std::endl;
-										system("pause");
-										continue;
-									}
-								}
-								else if (fleet_2.GetShipByIndex(order[round]).GetType() == "Heavy Cruiser") {
-									std::cout << "-Shoot\n" << std::endl;
-									std::cin >> action;
-									action = hahaYouAreSmallNow(action);
-									if (action == "shoot") {
-										//Shot
-										std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
-										fleet_1.ConsDmgToIndPlayer(Small_Damage);
-										break;
-									}
-									else {
-										std::cout << "Wrong command!" << std::endl;
-										system("pause");
-										continue;
-									}
-								}
-								else if (fleet_2.GetShipByIndex(order[round]).GetType() == "Aircraft Carrier") {
-									std::cout << "-Shoot\n" << std::endl;
-									std::cin >> action;
-									action = hahaYouAreSmallNow(action);
-									if (action == "shoot") {
-										//Shot
-										std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
-										fleet_1.ConsDmgToIndPlayer(Small_Damage);
-										break;
-									}
-									else {
-										std::cout << "Wrong command!" << std::endl;
-										system("pause");
-										continue;
-									}
-								}
-								else {
-									std::cout << "ANOTHER SHIPS IN DEVELOPMENT!" << std::endl;
-									fleet_2.ConsDmgToIndPlayer(Default_Damage);
-								}
-							}
-							else {
-								std::cout << "This ship is sunk, you miss this turn." << std::endl;
-								round++;
-								if (round == order.size()) {
-									round = 0;
-								}
-								break;
-							}
-						}
-						system("pause");
-						if (!DEBUG_MODE) { system("cls"); }
-						first++;
-						round++;
-						if (round == order.size()) {
-							round = 0;
-						}
+						MakeAction(fleet_2, fleet_1, action, order, round, first);
 						break;
 				}
 			}
-		//} else if (BattleMode == "pve") { //PVE(ON REWORK)
+		} else if (BattleMode == "pve") { //PVE(BOT IS DUMB)
 			while (fleet_1.GetHealth() && fleet_2.GetHealth()) {
 				if (!DEBUG_MODE) { system("cls"); }
 				std::cout << "Select difficulty level NUMBER: " << std::endl;
@@ -407,99 +219,7 @@ int main(int argc, char * argv[]) {
 								std::cout << fleet_1.GetName() << " turn." << std::endl << std::endl;
 								//Вывод поля для игрока 1
 								Output_Field_Final_REFORGED(0, fleet_1.GetName(), fleet_2.GetName());
-
-								while (true) { //IN DEVELOPMENT
-									if (DEBUG_MODE) { std::cout << "[DEBUG INFO]order[round] = " << order[round] << std::endl; }
-									std::cout << "Current position: " << IntToLetter(Return_X_Y(order[round] + 2, first % 2).first) << " " << Return_X_Y(order[round] + 2, first % 2).second << std::endl;
-									std::cout << "What do you want?\n\n";
-									if (fleet_1.GetShipByIndex(order[round]).GetDurabilitySum()) {
-										if (fleet_1.GetShipByIndex(order[round]).GetType() == "Small") { //single-deck abilities
-											std::cout << "-Shoot\n-Move\n" << std::endl;
-											std::cin >> action;
-											action = hahaYouAreSmallNow(action);
-											if (action == "shoot") {
-												//Shot
-												std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
-												fleet_2.ConsDmgToIndPlayer(Small_Damage);
-												break;
-											}
-											else if (action == "move") {
-												Small_Move(order[round], fleet_1.GetSide());
-												Initialize_Field_Final(fleet_1);
-												break;
-											}
-											else {
-												std::cout << "Wrong command!" << std::endl;
-												system("pause");
-												continue;
-											}
-										}
-										else if (fleet_1.GetShipByIndex(order[round]).GetType() == "Tsundere") {
-											std::cout << "-Shoot\n" << std::endl;
-											std::cin >> action;
-											action = hahaYouAreSmallNow(action);
-											if (action == "shoot") {
-												//Shot
-												std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
-												fleet_2.ConsDmgToIndPlayer(Small_Damage);
-												break;
-											}
-											else {
-												std::cout << "Wrong command!" << std::endl;
-												system("pause");
-												continue;
-											}
-										}
-										else if (fleet_1.GetShipByIndex(order[round]).GetType() == "Heavy Cruiser") {
-											std::cout << "-Shoot\n" << std::endl;
-											std::cin >> action;
-											action = hahaYouAreSmallNow(action);
-											if (action == "shoot") {
-												//Shot
-												std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
-												fleet_2.ConsDmgToIndPlayer(Small_Damage);
-												break;
-											}
-											else {
-												std::cout << "Wrong command!" << std::endl;
-												system("pause");
-												continue;
-											}
-										}
-										else if (fleet_1.GetShipByIndex(order[round]).GetType() == "Aircraft Carrier") {
-											std::cout << "-Shoot\n" << std::endl;
-											std::cin >> action;
-											action = hahaYouAreSmallNow(action);
-											if (action == "shoot") {
-												//Shot
-												std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
-												fleet_2.ConsDmgToIndPlayer(Small_Damage);
-												break;
-											}
-											else {
-												std::cout << "Wrong command!" << std::endl;
-												system("pause");
-												continue;
-											}
-										}
-										else {
-											std::cout << "ERROR! Unknown type of ship! Please contact the team leader, he will make sure that Vanya gets into a corner for poor testing." << std::endl;
-											return -90;
-										}
-									}
-									else {
-										std::cout << "This ship is sunk, you miss this turn." << std::endl;
-										break;
-									}
-								}
-
-								system("pause");
-								if (!DEBUG_MODE) { system("cls"); }
-								first++;
-								round++;
-								if (round == order.size()) {
-									round = 0;
-								}
+								MakeAction(fleet_1, fleet_2, action, order, round, first);
 								break;
 							case 1: //Bot
 								Initialize_Field_Final(fleet_2);
