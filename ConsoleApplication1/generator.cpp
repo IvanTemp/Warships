@@ -49,9 +49,10 @@ std::vector <std::pair<std::string, bool>> ReadAchievements() {
 void GiveAchievement(int achivement_plus) {
 	std::vector <std::pair<std::string, bool>> achievement_array;
 	//Place your achivements here
-	achievement_array.push_back(std::make_pair("Achiv1", 0));
-	achievement_array.push_back(std::make_pair("Achiv2", 0));
-	achievement_array.push_back(std::make_pair("Achiv3", 0));
+	achievement_array.push_back(std::make_pair("Win a PVE match on Normal difficulty", 0));
+	achievement_array.push_back(std::make_pair("Win a PVE match on Hard difficulty", 0));
+	achievement_array.push_back(std::make_pair("Try to win a PVE match on Impossible difficulty", 0));
+	achievement_array.push_back(std::make_pair("Play PVP match", 0));
 	/////////////////////////////
 	std::ofstream nekostil("achievements.db", std::ios::in | std::ios::out | std::ios::app | std::ios::binary | std::ios::ate);
 	nekostil.close();
