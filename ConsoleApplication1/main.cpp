@@ -176,7 +176,8 @@ int main(int argc, char * argv[]) {
 						std::cout << fleet_1.GetName() << " turn." << std::endl << std::endl;
 						//Вывод поля игрока 1
 						Output_Field_Final_REFORGED(0, fleet_1.GetName(), fleet_2.GetName());
-						DoAction(fleet_1, fleet_2, order, round, first);
+						DoAction(fleet_1, fleet_2, order, round);
+						first++;
 						break;
 					case 1:
 						//Смена хода
@@ -184,7 +185,8 @@ int main(int argc, char * argv[]) {
 						std::cout << fleet_2.GetName() << " turn." << std::endl << std::endl;
 						//Вывод поля игрока 2
 						Output_Field_Final_REFORGED(1, fleet_1.GetName(), fleet_2.GetName());
-						DoAction(fleet_2, fleet_1, order, round, first);
+						DoAction(fleet_2, fleet_1, order, round);
+						first++;
 						break;
 				}
 			}
@@ -214,11 +216,11 @@ int main(int argc, char * argv[]) {
 						switch (first % 2) {
 							case 0: //Player
 								Initialize_Field_Final(fleet_1);
-
 								std::cout << fleet_1.GetName() << " turn." << std::endl << std::endl;
 								//Вывод поля для игрока 1
 								Output_Field_Final_REFORGED(0, fleet_1.GetName(), fleet_2.GetName());
-								DoAction(fleet_1, fleet_2, order, round, first);
+								DoAction(fleet_1, fleet_2, order, round);
+								first++;
 								break;
 							case 1: //Bot(ON REWORK)
 								Initialize_Field_Final(fleet_2);

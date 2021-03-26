@@ -55,9 +55,9 @@ void GiveAchievement(std::vector <std::pair<std::string, bool>> &achievement_arr
 	achivOut.close();
 }
 
-void DoAction(Fleet &whose, Fleet &whom, std::vector<unsigned int> &order, int &round, int &first) {
+void DoAction(Fleet &whose, Fleet &whom, std::vector<unsigned int> &order, int &round) {
 		if (DEBUG_MODE) { std::cout << "[DEBUG INFO]order[round] = " << order[round] << std::endl; }
-		std::cout << "Current position: " << IntToLetter(Return_X_Y(order[round] + 2, first % 2).first) << " " << Return_X_Y(order[round] + 2, first % 2).second << std::endl;
+		std::cout << "Current position: " << IntToLetter(Return_X_Y(order[round] + 2, whose.GetSide()).first) << " " << Return_X_Y(order[round] + 2, whose.GetSide()).second << std::endl;
 		std::cout << "What do you want?\n\n";
 		std::string action = "";
 		while (true) { //IN DEVELOPMENT
@@ -144,7 +144,6 @@ void DoAction(Fleet &whose, Fleet &whom, std::vector<unsigned int> &order, int &
 	}
 	system("pause");
 	if (!DEBUG_MODE) { system("cls"); }
-	first++;
 }
 
 unsigned int ReturnFieldID(const bool side, const int x, const int y) {
