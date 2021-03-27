@@ -265,7 +265,7 @@ int main(int argc, char * argv[]) {
 		std::cout << "Friendship";
 	}
 	std::cout << " won!";
-	if (Ironman && difficulty == 2) {
+	if (difficulty == 2 && Ironman) {
 		GiveAchievement(achievement_array, 2);
 	}
 	if (BattleMode == "pvp" && Ironman) {

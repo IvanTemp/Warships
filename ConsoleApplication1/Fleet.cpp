@@ -130,7 +130,6 @@ ship Fleet::GetShipByIndex(const int ID)const {
 
 
 void Fleet::ConsDmgToIndBot(const int dmg, const int difficulty) {
-	srand(time(0));
 	int x = 0, y = 0;
 	//Gura AI(c). All rights not reserved.
 	bool GwSUtPaLT = true; //Gura was still unable to plant a large tree
@@ -176,10 +175,11 @@ void Fleet::ConsDmgToIndBot(const int dmg, const int difficulty) {
 }
 
 void Fleet::ConsDmgToIndPlayer(const int dmg) {
-	int x = 0, y = -1;
+	int x = 0, y = 0;
 	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	char charx;
-	std::cin >> charx >> y;
+	char charx, chary;
+	std::cin >> charx >> chary;
+	y = (int)chary;
 	if (DEBUG_MODE) std::cout << "[DEBUG INFO]X = " << charx << "; Y = " << y << std::endl;
 
 	if (y > width_height) {

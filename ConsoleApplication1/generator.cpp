@@ -8,7 +8,7 @@
 #include "fleet.h"
 
 std::string Field_Final[2][width_height][width_height] = { "#", "#", "#" }; //The field seen by the player and the AI
-std::pair<unsigned int, unsigned int> Field_ID[2][width_height][width_height] = { std::make_pair(0, 0) }; //The field with ID and indexes
+std::pair<unsigned int, unsigned int> Field_ID[2][width_height][width_height] = { std::make_pair(0, 0) }; //The field with ID(.first) and indexes(.second)
 bool Field_War[2][width_height][width_height] = { 0, 0, 0 }; //The field with fog of war
 
 void OutputAchievementInfo(const std::vector <std::pair<std::string, bool>> achievement_array) {

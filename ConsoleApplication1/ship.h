@@ -2,7 +2,6 @@
 
 #include <vector>
 
-
 //Game settings
 #define width_height 10 //Width & height of field
 #define Aircraft_Carrier_Durability 6
@@ -18,6 +17,7 @@
 #define Tsundere_Damage 3
 #define Small_Damage 2
 #define DEBUG_MODE 1
+///////////////
 
 class ship
 {
