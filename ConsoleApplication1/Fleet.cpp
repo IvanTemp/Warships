@@ -10,9 +10,9 @@ std::vector <std::pair <unsigned int, unsigned int>> BOTRoDC; //BOT Repository O
 
 int Fleet::count = 0;
 
-Fleet::Fleet(const std::string& nm):name(nm), side(count++) {}
+Fleet::Fleet(const std::string& nm) :name(nm), side(count++) {}
 
-Fleet::Fleet(const std::string& nm, const std::vector<ship>& v): name(nm), fleet(v), side(count++) {}
+Fleet::Fleet(const std::string& nm, const std::vector<ship>& v) : name(nm), fleet(v), side(count++) {}
 
 void Fleet::Print(std::ostream& out) const
 {
@@ -32,9 +32,9 @@ void Fleet::Print(std::ostream& out) const
 
 void Fleet::Read(std::istream& in)
 {
-	getline(in,name);
+	getline(in, name);
 	std::string count = "";
-	getline(in,count);
+	getline(in, count);
 	for (int i = 0; i < stoi(count); i++)
 	{
 		ship newShip;
@@ -43,7 +43,7 @@ void Fleet::Read(std::istream& in)
 	}
 }
 
-void Fleet::SetName(int index,const std::string nm)
+void Fleet::SetName(int index, const std::string nm)
 {
 	fleet.at(index).SetName(nm);
 }
@@ -130,6 +130,7 @@ ship Fleet::GetShipByIndex(const int ID)const {
 
 
 void Fleet::ConsDmgToIndBot(const int dmg, const int difficulty) {
+	srand(time(0));
 	int x = 0, y = 0;
 	//Gura AI(c). All rights not reserved.
 	bool GwSUtPaLT = true; //Gura was still unable to plant a large tree
@@ -175,11 +176,10 @@ void Fleet::ConsDmgToIndBot(const int dmg, const int difficulty) {
 }
 
 void Fleet::ConsDmgToIndPlayer(const int dmg) {
-	int x = 0, y = 0;
+	int x = 0, y = -1;
 	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	char charx, chary;
-	std::cin >> charx >> chary;
-	y = (int)chary;
+	char charx;
+	std::cin >> charx >> y;
 	if (DEBUG_MODE) std::cout << "[DEBUG INFO]X = " << charx << "; Y = " << y << std::endl;
 
 	if (y > width_height) {
@@ -212,7 +212,7 @@ void Fleet::ConsDmgToIndPlayer(const int dmg) {
 	else {
 		std::cout << "Miss! X = " << alf[x] << "; Y = " << y << std::endl;
 	}
-		Field_Get_Vision(x, y, side);
+	Field_Get_Vision(x, y, side);
 }
 
 void Fleet::NUCLEAR_BOMB() {
