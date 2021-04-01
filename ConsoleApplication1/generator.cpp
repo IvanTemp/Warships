@@ -69,7 +69,14 @@ void DoAction(Fleet &whose, Fleet &whom, const std::vector<unsigned int> &order,
 				if (action == "shoot") {
 					//Shot
 					std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
-					whom.ConsDmgToIndPlayer(Small_Damage);
+					if (whom.GetShipByIndex(order[round]).GetType() == "Aircraft Carrier")
+					{
+						whom.ConsDmgToIndPlayer(Small_Damage*2);
+					}
+					else
+					{
+						whom.ConsDmgToIndPlayer(Small_Damage);
+					}
 					break;
 				}
 				else if (action == "move") {
@@ -84,13 +91,27 @@ void DoAction(Fleet &whose, Fleet &whom, const std::vector<unsigned int> &order,
 				}
 			}
 			else if (whose.GetShipByIndex(order[round]).GetType() == "Tsundere") {
-				std::cout << "-Shoot\n" << std::endl;
+				std::cout << "-Shoot\n-Repair\n" << std::endl;
 				std::cin >> action;
 				hahaYouAreSmallNow(action);
 				if (action == "shoot") {
 					//Shot
 					std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
-					whom.ConsDmgToIndPlayer(Tsundere_Damage);
+					if (whom.GetShipByIndex(order[round]).GetType() == "Small")
+					{
+						whom.GetShipByIndex(order[round]).SetDurability({ 0 });
+					}
+					else
+					{
+						whom.ConsDmgToIndPlayer(Tsundere_Damage);
+					}
+					break;
+				}
+				else if (action == "repair")
+				{
+					whose.GetShipByIndex(order[round])++;
+					std::cout << "Ship repaired!" << std::endl;
+					Initialize_Field_Final(whose);
 					break;
 				}
 				else {
@@ -100,13 +121,13 @@ void DoAction(Fleet &whose, Fleet &whom, const std::vector<unsigned int> &order,
 				}
 			}
 			else if (whose.GetShipByIndex(order[round]).GetType() == "Heavy Cruiser") {
-				std::cout << "-Shoot\n" << std::endl;
+				std::cout << "-Shoot (3x3 low dmg)\n" << std::endl;
 				std::cin >> action;
 				hahaYouAreSmallNow(action);
 				if (action == "shoot") {
 					//Shot
 					std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
-					whom.ConsDmgToIndPlayer(Heavy_Cruiser_Damage);
+					whom.ConsDmgHeavyCruiser(Heavy_Cruiser_Damage);
 					break;
 				}
 				else {
@@ -116,11 +137,26 @@ void DoAction(Fleet &whose, Fleet &whom, const std::vector<unsigned int> &order,
 				}
 			}
 			else if (whose.GetShipByIndex(order[round]).GetType() == "Aircraft Carrier") {
-				std::cout << "-Shoot\n" << std::endl;
+				std::cout << "-Shoot (1x3 or 3x1)\n" << std::endl;
 				std::cin >> action;
 				hahaYouAreSmallNow(action);
-				if (action == "shoot") {
-					//Shot
+				if (action == "shoot") 
+				{
+					std::cout << "-1x3 or 3x1\n" << std::endl;
+					std::cin >> action;
+					hahaYouAreSmallNow(action);
+					if (action == "1x3")
+					{
+						std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
+						whom.ConsDmgAircraft(1, Aircraft_Carrier_Damage);
+						break;
+					}
+					else
+					{
+						std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
+						whom.ConsDmgAircraft(0, Aircraft_Carrier_Damage);
+						break;
+					}
 					std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
 					whom.ConsDmgToIndPlayer(Aircraft_Carrier_Damage);
 					break;
@@ -132,13 +168,13 @@ void DoAction(Fleet &whose, Fleet &whom, const std::vector<unsigned int> &order,
 				}
 			}
 			else {
-				std::cout << "ERROR! Unknown type of ship! Please contact the team leader, he will make sure that Vanya gets into a corner for poor testing. Get into a waiting pose if you don't want to miss the party." << std::endl;
+				std::cout << "ERROR! Unknown type of ship! Please contact the team leader, he will make sure that Vanya gets into a corner for poor testing (ne nado, nya). Get into a waiting pose if you don't want to miss the party." << std::endl;
 				system("pause");
 				return;
 			}
 		}
 		else {
-			std::cout << "This ship is sunk, you miss this turn." << std::endl;
+			std::cout << "This ship is sunk, you miss this turn." << std::endl; // а в смысле пропуск хода? 
 			return;
 		}
 	}

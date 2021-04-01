@@ -18,8 +18,10 @@ public:
 	bool RemoveShipFromFleet(const ship& ship);
 	bool GetSide() const;
 	ship GetShipByIndex(const int ID)const;
-	void ConsDmgToIndBot(const int dmg, const int difficulty);
+	void ConsDmgToIndBot(const int dmg, const int difficulty); // поменяй название cons = console, бот не использует консоль
 	void ConsDmgToIndPlayer(const int dmg);
+	void ConsDmgAircraft(const bool angle, const int dmg);
+	void ConsDmgHeavyCruiser(const int dmg);
 	void NUCLEAR_BOMB();
 
 private:

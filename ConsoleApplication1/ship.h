@@ -13,7 +13,7 @@
 
 #define Default_Damage 2
 #define Aircraft_Carrier_Damage 3
-#define Heavy_Cruiser_Damage 5
+#define Heavy_Cruiser_Damage 1
 #define Tsundere_Damage 3
 #define Small_Damage 2
 #define DEBUG_MODE 1
@@ -40,6 +40,7 @@ public:
 	int GetID()const;
 	bool operator == (const ship& right)const;
 	ship& operator= (const ship& right);
+	ship operator++ (int); //увеличивает прочность корабл€ всего корабл€ на 1
 	void Klee(const std::vector<std::pair<unsigned int, unsigned int>> coords, const bool side) const;
 	static int GetCount() { return count; }
 	void NUCLEAR_BOMB();
@@ -48,7 +49,7 @@ private:
 	std::string name;
 	std::vector<int> durability;
 	std::string type;
-	int ID; //”далить к курсовой
+	int ID; //”далить к курсовой (јлексей, разве это удал€ть? не cID? cID - количество кораблей)
 	static int count;
-	const int cID;
+	const int cID; //удалить к курсовой
 };

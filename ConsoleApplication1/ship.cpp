@@ -5,9 +5,7 @@
 #include <map>
 #include "ship.h"
 
-
 int ship::count = 0;
-
 
 ship::ship(const int IDen) : ID(IDen), cID(count++)
 {
@@ -128,6 +126,19 @@ ship& ship::operator=(const ship& right)
         durability = right.durability;
     }
     return *this;
+}
+
+ship ship::operator++(int)
+{
+    ship copyThis(*this);
+    for (int i = 0; i < durability.size(); i++)
+    {
+        if (durability[i] == Tsundere_Durability)
+        {
+            durability[i]++;
+        }
+    }
+    return copyThis;
 }
 
 void ship::Klee(const std::vector <std::pair<unsigned int, unsigned int>> coords, const bool side)const {

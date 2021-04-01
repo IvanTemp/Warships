@@ -128,7 +128,6 @@ ship Fleet::GetShipByIndex(const int ID)const {
 	//}
 }
 
-
 void Fleet::ConsDmgToIndBot(const int dmg, const int difficulty) {
 	srand(time(0));
 	int x = 0, y = 0;
@@ -213,6 +212,154 @@ void Fleet::ConsDmgToIndPlayer(const int dmg) {
 		std::cout << "Miss! X = " << alf[x] << "; Y = " << y << std::endl;
 	}
 	Field_Get_Vision(x, y, side);
+}
+
+void Fleet::ConsDmgAircraft(const bool angle, const int dmg)
+{
+	int x = 0, y = -1;
+	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	char charx;
+	std::cin >> charx >> y;
+	if (DEBUG_MODE) std::cout << "[DEBUG INFO]X = " << charx << "; Y = " << y << std::endl;
+
+	if (y > width_height) {
+		std::cout << "Captain! You shot out of bounds!" << std::endl;
+		return;
+	}
+
+	charx = std::toupper(charx);
+	for (int i = 0; i < width_height; i++) {
+		if (alf[i] == charx) {
+			x = i;
+			break;
+		}
+		if (i == width_height - 1) {
+			std::cout << "Captain! You shot out of bounds!" << std::endl;
+			return;
+		}
+	}
+
+	if (DEBUG_MODE) { std::cout << "[DEBUG INFO]int X = " << x << " Y = " << y << std::endl; }
+	
+	if (angle == 1) // horizontal
+	{
+		x--;
+		int tempx = x + 3;
+		for (x; x < tempx; x++)
+		{
+			if (x < 0 or x >= width_height)
+			{
+				std::cout << "Captain! You shot out of bounds!" << std::endl;
+			}
+			else
+			{
+				if (Return_Field_ID_Value(side, x, y) > 1) {
+					if (fleet[Return_Field_ID_Value(side, x, y) - 2].GetDurability()[Return_Field_Index_Value(side, x, y)]) {
+						GetDamage(side, x, y, dmg, fleet);
+					}
+					else {
+						std::cout << "Why did you shoot at an already sunk ship?" << std::endl;
+					}
+				}
+				else {
+					std::cout << "Miss! X = " << alf[x] << "; Y = " << y << std::endl;
+				}
+				Field_Get_Vision(x, y, side);
+			}
+		}
+	}
+	else // vertical
+	{
+		y--;
+		int tempy = y + 3;
+		for (y ; y < tempy; y++)
+		{
+			if (y < 0 or y >= width_height)
+			{
+				std::cout << "Captain! You shot out of bounds!" << std::endl;
+			}
+			else
+			{
+				if (Return_Field_ID_Value(side, x, y) > 1) {
+					if (fleet[Return_Field_ID_Value(side, x, y) - 2].GetDurability()[Return_Field_Index_Value(side, x, y)]) {
+						GetDamage(side, x, y, dmg, fleet);
+					}
+					else {
+						std::cout << "Why did you shoot at an already sunk ship?" << std::endl;
+					}
+				}
+				else {
+					std::cout << "Miss! X = " << alf[x] << "; Y = " << y << std::endl;
+				}
+				Field_Get_Vision(x, y, side);
+			}
+		}
+	}
+}
+
+void Fleet::ConsDmgHeavyCruiser(const int dmg)
+{
+	int x = 0, y = -1;
+	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	char charx;
+	std::cin >> charx >> y;
+	if (DEBUG_MODE) std::cout << "[DEBUG INFO]X = " << charx << "; Y = " << y << std::endl;
+
+	if (y > width_height) {
+		std::cout << "Captain! You shot out of bounds!" << std::endl;
+		return;
+	}
+
+	charx = std::toupper(charx);
+	for (int i = 0; i < width_height; i++) {
+		if (alf[i] == charx) {
+			x = i;
+			break;
+		}
+		if (i == width_height - 1) {
+			std::cout << "Captain! You shot out of bounds!" << std::endl;
+			return;
+		}
+	}
+
+	if (DEBUG_MODE) { std::cout << "[DEBUG INFO]int X = " << x << " Y = " << y << std::endl; }
+	x--;
+	y--;
+	int tempx = x + 3, tempy = y + 3;
+	for (x; x < tempx; x++)
+	{
+		for (y = tempy-3; y < tempy; y++)
+		{
+			if (x < 0 or x >= width_height)
+			{
+				std::cout << "Captain! You shot out of bounds!" << std::endl;
+			}
+			else
+			{
+				if (y < 0 or y > width_height)
+				{
+					std::cout << "Captain! You shot out of bounds!" << std::endl;
+				}
+				else
+				{
+					if (Return_Field_ID_Value(side, x, y) > 1) {
+						if (fleet[Return_Field_ID_Value(side, x, y) - 2].GetDurability()[Return_Field_Index_Value(side, x, y)]) {
+							GetDamage(side, x, y, dmg, fleet);
+						}
+						else {
+							std::cout << "Why did you shoot at an already sunk ship?" << std::endl;
+						}
+					}
+					else {
+						std::cout << "Miss! X = " << alf[x] << "; Y = " << y << std::endl;
+					}
+					Field_Get_Vision(x, y, side);
+				}
+			}
+		}
+
+
+	}
 }
 
 void Fleet::NUCLEAR_BOMB() {
