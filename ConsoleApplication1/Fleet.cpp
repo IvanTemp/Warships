@@ -367,3 +367,27 @@ void Fleet::NUCLEAR_BOMB() {
 		fleet[i].NUCLEAR_BOMB();
 	}
 }
+
+Fleet& Fleet::operator+=(const ship& ship)
+{
+	AddShipToFleet(ship);
+	return *this;
+}
+
+Fleet& Fleet::operator-=(const ship& ship)
+{
+	RemoveShipFromFleet(ship);
+	return *this;
+}
+
+std::istream& operator>>(std::istream& in, Fleet& shp)
+{
+	shp.Read(in);
+	return in;
+}
+
+std::ostream& operator<<(std::ostream& out, const Fleet& shp)
+{
+	shp.Print(out);
+	return out;
+}

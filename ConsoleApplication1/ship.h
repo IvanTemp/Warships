@@ -39,8 +39,9 @@ public:
 	void DmgtoInd(const int damage, const int index);
 	int GetID()const;
 	bool operator == (const ship& right)const;
+	bool operator != (const ship& right)const;
 	ship& operator= (const ship& right);
-	ship operator++ (int); //увеличивает прочность корабля всего корабля на 1
+	ship operator++ (int); //если возможно, увеличивает прочность всего корабля корабля на 1
 	void Klee(const std::vector<std::pair<unsigned int, unsigned int>> coords, const bool side) const;
 	static int GetCount() { return count; }
 	void NUCLEAR_BOMB();
@@ -53,3 +54,7 @@ private:
 	static int count;
 	const int cID; //удалить к курсовой
 };
+
+//Перегрузка операторов ввода/вывода возможно только отдельно от класса
+std::istream& operator>>(std::istream& in, ship& shp);
+std::ostream& operator<<(std::ostream& out, const ship& shp);

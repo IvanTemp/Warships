@@ -23,6 +23,8 @@ public:
 	void ConsDmgAircraft(const bool angle, const int dmg);
 	void ConsDmgHeavyCruiser(const int dmg);
 	void NUCLEAR_BOMB();
+	Fleet& operator +=(const ship& ship);
+	Fleet& operator -=(const ship& ship);
 
 private:
 	static int count;
@@ -30,3 +32,6 @@ private:
 	std::vector<ship> fleet;
 	const bool side;
 };
+
+std::istream& operator>>(std::istream& in, Fleet& shp);
+std::ostream& operator<<(std::ostream& out, const Fleet& shp);

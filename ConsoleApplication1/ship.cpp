@@ -117,6 +117,11 @@ bool ship::operator==(const ship& right) const
     return (name == right.name && type == right.type && ID == right.ID && durabilityIsEqual);
 }
 
+bool ship::operator!=(const ship& right) const
+{
+    return !(*this == right);
+}
+
 ship& ship::operator=(const ship& right)
 {
     if (this != &right)
@@ -181,4 +186,16 @@ void ship::NUCLEAR_BOMB() {
     for (int i = 0; i < durability.size(); i++) {
         durability[i] = 0;
     }
+}
+
+std::istream& operator>>(std::istream& in, ship& shp)
+{
+    shp.Read(in);
+    return in;
+}
+
+std::ostream& operator<<(std::ostream& out, const ship& shp)
+{
+    shp.Print(out);
+    return out;
 }
