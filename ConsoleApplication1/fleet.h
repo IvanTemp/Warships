@@ -23,8 +23,8 @@ public:
 	void aircraft_attack(const bool angle, const int dmg);
 	void heavy_cruiser_attack(const int dmg);
 	void nuclear_bomb();
-	Fleet& operator +=(const ship& ship);
-	Fleet& operator -=(const ship& ship);
+	Fleet& operator +=(const ship& ship); //repair
+	Fleet& operator -=(const ship& ship); //anti repair
 
 private:
 	static int count_;

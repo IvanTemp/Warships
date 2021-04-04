@@ -22,54 +22,35 @@ int main(int argc, char* argv[]) {
 		return -26;
 	}
 
-	ship ship1("Enterprise", "Aircraft Carrier", 2);
-	//Create our ship_vector_
-	std::vector<ship> fleet_11;
-	//Let's stuff our ship into the vector
-	fleet_11.emplace_back(ship1);
-	//Let's add more ships
-	fleet_11.push_back({ "Prinz Eugene", "Heavy Cruiser", 3 });
-	fleet_11.push_back({ "Atago", "Heavy Cruiser", 4 });
-	fleet_11.push_back({ "FLX1", "Tsundere", 5 });
-	fleet_11.push_back({ "FLX2", "Tsundere", 6 });
-	fleet_11.push_back({ "FLX3", "Tsundere", 7 });
-	fleet_11.push_back({ "Flaffey1", "Small", 8 });
-	fleet_11.push_back({ "Flaffey2", "Small", 9 });
-	fleet_11.push_back({ "Flaffey3", "Small", 10 });
-	fleet_11.push_back({ "Flaffey4", "Small", 11 });
-	//Let's stuff the ship_vector_ into the classroom
-	Fleet fleet_1("Eagle Union", fleet_11);
+	//FLEET 1
+	Fleet fleet_1("Eagle Union",
+		{ { "Enterprise", "Aircraft Carrier", 2 },
+		{ "Prinz Eugene", "Heavy Cruiser", 3 },
+		{ "Atago", "Heavy Cruiser", 4 },
+		{ "FLX1", "Tsundere", 5 },
+		{ "FLX2", "Tsundere", 6 },
+		{ "FLX3", "Tsundere", 7 },
+		{ "Flaffey1", "Small", 8 },
+		{ "Flaffey2", "Small", 9 },
+		{ "Flaffey3", "Small", 10 },
+		{ "Flaffey4", "Small", 11 } });
+	//FLEET 2
 	//We read the ship_vector_ from the file input.txt (names in the project parameters)
 	Fleet fleet_2;
-	if (argc > 2)
+	if (argc > 1)
 	{
 		std::ifstream fin(argv[2]);
 		fleet_2.read(fin);
 		std::cout << fleet_2.get_name() << " is loaded from file!" << std::endl << std::endl;
 		fin.close();
+		//Check fleet_2 for empty
+		if (!fleet_2.get_fleet().size()) {
+			std::cout << "Warning! Connect the file with the second ship_vector_!" << std::endl;
+			return -2;
+		}
 	}
-	//Let's output them to the file output.txt (names in the project parameters)
-	if (argc > 1)
-	{
-		std::ofstream out(argv[1]);
-		fleet_1.print(out);
-		fleet_2.print(out);
-		out.close();
-	}
-	//Reading the ship_vector_ from the console
-	/*ship_vector_ fleet_4;
-	fleet_4.read(std::cin);
-	fleet_4.print(std::cout);*/
-	//Let's display the number of ships (in fact, this is the number of calls to the constructor ... so you can call any ship with a plus and a minus)
-	std::cout << "Ships count: " << ship1.get_count() << std::endl << std::endl;
 
-
-	if (!fleet_2.get_fleet().size()) {
-		std::cout << "Warning! Connect the file with the second ship_vector_!" << std::endl;
-		return -2;
-	}
-			/*				This is where our first laboratory work ends (according to Vanya)				*/
-
+	//Gemu ga hajimarimasu (game is starting)
 	bool ironman = true;
 
 	//Generate here
@@ -115,8 +96,6 @@ int main(int argc, char* argv[]) {
 	std::cout << "Start game?\n\n";
 	system("pause");
 
-	
-
 	if (!DEBUG_MODE) { system("cls"); }
 
 	//Selecting a game mode
@@ -144,21 +123,21 @@ int main(int argc, char* argv[]) {
 		}
 		while (fleet_1.get_health() && fleet_2.get_health()) {
 			switch (first % 2) {
-				case 0:
-					initialize_field_final(fleet_1);
-					std::cout << fleet_1.get_name() << " turn." << std::endl << std::endl;
-					output_field_final(0, fleet_1.get_name(), fleet_2.get_name());
-					do_action(fleet_1, fleet_2, order, round);
-					first++;
-					break;
-				case 1:
-					initialize_field_final(fleet_2);
-					std::cout << fleet_2.get_name() << " turn." << std::endl << std::endl;
-					output_field_final(1, fleet_1.get_name(), fleet_2.get_name());
-					do_action(fleet_2, fleet_1, order, round);
-					first++;
-					break;
-				}
+			case 0:
+				initialize_field_final(fleet_1);
+				std::cout << fleet_1.get_name() << " turn." << std::endl << std::endl;
+				output_field_final(0, fleet_1.get_name(), fleet_2.get_name());
+				do_action(fleet_1, fleet_2, order, round);
+				first++;
+				break;
+			case 1:
+				initialize_field_final(fleet_2);
+				std::cout << fleet_2.get_name() << " turn." << std::endl << std::endl;
+				output_field_final(1, fleet_1.get_name(), fleet_2.get_name());
+				do_action(fleet_2, fleet_1, order, round);
+				first++;
+				break;
+			}
 		}
 	}
 	else if (battle_mode == "pve") //PVE(BOT IS DUMB)
@@ -188,27 +167,27 @@ int main(int argc, char* argv[]) {
 				while (fleet_1.get_health() && fleet_2.get_health()) {
 					std::cout << fleet_1.get_name() << " Health = " << fleet_1.get_health() << "; " << fleet_2.get_name() << " Health = " << fleet_2.get_health() << std::endl;
 					switch (first % 2) {
-						case 0: //Player
-							initialize_field_final(fleet_1);
-							std::cout << fleet_1.get_name() << " turn." << std::endl << std::endl;
-							output_field_final(false, fleet_1.get_name(), fleet_2.get_name());
-							do_action(fleet_1, fleet_2, order, round);
-							first++;
-							break;
-						case 1: //Bot(ON REWORK)
-							initialize_field_final(fleet_2);
-							std::cout << fleet_2.get_name() << " turn." << std::endl << std::endl;
-							fleet_1.damage_by_index_bot(Default_Damage, difficulty);
-							initialize_field_final(fleet_1); //MUST HAVE AFTER ANY DAMAGE
-							system("pause");
-							if (!DEBUG_MODE) { system("cls"); }
-							first++;
-							round++;
-							if (round == order.size()) {
-								round = 0;
-							}
-							break;
+					case 0: //Player
+						initialize_field_final(fleet_1);
+						std::cout << fleet_1.get_name() << " turn." << std::endl << std::endl;
+						output_field_final(false, fleet_1.get_name(), fleet_2.get_name());
+						do_action(fleet_1, fleet_2, order, round);
+						first++;
+						break;
+					case 1: //Bot(ON REWORK)
+						initialize_field_final(fleet_2);
+						std::cout << fleet_2.get_name() << " turn." << std::endl << std::endl;
+						fleet_1.damage_by_index_bot(Default_Damage, difficulty);
+						initialize_field_final(fleet_1); //MUST HAVE AFTER ANY DAMAGE
+						system("pause");
+						if (!DEBUG_MODE) { system("cls"); }
+						first++;
+						round++;
+						if (round == order.size()) {
+							round = 0;
 						}
+						break;
+					}
 				}
 			}
 			else {
@@ -246,5 +225,15 @@ int main(int argc, char* argv[]) {
 	if (battle_mode == "pvp" && ironman) {
 		give_achievement(achievement_array, 3);
 	}
+
+	//Let's output fleets to the file output.txt (names in the project parameters)
+	if (argc > 1)
+	{
+		std::ofstream out(argv[1]);
+		fleet_1.print(out);
+		fleet_2.print(out);
+		out.close();
+	}
+
 	return 0;
 }

@@ -142,15 +142,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Aircraft_Carrier.cpp" />
     <ClCompile Include="fleet.cpp" />
     <ClCompile Include="generator.cpp" />
+    <ClCompile Include="Heavy_Cruiser.cpp" />
     <ClCompile Include="ship.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Small.cpp" />
+    <ClCompile Include="Tsundere.cpp" />
+    <ClCompile Include="type.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Aircraft_Carrier.h" />
     <ClInclude Include="fleet.h" />
     <ClInclude Include="generator.h" />
+    <ClInclude Include="Heavy_Cruiser.h" />
     <ClInclude Include="ship.h" />
+    <ClInclude Include="Small.h" />
+    <ClInclude Include="Tsundere.h" />
+    <ClInclude Include="type.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="notes.txt" />
