@@ -9,14 +9,14 @@ class Aircraft_Carrier :
 public:
     Aircraft_Carrier() {}
     virtual ~Aircraft_Carrier() {}
-    virtual void Print()const override;
+    virtual void print()const override;
     virtual int get_size()const override;
     virtual std::string get_name()const override;
     virtual int get_default_durability()const override;
 
 private:
-    const int size = 4;
-    std::string name = "Aircraft Carrier";
-    int default_durability = 6;
+    const int size_ = 4;
+    std::string name_ = "Aircraft Carrier";
+    int default_durability_ = 6;
 };
 

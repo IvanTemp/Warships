@@ -12,7 +12,7 @@ public:
 	void read(std::istream& in);
 	void set_name(int index, const std::string name);
 	std::string get_name()const;
-	std::vector<ship> get_fleet()const;
+	std::vector<ship> get_ship_vector()const;
 	unsigned int get_health()const;
 	bool add_ship_to_fleet(const ship &ship);
 	bool remove_ship_from_fleet(const ship &ship);

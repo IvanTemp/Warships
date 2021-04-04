@@ -597,7 +597,7 @@ std::vector<unsigned int> first_order(Fleet& fleet1, Fleet& fleet2)
 	std::vector<unsigned int> orderList;
 	bool buleidu = true; //if index hasn't already been
 
-	const unsigned int max = std::max(fleet1.get_fleet().size(), fleet2.get_fleet().size());
+	const unsigned int max = std::max(fleet1.get_ship_vector().size(), fleet2.get_ship_vector().size());
 
 	for (unsigned int i = 0; i < max; i++)
 	{

@@ -1,21 +1,21 @@
 #include "Small.h"
 
-void Small::Print() const
+void Small::print() const
 {
-    std::cout << name;
+    std::cout << name_;
 }
 
 int Small::get_size() const
 {
-    return size;
+    return size_;
 }
 
 std::string Small::get_name() const
 {
-    return name;
+    return name_;
 }
 
 int Small::get_default_durability() const
 {
-    return default_durability;
+    return default_durability_;
 }

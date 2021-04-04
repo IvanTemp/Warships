@@ -1,21 +1,21 @@
 #include "Heavy_Cruiser.h"
 
-void Heavy_Cruiser::Print() const
+void Heavy_Cruiser::print() const
 {
-	std::cout << name;
+	std::cout << name_;
 }
 
 int Heavy_Cruiser::get_size() const
 {
-	return size;
+	return size_;
 }
 
 std::string Heavy_Cruiser::get_name() const
 {
-	return name;
+	return name_;
 }
 
 int Heavy_Cruiser::get_default_durability() const
 {
-	return default_durability;
+	return default_durability_;
 }

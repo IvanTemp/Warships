@@ -1,21 +1,21 @@
 #include "Tsundere.h"
 
-void Tsundere::Print() const
+void Tsundere::print() const
 {
-	std::cout << name;
+	std::cout << name_;
 }
 
 int Tsundere::get_size() const
 {
-	return size;
+	return size_;
 }
 
 std::string Tsundere::get_name() const
 {
-	return name;
+	return name_;
 }
 
 int Tsundere::get_default_durability() const
 {
-	return default_durability;
+	return default_durability_;
 }

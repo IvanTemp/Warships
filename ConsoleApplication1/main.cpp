@@ -53,7 +53,7 @@ int main(int argc, char* argv[]) {
 		std::cout << fleet_2.get_name() << " is loaded from file!" << std::endl << std::endl;
 		fin.close();
 		//Check fleet_2 for empty
-		if (!fleet_2.get_fleet().size()) {
+		if (!fleet_2.get_ship_vector().size()) {
 			std::cout << "Warning! Connect the file with the second fleet!" << std::endl;
 			return -2;
 		}
@@ -61,15 +61,15 @@ int main(int argc, char* argv[]) {
 
 	fleet_1.print(std::cout);
 	fleet_2.print(std::cout);
-	//Gemu ga hajimarimasu (game is starting)
+	
 	bool ironman = true;
 
 	//Generate here
-	for (int i = 0; i < fleet_1.get_fleet().size(); i++) {
+	for (int i = 0; i < fleet_1.get_ship_vector().size(); i++) {
 		generate_ship(fleet_1.get_ship_by_index(i), fleet_1.get_side());
 	}
 
-	for (int i = 0; i < fleet_2.get_fleet().size(); i++) {
+	for (int i = 0; i < fleet_2.get_ship_vector().size(); i++) {
 		generate_ship(fleet_2.get_ship_by_index(i), fleet_2.get_side());
 	}
 	///////////////
@@ -97,7 +97,7 @@ int main(int argc, char* argv[]) {
 	output_achievement_info(achievement_array);
 	//////////////
 
-	if (fleet_1.get_fleet().size() != fleet_2.get_fleet().size()) {
+	if (fleet_1.get_ship_vector().size() != fleet_2.get_ship_vector().size()) {
 		std::cout << "Warning! Different number of ships in fleets! Ironman mode is disabled." << std::endl << std::endl;
 		ironman = false;
 	}
@@ -127,31 +127,44 @@ int main(int argc, char* argv[]) {
 	}
 
 	int difficulty = 0, round = 0, first = rand() % 2;
-	if (battle_mode == "pvp") { //PVP
+	if (battle_mode == "pvp" || battle_mode == "p") { //PVP
 		if constexpr (DEBUG_MODE) { std::cout << "First side: " << first << std::endl; }
 		else {
 			system("cls");
 		}
 		while (fleet_1.get_health() && fleet_2.get_health()) {
 			switch (first % 2) {
-			case 0:
-				initialize_field_final(fleet_1);
-				std::cout << fleet_1.get_name() << " turn." << std::endl << std::endl;
-				output_field_final(0, fleet_1.get_name(), fleet_2.get_name());
-				do_action(fleet_1, fleet_2, order, round);
-				first++;
-				break;
-			case 1:
-				initialize_field_final(fleet_2);
-				std::cout << fleet_2.get_name() << " turn." << std::endl << std::endl;
-				output_field_final(1, fleet_1.get_name(), fleet_2.get_name());
-				do_action(fleet_2, fleet_1, order, round);
-				first++;
-				break;
+				case 0:
+					initialize_field_final(fleet_1);
+					std::cout << fleet_1.get_name() << " turn." << std::endl << std::endl;
+					output_field_final(false, fleet_1.get_name(), fleet_2.get_name());
+					do_action(fleet_1, fleet_2, order, round);
+					break;
+				case 1:
+					initialize_field_final(fleet_2);
+					std::cout << fleet_2.get_name() << " turn." << std::endl << std::endl;
+					output_field_final(true, fleet_1.get_name(), fleet_2.get_name());
+					do_action(fleet_2, fleet_1, order, round);
+					break;
 			}
+			switch (first + 1 % 2) {
+				case 0:
+					initialize_field_final(fleet_1);
+					std::cout << fleet_1.get_name() << " turn." << std::endl << std::endl;
+					output_field_final(false, fleet_1.get_name(), fleet_2.get_name());
+					do_action(fleet_1, fleet_2, order, round);
+					break;
+				case 1:
+					initialize_field_final(fleet_2);
+					std::cout << fleet_2.get_name() << " turn." << std::endl << std::endl;
+					output_field_final(true, fleet_1.get_name(), fleet_2.get_name());
+					do_action(fleet_2, fleet_1, order, round);
+					break;
+				}
+			first++;
 		}
 	}
-	else if (battle_mode == "pve") //PVE(BOT IS DUMB)
+	else if (battle_mode == "pve" || battle_mode == "e") //PVE
 	{
 		while (fleet_1.get_health() && fleet_2.get_health()) {
 			if (!DEBUG_MODE) { system("cls"); }
@@ -164,41 +177,44 @@ int main(int argc, char* argv[]) {
 			difficulty--;
 
 			if (difficulty == 2) {
-				first = 1; //Bot will always go first
+				first = 1; //Bot will always go first Kappa
 			}
 
 			if (difficulty >= 0 && difficulty <= 2) { //0 - 2(1 - 3 for user)
-				if (DEBUG_MODE) {
-					std::cout << "First side: " << first << std::endl;
-					output_field_id_indexes(false); output_field_id_indexes(true);
-				} 
+				if constexpr (DEBUG_MODE) { std::cout << "First side: " << first << std::endl; }
 				else {
 					system("cls");
 				}
 				while (fleet_1.get_health() && fleet_2.get_health()) {
-					std::cout << fleet_1.get_name() << " Health = " << fleet_1.get_health() << "; " << fleet_2.get_name() << " Health = " << fleet_2.get_health() << std::endl;
-					switch (first % 2) {
-					case 0: //Player
-						initialize_field_final(fleet_1);
-						std::cout << fleet_1.get_name() << " turn." << std::endl << std::endl;
-						output_field_final(false, fleet_1.get_name(), fleet_2.get_name());
-						do_action(fleet_1, fleet_2, order, round);
-						first++;
-						break;
-					case 1: //Bot(ON REWORK)
-						initialize_field_final(fleet_2);
-						std::cout << fleet_2.get_name() << " turn." << std::endl << std::endl;
-						fleet_1.damage_by_index_bot(Default_Damage, difficulty);
-						initialize_field_final(fleet_1); //MUST HAVE AFTER ANY DAMAGE
-						system("pause");
-						if (!DEBUG_MODE) { system("cls"); }
-						first++;
-						round++;
-						if (round == order.size()) {
-							round = 0;
+					switch (first % 2) { //0 - player; 1 - bot
+						case 0:
+							initialize_field_final(fleet_1);
+							std::cout << fleet_1.get_name() << " turn." << std::endl << std::endl;
+							output_field_final(false, fleet_1.get_name(), fleet_2.get_name());
+							do_action(fleet_1, fleet_2, order, round);
+							break;
+						case 1:
+							initialize_field_final(fleet_2);
+							std::cout << fleet_2.get_name() << " turn." << std::endl << std::endl;
+							output_field_final(true, fleet_1.get_name(), fleet_2.get_name());
+							do_action(fleet_2, fleet_1, order, round);
+							break;
 						}
-						break;
+					switch (first + 1 % 2) {
+						case 0:
+							initialize_field_final(fleet_1);
+							std::cout << fleet_1.get_name() << " turn." << std::endl << std::endl;
+							output_field_final(false, fleet_1.get_name(), fleet_2.get_name());
+							do_action(fleet_1, fleet_2, order, round);
+							break;
+						case 1:
+							initialize_field_final(fleet_2);
+							std::cout << fleet_2.get_name() << " turn." << std::endl << std::endl;
+							output_field_final(true, fleet_1.get_name(), fleet_2.get_name());
+							do_action(fleet_2, fleet_1, order, round);
+							break;
 					}
+					first++;
 				}
 			}
 			else {
