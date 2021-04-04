@@ -141,11 +141,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="fleet.cpp" />
     <ClCompile Include="generator.cpp" />
     <ClCompile Include="ship.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="fleet.h" />
     <ClInclude Include="generator.h" />
     <ClInclude Include="ship.h" />
   </ItemGroup>
