@@ -12,7 +12,7 @@
 */
 
 int main(int argc, char* argv[]) {
-	srand(time(0));
+	srand(time(nullptr));
 
 	if (!DEBUG_MODE) {
 		std::cout << "This is a playable build! Most of the information unnecessary to the player will be shown only after enabling DEBUG_MODE in ship.h!\n\n";
@@ -87,10 +87,10 @@ int main(int argc, char* argv[]) {
 	if (DEBUG_MODE) {
 		fleet_1.Print(std::cout);
 		fleet_2.Print(std::cout);
-		output_field_id_indexes(0);
-		output_field_war(0);
-		output_field_id_indexes(1);
-		output_field_war(1);
+		output_field_id_indexes(false);
+		output_field_war(false);
+		output_field_id_indexes(true);
+		output_field_war(true);
 		////INITIALISATION FIELDS
 		initialize_field_final(fleet_1);
 		initialize_field_final(fleet_2);
@@ -108,11 +108,11 @@ int main(int argc, char* argv[]) {
 
 	if (fleet_1.GetFleet().size() != fleet_2.GetFleet().size()) {
 		std::cout << "Warning! Different number of ships in fleets! Ironman mode is disabled." << std::endl << std::endl;
-		Ironman = 0;
+		Ironman = false;
 	}
 
-	//std::vector <unsigned int> order = first_order(fleet_1, fleet_2);
-	std::vector <unsigned int> order = {0};
+	std::vector <unsigned int> order = first_order(fleet_1, fleet_2);
+	//std::vector <unsigned int> order = {0};
 	std::cout << "Start game?\n\n";
 	system("pause");
 
@@ -121,7 +121,7 @@ int main(int argc, char* argv[]) {
 	if (!DEBUG_MODE) { system("cls"); }
 
 	//Выбор режима игры
-	std::string BattleMode = "";
+	std::string BattleMode;
 	while (true)
 	{
 		std::cout << "Select battle mode (PVE / PvP): "; //USE PVP FOR ATTACKS TESTS
