@@ -8,100 +8,100 @@
 
 std::vector <std::pair <unsigned int, unsigned int>> BOTRoDC; //BOT Repository Of Detected Cells
 
-int Fleet::count = 0;
+int Fleet::count_ = 0;
 
-Fleet::Fleet(const std::string& nm) :name(nm), side(count++) {}
+Fleet::Fleet(const std::string& nm) :name_(nm), side_(count_++) {}
 
-Fleet::Fleet(const std::string& nm, const std::vector<ship>& v) : name(nm), fleet(v), side(count++) {}
+Fleet::Fleet(const std::string& nm, const std::vector<ship>& v) : name_(nm), ship_vector_(v), side_(count_++) {}
 
-void Fleet::Print(std::ostream& out) const
+void Fleet::print(std::ostream& out) const
 {
-	out << "=====Fleet " << name << "=====" << std::endl;
-	if (fleet.size())
+	out << "=====ship_vector_ " << name_ << "=====" << std::endl;
+	if (ship_vector_.size())
 	{
-		for (const auto& x : fleet)
+		for (const auto& x : ship_vector_)
 		{
-			x.Print(out);
+			x.print(out);
 		}
 	}
 	else
 	{
-		out << "Fleet is empty" << std::endl;
+		out << "ship_vector_ is empty" << std::endl;
 	}
 }
 
-void Fleet::Read(std::istream& in)
+void Fleet::read(std::istream& in)
 {
-	getline(in, name);
+	getline(in, name_);
 	std::string count = "";
 	getline(in, count);
 	for (int i = 0; i < stoi(count); i++)
 	{
 		ship newShip;
-		newShip.Read(in);
-		AddShipToFleet(newShip);
+		newShip.read(in);
+		add_ship_to_fleet(newShip);
 	}
 }
 
-void Fleet::SetName(int index, const std::string nm)
+void Fleet::set_name(int index, const std::string nm)
 {
-	fleet.at(index).SetName(nm);
+	ship_vector_.at(index).set_name(nm);
 }
 
-std::string Fleet::GetName() const
+std::string Fleet::get_name() const
 {
-	return name;
+	return name_;
 }
 
-std::vector<ship> Fleet::GetFleet() const
+std::vector<ship> Fleet::get_fleet() const
 {
-	return fleet;
+	return ship_vector_;
 }
 
-unsigned int Fleet::GetHealth() const
+unsigned int Fleet::get_health() const
 {
 	unsigned int hp = 0;
-	for (int i = 0; i < fleet.size(); i++)
+	for (int i = 0; i < ship_vector_.size(); i++)
 	{
-		for (int j = 0; j < fleet[i].GetDurability().size(); j++)
+		for (int j = 0; j < ship_vector_[i].get_durability().size(); j++)
 		{
-			hp += fleet[i].GetDurability()[j];
+			hp += ship_vector_[i].get_durability()[j];
 		}
 	}
 	return hp;
 }
 
-bool Fleet::AddShipToFleet(const ship& shp)
+bool Fleet::add_ship_to_fleet(const ship& shp)
 {
-	for (int i = 0; i < fleet.size(); i++)
+	for (int i = 0; i < ship_vector_.size(); i++)
 	{
-		if (fleet[i] == shp)
+		if (ship_vector_[i] == shp)
 		{
 			std::cout << "Ship is already added" << std::endl;
 			return false;
 		}
 	}
-	fleet.push_back(shp);
+	ship_vector_.push_back(shp);
 	return true;
 }
 
-bool Fleet::RemoveShipFromFleet(const ship& shp)
+bool Fleet::remove_ship_from_fleet(const ship& shp)
 {
 	//Проверка на пустой
-	int len = fleet.size();
-	if (fleet.begin() == fleet.end())
+	int len = ship_vector_.size();
+	if (ship_vector_.begin() == ship_vector_.end())
 		return false;
 	//Добавим проверку удаления несуществующего
 	bool flag = 0;
-	for (int i = 0; i < fleet.size(); i++)
+	for (int i = 0; i < ship_vector_.size(); i++)
 	{
-		if (fleet[i] == shp)
+		if (ship_vector_[i] == shp)
 		{
 			//Само удаление
-			fleet.erase(std::remove(fleet.begin(), fleet.end(), shp));
+			ship_vector_.erase(std::remove(ship_vector_.begin(), ship_vector_.end(), shp));
 			flag = 1;
 			std::cout << "One ship removed!" << std::endl;
-			return (len > fleet.size());
+			return (len > ship_vector_.size());
 		}
 	}
 	if (!flag)
@@ -111,15 +111,15 @@ bool Fleet::RemoveShipFromFleet(const ship& shp)
 	}
 }
 
-bool Fleet::GetSide()const {
-	return side;
+bool Fleet::get_side()const {
+	return side_;
 }
 
-ship Fleet::GetShipByIndex(const int ID)const {
-	return fleet.at(ID);
+ship Fleet::get_ship_by_index(const unsigned int id)const {
+	return ship_vector_.at(id);
 	//try
 	//{
-	//	return fleet.at(index);
+	//	return ship_vector_.at(index);
 	//}
 	//catch (std::out_of_range)
 	//{
@@ -128,7 +128,7 @@ ship Fleet::GetShipByIndex(const int ID)const {
 	//}
 }
 
-void Fleet::ConsDmgToIndBot(const int dmg, const int difficulty) {
+void Fleet::damage_by_index_bot(const int dmg, const int difficulty) {
 	srand(time(0));
 	int x = 0, y = 0;
 	//Gura AI(c). All rights not reserved.
@@ -144,9 +144,9 @@ void Fleet::ConsDmgToIndBot(const int dmg, const int difficulty) {
 			GwSUtPaLT = false;
 		}
 		else {
-			if (return_field_war_value(side, x, y) == 0) { // II)Protection against shooting at empty cells
+			if (return_field_war_value(side_, x, y) == 0) { // II)Protection against shooting at empty cells
 				if (attempts) {
-					if (return_field_id_value(side, x, y) < 2) {
+					if (return_field_id_value(side_, x, y) < 2) {
 						if (difficulty < 2) {
 							attempts--;
 						}
@@ -165,16 +165,16 @@ void Fleet::ConsDmgToIndBot(const int dmg, const int difficulty) {
 
 	const char strx = int_to_letter(x);
 
-	if (return_field_id_value(side, x, y) > 1) {
-		get_damage(side, x, y, dmg, fleet);
+	if (return_field_id_value(side_, x, y) > 1) {
+		get_damage(side_, x, y, dmg, ship_vector_);
 	}
 	else {
 		std::cout << "The enemy missed! X = " << strx << "; Y = " << y << std::endl;
 	}
-	field_get_vision(x, y, side);
+	field_get_vision(x, y, side_);
 }
 
-void Fleet::ConsDmgToIndPlayer(const int dmg) {
+void Fleet::damage_by_index_player(const int dmg) {
 	int x = 0, y = -1;
 	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	char charx;
@@ -200,9 +200,9 @@ void Fleet::ConsDmgToIndPlayer(const int dmg) {
 
 	if (DEBUG_MODE) { std::cout << "[DEBUG INFO]int X = " << x << " Y = " << y << std::endl; }
 
-	if (return_field_id_value(side, x, y) > 1) {
-		if (fleet[return_field_id_value(side, x, y) - 2].GetDurability()[return_field_index_value(side, x, y)]) {
-			get_damage(side, x, y, dmg, fleet);
+	if (return_field_id_value(side_, x, y) > 1) {
+		if (ship_vector_[return_field_id_value(side_, x, y) - 2].get_durability()[return_field_index_value(side_, x, y)]) {
+			get_damage(side_, x, y, dmg, ship_vector_);
 		}
 		else {
 			std::cout << "Why did you shoot at an already sunk ship?" << std::endl;
@@ -211,10 +211,10 @@ void Fleet::ConsDmgToIndPlayer(const int dmg) {
 	else {
 		std::cout << "Miss! X = " << alf[x] << "; Y = " << y << std::endl;
 	}
-	field_get_vision(x, y, side);
+	field_get_vision(x, y, side_);
 }
 
-void Fleet::ConsDmgAircraft(const bool angle, const int dmg)
+void Fleet::aircraft_attack(const bool angle, const int dmg)
 {
 	int x = 0, y = -1;
 	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -250,9 +250,9 @@ void Fleet::ConsDmgAircraft(const bool angle, const int dmg)
 				std::cout << "Captain! You shot out of bounds!" << std::endl;
 				return;
 			}
-			if (return_field_id_value(side, x, y) > 1) {
-				if (fleet[return_field_id_value(side, x, y) - 2].GetDurability()[return_field_index_value(side, x, y)]) {
-					get_damage(side, x, y, dmg, fleet);
+			if (return_field_id_value(side_, x, y) > 1) {
+				if (ship_vector_[return_field_id_value(side_, x, y) - 2].get_durability()[return_field_index_value(side_, x, y)]) {
+					get_damage(side_, x, y, dmg, ship_vector_);
 				}
 				else {
 					std::cout << "Why did you shoot at an already sunk ship?" << std::endl;
@@ -272,9 +272,9 @@ void Fleet::ConsDmgAircraft(const bool angle, const int dmg)
 				std::cout << "Captain! You shot out of bounds!" << std::endl;
 				return;
 			}
-			if (return_field_id_value(side, x, y) > 1) {
-				if (fleet[return_field_id_value(side, x, y) - 2].GetDurability()[return_field_index_value(side, x, y)]) {
-					get_damage(side, x, y, dmg, fleet);
+			if (return_field_id_value(side_, x, y) > 1) {
+				if (ship_vector_[return_field_id_value(side_, x, y) - 2].get_durability()[return_field_index_value(side_, x, y)]) {
+					get_damage(side_, x, y, dmg, ship_vector_);
 				}
 				else {
 					std::cout << "Why did you shoot at an already sunk ship?" << std::endl;
@@ -285,10 +285,10 @@ void Fleet::ConsDmgAircraft(const bool angle, const int dmg)
 			}
 		}
 	}
-	field_get_vision(x, y, side);
+	field_get_vision(x, y, side_);
 }
 
-void Fleet::ConsDmgHeavyCruiser(const int dmg)
+void Fleet::heavy_cruiser_attack(const int dmg)
 {
 	int x = 0, y = -1;
 	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -333,9 +333,9 @@ void Fleet::ConsDmgHeavyCruiser(const int dmg)
 				}
 				else
 				{
-					if (return_field_id_value(side, x, y) > 1) {
-						if (fleet[return_field_id_value(side, x, y) - 2].GetDurability()[return_field_index_value(side, x, y)]) {
-							get_damage(side, x, y, dmg, fleet);
+					if (return_field_id_value(side_, x, y) > 1) {
+						if (ship_vector_[return_field_id_value(side_, x, y) - 2].get_durability()[return_field_index_value(side_, x, y)]) {
+							get_damage(side_, x, y, dmg, ship_vector_);
 						}
 						else {
 							std::cout << "Why did you shoot at an already sunk ship?" << std::endl;
@@ -344,7 +344,7 @@ void Fleet::ConsDmgHeavyCruiser(const int dmg)
 					else {
 						std::cout << "Miss! X = " << alf[x] << "; Y = " << y << std::endl;
 					}
-					field_get_vision(x, y, side);
+					field_get_vision(x, y, side_);
 				}
 			}
 		}
@@ -354,31 +354,31 @@ void Fleet::ConsDmgHeavyCruiser(const int dmg)
 }
 
 void Fleet::nuclear_bomb() { //test func
-	for (int i = 0; i < fleet.size(); i++) {
-		fleet[i].NUCLEAR_BOMB();
+	for (int i = 0; i < ship_vector_.size(); i++) {
+		ship_vector_[i].nuclear_bomb();
 	}
 }
 
 Fleet& Fleet::operator+=(const ship& ship)
 {
-	AddShipToFleet(ship);
+	add_ship_to_fleet(ship);
 	return *this;
 }
 
 Fleet& Fleet::operator-=(const ship& ship)
 {
-	RemoveShipFromFleet(ship);
+	remove_ship_from_fleet(ship);
 	return *this;
 }
 
 std::istream& operator>>(std::istream& in, Fleet& shp)
 {
-	shp.Read(in);
+	shp.read(in);
 	return in;
 }
 
 std::ostream& operator<<(std::ostream& out, const Fleet& shp)
 {
-	shp.Print(out);
+	shp.print(out);
 	return out;
 }

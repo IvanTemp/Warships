@@ -1,4 +1,4 @@
-=====Fleet Eagle Union=====
+=====ship_vector_ Eagle Union=====
 [2]	Enterprise	Type: Aircraft Carrier	Durability:  6 6 6 6
 [3]	Prinz Eugene	Type: Heavy Cruiser	Durability:  7 7 7
 [4]	Atago		Type: Heavy Cruiser	Durability:  7 7 7
@@ -9,7 +9,7 @@
 [9]	Flaffey2	Type: Small		Durability:  4
 [10]	Flaffey3	Type: Small		Durability:  4
 [11]	Flaffey4	Type: Small		Durability:  4
-=====Fleet Sakura Empire=====
+=====ship_vector_ Sakura Empire=====
 [2]	Akagi		Type: Aircraft Carrier	Durability:  6 6 6 6
 [3]	SAKURA_NAME1	Type: Heavy Cruiser	Durability:  7 7 7
 [4]	SAKURA_NAME2	Type: Heavy Cruiser	Durability:  7 7 7

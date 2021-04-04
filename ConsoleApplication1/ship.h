@@ -22,39 +22,39 @@
 class ship
 {
 public:
-	ship() :cID(count++) {};
-	ship(const int ID);
-	ship(const std::string& name, const std::string& type, const int ID);
+	ship() :cid_(count_++) {};
+	ship(const int id);
+	ship(const std::string& name, const std::string& type, const int id);
 	~ship() { }
 
-	void Print(std::ostream& out)const;
-	void Read(std::istream& in);
-	void SetName(const std::string name);
-	std::string GetName()const;
-	void SetType(const std::string type);
-	std::string GetType()const;
-	void SetDurability (const std::vector<int> durability);
-	unsigned int GetDurabilitySum()const;
-	std::vector<int> GetDurability()const;
-	void DmgtoInd(const int damage, const int index);
-	int GetID()const;
+	void print(std::ostream& out)const;
+	void read(std::istream& in);
+	void set_name(const std::string &name);
+	std::string get_name()const;
+	void set_type(const std::string type);
+	std::string get_type()const;
+	void set_durability(const std::vector<int> &durability);
+	unsigned int get_durability_sum()const;
+	std::vector<int> get_durability()const;
+	void damage_by_index(const int damage, const int index);
+	int get_id()const;
 	bool operator == (const ship& right)const;
 	bool operator != (const ship& right)const;
 	ship& operator= (const ship& right);
-	ship operator++ (int); //если возможно, увеличивает прочность всего корабл€ корабл€ на 1
-	void Klee(const std::vector<std::pair<unsigned int, unsigned int>> coords, const bool side) const;
-	static int GetCount() { return count; }
-	void NUCLEAR_BOMB();
+	ship operator++ (int); //repair function
+	void klee(const std::vector<std::pair<unsigned int, unsigned int>> coords, const bool side) const;
+	static int get_count() { return count_; }
+	void nuclear_bomb();
 
 private:
-	std::string name;
-	std::vector<int> durability;
-	std::string type;
-	int ID; //”далить к курсовой (јлексей, разве это удал€ть? не cID? cID - количество кораблей)
-	static int count;
-	const int cID; //удалить к курсовой
+	std::string name_;
+	std::vector<int> durability_;
+	std::string type_;
+	int id_;
+	static int count_;
+	const int cid_;
 };
 
-//ѕерегрузка операторов ввода/вывода возможно только отдельно от класса
+//Overloading I/O operators is only possible separately from the class
 std::istream& operator>>(std::istream& in, ship& shp);
 std::ostream& operator<<(std::ostream& out, const ship& shp);

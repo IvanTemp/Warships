@@ -5,32 +5,32 @@
 class Fleet
 {
 public:
-	Fleet() : side(count++) {};
+	Fleet() : side_(count_++) {};
 	Fleet(const std::string& name);
 	Fleet(const std::string& name, const std::vector<ship>& v);
-	void Print(std::ostream& out)const;
-	void Read(std::istream& in);
-	void SetName(int index, const std::string name);
-	std::string GetName()const;
-	std::vector<ship> GetFleet()const;
-	unsigned int GetHealth()const;
-	bool AddShipToFleet(const ship& ship);
-	bool RemoveShipFromFleet(const ship& ship);
-	bool GetSide() const;
-	ship GetShipByIndex(const int ID)const;
-	void ConsDmgToIndBot(const int dmg, const int difficulty); // поменяй название cons = console, бот не использует консоль
-	void ConsDmgToIndPlayer(const int dmg);
-	void ConsDmgAircraft(const bool angle, const int dmg);
-	void ConsDmgHeavyCruiser(const int dmg);
+	void print(std::ostream& out)const;
+	void read(std::istream& in);
+	void set_name(int index, const std::string name);
+	std::string get_name()const;
+	std::vector<ship> get_fleet()const;
+	unsigned int get_health()const;
+	bool add_ship_to_fleet(const ship &ship);
+	bool remove_ship_from_fleet(const ship &ship);
+	bool get_side() const;
+	ship get_ship_by_index(const unsigned int id)const;
+	void damage_by_index_bot(const int dmg, const int difficulty);
+	void damage_by_index_player(const int dmg);
+	void aircraft_attack(const bool angle, const int dmg);
+	void heavy_cruiser_attack(const int dmg);
 	void nuclear_bomb();
 	Fleet& operator +=(const ship& ship);
 	Fleet& operator -=(const ship& ship);
 
 private:
-	static int count;
-	std::string name;
-	std::vector<ship> fleet;
-	const bool side;
+	static int count_;
+	std::string name_;
+	std::vector<ship> ship_vector_;
+	const bool side_;
 };
 
 std::istream& operator>>(std::istream& in, Fleet& shp);

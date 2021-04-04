@@ -1,11 +1,11 @@
 #pragma once
 #include "fleet.h"
 
-void output_achievement_info(const std::vector <std::pair<std::string, bool>> achievements);
+void output_achievement_info(const std::vector <std::pair<std::string, bool>> &achievements);
 
 std::vector <std::pair<std::string, bool>> read_achievements();
 
-void give_achievement(std::vector <std::pair<std::string, bool>>& achievement_array, const int &achv_num);
+void give_achievement(std::vector <std::pair<std::string, bool>>& achievement_array, const int &num);
 
 void do_action(Fleet& whose, Fleet& whom, const std::vector<unsigned int>& order, const int& round);
 
@@ -27,7 +27,7 @@ void output_field_war(const bool side);
 
 void field_get_vision(const unsigned int x, const unsigned int y, const bool side);
 
-void generate_ship(const ship& sheep, bool side);
+void generate_ship(const ship& sheep, const bool side);
 
 std::vector <unsigned int> first_order(Fleet& fleet1, Fleet& fleet2);
 
