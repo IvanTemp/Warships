@@ -26,16 +26,8 @@ void ship::print(std::ostream& out) const
     out << "[" << id_ << "]\t";
     out << name_ << "\t";
     if (name_.size() < 6) out << "\t";
-    out << "Type: ";
-    if (type_)
-    {
-        type_->Print();
-        if (type_->get_name().size() < 9) out << "\t";
-    }
-    else
-    {
-        std::cout << "no type";
-    }
+    out << "Type: " << type_->get_name();
+    if (type_->get_name().size() < 9) out << "\t";
     std::cout << "\t";
     out << "Durability: ";
     for (int i = 0; i < durability_.size(); i++)
