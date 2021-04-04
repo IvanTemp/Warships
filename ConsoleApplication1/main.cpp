@@ -6,6 +6,10 @@
 #include "ship.h"
 #include "generator.h"
 #include "fleet.h"
+#include "Aircraft_Carrier.h"
+#include "Heavy_Cruiser.h"
+#include "Tsundere.h"
+#include "Small.h"
 
 int main(int argc, char* argv[]) {
 	srand(time(nullptr));
@@ -23,19 +27,25 @@ int main(int argc, char* argv[]) {
 	}
 
 	//FLEET 1
-	Fleet fleet_1("Eagle Union",
-		{ { "Enterprise", "Aircraft Carrier", 2 },
-		{ "Prinz Eugene", "Heavy Cruiser", 3 },
-		{ "Atago", "Heavy Cruiser", 4 },
-		{ "FLX1", "Tsundere", 5 },
-		{ "FLX2", "Tsundere", 6 },
-		{ "FLX3", "Tsundere", 7 },
-		{ "Flaffey1", "Small", 8 },
-		{ "Flaffey2", "Small", 9 },
-		{ "Flaffey3", "Small", 10 },
-		{ "Flaffey4", "Small", 11 } });
+	
+	Aircraft_Carrier air1;
+	Heavy_Cruiser HwCrus1, HwCrus2;
+	Tsundere Tsun1, Tsun2, Tsun3;
+	Small Sm1, Sm2, Sm3, Sm4;
+	Fleet fleet_1 = { "Eagle Union",{
+		{"Enterprise", air1, 2},
+		{"Prinz Eugene", HwCrus1, 3},
+		{"Atago", HwCrus2, 4},
+		{"FLX1", Tsun1, 5},
+		{"FLX2", Tsun2, 6},
+		{"FLX3", Tsun3, 7},
+		{"Flaffey1", Sm1, 8},
+		{"Flaffey2", Sm2, 9},
+		{"Flaffey3", Sm3, 10},
+		{"Flaffey4", Sm4, 11} } };
+	fleet_1.print(std::cout);
 	//FLEET 2
-	//We read the ship_vector_ from the file input.txt (names in the project parameters)
+	//We read the fleet from the file input.txt (names in the project parameters)
 	Fleet fleet_2;
 	if (argc > 1)
 	{
@@ -45,11 +55,13 @@ int main(int argc, char* argv[]) {
 		fin.close();
 		//Check fleet_2 for empty
 		if (!fleet_2.get_fleet().size()) {
-			std::cout << "Warning! Connect the file with the second ship_vector_!" << std::endl;
+			std::cout << "Warning! Connect the file with the second fleet!" << std::endl;
 			return -2;
 		}
 	}
 
+	fleet_1.print(std::cout);
+	fleet_2.print(std::cout);
 	//Gemu ga hajimarimasu (game is starting)
 	bool ironman = true;
 
@@ -91,8 +103,8 @@ int main(int argc, char* argv[]) {
 		ironman = false;
 	}
 
-	std::vector <unsigned int> order = first_order(fleet_1, fleet_2);
-	//std::vector <unsigned int> order = {0};
+	//std::vector <unsigned int> order = first_order(fleet_1, fleet_2);
+	std::vector <unsigned int> order = {5};
 	std::cout << "Start game?\n\n";
 	system("pause");
 
@@ -160,7 +172,7 @@ int main(int argc, char* argv[]) {
 				if (DEBUG_MODE) {
 					std::cout << "First side: " << first << std::endl;
 					output_field_id_indexes(false); output_field_id_indexes(true);
-				}
+				} 
 				else {
 					system("cls");
 				}

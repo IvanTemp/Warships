@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include "type.h"
 
 //Game settings
 #define width_height 10 //Width & height of field
@@ -22,17 +23,17 @@
 class ship
 {
 public:
-	ship() :cid_(count_++) {};
-	ship(const int id);
-	ship(const std::string& name, const std::string& type, const int id);
-	~ship() { }
+	ship() : cid_(count_++), type_(nullptr), id_(0) {};
+	ship(const std::string& name, const int id);
+	ship(const std::string& name, type& type, const int id);
+	~ship() {};
 
 	void print(std::ostream& out)const;
 	void read(std::istream& in);
 	void set_name(const std::string &name);
 	std::string get_name()const;
-	void set_type(const std::string type);
-	std::string get_type()const;
+	void set_type(const type* type);
+	type* get_type()const;
 	void set_durability(const std::vector<int> &durability);
 	unsigned int get_durability_sum()const;
 	std::vector<int> get_durability()const;
@@ -49,7 +50,7 @@ public:
 private:
 	std::string name_;
 	std::vector<int> durability_;
-	std::string type_;
+	type* type_;
 	int id_;
 	static int count_;
 	const int cid_;

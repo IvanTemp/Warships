@@ -68,14 +68,14 @@ void do_action(Fleet& whose, Fleet& whom, const std::vector<unsigned int>& order
 	if constexpr (DEBUG_MODE) { std::cout << "[DEBUG INFO]order[round] = " << order[round] << std::endl; }
 	std::cout << "Current position: " << int_to_letter(return_x_y(order[round] + 2, whose.get_side()).first) << " " <<
 		return_x_y(order[round] + 2, whose.get_side()).second << std::endl;
-	std::cout << "Current type: " << whose.get_ship_by_index(order[round]).get_type() << std::endl;
+	std::cout << "Current type: " << whose.get_ship_by_index(order[round]).get_type()->get_name() << std::endl;
 	std::cout << "What do you want?\n\n";
 	std::string action;
 	while (true)
 	{
 		if (whose.get_ship_by_index(order[round]).get_durability_sum())
 		{
-			if (whose.get_ship_by_index(order[round]).get_type() == "Small")
+			if (whose.get_ship_by_index(order[round]).get_type()->get_name() == "Small")
 			{
 				//single-deck abilities
 				std::cout << "-Shoot\n-Move\n" << std::endl;
@@ -84,15 +84,7 @@ void do_action(Fleet& whose, Fleet& whom, const std::vector<unsigned int>& order
 				if (action == "shoot")
 				{
 					//Shot
-					std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
-					if (whom.get_ship_by_index(order[round]).get_type() == "Aircraft Carrier")
-					{
-						whom.damage_by_index_player(Small_Damage * 2);
-					}
-					else
-					{
-						whom.damage_by_index_player(Small_Damage);
-					}
+					whom.damage_by_index_player(Small_Damage);
 					break;
 				}
 				if (action == "move")
@@ -105,23 +97,14 @@ void do_action(Fleet& whose, Fleet& whom, const std::vector<unsigned int>& order
 				system("pause");
 				continue;
 			}
-			if (whose.get_ship_by_index(order[round]).get_type() == "Tsundere")
+			if (whose.get_ship_by_index(order[round]).get_type()->get_name() == "Tsundere")
 			{
 				std::cout << "-Shoot\n-Repair\n" << std::endl;
 				std::cin >> action;
 				ha_you_are_small_now(action);
 				if (action == "shoot")
 				{
-					//Shot
-					std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
-					if (whom.get_ship_by_index(order[round]).get_type() == "Small")
-					{
-						whom.get_ship_by_index(order[round]).set_durability({0});
-					}
-					else
-					{
-						whom.damage_by_index_player(Tsundere_Damage);
-					}
+					whom.damage_by_index_player(Tsundere_Damage);
 					break;
 				}
 				if (action == "repair")
@@ -135,14 +118,14 @@ void do_action(Fleet& whose, Fleet& whom, const std::vector<unsigned int>& order
 				system("pause");
 				continue;
 			}
-			if (whose.get_ship_by_index(order[round]).get_type() == "Heavy Cruiser")
+			if (whose.get_ship_by_index(order[round]).get_type()->get_name() == "Heavy Cruiser")
 			{
 				//Shot
 				std::cout << "Point the center where to shoot (Write X and Y coordinates): ";
 				whom.heavy_cruiser_attack(Heavy_Cruiser_Damage);
 				break;
 			}
-			if (whose.get_ship_by_index(order[round]).get_type() == "Aircraft Carrier")
+			if (whose.get_ship_by_index(order[round]).get_type()->get_name() == "Aircraft Carrier")
 			{
 				ha_you_are_small_now(action);
 				std::cout << "Specify the type of attack (1x3 or 3x1): \n" << std::endl;
@@ -150,13 +133,11 @@ void do_action(Fleet& whose, Fleet& whom, const std::vector<unsigned int>& order
 				ha_you_are_small_now(action);
 				if (action == "1x3" || action == "1")
 				{
-					std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
 					whom.aircraft_attack(true, Aircraft_Carrier_Damage);
 					break;
 				}
 				if (action == "3x1" || action == "3")
 				{
-					std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
 					whom.aircraft_attack(false, Aircraft_Carrier_Damage);
 					break;
 				}
@@ -318,12 +299,9 @@ void field_get_vision(const unsigned int x, const unsigned int y, const bool sid
 
 void generate_ship(const ship& sheep, const bool side)
 {
-	std::map<std::string, int> TypeToLength = {
-		{"Aircraft Carrier", 4}, {"Heavy Cruiser", 3}, {"Tsundere", 2}, {"Small", 1}
-	};
 	bool stop = false;
 	int x = 0, y = 0, rotation = 0;
-	const int length = TypeToLength[sheep.get_type()], id = sheep.get_id();
+	const int length = sheep.get_type()->get_size(), id = sheep.get_id();
 	bool breaks_in = true,
 	     left_is_clear = false,
 	     right_is_clear = false,

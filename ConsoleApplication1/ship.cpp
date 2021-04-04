@@ -2,21 +2,23 @@
 #include <string>
 #include <vector>
 #include <algorithm>
-#include <map>
 #include "ship.h"
+#include "Aircraft_Carrier.h"
+#include "Heavy_Cruiser.h"
+#include "Tsundere.h"
+#include "Small.h"
+
 
 int ship::count_ = 0;
 
-ship::ship(const int IDen) : id_(IDen), cid_(count_++)
+ship::ship(const std::string& nm, const int IDen) : name_(nm), id_(IDen), type_(nullptr), cid_(count_++)
 {
 }
 
-ship::ship(const std::string& nm, const std::string& tp, const int IDen):name_(nm), type_(tp), durability_(1, Small_Durability), id_(IDen), cid_(count_++)
+ship::ship(const std::string& nm, type& tp, const int IDen) : name_(nm), id_(IDen), type_(&tp), cid_(count_++)
 {
-    std::map<std::string, int> tptosize = { {"Aircraft Carrier", 4}, {"Heavy Cruiser", 3}, {"Tsundere", 2}, {"Small", 1} };
-    durability_.resize(tptosize[type_]);
-    std::map<std::string, int> tptodur = { {"Aircraft Carrier", Aircraft_Carrier_Durability}, {"Heavy Cruiser", Heavy_Cruiser_Durability}, {"Tsundere", Tsundere_Durability}, {"Small", Small_Durability} };
-    std::fill(durability_.begin(), durability_.end(), tptodur[type_]);
+    durability_.resize(type_->get_size());
+    std::fill(durability_.begin(), durability_.end(), type_->get_default_durability());
 }
 
 void ship::print(std::ostream& out) const
@@ -24,8 +26,17 @@ void ship::print(std::ostream& out) const
     out << "[" << id_ << "]\t";
     out << name_ << "\t";
     if (name_.size() < 6) out << "\t";
-    out << "Type: " << type_ << "\t";
-    if (type_.size() < 9) out << "\t";
+    out << "Type: ";
+    if (type_)
+    {
+        type_->Print();
+        if (type_->get_name().size() < 9) out << "\t";
+    }
+    else
+    {
+        std::cout << "no type";
+    }
+    std::cout << "\t";
     out << "Durability: ";
     for (int i = 0; i < durability_.size(); i++)
     {
@@ -40,11 +51,27 @@ void ship::read(std::istream& in)
     std::getline(in, temp);
     id_ = stoi(temp);
     std::getline(in, name_);
-    std::getline(in, type_);
-    std::map<std::string, int> tptosize = { {"Aircraft Carrier", 4}, {"Heavy Cruiser", 3}, {"Tsundere", 2}, {"Small", 1} };
-    durability_.resize(tptosize[type_]);
-    std::map<std::string, int> tptodur = { {"Aircraft Carrier", Aircraft_Carrier_Durability}, {"Heavy Cruiser", Heavy_Cruiser_Durability}, {"Tsundere", Tsundere_Durability}, {"Small", Small_Durability} };
-    std::fill(durability_.begin(), durability_.end(), tptodur[type_]);
+    //std::getline(in, type_);
+    temp = "";
+    std::getline(in, temp);
+    if (temp == "Aircraft Carrier") 
+    {
+        type_ = new Aircraft_Carrier();
+    }
+    else if (temp == "Heavy Cruiser")
+    {
+        type_ = new Heavy_Cruiser();
+    }
+    else if (temp == "Tsundere")
+    {
+        type_ = new Tsundere();
+    }
+    else
+    {
+        type_ = new Small();
+    }
+    durability_.resize(type_->get_size());
+    std::fill(durability_.begin(), durability_.end(), type_->get_default_durability());
 }
 
 void ship::set_name(const std::string &name)
@@ -57,12 +84,12 @@ std::string ship::get_name() const
     return name_;
 }
 
-void ship::set_type(const std::string tp)
+void ship::set_type(const type* tp)
 {
-    type_ = tp;
+    type_ = (type*)tp;
 }
 
-std::string ship::get_type() const
+ type* ship::get_type() const
 {
     return type_;
 }

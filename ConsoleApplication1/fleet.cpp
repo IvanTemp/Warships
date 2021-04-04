@@ -16,7 +16,7 @@ Fleet::Fleet(const std::string& nm, const std::vector<ship>& v) : name_(nm), shi
 
 void Fleet::print(std::ostream& out) const
 {
-	out << "=====ship_vector_ " << name_ << "=====" << std::endl;
+	out << "=====Fleet " << name_ << "=====" << std::endl;
 	if (ship_vector_.size())
 	{
 		for (const auto& x : ship_vector_)
@@ -26,7 +26,7 @@ void Fleet::print(std::ostream& out) const
 	}
 	else
 	{
-		out << "ship_vector_ is empty" << std::endl;
+		out << "Fleet is empty" << std::endl;
 	}
 }
 
@@ -174,7 +174,8 @@ void Fleet::damage_by_index_bot(const int dmg, const int difficulty) {
 	field_get_vision(x, y, side_);
 }
 
-void Fleet::damage_by_index_player(const int dmg) {
+void Fleet::damage_by_index_player(int dmg) {
+	std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
 	int x = 0, y = -1;
 	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	char charx;
@@ -200,8 +201,18 @@ void Fleet::damage_by_index_player(const int dmg) {
 
 	if (DEBUG_MODE) { std::cout << "[DEBUG INFO]int X = " << x << " Y = " << y << std::endl; }
 
-	if (return_field_id_value(side_, x, y) > 1) {
-		if (ship_vector_[return_field_id_value(side_, x, y) - 2].get_durability()[return_field_index_value(side_, x, y)]) {
+	if (return_field_id_value(side_, x, y) > 1) 
+	{
+		if (ship_vector_[return_field_id_value(side_, x, y) - 2].get_durability()[return_field_index_value(side_, x, y)])
+		{
+			if (ship_vector_[return_field_id_value(side_, x, y) - 2].get_type()->get_name() == "Small" and dmg == Tsundere_Damage)
+			{
+				dmg = Small_Durability;
+			}
+			else if (ship_vector_[return_field_id_value(side_, x, y) - 2].get_type()->get_name() == "Aircraft Carrier" and dmg == Small_Damage)
+			{
+				dmg *= 2;
+			}
 			get_damage(side_, x, y, dmg, ship_vector_);
 		}
 		else {
@@ -216,6 +227,7 @@ void Fleet::damage_by_index_player(const int dmg) {
 
 void Fleet::aircraft_attack(const bool angle, const int dmg)
 {
+	std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
 	int x = 0, y = -1;
 	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	char charx;
