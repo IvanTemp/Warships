@@ -70,10 +70,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="notes.txt">
+    <Text Include="z_notes.txt">
       <Filter>Исходные файлы</Filter>
     </Text>
-    <Text Include="TODO.txt">
+    <Text Include="z_TODO.txt">
       <Filter>Исходные файлы</Filter>
     </Text>
   </ItemGroup>
