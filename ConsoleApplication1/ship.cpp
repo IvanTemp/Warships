@@ -26,8 +26,16 @@ void ship::print(std::ostream& out) const
     out << "[" << id_ << "]\t";
     out << name_ << "\t";
     if (name_.size() < 6) out << "\t";
-    out << "Type: " << type_->get_name();
-    if (type_->get_name().size() < 9) out << "\t";
+    out << "Type: ";
+        if (type_ != nullptr)
+        {
+            std::cout << type_->get_name();
+            if (type_->get_name().size() < 9) out << "\t";
+        }
+        else
+        {
+            std::cout << "none type";
+        }
     std::cout << "\t";
     out << "Durability: ";
     for (int i = 0; i < durability_.size(); i++)
@@ -58,9 +66,13 @@ void ship::read(std::istream& in)
     {
         type_ = new Tsundere();
     }
-    else
+    else if (temp == "Small")
     {
         type_ = new Small();
+    }
+    else
+    {
+        type_ = nullptr;
     }
     durability_.resize(type_->get_size());
     std::fill(durability_.begin(), durability_.end(), type_->get_default_durability());
