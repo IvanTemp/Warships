@@ -7,26 +7,26 @@
 #include "generator.h"
 #include "fleet.h"
 
-std::string Field_Final[2][width_height][width_height] = { "#", "#", "#" }; //The field seen by the player and the AI
-std::pair<unsigned int, unsigned int> Field_ID[2][width_height][width_height] = { std::make_pair(0, 0) }; //The field with ID(.first) and indexes(.second)
-bool Field_War[2][width_height][width_height] = { 0, 0, 0 }; //The field with fog of war
+std::string field_final[2][width_height][width_height] = { "#", "#", "#" }; //The field seen by the player and the AI
+std::pair<unsigned int, unsigned int> field_id[2][width_height][width_height] = { (std::make_pair(0, 0)) }; //The field with ID(.first) and indexes(.second)
+bool field_war[2][width_height][width_height] = { false, false, false }; //The field with fog of war
 
-void OutputAchievementInfo(const std::vector <std::pair<std::string, bool>> achievement_array) {
+void output_achievement_info(const std::vector <std::pair<std::string, bool>> achievements) {
 	std::cout << "Achievements: " << std::endl;
-	for (int i = 0; i < achievement_array.size(); i++) {
-		std::cout << i + 1 << ")" << achievement_array[i].first << ": ";
-		achievement_array[i].second ? std::cout << "Received\n" : std::cout << "Not received\n";
+	for (int i = 0; i < achievements.size(); i++) {
+		std::cout << i + 1 << ")" << achievements[i].first << ": ";
+		achievements[i].second ? std::cout << "Received\n" : std::cout << "Not received\n";
 	}
 	std::cout << std::endl;
 }
 
-std::vector <std::pair<std::string, bool>> ReadAchievements() {
+std::vector <std::pair<std::string, bool>> read_achievements() {
 	std::vector <std::pair<std::string, bool>> achievement_array;
 	//Place your achivements here
-	achievement_array.push_back(std::make_pair("Win a PVE match on Normal difficulty", 0));
-	achievement_array.push_back(std::make_pair("Win a PVE match on Hard difficulty", 0));
-	achievement_array.push_back(std::make_pair("Try to win a PVE match on Impossible difficulty", 0));
-	achievement_array.push_back(std::make_pair("Play PVP match", 0));
+	achievement_array.emplace_back(std::make_pair("Win a PVE match on Normal difficulty", 0));
+	achievement_array.emplace_back(std::make_pair("Win a PVE match on Hard difficulty", 0));
+	achievement_array.emplace_back(std::make_pair("Try to win a PVE match on Impossible difficulty", 0));
+	achievement_array.emplace_back(std::make_pair("Play PVP match", 0));
 	/////////////////////////////
 	std::ofstream nekostil(achievement_file, std::ios::in | std::ios::out | std::ios::app | std::ios::binary | std::ios::ate);
 	nekostil.close();
@@ -46,26 +46,26 @@ std::vector <std::pair<std::string, bool>> ReadAchievements() {
 	return achievement_array;
 }
 
-void GiveAchievement(std::vector <std::pair<std::string, bool>> &achievement_array, const int achivement_plus) {
-	achievement_array[achivement_plus].second = true;
-	std::ofstream achivOut(achievement_file);
-	for (int i = 0; i < achievement_array.size(); i++) {
-		achivOut << achievement_array[i].second;
+void give_achievement(std::vector <std::pair<std::string, bool>> &achievement_array, const int &achv_num) {
+	achievement_array[achv_num].second = true;
+	for (auto i = 0; i < achievement_array.size(); i++) {
+		std::ofstream(achievement_file) << achievement_array[i].second;
 	}
-	achivOut.close();
+	std::ofstream(achievement_file).close();
 }
 
-void DoAction(Fleet &whose, Fleet &whom, const std::vector<unsigned int> &order, const int &round) {
+void do_action(Fleet &whose, Fleet &whom, const std::vector<unsigned int> &order, const int &round) {
 		if (DEBUG_MODE) { std::cout << "[DEBUG INFO]order[round] = " << order[round] << std::endl; }
-		std::cout << "Current position: " << IntToLetter(Return_X_Y(order[round] + 2, whose.GetSide()).first) << " " << Return_X_Y(order[round] + 2, whose.GetSide()).second << std::endl;
+		std::cout << "Current position: " << int_to_letter(return_x_y(order[round] + 2, whose.GetSide()).first) << " " << return_x_y(order[round] + 2, whose.GetSide()).second << std::endl;
+		std::cout << "Current type: " << whose.GetShipByIndex(order[round]).GetType() << std::endl;
 		std::cout << "What do you want?\n\n";
-		std::string action = "";
-		while (true) { //IN DEVELOPMENT
+		std::string action;
+		while (true) {
 		if (whose.GetShipByIndex(order[round]).GetDurabilitySum()) {
 			if (whose.GetShipByIndex(order[round]).GetType() == "Small") { //single-deck abilities
 				std::cout << "-Shoot\n-Move\n" << std::endl;
 				std::cin >> action;
-				hahaYouAreSmallNow(action);
+				ha_you_are_small_now(action);
 				if (action == "shoot") {
 					//Shot
 					std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
@@ -80,8 +80,8 @@ void DoAction(Fleet &whose, Fleet &whom, const std::vector<unsigned int> &order,
 					break;
 				}
 				else if (action == "move") {
-					Small_Move(order[round], whose.GetSide());
-					Initialize_Field_Final(whose);
+					small_move(order[round], whose.GetSide());
+					initialize_field_final(whose);
 					break;
 				}
 				else {
@@ -93,7 +93,7 @@ void DoAction(Fleet &whose, Fleet &whom, const std::vector<unsigned int> &order,
 			else if (whose.GetShipByIndex(order[round]).GetType() == "Tsundere") {
 				std::cout << "-Shoot\n-Repair\n" << std::endl;
 				std::cin >> action;
-				hahaYouAreSmallNow(action);
+				ha_you_are_small_now(action);
 				if (action == "shoot") {
 					//Shot
 					std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
@@ -111,7 +111,7 @@ void DoAction(Fleet &whose, Fleet &whom, const std::vector<unsigned int> &order,
 				{
 					whose.GetShipByIndex(order[round])++;
 					std::cout << "Ship repaired!" << std::endl;
-					Initialize_Field_Final(whose);
+					initialize_field_final(whose);
 					break;
 				}
 				else {
@@ -121,60 +121,34 @@ void DoAction(Fleet &whose, Fleet &whom, const std::vector<unsigned int> &order,
 				}
 			}
 			else if (whose.GetShipByIndex(order[round]).GetType() == "Heavy Cruiser") {
-				std::cout << "-Shoot (3x3 low dmg)\n" << std::endl;
-				std::cin >> action;
-				hahaYouAreSmallNow(action);
-				if (action == "shoot") {
-					//Shot
-					std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
-					whom.ConsDmgHeavyCruiser(Heavy_Cruiser_Damage);
-					break;
-				}
-				else {
-					std::cout << "Wrong command!" << std::endl;
-					system("pause");
-					continue;
-				}
+				//Shot
+				std::cout << "Point the center where to shoot (Write X and Y coordinates): ";
+				whom.ConsDmgHeavyCruiser(Heavy_Cruiser_Damage);
+				break;
 			}
 			else if (whose.GetShipByIndex(order[round]).GetType() == "Aircraft Carrier") {
-				std::cout << "-Shoot (1x3 or 3x1)\n" << std::endl;
+				ha_you_are_small_now(action);
+				std::cout << "Specify the type of attack (1x3 or 3x1): \n" << std::endl;
 				std::cin >> action;
-				hahaYouAreSmallNow(action);
-				if (action == "shoot") 
-				{
-					std::cout << "-1x3 or 3x1\n" << std::endl;
-					std::cin >> action;
-					hahaYouAreSmallNow(action);
-					if (action == "1x3")
-					{
-						std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
-						whom.ConsDmgAircraft(1, Aircraft_Carrier_Damage);
-						break;
-					}
-					else
-					{
-						std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
-						whom.ConsDmgAircraft(0, Aircraft_Carrier_Damage);
-						break;
-					}
+				ha_you_are_small_now(action);
+				if (action == "1x3" || action == "1") {
 					std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
-					whom.ConsDmgToIndPlayer(Aircraft_Carrier_Damage);
+					whom.ConsDmgAircraft(true, Aircraft_Carrier_Damage);
 					break;
 				}
-				else {
+				else if (action == "3x1" || action == "3") {
+					std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
+					whom.ConsDmgAircraft(false, Aircraft_Carrier_Damage);
+					break;
+				} else {
 					std::cout << "Wrong command!" << std::endl;
 					system("pause");
 					continue;
 				}
-			}
-			else {
-				std::cout << "ERROR! Unknown type of ship! Please contact the team leader, he will make sure that Vanya gets into a corner for poor testing (ne nado, nya). Get into a waiting pose if you don't want to miss the party." << std::endl;
-				system("pause");
-				return;
 			}
 		}
 		else {
-			std::cout << "This ship is sunk, you miss this turn." << std::endl; // а в смысле пропуск хода? 
+			std::cout << "This ship is sunk, you miss this turn." << std::endl; // -а в смысле пропуск хода? -Да
 			return;
 		}
 	}
@@ -182,19 +156,19 @@ void DoAction(Fleet &whose, Fleet &whom, const std::vector<unsigned int> &order,
 	if (!DEBUG_MODE) { system("cls"); }
 }
 
-unsigned int Return_Field_ID_Value(const bool side, const int x, const int y) {
-	return Field_ID[side][x][y].first;
+unsigned int return_field_id_value(const bool &side, const int &x, const int &y) {
+	return field_id[side][x][y].first;
 }
 
-unsigned int Return_Field_Index_Value(const bool side, const int x, const int y) {
-	return Field_ID[side][x][y].second;
+unsigned int return_field_index_value(const bool &side, const int &x, const int &y) {
+	return field_id[side][x][y].second;
 }
 
-bool Return_Field_War_Value(const bool side, const int x, const int y) {
-	return Field_War[side][x][y];
+bool return_field_war_value(const bool &side, const int &x, const int &y) {
+	return field_war[side][x][y];
 }
 
-void hahaYouAreSmallNow(std::string &str) {
+void ha_you_are_small_now(std::string &str) {
 	std::string small = "abcdefghijklmnopqrstuvwxyz";
 	std::string big = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	for (int i = 0; i < str.length(); i++) {
@@ -205,22 +179,22 @@ void hahaYouAreSmallNow(std::string &str) {
 	}
 }
 
-void Initialize_Field_Final(const Fleet fleet) {
+void initialize_field_final(const Fleet &fleet) {
 	for (unsigned int y = 0; y < width_height; y++) {
 		for (unsigned int x = 0; x < width_height; x++) {
-			if (Field_ID[fleet.GetSide()][x][y].first > 1) {
-				Field_Final[fleet.GetSide()][x][y] = std::to_string(fleet.GetShipByIndex(Field_ID[fleet.GetSide()][x][y].first - 2).GetDurability()[Field_ID[fleet.GetSide()][x][y].second]);
+			if (field_id[fleet.GetSide()][x][y].first > 1) {
+				field_final[fleet.GetSide()][x][y] = std::to_string(fleet.GetShipByIndex(field_id[fleet.GetSide()][x][y].first - 2).GetDurability()[field_id[fleet.GetSide()][x][y].second]);
 			}
-			else if (Field_War[fleet.GetSide()][x][y]) {
-				Field_Final[fleet.GetSide()][x][y] = "X";
+			else if (field_war[fleet.GetSide()][x][y]) {
+				field_final[fleet.GetSide()][x][y] = "X";
 			} else {
-				Field_Final[fleet.GetSide()][x][y] = " ";
+				field_final[fleet.GetSide()][x][y] = " ";
 			}
 		}
 	}
 }
 
-void Output_Field_Final_REFORGED(const bool side, const std::string name1, const std::string name2) {
+void output_field_final(const bool &side, const std::string &name1, const std::string &name2) {
 	std::string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	std::map<int, std::string> SideToName = { { 0, name1 }, {1, name2} };
 	std::cout << "\tSide: " << SideToName[side] << "\t\tSide: " << SideToName[!side] << std::endl;
@@ -240,14 +214,14 @@ void Output_Field_Final_REFORGED(const bool side, const std::string name1, const
 		std::cout << "\t" << y << "||";
 		for (unsigned int x = 0; x < width_height; x++)
 		{
-			std::cout << Field_Final[side][x][y] << "|";
+			std::cout << field_final[side][x][y] << "|";
 		}
 		std::cout << "\t\t" << y << "||";
 		for (unsigned int x = 0; x < width_height; x++)
 		{
-			if (Field_War[!side][x][y])
+			if (field_war[!side][x][y])
 			{
-				if (Field_ID[!side][x][y].first > 1) { std::cout << Field_Final[!side][x][y] << "|"; }
+				if (field_id[!side][x][y].first > 1) { std::cout << field_final[!side][x][y] << "|"; }
 				else { std::cout << " |"; }
 			}
 			else
@@ -260,12 +234,12 @@ void Output_Field_Final_REFORGED(const bool side, const std::string name1, const
 	std::cout << std::endl;
 }
 
-void Output_Field_ID_Indexes(const bool side) { //DEBUG FUNC
+void output_field_id_indexes(const bool side) { //DEBUG FUNC
 	std::cout << "ID[" << side << "](NOT FOR USER): \n\n";
 	for (unsigned int y = 0; y < width_height; y++) {
 		std::cout << "         |";
 		for (unsigned int x = 0; x < width_height; x++) {
-			std::cout << Field_ID[side][x][y].first << "|";
+			std::cout << field_id[side][x][y].first << "|";
 		}
 		std::cout << std::endl;
 	}
@@ -274,30 +248,30 @@ void Output_Field_ID_Indexes(const bool side) { //DEBUG FUNC
 	for (unsigned int y = 0; y < width_height; y++) {
 		std::cout << "         |";
 		for (unsigned int x = 0; x < width_height; x++) {
-			std::cout << Field_ID[side][x][y].second << "|";
+			std::cout << field_id[side][x][y].second << "|";
 		}
 		std::cout << std::endl;
 	}
 	std::cout << std::endl;
 }
 
-void Output_Field_War(const bool side) { //DEBUG FUNC
+void output_field_war(const bool side) { //DEBUG FUNC
 	std::cout << "War[" << side << "](NOT FOR USER): \n\n";
 	for (unsigned int y = 0; y < width_height; y++) {
 		std::cout << "         |";
 		for (unsigned int x = 0; x < width_height; x++) {
-			std::cout << Field_War[side][x][y] << "|";
+			std::cout << field_war[side][x][y] << "|";
 		}
 		std::cout << std::endl;
 	}
 	std::cout << std::endl;
 }
 
-void Field_Get_Vision(const unsigned int x, const unsigned int y, const bool side) {
-	Field_War[side][x][y] = 1;
+void field_get_vision(const unsigned int x, const unsigned int y, const bool side) {
+	field_war[side][x][y] = true;
 }
 
-void Generate_ship(const ship sheep, bool side) {
+void generate_ship(const ship &sheep, bool side) {
 	std::map <std::string, int> TypeToLength = { {"Aircraft Carrier", 4}, {"Heavy Cruiser", 3}, {"Tsundere", 2}, {"Small", 1} };
 	bool stop = false, breaksIn = true;
 	int x = 0, y = 0, rotation = 0, length = TypeToLength[sheep.GetType()], ID = sheep.GetID();
@@ -361,7 +335,7 @@ void Generate_ship(const ship sheep, bool side) {
 			}
 
 			for (int h = 0; h < length; h++) { //check for the ability to place the ship part 2
-				if (Field_ID[side][x][y + h * OT].first > 0) {
+				if (field_id[side][x][y + h * OT].first > 0) {
 					breaksIn = false;
 				}
 			}
@@ -370,35 +344,35 @@ void Generate_ship(const ship sheep, bool side) {
 				OT > 0 ? breaksIn = upIsClear : breaksIn = downIsClear;
 				if (breaksIn) {
 					if (leftIsClear) {
-						if (Field_ID[side][x - 1][y - 1 * OT].first == 0) {
-							Field_ID[side][x - 1][y - 1 * OT].first = 1;
+						if (field_id[side][x - 1][y - 1 * OT].first == 0) {
+							field_id[side][x - 1][y - 1 * OT].first = 1;
 						}
 					}
 
-					if (Field_ID[side][x][y - 1 * OT].first == 0) {
-						Field_ID[side][x][y - 1 * OT].first = 1;
+					if (field_id[side][x][y - 1 * OT].first == 0) {
+						field_id[side][x][y - 1 * OT].first = 1;
 					}
 
 					if (rightIsClear) {
-						if (Field_ID[side][x + 1][y - 1 * OT].first == 0) {
-							Field_ID[side][x + 1][y - 1 * OT].first = 1;
+						if (field_id[side][x + 1][y - 1 * OT].first == 0) {
+							field_id[side][x + 1][y - 1 * OT].first = 1;
 						}
 					}
 				}
 
 				for (int counter = 0; counter < length; counter++) {
 					if (leftIsClear) {
-						if (Field_ID[side][x - 1][y + counter * OT].first == 0) {
-							Field_ID[side][x - 1][y + counter * OT].first = 1;
+						if (field_id[side][x - 1][y + counter * OT].first == 0) {
+							field_id[side][x - 1][y + counter * OT].first = 1;
 						}
 					}
 
-					Field_ID[side][x][y + counter * OT].first = ID;
-					Field_ID[side][x][y + counter * OT].second = counter;
+					field_id[side][x][y + counter * OT].first = ID;
+					field_id[side][x][y + counter * OT].second = counter;
 
 					if (rightIsClear) {
-						if (Field_ID[side][x + 1][y + counter * OT].first == 0) {
-							Field_ID[side][x + 1][y + counter * OT].first = 1;
+						if (field_id[side][x + 1][y + counter * OT].first == 0) {
+							field_id[side][x + 1][y + counter * OT].first = 1;
 						}
 					}
 				}
@@ -406,18 +380,18 @@ void Generate_ship(const ship sheep, bool side) {
 				OT > 0 ? breaksIn = downIsClear : breaksIn = upIsClear;
 				if (breaksIn) {
 					if (leftIsClear) {
-						if (Field_ID[side][x - 1][y + length * OT].first == 0) {
-							Field_ID[side][x - 1][y + length * OT].first = 1;
+						if (field_id[side][x - 1][y + length * OT].first == 0) {
+							field_id[side][x - 1][y + length * OT].first = 1;
 						}
 					}
 
-					if (Field_ID[side][x][y + length * OT].first == 0) {
-						Field_ID[side][x][y + length * OT].first = 1;
+					if (field_id[side][x][y + length * OT].first == 0) {
+						field_id[side][x][y + length * OT].first = 1;
 					}
 
 					if (rightIsClear) {
-						if (Field_ID[side][x + 1][y + length * OT].first == 0) {
-							Field_ID[side][x + 1][y + length * OT].first = 1;
+						if (field_id[side][x + 1][y + length * OT].first == 0) {
+							field_id[side][x + 1][y + length * OT].first = 1;
 						}
 					}
 
@@ -443,7 +417,7 @@ void Generate_ship(const ship sheep, bool side) {
 			}
 
 			for (int h = 0; h < length; h++) { //check for the ability to place the ship part 2
-				if (Field_ID[side][x + h * OT][y].first > 0) {
+				if (field_id[side][x + h * OT][y].first > 0) {
 					breaksIn = false;
 				}
 			}
@@ -452,34 +426,34 @@ void Generate_ship(const ship sheep, bool side) {
 				OT > 0 ? breaksIn = leftIsClear : breaksIn = rightIsClear;
 				if (breaksIn) {
 					if (downIsClear) {
-						if (Field_ID[side][x - 1 * OT][y + 1].first == 0) {
-							Field_ID[side][x - 1 * OT][y + 1].first = 1;
+						if (field_id[side][x - 1 * OT][y + 1].first == 0) {
+							field_id[side][x - 1 * OT][y + 1].first = 1;
 						}
 					}
 
-					if (Field_ID[side][x - 1 * OT][y].first == 0) {
-						Field_ID[side][x - 1 * OT][y].first = 1;
+					if (field_id[side][x - 1 * OT][y].first == 0) {
+						field_id[side][x - 1 * OT][y].first = 1;
 					}
 
 					if (upIsClear) {
-						if (Field_ID[side][x - 1 * OT][y - 1].first == 0) {
-							Field_ID[side][x - 1 * OT][y - 1].first = 1;
+						if (field_id[side][x - 1 * OT][y - 1].first == 0) {
+							field_id[side][x - 1 * OT][y - 1].first = 1;
 						}
 					}
 				}
 				for (int counter = 0; counter < length; counter++) {
 					if (upIsClear) {
-						if (Field_ID[side][x + counter * OT][y - 1].first == 0) {
-							Field_ID[side][x + counter * OT][y - 1].first = 1;
+						if (field_id[side][x + counter * OT][y - 1].first == 0) {
+							field_id[side][x + counter * OT][y - 1].first = 1;
 						}
 					}
 
-					Field_ID[side][x + counter * OT][y].first = ID;
-					Field_ID[side][x + counter * OT][y].second = counter;
+					field_id[side][x + counter * OT][y].first = ID;
+					field_id[side][x + counter * OT][y].second = counter;
 
 					if (downIsClear) {
-						if (Field_ID[side][x + counter * OT][y + 1].first == 0) {
-							Field_ID[side][x + counter * OT][y + 1].first = 1;
+						if (field_id[side][x + counter * OT][y + 1].first == 0) {
+							field_id[side][x + counter * OT][y + 1].first = 1;
 						}
 					}
 				}
@@ -487,18 +461,18 @@ void Generate_ship(const ship sheep, bool side) {
 				OT > 0 ? breaksIn = rightIsClear : breaksIn = leftIsClear;
 				if (breaksIn) {
 					if (downIsClear) {
-						if (Field_ID[side][x + length * OT][y + 1].first == 0) {
-							Field_ID[side][x + length * OT][y + 1].first = 1;
+						if (field_id[side][x + length * OT][y + 1].first == 0) {
+							field_id[side][x + length * OT][y + 1].first = 1;
 						}
 					}
 
-					if (Field_ID[side][x + length * OT][y].first == 0) {
-						Field_ID[side][x + length * OT][y].first = 1;
+					if (field_id[side][x + length * OT][y].first == 0) {
+						field_id[side][x + length * OT][y].first = 1;
 					}
 
 					if (upIsClear) {
-						if (Field_ID[side][x + length * OT][y - 1].first == 0) {
-							Field_ID[side][x + length * OT][y - 1].first = 1;
+						if (field_id[side][x + length * OT][y - 1].first == 0) {
+							field_id[side][x + length * OT][y - 1].first = 1;
 						}
 					}
 				}
@@ -514,22 +488,22 @@ void Generate_ship(const ship sheep, bool side) {
 	}
 }
 
-std::vector <unsigned int> First_order(Fleet &fleet1, Fleet &fleet2) {
+std::vector <unsigned int> first_order(Fleet &fleet1, Fleet &fleet2) {
 	std::vector <unsigned int> orderList;
 	bool buleidu = false; //if index hasn't already been
 
-	unsigned int max = std::max(fleet1.GetFleet().size(), fleet2.GetFleet().size());
+	const unsigned int max = std::max(fleet1.GetFleet().size(), fleet2.GetFleet().size());
 
 	for (unsigned int i = 0; i < max; i++) {
 		buleidu = true;
-		unsigned int random_index = rand() % max;
+		const auto random_index = rand() % max;
 		for (int j = 0; j < orderList.size(); j++) {
 			if (random_index == orderList[j]) {
 				buleidu = false;
 			}
 		}
 		if (buleidu) {
-			orderList.push_back(random_index);
+			orderList.emplace_back(random_index);
 		}
 		else {
 			i--;
@@ -547,11 +521,11 @@ std::vector <unsigned int> First_order(Fleet &fleet1, Fleet &fleet2) {
 	return orderList;
 }
 
-std::pair <unsigned int, unsigned int> Return_X_Y(const unsigned int ID, const int side) {
+std::pair <unsigned int, unsigned int> return_x_y(const unsigned int id, const int side) {
 	unsigned int start_x = 0, start_y = 0;
 	for (unsigned int y = 0; y < width_height; y++) {
 		for (unsigned int x = 0; x < width_height; x++) {
-			if (Field_ID[side][x][y].first == ID) {
+			if (field_id[side][x][y].first == id) {
 				start_x = x;
 				start_y = y;
 				return std::make_pair(start_x, start_y);
@@ -561,40 +535,40 @@ std::pair <unsigned int, unsigned int> Return_X_Y(const unsigned int ID, const i
 	return std::make_pair(start_x, start_y);;
 }
 
-char IntToLetter(const int i) {
+char int_to_letter(const int i) {
 	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	return alf[i];
 }
 
-bool AreaIsClear(const bool side, const unsigned int x, const unsigned int y) {
+bool area_is_clear(const bool side, const unsigned int x, const unsigned int y) {
 	if (y) {
 		if (x) {
-			if (Field_ID[side][x - 1][y - 1].first > 1) return false;
+			if (field_id[side][x - 1][y - 1].first > 1) return false;
 		}
-		if (Field_ID[side][x][y - 1].first > 1) return false;
+		if (field_id[side][x][y - 1].first > 1) return false;
 		if (x < width_height - 1) {
-			if (Field_ID[side][x + 1][y - 1].first > 1) return false;
+			if (field_id[side][x + 1][y - 1].first > 1) return false;
 		}
 	}
 	if (x) {
-		if (Field_ID[side][x - 1][y].first > 1) return false;
+		if (field_id[side][x - 1][y].first > 1) return false;
 	}
 	if (x < width_height - 1) {
-		if (Field_ID[side][x + 1][y].first > 1) return false;
+		if (field_id[side][x + 1][y].first > 1) return false;
 	}
 	if (y < width_height - 1) {
 		if (x) {
-			if (Field_ID[side][x - 1][y + 1].first > 1) return false;
+			if (field_id[side][x - 1][y + 1].first > 1) return false;
 		}
-		if (Field_ID[side][x][y + 1].first > 1) return false;
+		if (field_id[side][x][y + 1].first > 1) return false;
 		if (x < width_height - 1) {
-			if (Field_ID[side][x + 1][y + 1].first > 1) return false;
+			if (field_id[side][x + 1][y + 1].first > 1) return false;
 		}
 	}
 	return true;
 }
 
-void Small_Move(const unsigned int index, const int side) {
+void small_move(const unsigned int index, const int side) {
 	int x = 0, y = -1;
 	std::cout << "Where are we going? (Write X and Y coordinates): ";
 	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -605,7 +579,7 @@ void Small_Move(const unsigned int index, const int side) {
 	if (y > width_height) {
 		std::cout << "Captain! Are you trying to steer the ship out of the battlefield?\n" << std::endl;
 		system("pause");
-		Small_Move(index, side);
+		small_move(index, side);
 		return;
 	}
 	strx = std::toupper(strx);
@@ -617,12 +591,12 @@ void Small_Move(const unsigned int index, const int side) {
 		if (i == width_height - 1) {
 			std::cout << "Captain! Are you trying to steer the ship out of the battlefield?\n" << std::endl;
 			system("pause");
-			Small_Move(index, side);
+			small_move(index, side);
 			return;
 		}
 	}
 
-	std::pair <unsigned int, unsigned int> start = Return_X_Y(index + 2, side);
+	std::pair <unsigned int, unsigned int> start = return_x_y(index + 2, side);
 
 	if (DEBUG_MODE) {
 		std::cout << "[Move small]Start X = " << start.first << "; Start Y = " << start.second << std::endl;
@@ -631,82 +605,82 @@ void Small_Move(const unsigned int index, const int side) {
 	}
 
 	if ((start.first - x <= 1 || start.first - x >= UINT_MAX - 1) && (start.second - y <= 1 || start.second - y >= UINT_MAX - 1)) {
-		Field_ID[side][start.first][start.second].first = 0;
-		if (AreaIsClear(side, x, y)) {
+		field_id[side][start.first][start.second].first = 0;
+		if (area_is_clear(side, x, y)) {
 			if (start.second) {
 				if (start.first) {
-					if (AreaIsClear(side, start.first - 1, start.second - 1)) Field_ID[side][start.first - 1][start.second - 1].first = 0;
+					if (area_is_clear(side, start.first - 1, start.second - 1)) field_id[side][start.first - 1][start.second - 1].first = 0;
 				}
-				if (AreaIsClear(side, start.first, start.second - 1)) Field_ID[side][start.first][start.second - 1].first = 0;
+				if (area_is_clear(side, start.first, start.second - 1)) field_id[side][start.first][start.second - 1].first = 0;
 				if (start.first < width_height) {
-					if (AreaIsClear(side, start.first + 1, start.second - 1)) Field_ID[side][start.first + 1][start.second - 1].first = 0;
+					if (area_is_clear(side, start.first + 1, start.second - 1)) field_id[side][start.first + 1][start.second - 1].first = 0;
 				}
 			}
 			if (start.first) {
-				if (AreaIsClear(side, start.first - 1, start.second)) Field_ID[side][start.first - 1][start.second].first = 0;
+				if (area_is_clear(side, start.first - 1, start.second)) field_id[side][start.first - 1][start.second].first = 0;
 			}
 			if (start.first < width_height - 1) {
-				if (AreaIsClear(side, start.first + 1, start.second)) Field_ID[side][start.first + 1][start.second].first = 0;
+				if (area_is_clear(side, start.first + 1, start.second)) field_id[side][start.first + 1][start.second].first = 0;
 			}
 			if (start.second < width_height - 1) {
 				if (start.first) {
-					if (AreaIsClear(side, start.first - 1, start.second + 1)) Field_ID[side][start.first - 1][start.second + 1].first = 0;
+					if (area_is_clear(side, start.first - 1, start.second + 1)) field_id[side][start.first - 1][start.second + 1].first = 0;
 				}
-				if (AreaIsClear(side, start.first, start.second + 1)) Field_ID[side][start.first][start.second + 1].first = 0;
+				if (area_is_clear(side, start.first, start.second + 1)) field_id[side][start.first][start.second + 1].first = 0;
 				if (start.first < width_height - 1) {
-					if (AreaIsClear(side, start.first + 1, start.second + 1)) Field_ID[side][start.first + 1][start.second + 1].first = 0;
+					if (area_is_clear(side, start.first + 1, start.second + 1)) field_id[side][start.first + 1][start.second + 1].first = 0;
 				}
 			}
 
 			if (y) {
 				if (x) {
-					Field_ID[side][x - 1][y - 1].first = 1;
+					field_id[side][x - 1][y - 1].first = 1;
 				}
-				Field_ID[side][x][y - 1].first = 1;
+				field_id[side][x][y - 1].first = 1;
 				if (x < width_height) {
-					Field_ID[side][x + 1][y - 1].first = 1;
+					field_id[side][x + 1][y - 1].first = 1;
 				}
 			}
 			if (x) {
-				Field_ID[side][x - 1][y].first = 1;
+				field_id[side][x - 1][y].first = 1;
 			}
 			if (x < width_height - 1) {
-				Field_ID[side][x + 1][y].first = 1;
+				field_id[side][x + 1][y].first = 1;
 			}
 			if (y < width_height - 1) {
 				if (x) {
-					Field_ID[side][x - 1][y + 1].first = 1;
+					field_id[side][x - 1][y + 1].first = 1;
 				}
-				Field_ID[side][x][y + 1].first = 1;
+				field_id[side][x][y + 1].first = 1;
 				if (x < width_height - 1) {
-					Field_ID[side][x + 1][y + 1].first = 1;
+					field_id[side][x + 1][y + 1].first = 1;
 				}
 			}
 
-			Field_ID[side][x][y].first = index + 2;
+			field_id[side][x][y].first = index + 2;
 		}
 		else {
-			Field_ID[side][start.first][start.second].first = index + 2;
+			field_id[side][start.first][start.second].first = index + 2;
 			std::cout << "Captain! This square is already taken!\n" << std::endl;
 			system("pause");
-			Small_Move(index, side);
+			small_move(index, side);
 			return;
 		}
 	}
 	else {
-		Field_ID[side][start.first][start.second].first = index + 2;
+		field_id[side][start.first][start.second].first = index + 2;
 		std::cout << "Captain! This is not a <<Meteor>> for you, a single-decker can only move one square.\n" << std::endl;
 		system("pause");
-		Small_Move(index, side);
+		small_move(index, side);
 		return;
 	}
 	std::cout << "Complete!\n\n";
 }
 
-void GetDamage(const bool side, const unsigned int x, const unsigned int y, const int dmg, std::vector <ship> &fleet) {
+void get_damage(const bool side, const unsigned int x, const unsigned int y, const int dmg, std::vector <ship> &fleet) {
 	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	int index = Field_ID[side][x][y].first - 2;
-	fleet[index].DmgtoInd(dmg, Field_ID[side][x][y].second);
+	int index = field_id[side][x][y].first - 2;
+	fleet[index].DmgtoInd(dmg, field_id[side][x][y].second);
 	std::cout << "Dodge this! You are hit!" << std::endl;
 	std::cout << "You hit him in " << alf[x] << " " << y << std::endl;
 
@@ -726,8 +700,8 @@ void GetDamage(const bool side, const unsigned int x, const unsigned int y, cons
 	if (!fleet[index].GetDurabilitySum()) {
 		for (int x = 0; x < width_height; x++) {
 			for (int y = 0; y < width_height; y++) {
-				if (Return_Field_ID_Value(side, x, y) == index + 2) {
-					coords.push_back(std::make_pair(x, y));
+				if (return_field_id_value(side, x, y) == index + 2) {
+					coords.emplace_back(std::make_pair(x, y));
 				}
 			}
 		}

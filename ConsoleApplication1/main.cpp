@@ -7,7 +7,6 @@
 #include "generator.h"
 #include "fleet.h"
 
-//comment
 /*Список найденных багов(на русском, ибо кому-то лень пропускать это через переводчик):
 1)Если игрок введёт сначала число, а затем букву, то выстрел пройдёт по X = цифре Y = 0, а в дальнейшем игрок не сможет вводить координаты до конца игры
 */
@@ -31,7 +30,7 @@ int main(int argc, char* argv[]) {
 	//Создадим вектор флот
 	std::vector<ship> fleet_11;
 	//Запихнем в вектор наш кораблик
-	fleet_11.push_back(ship1);
+	fleet_11.emplace_back(ship1);
 	//Добавим еще кораблики
 	fleet_11.push_back({ "Prinz Eugene", "Heavy Cruiser", 3 });
 	fleet_11.push_back({ "Atago", "Heavy Cruiser", 4 });
@@ -76,11 +75,11 @@ int main(int argc, char* argv[]) {
 
 	//Generate here
 	for (int i = 0; i < fleet_1.GetFleet().size(); i++) {
-		Generate_ship(fleet_1.GetShipByIndex(i), fleet_1.GetSide());
+		generate_ship(fleet_1.GetShipByIndex(i), fleet_1.GetSide());
 	}
 
 	for (int i = 0; i < fleet_2.GetFleet().size(); i++) {
-		Generate_ship(fleet_2.GetShipByIndex(i), fleet_2.GetSide());
+		generate_ship(fleet_2.GetShipByIndex(i), fleet_2.GetSide());
 	}
 	///////////////
 
@@ -88,23 +87,23 @@ int main(int argc, char* argv[]) {
 	if (DEBUG_MODE) {
 		fleet_1.Print(std::cout);
 		fleet_2.Print(std::cout);
-		Output_Field_ID_Indexes(0);
-		Output_Field_War(0);
-		Output_Field_ID_Indexes(1);
-		Output_Field_War(1);
+		output_field_id_indexes(0);
+		output_field_war(0);
+		output_field_id_indexes(1);
+		output_field_war(1);
 		////INITIALISATION FIELDS
-		Initialize_Field_Final(fleet_1);
-		Initialize_Field_Final(fleet_2);
+		initialize_field_final(fleet_1);
+		initialize_field_final(fleet_2);
 		/////////////////////////
 		std::cout << "Game Fields:" << std::endl << std::endl;
-		Output_Field_Final_REFORGED(0, fleet_1.GetName(), fleet_2.GetName());
-		Output_Field_Final_REFORGED(1, fleet_1.GetName(), fleet_2.GetName());
+		output_field_final(0, fleet_1.GetName(), fleet_2.GetName());
+		output_field_final(1, fleet_1.GetName(), fleet_2.GetName());
 	}
 	/////////////////
 
 	//Achievements
-	std::vector <std::pair<std::string, bool>> achievement_array = ReadAchievements();
-	OutputAchievementInfo(achievement_array);
+	std::vector <std::pair<std::string, bool>> achievement_array = read_achievements();
+	output_achievement_info(achievement_array);
 	//////////////
 
 	if (fleet_1.GetFleet().size() != fleet_2.GetFleet().size()) {
@@ -112,7 +111,7 @@ int main(int argc, char* argv[]) {
 		Ironman = 0;
 	}
 
-	//std::vector <unsigned int> order = First_order(fleet_1, fleet_2);
+	//std::vector <unsigned int> order = first_order(fleet_1, fleet_2);
 	std::vector <unsigned int> order = {0};
 	std::cout << "Start game?\n\n";
 	system("pause");
@@ -127,7 +126,7 @@ int main(int argc, char* argv[]) {
 	{
 		std::cout << "Select battle mode (PVE / PvP): "; //USE PVP FOR ATTACKS TESTS
 		std::cin >> BattleMode;
-		hahaYouAreSmallNow(BattleMode);
+		ha_you_are_small_now(BattleMode);
 		if (BattleMode == "pve" || BattleMode == "pvp")
 		{
 			break;
@@ -148,20 +147,20 @@ int main(int argc, char* argv[]) {
 			switch (first % 2) {
 			case 0:
 				//Смена хода
-				Initialize_Field_Final(fleet_1);
+				initialize_field_final(fleet_1);
 				std::cout << fleet_1.GetName() << " turn." << std::endl << std::endl;
 				//Вывод поля игрока 1
-				Output_Field_Final_REFORGED(0, fleet_1.GetName(), fleet_2.GetName());
-				DoAction(fleet_1, fleet_2, order, round);
+				output_field_final(0, fleet_1.GetName(), fleet_2.GetName());
+				do_action(fleet_1, fleet_2, order, round);
 				first++;
 				break;
 			case 1:
 				//Смена хода
-				Initialize_Field_Final(fleet_2);
+				initialize_field_final(fleet_2);
 				std::cout << fleet_2.GetName() << " turn." << std::endl << std::endl;
 				//Вывод поля игрока 2
-				Output_Field_Final_REFORGED(1, fleet_1.GetName(), fleet_2.GetName());
-				DoAction(fleet_2, fleet_1, order, round);
+				output_field_final(1, fleet_1.GetName(), fleet_2.GetName());
+				do_action(fleet_2, fleet_1, order, round);
 				first++;
 				break;
 			}
@@ -189,25 +188,25 @@ int main(int argc, char* argv[]) {
 				if (!DEBUG_MODE) { system("cls"); }
 				if (DEBUG_MODE) {
 					std::cout << "First side: " << first << std::endl;
-					Output_Field_ID_Indexes(0); Output_Field_ID_Indexes(1);
+					output_field_id_indexes(0); output_field_id_indexes(1);
 				}
 				while (fleet_1.GetHealth() && fleet_2.GetHealth()) {
 					std::cout << fleet_1.GetName() << " Health = " << fleet_1.GetHealth() << "; " << fleet_2.GetName() << " Health = " << fleet_2.GetHealth() << std::endl;
 					switch (first % 2) {
 					case 0: //Player
-						Initialize_Field_Final(fleet_1);
+						initialize_field_final(fleet_1);
 						std::cout << fleet_1.GetName() << " turn." << std::endl << std::endl;
 						//Вывод поля для игрока 1
-						Output_Field_Final_REFORGED(0, fleet_1.GetName(), fleet_2.GetName());
-						DoAction(fleet_1, fleet_2, order, round);
+						output_field_final(0, fleet_1.GetName(), fleet_2.GetName());
+						do_action(fleet_1, fleet_2, order, round);
 						first++;
 						break;
 					case 1: //Bot(ON REWORK)
-						Initialize_Field_Final(fleet_2);
+						initialize_field_final(fleet_2);
 						std::cout << fleet_2.GetName() << " turn." << std::endl << std::endl;
 						//Shot
 						fleet_1.ConsDmgToIndBot(Default_Damage, difficulty);
-						Initialize_Field_Final(fleet_1); //MUST HAVE AFTER ANY DAMAGE
+						initialize_field_final(fleet_1); //MUST HAVE AFTER ANY DAMAGE
 						system("pause");
 						if (!DEBUG_MODE) { system("cls"); }
 						first++;
@@ -239,7 +238,7 @@ int main(int argc, char* argv[]) {
 	if (fleet_1.GetHealth() > fleet_2.GetHealth()) {
 		std::cout << fleet_1.GetName() << " won!";
 		if (BattleMode == "pve" && Ironman) {
-			GiveAchievement(achievement_array, difficulty);
+			give_achievement(achievement_array, difficulty);
 		}
 	}
 	else if (fleet_1.GetHealth() < fleet_2.GetHealth()) {
@@ -249,10 +248,10 @@ int main(int argc, char* argv[]) {
 		std::cout << "Friendship";
 	}
 	if (difficulty == 2 && Ironman) {
-		GiveAchievement(achievement_array, 2);
+		give_achievement(achievement_array, 2);
 	}
 	if (BattleMode == "pvp" && Ironman) {
-		GiveAchievement(achievement_array, 3);
+		give_achievement(achievement_array, 3);
 	}
 	//Конец программы
 	return 0;

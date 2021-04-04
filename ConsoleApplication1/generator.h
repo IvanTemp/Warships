@@ -1,42 +1,42 @@
 #pragma once
 #include "fleet.h"
 
-void OutputAchievementInfo(const std::vector<std::pair<std::string, bool>> achievement_array);
+void output_achievement_info(const std::vector <std::pair<std::string, bool>> achievements);
 
-std::vector<std::pair<std::string, bool>> ReadAchievements();
+std::vector <std::pair<std::string, bool>> read_achievements();
 
-void GiveAchievement(std::vector<std::pair<std::string, bool>>& achievement_array, const int achivement_plus);
+void give_achievement(std::vector <std::pair<std::string, bool>>& achievement_array, const int &achv_num);
 
-void DoAction(Fleet& whose, Fleet& whom, const std::vector<unsigned int>& order, const int& round);
+void do_action(Fleet& whose, Fleet& whom, const std::vector<unsigned int>& order, const int& round);
 
-unsigned int Return_Field_ID_Value(const bool side, const int x, const int y);
+unsigned int return_field_id_value(const bool& side, const int& x, const int& y);
 
-unsigned int Return_Field_Index_Value(const bool side, const int x, const int y);
+unsigned int return_field_index_value(const bool& side, const int& x, const int& y);
 
-bool Return_Field_War_Value(const bool side, const int x, const int y);
+bool return_field_war_value(const bool& side, const int& x, const int& y);
 
-void hahaYouAreSmallNow(std::string& str);
+void ha_you_are_small_now(std::string& str);
 
-void Initialize_Field_Final(const Fleet fleet);
+void initialize_field_final(const Fleet& fleet);
 
-void Output_Field_Final_REFORGED(const bool side, const std::string name1, const std::string name2);
+void output_field_final(const bool& side, const std::string& name1, const std::string& name2);
 
-void Output_Field_ID_Indexes(const bool side);
+void output_field_id_indexes(const bool side);
 
-void Output_Field_War(const bool side);
+void output_field_war(const bool side);
 
-void Field_Get_Vision(const unsigned int x, const unsigned int y, const bool side);
+void field_get_vision(const unsigned int x, const unsigned int y, const bool side);
 
-void Generate_ship(const ship sheep, bool side);
+void generate_ship(const ship& sheep, bool side);
 
-std::vector<unsigned int> First_order(Fleet& fleet1, Fleet& fleet2);
+std::vector <unsigned int> first_order(Fleet& fleet1, Fleet& fleet2);
 
-std::pair<unsigned int, unsigned int> Return_X_Y(const unsigned int ID, const int side);
+std::pair <unsigned int, unsigned int> return_x_y(const unsigned int id, const int side);
 
-char IntToLetter(const int i);
+char int_to_letter(const int i);
 
-bool AreaIsClear(const bool side, const unsigned int x, const unsigned int y);
+bool area_is_clear(const bool side, const unsigned int x, const unsigned int y);
 
-void Small_Move(const unsigned int index, const int side);
+void small_move(const unsigned int index, const int side);
 
-void GetDamage(const bool side, const unsigned int x, const unsigned int y, const int dmg, std::vector<ship>& fleet);
+void get_damage(const bool side, const unsigned int x, const unsigned int y, const int dmg, std::vector <ship>& fleet);
