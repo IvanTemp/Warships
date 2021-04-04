@@ -10,6 +10,11 @@ int Tsundere::get_size() const
 	return size_;
 }
 
+int Tsundere::get_damage_value() const
+{
+	return damage_;
+}
+
 std::string Tsundere::get_name() const
 {
 	return name_;

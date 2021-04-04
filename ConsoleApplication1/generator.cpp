@@ -84,7 +84,7 @@ void do_action(Fleet& whose, Fleet& whom, const std::vector<unsigned int>& order
 				if (action == "shoot")
 				{
 					//Shot
-					whom.damage_by_index_player(Small_Damage);
+					whom.damage_by_index_player(whose.get_ship_by_index(order[round]));
 					break;
 				}
 				if (action == "move")
@@ -104,7 +104,7 @@ void do_action(Fleet& whose, Fleet& whom, const std::vector<unsigned int>& order
 				ha_you_are_small_now(action);
 				if (action == "shoot")
 				{
-					whom.damage_by_index_player(Tsundere_Damage);
+					whom.damage_by_index_player(whose.get_ship_by_index(order[round]));
 					break;
 				}
 				if (action == "repair")
@@ -122,7 +122,7 @@ void do_action(Fleet& whose, Fleet& whom, const std::vector<unsigned int>& order
 			{
 				//Shot
 				std::cout << "Point the center where to shoot (Write X and Y coordinates): ";
-				whom.heavy_cruiser_attack(Heavy_Cruiser_Damage);
+				whom.heavy_cruiser_attack(whose.get_ship_by_index(order[round]).get_type()->get_damage_value());
 				break;
 			}
 			if (whose.get_ship_by_index(order[round]).get_type()->get_name() == "Aircraft Carrier")
@@ -133,12 +133,12 @@ void do_action(Fleet& whose, Fleet& whom, const std::vector<unsigned int>& order
 				ha_you_are_small_now(action);
 				if (action == "1x3" || action == "1")
 				{
-					whom.aircraft_attack(true, Aircraft_Carrier_Damage);
+					whom.aircraft_attack(true, whose.get_ship_by_index(order[round]).get_type()->get_damage_value());
 					break;
 				}
 				if (action == "3x1" || action == "3")
 				{
-					whom.aircraft_attack(false, Aircraft_Carrier_Damage);
+					whom.aircraft_attack(false, whose.get_ship_by_index(order[round]).get_type()->get_damage_value());
 					break;
 				}
 				std::cout << "Wrong command!" << std::endl;

@@ -12,11 +12,6 @@
 
 #define achievement_file "achievements.db"
 
-#define Default_Damage 2
-#define Aircraft_Carrier_Damage 3
-#define Heavy_Cruiser_Damage 1
-#define Tsundere_Damage 3
-#define Small_Damage 2
 #define DEBUG_MODE 1
 ///////////////
 

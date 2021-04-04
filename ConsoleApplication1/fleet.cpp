@@ -129,7 +129,7 @@ ship Fleet::get_ship_by_index(const unsigned int id)const {
 }
 
 void Fleet::damage_by_index_bot(const int dmg, const int difficulty) {
-	srand(time(0));
+	srand(time(nullptr));
 	int x = 0, y = 0;
 	//Gura AI(c). All rights not reserved.
 	bool GwSUtPaLT = true; //Gura was still unable to plant a large tree
@@ -174,9 +174,15 @@ void Fleet::damage_by_index_bot(const int dmg, const int difficulty) {
 	field_get_vision(x, y, side_);
 }
 
-void Fleet::damage_by_index_player(int dmg) {
+void Fleet::damage_by_index_bot_v2(unsigned int id, int dmg, const int difficulty) {
+	srand(time(nullptr));
+	std::string type = ship_vector_[id].get_type()->get_name();
+}
+
+void Fleet::damage_by_index_player(ship sheep) {
 	std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
 	int x = 0, y = -1;
+	unsigned int dmg = sheep.get_type()->get_damage_value();
 	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	char charx;
 	std::cin >> charx >> y;
@@ -205,11 +211,11 @@ void Fleet::damage_by_index_player(int dmg) {
 	{
 		if (ship_vector_[return_field_id_value(side_, x, y) - 2].get_durability()[return_field_index_value(side_, x, y)])
 		{
-			if (ship_vector_[return_field_id_value(side_, x, y) - 2].get_type()->get_name() == "Small" && dmg == Tsundere_Damage)
+			if (ship_vector_[return_field_id_value(side_, x, y) - 2].get_type()->get_name() == "Small" && sheep.get_type()->get_name() == "Tsundere")
 			{
 				dmg = Small_Durability;
 			}
-			else if (ship_vector_[return_field_id_value(side_, x, y) - 2].get_type()->get_name() == "Aircraft Carrier" && dmg == Small_Damage)
+			else if (ship_vector_[return_field_id_value(side_, x, y) - 2].get_type()->get_name() == "Aircraft Carrier" && sheep.get_type()->get_name() == "Small")
 			{
 				dmg *= 2;
 			}

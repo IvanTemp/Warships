@@ -196,8 +196,7 @@ int main(int argc, char* argv[]) {
 						case 1:
 							initialize_field_final(fleet_2);
 							std::cout << fleet_2.get_name() << " turn." << std::endl << std::endl;
-							output_field_final(true, fleet_1.get_name(), fleet_2.get_name());
-							do_action(fleet_2, fleet_1, order, round);
+							fleet_2.damage_by_index_bot_v2(order[round], fleet_2.get_ship_by_index(order[round]).get_type()->get_damage_value(), difficulty);
 							break;
 						}
 					switch (first + 1 % 2) {
