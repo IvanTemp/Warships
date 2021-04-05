@@ -72,6 +72,18 @@ auto GameInformation::return_field_war() const{
 	return &field_war_;
 }
 
+void GameInformation::set_field_id(const bool side, const unsigned int x, const unsigned int y, const unsigned int value) {
+	field_id_[side][x][y].first = value;
+}
+
+void GameInformation::set_field_indexes(const bool side, const unsigned int x, const unsigned int y, const unsigned int value) {
+	field_id_[side][x][y].first = value;
+}
+
+void GameInformation::set_field_war(const bool side, const unsigned int x, const unsigned int y, const unsigned int value) {
+	field_id_[side][x][y].first = value;
+}
+
 void GameInformation::ha_you_are_small_now(std::string& str) {
 	std::string small = "abcdefghijklmnopqrstuvwxyz";
 	std::string big = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -115,7 +127,7 @@ void GameInformation::do_action(Fleet& whose, Fleet& whom, const std::vector<uns
 				}
 				if (action == "move_small")
 				{
-					whose.get_ship_by_index(order[round]).; //ДОДЕЛАТЬ МУВ
+					whose.get_ship_by_index(order[round]).get_type()->move_small();
 					initialize_field_final(whose);
 					break;
 				}

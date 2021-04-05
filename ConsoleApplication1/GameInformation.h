@@ -13,6 +13,9 @@ public:
 	auto return_field_final() const;
 	auto return_field_id() const;
 	auto return_field_war() const;
+	void set_field_id(const bool side, const unsigned int x, const unsigned int y, const unsigned int value);
+	void set_field_indexes(const bool side, const unsigned int x, const unsigned int y, const unsigned int value);
+	void set_field_war(const bool side, const unsigned int x, const unsigned int y, const unsigned int value);
 	void ha_you_are_small_now(std::string& str);
 	char int_to_letter(const int i);
 	void do_action(Fleet& whose, Fleet& whom, const std::vector<unsigned int>& order, const int& round);

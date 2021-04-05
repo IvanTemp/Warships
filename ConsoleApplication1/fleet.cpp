@@ -131,6 +131,7 @@ ship Fleet::get_ship_by_index(const unsigned int id)const {
 
 void Fleet::damage_by_index_bot(const int dmg, const int difficulty) {
 	srand(time(nullptr));
+	extern 
 	int x = 0, y = 0;
 	//Gura AI(c). All rights not reserved.
 	bool GwSUtPaLT = true; //Gura was still unable to plant a large tree

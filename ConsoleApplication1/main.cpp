@@ -3,8 +3,6 @@
 #include <iostream>
 #include <stdexcept>
 #include <fstream>
-#include "ship.h"
-#include "generator.h"
 #include "fleet.h"
 #include "Aircraft_Carrier.h"
 #include "Heavy_Cruiser.h"
@@ -51,7 +49,7 @@ int main(int argc, char* argv[]) {
 	//FLEET 2
 	//We read the fleet from the file input.txt (names in the project parameters)
 	Fleet fleet_2;
-	if (argc > 1)
+	if (argc > 2)
 	{
 		std::ifstream fin(argv[2]);
 		fleet_2.read(fin);
@@ -59,7 +57,7 @@ int main(int argc, char* argv[]) {
 		fin.close();
 		//Check fleet_2 for empty
 		if (!fleet_2.get_ship_vector().size()) {
-			std::cout << "Warning! Connect the file with the second fleet!" << std::endl;
+			std::cout << "Warning! File with the second fleet is empty!" << std::endl;
 			return -2;
 		}
 	}

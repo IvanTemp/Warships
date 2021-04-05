@@ -26,7 +26,7 @@ int Small::get_default_durability() const
     return default_durability_;
 }
 
-bool Small::area_is_clear(const bool side, const unsigned int x, const unsigned int y) {
+bool area_is_clear(const bool side, const unsigned int x, const unsigned int y) {
 	extern GameInformation game_info();
 	if (y)
 	{
@@ -63,7 +63,7 @@ bool Small::area_is_clear(const bool side, const unsigned int x, const unsigned 
 	return true;
 }
 
-void Small::move_small(const unsigned int index, const int side) {
+void Small::move_small(const unsigned int index, const unsigned int start_x, const unsigned int start_y, const int side) const {
 	extern GameInformation game_info();
 	int x = 0, y = -1;
 	std::cout << "Where are we going? (Write X and Y coordinates): ";
@@ -76,7 +76,7 @@ void Small::move_small(const unsigned int index, const int side) {
 	{
 		std::cout << "Captain! Are you trying to steer the ship out of the battlefield?\n" << std::endl;
 		system("pause");
-		move_small(index, side);
+		move_small(index, start_x, start_y, side);
 		return;
 	}
 	strx = std::toupper(strx);
@@ -91,69 +91,61 @@ void Small::move_small(const unsigned int index, const int side) {
 		{
 			std::cout << "Captain! Are you trying to steer the ship out of the battlefield?\n" << std::endl;
 			system("pause");
-			move_small(index, side);
+			move_small(index, start_x, start_y, side);
 			return;
 		}
 	}
 
-	std::pair<unsigned int, unsigned int> start = coordinates_;
-
 	if (game_info().get_debug_mode())
 	{
-		std::cout << "[Move small]Start X = " << start.first << "; Start Y = " << start.second << std::endl;
+		std::cout << "[Move small]Start X = " << start_x << "; Start Y = " << start_y << std::endl;
 		std::cout << "[Move small]X = " << x << "; Y = " << y << std::endl;
-		std::cout << "[Move small]shift: " << start.first - x << " " << start.second - y << " " << std::endl;
+		std::cout << "[Move small]shift: " << start_x - x << " " << start_y - y << " " << std::endl;
 	}
 
-	if ((start.first - x <= 1 || start.first - x >= UINT_MAX - 1) && (start.second - y <= 1 || start.second - y >=
-		UINT_MAX - 1))
+	if ((start_x - x <= 1 || start_x - x >= UINT_MAX - 1) && (start_y - y <= 1 || start_y - y >= UINT_MAX - 1))
 	{
-		game_info().return_field_id()[side][start.first][start.second].first = 0;
+		game_info().set_field_id(side, start_x, start_y, 0);
 		if (area_is_clear(side, x, y))
 		{
-			if (start.second)
+			if (start_y)
 			{
-				if (start.first)
+				if (start_x)
 				{
-					if (area_is_clear(side, start.first - 1, start.second - 1))
-						game_info().return_field_id()[side][start.first - 1][start.second - 1].first = 0;
+					if (area_is_clear(side, start_x - 1, start_y - 1))
+						game_info().set_field_id(side, start_x - 1, start_y - 1, 0);
 				}
-				if (area_is_clear(side, start.first, start.second - 1))
-					game_info().return_field_id()[side][start.first][start.second - 1].
-					first = 0;
-				if (start.first < width_height)
+				if (area_is_clear(side, start_x, start_y - 1))
+					game_info().set_field_id(side, start_x, start_y - 1,0);
+				if (start_x < width_height)
 				{
-					if (area_is_clear(side, start.first + 1, start.second - 1))
-						game_info().return_field_id()[side][start.first + 1][start.
-						second - 1].first = 0;
+					if (area_is_clear(side, start_x + 1, start_y - 1))
+						game_info().set_field_id(side, start_x + 1, start_y - 1, 0);
 				}
 			}
-			if (start.first)
+			if (start_x)
 			{
-				if (area_is_clear(side, start.first - 1, start.second))
-					game_info().return_field_id()[side][start.first - 1][start.second].
-					first = 0;
+				if (area_is_clear(side, start_x - 1, start_y))
+					game_info().set_field_id(side, start_x - 1, start_y, 0);
 			}
-			if (start.first < width_height - 1)
+			if (start_x < width_height - 1)
 			{
-				if (area_is_clear(side, start.first + 1, start.second))
-					game_info().return_field_id()[side][start.first + 1][start.second].
-					first = 0;
+				if (area_is_clear(side, start_x + 1, start_y))
+					game_info().set_field_id(side, start_x + 1, start_y, 0);
 			}
-			if (start.second < width_height - 1)
+			if (start_y < width_height - 1)
 			{
-				if (start.first)
+				if (start_x)
 				{
-					if (area_is_clear(side, start.first - 1, start.second + 1))
-						game_info().return_field_id()[side][start.first - 1][start.second + 1].first = 0;
+					if (area_is_clear(side, start_x - 1, start_y + 1))
+						game_info().set_field_id(side, start_x - 1, start_y + 1, 0);
 				}
-				if (area_is_clear(side, start.first, start.second + 1))
-					game_info().return_field_id()[side][start.first][start.second + 1].
-					first = 0;
-				if (start.first < width_height - 1)
+				if (area_is_clear(side, start_x, start_y + 1))
+					game_info().set_field_id(side, start_x, start_y + 1, 0);
+				if (start_x < width_height - 1)
 				{
-					if (area_is_clear(side, start.first + 1, start.second + 1))
-						game_info().return_field_id()[side][start.first + 1][start.second + 1].first = 0;
+					if (area_is_clear(side, start_x + 1, start_y + 1))
+						game_info().set_field_id(side, start_x + 1, start_y + 1, 0);
 				}
 			}
 
@@ -161,53 +153,53 @@ void Small::move_small(const unsigned int index, const int side) {
 			{
 				if (x)
 				{
-					game_info().return_field_id()[side][x - 1][y - 1].first = 1;
+					game_info().set_field_id(side, x - 1, y - 1, 1);
 				}
-				game_info().return_field_id()[side][x][y - 1].first = 1;
+				game_info().set_field_id(side, x, y - 1, 1);
 				if (x < width_height)
 				{
-					game_info().return_field_id()[side][x + 1][y - 1].first = 1;
+					game_info().set_field_id(side, x + 1, y - 1, 1);
 				}
 			}
 			if (x)
 			{
-				game_info().return_field_id()[side][x - 1][y].first = 1;
+				game_info().set_field_id(side, x - 1, y, 1);
 			}
 			if (x < width_height - 1)
 			{
-				game_info().return_field_id()[side][x + 1][y].first = 1;
+				game_info().set_field_id(side, x + 1, y, 1);
 			}
 			if (y < width_height - 1)
 			{
 				if (x)
 				{
-					game_info().return_field_id()[side][x - 1][y + 1].first = 1;
+					game_info().set_field_id(side, x - 1, y + 1, 1);
 				}
-				game_info().return_field_id()[side][x][y + 1].first = 1;
+				game_info().set_field_id(side, x, y + 1, 1);
 				if (x < width_height - 1)
 				{
-					game_info().return_field_id()[side][x + 1][y + 1].first = 1;
+					game_info().set_field_id(side, x + 1, y + 1, 1);
 				}
 			}
 
-			game_info().return_field_id()[side][x][y].first = index + 2;
+			game_info().set_field_id(side, x, y, index + 2);
 		}
 		else
 		{
-			game_info().return_field_id()[side][start.first][start.second].first = index + 2;
+			game_info().set_field_id(side, start_x, start_y, index + 2);
 			std::cout << "Captain! This square is already taken!\n" << std::endl;
 			system("pause");
-			move_small(index, side);
+			move_small(index, start_x, start_y, side);
 			return;
 		}
 	}
 	else
 	{
-		game_info().return_field_id()[side][start.first][start.second].first = index + 2;
+		game_info().set_field_id(side, start_x, start_y, index + 2);
 		std::cout << "Captain! This is not a <<Meteor>> for you, a single-decker can only move_small one square.\n" <<
 			std::endl;
 		system("pause");
-		move_small(index, side);
+		move_small(index, start_x, start_y, side);
 		return;
 	}
 	std::cout << "Complete!\n\n";
