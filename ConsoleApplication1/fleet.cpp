@@ -5,6 +5,7 @@
 #include <iostream>
 #include "fleet.h"
 #include "generator.h"
+#include "Field.h"
 
 std::vector <std::pair <unsigned int, unsigned int>> bots_memory; //BOT Repository Of Detected Cells
 
@@ -128,7 +129,7 @@ ship Fleet::get_ship_by_index(const unsigned int id)const {
 	//}
 }
 
-void Fleet::damage_by_index_bot(const int dmg, const int difficulty) {
+void Fleet::damage_by_index_bot(const int dmg, const int difficulty, Field field) {
 	srand(time(nullptr));
 	int x = 0, y = 0;
 	//Gura AI(c). All rights not reserved.
@@ -144,9 +145,9 @@ void Fleet::damage_by_index_bot(const int dmg, const int difficulty) {
 			GwSUtPaLT = false;
 		}
 		else {
-			if (return_field_war_value(side_, x, y) == 0) { // II)Protection against shooting at empty cells
+			if (field.return_field_war_value(side_, x, y) == 0) { // II)Protection against shooting at empty cells
 				if (attempts) {
-					if (return_field_id_value(side_, x, y) < 2) {
+					if (field.return_field_id_value(side_, x, y) < 2) {
 						if (difficulty < 2) {
 							attempts--;
 						}
@@ -163,15 +164,15 @@ void Fleet::damage_by_index_bot(const int dmg, const int difficulty) {
 	}
 	if (DEBUG_MODE) std::cout << "[DEBUG INFO]Gura AI(c) decided that: x = " << x << "; y = " << y << std::endl;
 
-	const char strx = int_to_letter(x);
+	const char strx = field.int_to_letter(x);
 
-	if (return_field_id_value(side_, x, y) > 1) {
-		get_damage(side_, x, y, dmg, ship_vector_);
+	if (field.return_field_id_value(side_, x, y) > 1) {
+		field.get_damage(side_, x, y, dmg, ship_vector_);
 	}
 	else {
 		std::cout << "The enemy missed! X = " << strx << "; Y = " << y << std::endl;
 	}
-	field_get_vision(x, y, side_);
+	field.field_get_vision(x, y, side_);
 }
 
 void Fleet::damage_by_index_bot_v2(unsigned int id, int dmg, const int difficulty) {
@@ -179,7 +180,7 @@ void Fleet::damage_by_index_bot_v2(unsigned int id, int dmg, const int difficult
 	std::string type = ship_vector_[id].get_type()->get_name();
 }
 
-void Fleet::damage_by_index_player(ship sheep) {
+void Fleet::damage_by_index_player(ship sheep, Field field) {
 	std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
 	int x = 0, y = -1;
 	unsigned int dmg = sheep.get_type()->get_damage_value();
@@ -207,19 +208,19 @@ void Fleet::damage_by_index_player(ship sheep) {
 
 	if (DEBUG_MODE) { std::cout << "[DEBUG INFO]int X = " << x << " Y = " << y << std::endl; }
 
-	if (return_field_id_value(side_, x, y) > 1) 
+	if (field.return_field_id_value(side_, x, y) > 1)
 	{
-		if (ship_vector_[return_field_id_value(side_, x, y) - 2].get_durability()[return_field_index_value(side_, x, y)])
+		if (ship_vector_[field.return_field_id_value(side_, x, y) - 2].get_durability()[field.return_field_index_value(side_, x, y)])
 		{
-			if (ship_vector_[return_field_id_value(side_, x, y) - 2].get_type()->get_name() == "Small" && sheep.get_type()->get_name() == "Tsundere")
+			if (ship_vector_[field.return_field_id_value(side_, x, y) - 2].get_type()->get_name() == "Small" && sheep.get_type()->get_name() == "Tsundere")
 			{
 				dmg = Small_Durability;
 			}
-			else if (ship_vector_[return_field_id_value(side_, x, y) - 2].get_type()->get_name() == "Aircraft Carrier" && sheep.get_type()->get_name() == "Small")
+			else if (ship_vector_[field.return_field_id_value(side_, x, y) - 2].get_type()->get_name() == "Aircraft Carrier" && sheep.get_type()->get_name() == "Small")
 			{
 				dmg *= 2;
 			}
-			get_damage(side_, x, y, dmg, ship_vector_);
+			field.get_damage(side_, x, y, dmg, ship_vector_);
 		}
 		else {
 			std::cout << "Why did you shoot at an already sunk ship?" << std::endl;
@@ -228,10 +229,10 @@ void Fleet::damage_by_index_player(ship sheep) {
 	else {
 		std::cout << "Miss! X = " << alf[x] << "; Y = " << y << std::endl;
 	}
-	field_get_vision(x, y, side_);
+	field.field_get_vision(x, y, side_);
 }
 
-void Fleet::aircraft_attack(const bool angle, const int dmg)
+void Fleet::aircraft_attack(const bool angle, const int dmg, Field field)
 {
 	std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
 	int x = 0, y = -1;
@@ -268,9 +269,9 @@ void Fleet::aircraft_attack(const bool angle, const int dmg)
 				std::cout << "Captain! You shot out of bounds!" << std::endl;
 				return;
 			}
-			if (return_field_id_value(side_, x, y) > 1) {
-				if (ship_vector_[return_field_id_value(side_, x, y) - 2].get_durability()[return_field_index_value(side_, x, y)]) {
-					get_damage(side_, x, y, dmg, ship_vector_);
+			if (field.return_field_id_value(side_, x, y) > 1) {
+				if (ship_vector_[field.return_field_id_value(side_, x, y) - 2].get_durability()[field.return_field_index_value(side_, x, y)]) {
+					field.get_damage(side_, x, y, dmg, ship_vector_);
 				}
 				else {
 					std::cout << "Why did you shoot at an already sunk ship?" << std::endl;
@@ -290,9 +291,9 @@ void Fleet::aircraft_attack(const bool angle, const int dmg)
 				std::cout << "Captain! You shot out of bounds!" << std::endl;
 				return;
 			}
-			if (return_field_id_value(side_, x, y) > 1) {
-				if (ship_vector_[return_field_id_value(side_, x, y) - 2].get_durability()[return_field_index_value(side_, x, y)]) {
-					get_damage(side_, x, y, dmg, ship_vector_);
+			if (field.return_field_id_value(side_, x, y) > 1) {
+				if (ship_vector_[field.return_field_id_value(side_, x, y) - 2].get_durability()[field.return_field_index_value(side_, x, y)]) {
+					field.get_damage(side_, x, y, dmg, ship_vector_);
 				}
 				else {
 					std::cout << "Why did you shoot at an already sunk ship?" << std::endl;
@@ -303,10 +304,10 @@ void Fleet::aircraft_attack(const bool angle, const int dmg)
 			}
 		}
 	}
-	field_get_vision(x, y, side_);
+	field.field_get_vision(x, y, side_);
 }
 
-void Fleet::heavy_cruiser_attack(const int dmg)
+void Fleet::heavy_cruiser_attack(const int dmg, Field field)
 {
 	int x = 0, y = -1;
 	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -351,9 +352,9 @@ void Fleet::heavy_cruiser_attack(const int dmg)
 				}
 				else
 				{
-					if (return_field_id_value(side_, x, y) > 1) {
-						if (ship_vector_[return_field_id_value(side_, x, y) - 2].get_durability()[return_field_index_value(side_, x, y)]) {
-							get_damage(side_, x, y, dmg, ship_vector_);
+					if (field.return_field_id_value(side_, x, y) > 1) {
+						if (ship_vector_[field.return_field_id_value(side_, x, y) - 2].get_durability()[field.return_field_index_value(side_, x, y)]) {
+							field.get_damage(side_, x, y, dmg, ship_vector_);
 						}
 						else {
 							std::cout << "Why did you shoot at an already sunk ship?" << std::endl;
@@ -362,7 +363,7 @@ void Fleet::heavy_cruiser_attack(const int dmg)
 					else {
 						std::cout << "Miss! X = " << alf[x] << "; Y = " << y << std::endl;
 					}
-					field_get_vision(x, y, side_);
+					field.field_get_vision(x, y, side_);
 				}
 			}
 		}

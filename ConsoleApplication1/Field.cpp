@@ -1,18 +1,6 @@
-ï»¿/*#include <iostream>
-#include <locale>
-#include <vector>
-#include <map>
-#include <string>
-#include <fstream>
-#include "generator.h"
-#include "fleet.h"
+#include "Field.h"
 
-std::string field_final[2][width_height][width_height] = {"#", "#", "#"}; //The field seen by the player and the AI
-std::pair<unsigned int, unsigned int> field_id[2][width_height][width_height] = {(std::make_pair(0, 0))};
-//The field with id_(.first) and indexes(.second)
-bool field_war[2][width_height][width_height] = {(false), (false), (false)}; //The field with fog of war
-
-void output_achievement_info(const std::vector<std::pair<std::string, bool>>& achievements)
+void Field::output_achievement_info(const std::vector<std::pair<std::string, bool>>& achievements)
 {
 	std::cout << "Achievements: " << std::endl;
 	for (unsigned int i = 0; i < achievements.size(); i++)
@@ -23,7 +11,7 @@ void output_achievement_info(const std::vector<std::pair<std::string, bool>>& ac
 	std::cout << std::endl;
 }
 
-std::vector<std::pair<std::string, bool>> read_achievements()
+std::vector<std::pair<std::string, bool>> Field::read_achievements()
 {
 	std::vector<std::pair<std::string, bool>> achievement_array;
 	//Place your achievements here
@@ -52,7 +40,7 @@ std::vector<std::pair<std::string, bool>> read_achievements()
 	return achievement_array;
 }
 
-void give_achievement(std::vector<std::pair<std::string, bool>>& achievement_array, const int& num)
+void Field::give_achievement(std::vector<std::pair<std::string, bool>>& achievement_array, const int& num)
 {
 	achievement_array[num].second = true;
 	std::ofstream out(achievement_file);
@@ -63,7 +51,7 @@ void give_achievement(std::vector<std::pair<std::string, bool>>& achievement_arr
 	out.close();
 }
 
-void do_action(Fleet& whose, Fleet& whom, const std::vector<unsigned int>& order, const int& round)
+void Field::do_action(Fleet& whose, Fleet& whom, const std::vector<unsigned int>& order, const int& round)
 {
 	if constexpr (DEBUG_MODE) { std::cout << "[DEBUG INFO]order[round] = " << order[round] << std::endl; }
 	std::cout << "Current position: " << int_to_letter(return_x_y(order[round] + 2, whose.get_side()).first) << " " <<
@@ -147,7 +135,7 @@ void do_action(Fleet& whose, Fleet& whom, const std::vector<unsigned int>& order
 		}
 		else
 		{
-			std::cout << "This ship is sunk, you miss this turn." << std::endl; // -Ð° Ð² ÑÐ¼Ñ‹ÑÐ»Ðµ Ð¿Ñ€Ð¾Ð¿ÑƒÑÐº Ñ…Ð¾Ð´Ð°? -Ð”Ð°
+			std::cout << "This ship is sunk, you miss this turn." << std::endl; // -à â ñìûñëå ïðîïóñê õîäà? -Äà
 			return;
 		}
 	}
@@ -155,22 +143,22 @@ void do_action(Fleet& whose, Fleet& whom, const std::vector<unsigned int>& order
 	if constexpr (!DEBUG_MODE) { system("cls"); }
 }
 
-unsigned int return_field_id_value(const bool& side, const int& x, const int& y)
+unsigned int Field::return_field_id_value(const bool& side, const int& x, const int& y)
 {
 	return field_id[side][x][y].first;
 }
 
-unsigned int return_field_index_value(const bool& side, const int& x, const int& y)
+unsigned int Field::return_field_index_value(const bool& side, const int& x, const int& y)
 {
 	return field_id[side][x][y].second;
 }
 
-bool return_field_war_value(const bool& side, const int& x, const int& y)
+bool Field::return_field_war_value(const bool& side, const int& x, const int& y)
 {
 	return field_war[side][x][y];
 }
 
-void ha_you_are_small_now(std::string& str)
+void Field::ha_you_are_small_now(std::string& str)
 {
 	std::string small = "abcdefghijklmnopqrstuvwxyz";
 	std::string big = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -184,7 +172,7 @@ void ha_you_are_small_now(std::string& str)
 	}
 }
 
-void initialize_field_final(const Fleet& fleet)
+void Field::initialize_field_final(const Fleet& fleet)
 {
 	for (unsigned int y = 0; y < width_height; y++)
 	{
@@ -194,7 +182,7 @@ void initialize_field_final(const Fleet& fleet)
 			{
 				field_final[fleet.get_side()][x][y] = std::to_string(
 					fleet.get_ship_by_index(field_id[fleet.get_side()][x][y].first - 2).get_durability()[field_id[fleet.
-						get_side()][x][y].second]);
+					get_side()][x][y].second]);
 			}
 			else if (field_war[fleet.get_side()][x][y])
 			{
@@ -208,10 +196,10 @@ void initialize_field_final(const Fleet& fleet)
 	}
 }
 
-void output_field_final(const bool& side, const std::string& name1, const std::string& name2)
+void Field::output_field_final(const bool& side, const std::string& name1, const std::string& name2)
 {
 	std::string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	std::map<int, std::string> SideToName = {{0, name1}, {1, name2}};
+	std::map<int, std::string> SideToName = { {0, name1}, {1, name2} };
 	std::cout << "\tSide: " << SideToName[side] << "\t\tSide: " << SideToName[!side] << std::endl;
 	std::cout << "\t ||";
 	for (unsigned int x = 0; x < width_height; x++)
@@ -249,7 +237,7 @@ void output_field_final(const bool& side, const std::string& name1, const std::s
 	std::cout << std::endl;
 }
 
-void output_field_id_indexes(const bool side)
+void Field::output_field_id_indexes(const bool side)
 {
 	//DEBUG FUNC
 	std::cout << "id_[" << side << "](NOT FOR USER): \n\n";
@@ -276,7 +264,7 @@ void output_field_id_indexes(const bool side)
 	std::cout << std::endl;
 }
 
-void output_field_war(const bool side)
+void Field::output_field_war(const bool side)
 {
 	//DEBUG FUNC
 	std::cout << "War[" << side << "](NOT FOR USER): \n\n";
@@ -292,21 +280,21 @@ void output_field_war(const bool side)
 	std::cout << std::endl;
 }
 
-void field_get_vision(const unsigned int x, const unsigned int y, const bool side)
+void Field::field_get_vision(const unsigned int x, const unsigned int y, const bool side)
 {
 	field_war[side][x][y] = true;
 }
 
-void generate_ship(const ship& sheep, const bool side)
+void Field::generate_ship(const ship& sheep, const bool side)
 {
 	bool stop = false;
 	int x = 0, y = 0, rotation = 0;
 	const int length = sheep.get_type()->get_size(), id = sheep.get_id();
 	bool breaks_in = true,
-	     left_is_clear = false,
-	     right_is_clear = false,
-	     up_is_clear = false,
-	     down_is_clear = false;
+		left_is_clear = false,
+		right_is_clear = false,
+		up_is_clear = false,
+		down_is_clear = false;
 	while (!stop)
 	{
 		x = rand() % width_height;
@@ -325,7 +313,7 @@ void generate_ship(const ship& sheep, const bool side)
 			std::cout << "; Status: ";
 		}
 
-		std::map<int, int> optimization_map = {{0, -1}, {1, 1}, {2, 1}, {3, -1}};
+		std::map<int, int> optimization_map = { {0, -1}, {1, 1}, {2, 1}, {3, -1} };
 
 		const int ot = optimization_map[rotation]; //magic coefficient
 
@@ -592,7 +580,7 @@ void generate_ship(const ship& sheep, const bool side)
 	}
 }
 
-std::vector<unsigned int> first_order(Fleet& fleet1, Fleet& fleet2)
+std::vector<unsigned int> Field::first_order(Fleet& fleet1, Fleet& fleet2)
 {
 	std::vector<unsigned int> orderList;
 	bool buleidu = true; //if index hasn't already been
@@ -633,7 +621,7 @@ std::vector<unsigned int> first_order(Fleet& fleet1, Fleet& fleet2)
 	return orderList;
 }
 
-std::pair<unsigned int, unsigned int> return_x_y(const unsigned int id, const int side)
+std::pair<unsigned int, unsigned int> Field::return_x_y(const unsigned int id, const int side)
 {
 	unsigned int start_x = 0, start_y = 0;
 	for (unsigned int y = 0; y < width_height; y++)
@@ -651,13 +639,13 @@ std::pair<unsigned int, unsigned int> return_x_y(const unsigned int id, const in
 	return std::make_pair(start_x, start_y);
 }
 
-char int_to_letter(const int i)
+char Field::int_to_letter(const int i)
 {
 	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	return alf[i];
 }
 
-bool area_is_clear(const bool side, const unsigned int x, const unsigned int y)
+bool Field::area_is_clear(const bool side, const unsigned int x, const unsigned int y)
 {
 	if (y)
 	{
@@ -694,7 +682,7 @@ bool area_is_clear(const bool side, const unsigned int x, const unsigned int y)
 	return true;
 }
 
-void small_move(const unsigned int index, const int side)
+void Field::small_move(const unsigned int index, const int side)
 {
 	int x = 0, y = -1;
 	std::cout << "Where are we going? (Write X and Y coordinates): ";
@@ -748,29 +736,29 @@ void small_move(const unsigned int index, const int side)
 				{
 					if (area_is_clear(side, start.first - 1, start.second - 1))
 						field_id[side][start.first - 1][start.
-							second - 1].first = 0;
+						second - 1].first = 0;
 				}
 				if (area_is_clear(side, start.first, start.second - 1))
 					field_id[side][start.first][start.second - 1].
-						first = 0;
+					first = 0;
 				if (start.first < width_height)
 				{
 					if (area_is_clear(side, start.first + 1, start.second - 1))
 						field_id[side][start.first + 1][start.
-							second - 1].first = 0;
+						second - 1].first = 0;
 				}
 			}
 			if (start.first)
 			{
 				if (area_is_clear(side, start.first - 1, start.second))
 					field_id[side][start.first - 1][start.second].
-						first = 0;
+					first = 0;
 			}
 			if (start.first < width_height - 1)
 			{
 				if (area_is_clear(side, start.first + 1, start.second))
 					field_id[side][start.first + 1][start.second].
-						first = 0;
+					first = 0;
 			}
 			if (start.second < width_height - 1)
 			{
@@ -778,16 +766,16 @@ void small_move(const unsigned int index, const int side)
 				{
 					if (area_is_clear(side, start.first - 1, start.second + 1))
 						field_id[side][start.first - 1][start.
-							second + 1].first = 0;
+						second + 1].first = 0;
 				}
 				if (area_is_clear(side, start.first, start.second + 1))
 					field_id[side][start.first][start.second + 1].
-						first = 0;
+					first = 0;
 				if (start.first < width_height - 1)
 				{
 					if (area_is_clear(side, start.first + 1, start.second + 1))
 						field_id[side][start.first + 1][start.
-							second + 1].first = 0;
+						second + 1].first = 0;
 				}
 			}
 
@@ -847,7 +835,7 @@ void small_move(const unsigned int index, const int side)
 	std::cout << "Complete!\n\n";
 }
 
-void get_damage(const bool side, const unsigned int x, const unsigned int y, const int dmg, std::vector<ship>& fleet)
+void Field::get_damage(const bool side, const unsigned int x, const unsigned int y, const int dmg, std::vector<ship>& fleet)
 {
 	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	int index = field_id[side][x][y].first - 2;
@@ -885,4 +873,3 @@ void get_damage(const bool side, const unsigned int x, const unsigned int y, con
 		fleet[index].klee(coords, side);
 	}
 }
-*/

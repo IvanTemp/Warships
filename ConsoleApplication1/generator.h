@@ -1,5 +1,6 @@
-#pragma once
+/*#pragma once
 #include "fleet.h"
+
 
 void output_achievement_info(const std::vector <std::pair<std::string, bool>> &achievements);
 
@@ -40,3 +41,4 @@ bool area_is_clear(const bool side, const unsigned int x, const unsigned int y);
 void small_move(const unsigned int index, const int side);
 
 void get_damage(const bool side, const unsigned int x, const unsigned int y, const int dmg, std::vector <ship>& fleet);
+*/

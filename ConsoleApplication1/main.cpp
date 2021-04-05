@@ -4,7 +4,8 @@
 #include <stdexcept>
 #include <fstream>
 #include "ship.h"
-#include "generator.h"
+//#include "generator.h"
+#include "Field.h"
 #include "fleet.h"
 #include "Aircraft_Carrier.h"
 #include "Heavy_Cruiser.h"
@@ -66,12 +67,13 @@ int main(int argc, char* argv[]) {
 	bool ironman = true;
 
 	//Generate here
+	Field field;
 	for (int i = 0; i < fleet_1.get_ship_vector().size(); i++) {
-		generate_ship(fleet_1.get_ship_by_index(i), fleet_1.get_side());
+		field.generate_ship(fleet_1.get_ship_by_index(i), fleet_1.get_side());
 	}
 
 	for (int i = 0; i < fleet_2.get_ship_vector().size(); i++) {
-		generate_ship(fleet_2.get_ship_by_index(i), fleet_2.get_side());
+		field.generate_ship(fleet_2.get_ship_by_index(i), fleet_2.get_side());
 	}
 	///////////////
 
@@ -79,23 +81,23 @@ int main(int argc, char* argv[]) {
 	if (DEBUG_MODE) {
 		fleet_1.print(std::cout);
 		fleet_2.print(std::cout);
-		output_field_id_indexes(false);
-		output_field_war(false);
-		output_field_id_indexes(true);
-		output_field_war(true);
+		field.output_field_id_indexes(false);
+		field.output_field_war(false);
+		field.output_field_id_indexes(true);
+		field.output_field_war(true);
 		////INITIALISATION FIELDS
-		initialize_field_final(fleet_1);
-		initialize_field_final(fleet_2);
+		field.initialize_field_final(fleet_1);
+		field.initialize_field_final(fleet_2);
 		/////////////////////////
 		std::cout << "Game Fields:" << std::endl << std::endl;
-		output_field_final(false, fleet_1.get_name(), fleet_2.get_name());
-		output_field_final(true, fleet_1.get_name(), fleet_2.get_name());
+		field.output_field_final(false, fleet_1.get_name(), fleet_2.get_name());
+		field.output_field_final(true, fleet_1.get_name(), fleet_2.get_name());
 	}
 	/////////////////
 
 	//Achievements
-	std::vector <std::pair<std::string, bool>> achievement_array = read_achievements();
-	output_achievement_info(achievement_array);
+	std::vector <std::pair<std::string, bool>> achievement_array = field.read_achievements();
+	field.output_achievement_info(achievement_array);
 	//////////////
 
 	if (fleet_1.get_ship_vector().size() != fleet_2.get_ship_vector().size()) {
@@ -116,7 +118,7 @@ int main(int argc, char* argv[]) {
 	{
 		std::cout << "Select battle mode (PVE / PvP): "; //USE PVP FOR ATTACKS TESTS
 		std::cin >> battle_mode;
-		ha_you_are_small_now(battle_mode);
+		field.ha_you_are_small_now(battle_mode);
 		if (battle_mode == "pve" || battle_mode == "pvp")
 		{
 			break;
@@ -136,30 +138,30 @@ int main(int argc, char* argv[]) {
 		while (fleet_1.get_health() && fleet_2.get_health()) {
 			switch (first % 2) {
 				case 0:
-					initialize_field_final(fleet_1);
+					field.initialize_field_final(fleet_1);
 					std::cout << fleet_1.get_name() << " turn." << std::endl << std::endl;
-					output_field_final(false, fleet_1.get_name(), fleet_2.get_name());
-					do_action(fleet_1, fleet_2, order, round);
+					field.output_field_final(false, fleet_1.get_name(), fleet_2.get_name());
+					field.do_action(fleet_1, fleet_2, order, round);
 					break;
 				case 1:
-					initialize_field_final(fleet_2);
+					field.initialize_field_final(fleet_2);
 					std::cout << fleet_2.get_name() << " turn." << std::endl << std::endl;
-					output_field_final(true, fleet_1.get_name(), fleet_2.get_name());
-					do_action(fleet_2, fleet_1, order, round);
+					field.output_field_final(true, fleet_1.get_name(), fleet_2.get_name());
+					field.do_action(fleet_2, fleet_1, order, round);
 					break;
 			}
 			switch (first + 1 % 2) {
 				case 0:
-					initialize_field_final(fleet_1);
+					field.initialize_field_final(fleet_1);
 					std::cout << fleet_1.get_name() << " turn." << std::endl << std::endl;
-					output_field_final(false, fleet_1.get_name(), fleet_2.get_name());
-					do_action(fleet_1, fleet_2, order, round);
+					field.output_field_final(false, fleet_1.get_name(), fleet_2.get_name());
+					field.do_action(fleet_1, fleet_2, order, round);
 					break;
 				case 1:
-					initialize_field_final(fleet_2);
+					field.initialize_field_final(fleet_2);
 					std::cout << fleet_2.get_name() << " turn." << std::endl << std::endl;
-					output_field_final(true, fleet_1.get_name(), fleet_2.get_name());
-					do_action(fleet_2, fleet_1, order, round);
+					field.output_field_final(true, fleet_1.get_name(), fleet_2.get_name());
+					field.do_action(fleet_2, fleet_1, order, round);
 					break;
 				}
 			first++;
@@ -189,29 +191,29 @@ int main(int argc, char* argv[]) {
 				while (fleet_1.get_health() && fleet_2.get_health()) {
 					switch (first % 2) { //0 - player; 1 - bot
 						case 0:
-							initialize_field_final(fleet_1);
+							field.initialize_field_final(fleet_1);
 							std::cout << fleet_1.get_name() << " turn." << std::endl << std::endl;
-							output_field_final(false, fleet_1.get_name(), fleet_2.get_name());
-							do_action(fleet_1, fleet_2, order, round);
+							field.output_field_final(false, fleet_1.get_name(), fleet_2.get_name());
+							field.do_action(fleet_1, fleet_2, order, round);
 							break;
 						case 1:
-							initialize_field_final(fleet_2);
+							field.initialize_field_final(fleet_2);
 							std::cout << fleet_2.get_name() << " turn." << std::endl << std::endl;
 							fleet_2.damage_by_index_bot_v2(order[round], fleet_2.get_ship_by_index(order[round]).get_type()->get_damage_value(), difficulty);
 							break;
 						}
 					switch (first + 1 % 2) {
 						case 0:
-							initialize_field_final(fleet_1);
+							field.initialize_field_final(fleet_1);
 							std::cout << fleet_1.get_name() << " turn." << std::endl << std::endl;
-							output_field_final(false, fleet_1.get_name(), fleet_2.get_name());
-							do_action(fleet_1, fleet_2, order, round);
+							field.output_field_final(false, fleet_1.get_name(), fleet_2.get_name());
+							field.do_action(fleet_1, fleet_2, order, round);
 							break;
 						case 1:
-							initialize_field_final(fleet_2);
+							field.initialize_field_final(fleet_2);
 							std::cout << fleet_2.get_name() << " turn." << std::endl << std::endl;
-							output_field_final(true, fleet_1.get_name(), fleet_2.get_name());
-							do_action(fleet_2, fleet_1, order, round);
+							field.output_field_final(true, fleet_1.get_name(), fleet_2.get_name());
+							field.do_action(fleet_2, fleet_1, order, round);
 							break;
 					}
 					first++;
@@ -237,7 +239,7 @@ int main(int argc, char* argv[]) {
 	if (fleet_1.get_health() > fleet_2.get_health()) {
 		std::cout << fleet_1.get_name() << " won!";
 		if (battle_mode == "pve" && ironman) {
-			give_achievement(achievement_array, difficulty);
+			field.give_achievement(achievement_array, difficulty);
 		}
 	}
 	else if (fleet_1.get_health() < fleet_2.get_health()) {
@@ -247,10 +249,10 @@ int main(int argc, char* argv[]) {
 		std::cout << "Friendship";
 	}
 	if (difficulty == 2 && ironman) {
-		give_achievement(achievement_array, 2);
+		field.give_achievement(achievement_array, 2);
 	}
 	if (battle_mode == "pvp" && ironman) {
-		give_achievement(achievement_array, 3);
+		field.give_achievement(achievement_array, 3);
 	}
 
 	//Let's output fleets to the file output.txt (names in the project parameters)
