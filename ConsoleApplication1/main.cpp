@@ -10,6 +10,7 @@
 #include "Heavy_Cruiser.h"
 #include "Tsundere.h"
 #include "Small.h"
+//ñùüüóòå
 
 int main(int argc, char* argv[]) {
 	srand(time(nullptr));
