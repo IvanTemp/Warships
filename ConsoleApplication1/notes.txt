@@ -1,0 +1,24 @@
+	//НУЖНО ЗНАТЬ
+	Длина корабля с 0 на конце будет некорректно работать
+	
+	////Удаление корабля с проверкой выхода за границы
+	//try
+	//{
+	//	fleet_1.GetshipByIndex(15).Print(std::cout);
+	//}
+	//catch (std::out_of_range)
+	//{
+	//	std::cout << "OUT OF RANGE" << std::endl;
+	//}
+
+
+	Не робит 
+	//Проверяю конструктор/деструктор
+	std::cout << "ship temp added" << std::endl;
+	ship* temp = new ship();
+
+	std::cout << "ships count " << ship1.GetCount() << std::endl;
+	std::cout << "ship temp deleted" << std::endl;
+	delete temp;
+
+	std::cout << "ships count " << ship1.GetCount() << std::endl;
