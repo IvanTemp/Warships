@@ -24,3 +24,6 @@ int Tsundere::get_default_durability() const
 {
 	return default_durability_;
 }
+
+void Tsundere::special_action() {
+}

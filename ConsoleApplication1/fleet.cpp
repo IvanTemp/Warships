@@ -6,6 +6,7 @@
 #include "fleet.h"
 #include "generator.h"
 
+
 std::vector <std::pair <unsigned int, unsigned int>> bots_memory; //BOT Repository Of Detected Cells
 
 int Fleet::count_ = 0;
@@ -179,14 +180,15 @@ void Fleet::damage_by_index_bot_v2(unsigned int id, int dmg, const int difficult
 	std::string type = ship_vector_[id].get_type()->get_name();
 }
 
-void Fleet::damage_by_index_player(ship sheep) {
+void Fleet::damage_by_index_player(const ship sheep) {
+	extern GameInformation game_info();
 	std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
 	int x = 0, y = -1;
 	unsigned int dmg = sheep.get_type()->get_damage_value();
 	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	char charx;
 	std::cin >> charx >> y;
-	if (DEBUG_MODE) std::cout << "[DEBUG INFO]X = " << charx << "; Y = " << y << std::endl;
+	if (game_info().get_debug_mode()) std::cout << "[DEBUG INFO]X = " << charx << "; Y = " << y << std::endl;
 
 	if (y > width_height) {
 		std::cout << "Captain! You shot out of bounds!" << std::endl;
@@ -205,17 +207,17 @@ void Fleet::damage_by_index_player(ship sheep) {
 		}
 	}
 
-	if (DEBUG_MODE) { std::cout << "[DEBUG INFO]int X = " << x << " Y = " << y << std::endl; }
+	if (game_info().get_debug_mode()) { std::cout << "[DEBUG INFO]int X = " << x << " Y = " << y << std::endl; }
 
-	if (return_field_id_value(side_, x, y) > 1) 
+	if (game_info().return_field_id()[side_][x][y].first > 1) 
 	{
-		if (ship_vector_[return_field_id_value(side_, x, y) - 2].get_durability()[return_field_index_value(side_, x, y)])
+		if (ship_vector_[game_info().return_field_id()[side_][x][y].first - 2].get_durability()[game_info().return_field_id()[side_][x][y].second])
 		{
-			if (ship_vector_[return_field_id_value(side_, x, y) - 2].get_type()->get_name() == "Small" && sheep.get_type()->get_name() == "Tsundere")
+			if (ship_vector_[game_info().return_field_id()[side_][x][y].first - 2].get_type()->get_name() == "Small" && sheep.get_type()->get_name() == "Tsundere")
 			{
 				dmg = Small_Durability;
 			}
-			else if (ship_vector_[return_field_id_value(side_, x, y) - 2].get_type()->get_name() == "Aircraft Carrier" && sheep.get_type()->get_name() == "Small")
+			else if (ship_vector_[game_info().return_field_id()[side_][x][y].first - 2].get_type()->get_name() == "Aircraft Carrier" && sheep.get_type()->get_name() == "Small")
 			{
 				dmg *= 2;
 			}
@@ -228,17 +230,18 @@ void Fleet::damage_by_index_player(ship sheep) {
 	else {
 		std::cout << "Miss! X = " << alf[x] << "; Y = " << y << std::endl;
 	}
-	field_get_vision(x, y, side_);
+	game_info().field_get_vision(x, y, side_);
 }
 
 void Fleet::aircraft_attack(const bool angle, const int dmg)
 {
+	extern GameInformation game_info();
 	std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
 	int x = 0, y = -1;
 	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	char char_x = ' ';
 	std::cin >> char_x >> y;
-	if (DEBUG_MODE) std::cout << "[DEBUG INFO]X = " << char_x << "; Y = " << y << std::endl;
+	if (game_info().get_debug_mode()) std::cout << "[DEBUG INFO]X = " << char_x << "; Y = " << y << std::endl;
 
 	if (y > width_height) {
 		std::cout << "Captain! You shot out of bounds!" << std::endl;
@@ -257,7 +260,7 @@ void Fleet::aircraft_attack(const bool angle, const int dmg)
 		}
 	}
 
-	if (DEBUG_MODE) { std::cout << "[DEBUG INFO]int X = " << x << " Y = " << y << std::endl; }
+	if (game_info().get_debug_mode()) { std::cout << "[DEBUG INFO]int X = " << x << " Y = " << y << std::endl; }
 
 	if (angle == 1) // horizontal
 	{
@@ -268,8 +271,8 @@ void Fleet::aircraft_attack(const bool angle, const int dmg)
 				std::cout << "Captain! You shot out of bounds!" << std::endl;
 				return;
 			}
-			if (return_field_id_value(side_, x, y) > 1) {
-				if (ship_vector_[return_field_id_value(side_, x, y) - 2].get_durability()[return_field_index_value(side_, x, y)]) {
+			if (game_info().return_field_id()[side_][x][y].first > 1) {
+				if (ship_vector_[game_info().return_field_id()[side_][x][y].first - 2].get_durability()[game_info().return_field_id()[side_][x][y].second]) {
 					get_damage(side_, x, y, dmg, ship_vector_);
 				}
 				else {
@@ -290,8 +293,8 @@ void Fleet::aircraft_attack(const bool angle, const int dmg)
 				std::cout << "Captain! You shot out of bounds!" << std::endl;
 				return;
 			}
-			if (return_field_id_value(side_, x, y) > 1) {
-				if (ship_vector_[return_field_id_value(side_, x, y) - 2].get_durability()[return_field_index_value(side_, x, y)]) {
+			if (game_info().return_field_id()[side_][x][y].first > 1) {
+				if (ship_vector_[game_info().return_field_id()[side_][x][y].first - 2].get_durability()[game_info().return_field_id()[side_][x][y].second]) {
 					get_damage(side_, x, y, dmg, ship_vector_);
 				}
 				else {
@@ -303,16 +306,17 @@ void Fleet::aircraft_attack(const bool angle, const int dmg)
 			}
 		}
 	}
-	field_get_vision(x, y, side_);
+	game_info().field_get_vision(x, y, side_);
 }
 
 void Fleet::heavy_cruiser_attack(const int dmg)
 {
+	extern GameInformation game_info();
 	int x = 0, y = -1;
 	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	char char_x;
 	std::cin >> char_x >> y;
-	if (DEBUG_MODE) std::cout << "[DEBUG INFO]X = " << char_x << "; Y = " << y << std::endl;
+	if (game_info().get_debug_mode()) std::cout << "[DEBUG INFO]X = " << char_x << "; Y = " << y << std::endl;
 
 	if (y > width_height) {
 		std::cout << "Captain! You shot out of bounds!" << std::endl;
@@ -331,7 +335,7 @@ void Fleet::heavy_cruiser_attack(const int dmg)
 		}
 	}
 
-	if (DEBUG_MODE) { std::cout << "[DEBUG INFO]int X = " << x << " Y = " << y << std::endl; }
+	if (game_info().get_debug_mode()) { std::cout << "[DEBUG INFO]int X = " << x << " Y = " << y << std::endl; }
 	x--;
 	y--;
 	int temp_x = x + 3, temp_y = y + 3;
@@ -351,8 +355,8 @@ void Fleet::heavy_cruiser_attack(const int dmg)
 				}
 				else
 				{
-					if (return_field_id_value(side_, x, y) > 1) {
-						if (ship_vector_[return_field_id_value(side_, x, y) - 2].get_durability()[return_field_index_value(side_, x, y)]) {
+					if (game_info().return_field_id()[side_][x][y].first > 1) {
+						if (ship_vector_[game_info().return_field_id()[side_][x][y].first - 2].get_durability()[game_info().return_field_id()[side_][x][y].second]) {
 							get_damage(side_, x, y, dmg, ship_vector_);
 						}
 						else {
@@ -362,7 +366,7 @@ void Fleet::heavy_cruiser_attack(const int dmg)
 					else {
 						std::cout << "Miss! X = " << alf[x] << "; Y = " << y << std::endl;
 					}
-					field_get_vision(x, y, side_);
+					game_info().field_get_vision(x, y, side_);
 				}
 			}
 		}

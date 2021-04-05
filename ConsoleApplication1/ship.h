@@ -2,17 +2,15 @@
 
 #include <vector>
 #include "type.h"
+#include "GameInformation.h"
 
 //Game settings
-#define width_height 10 //Width & height of field
 #define Aircraft_Carrier_Durability 6
 #define Heavy_Cruiser_Durability 7
 #define Tsundere_Durability 5
 #define Small_Durability 4
 
 #define achievement_file "achievements.db"
-
-#define DEBUG_MODE 1
 ///////////////
 
 class ship
@@ -38,8 +36,10 @@ public:
 	bool operator != (const ship& right)const;
 	ship& operator= (const ship& right);
 	ship operator++ (int); //repair function
-	void klee(const std::vector<std::pair<unsigned int, unsigned int>> coords, const bool side) const;
+	void detonate_the_ship(const std::vector<std::pair<unsigned int, unsigned int>> coords, const bool side) const;
 	static int get_count() { return count_; }
+	void set_coordinates(const std::pair <unsigned int, unsigned int> new_coordinates);
+	std::pair <unsigned int, unsigned int> get_coordinates()const;
 	void nuclear_bomb();
 
 private:
@@ -49,6 +49,7 @@ private:
 	int id_;
 	static int count_;
 	const int cid_;
+	std::pair <unsigned int, unsigned int> coordinates_;
 };
 
 //Overloading I/O operators is only possible separately from the class

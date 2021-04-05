@@ -1,8 +1,7 @@
 #pragma once
 #include <string>
 
-class type
-{
+class type {
 public:
 	virtual void print()const = 0;
 	virtual int get_size()const = 0;

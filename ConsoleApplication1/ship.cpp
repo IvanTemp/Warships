@@ -175,9 +175,9 @@ ship ship::operator++(int)
     return copyThis;
 }
 
-void ship::klee(const std::vector <std::pair<unsigned int, unsigned int>> coords, const bool side)const {
-    extern void field_get_vision(const unsigned int x, const unsigned int y, const bool side);
-    if (DEBUG_MODE) {
+void ship::detonate_the_ship(const std::vector <std::pair<unsigned int, unsigned int>> coords, const bool side)const {
+    extern GameInformation game_info();
+    if (game_info().get_debug_mode()) {
         for (int i = 0; i < coords.size(); i++) {
             std::cout << "[DEBUG INFO]" << i << ": X = " << coords[i].first << "; Y = " << coords[i].second << std::endl;
         }
@@ -186,33 +186,41 @@ void ship::klee(const std::vector <std::pair<unsigned int, unsigned int>> coords
     for (int i = 0; i < coords.size(); i++) {
         if (coords[i].first) {
             if (coords[i].second) {
-                field_get_vision(coords[i].first - 1, coords[i].second - 1, side);
+                game_info().field_get_vision(coords[i].first - 1, coords[i].second - 1, side);
             }
-            field_get_vision(coords[i].first - 1, coords[i].second, side);
+            game_info().field_get_vision(coords[i].first - 1, coords[i].second, side);
             if (coords[i].second < width_height - 1) {
-                field_get_vision(coords[i].first - 1, coords[i].second + 1, side);
+                game_info().field_get_vision(coords[i].first - 1, coords[i].second + 1, side);
             }
         }
         if (coords[i].second) {
-            field_get_vision(coords[i].first, coords[i].second - 1, side);
+            game_info().field_get_vision(coords[i].first, coords[i].second - 1, side);
         }
         if (coords[i].second < width_height - 1) {
-            field_get_vision(coords[i].first, coords[i].second + 1, side);
+            game_info().field_get_vision(coords[i].first, coords[i].second + 1, side);
         }
         if (coords[i].first < width_height - 1) {
             if (coords[i].second) {
-                field_get_vision(coords[i].first + 1, coords[i].second - 1, side);
+                game_info().field_get_vision(coords[i].first + 1, coords[i].second - 1, side);
             }
-            field_get_vision(coords[i].first + 1, coords[i].second, side);
+            game_info().field_get_vision(coords[i].first + 1, coords[i].second, side);
             if (coords[i].second < width_height - 1) {
-                field_get_vision(coords[i].first + 1, coords[i].second + 1, side);
+                game_info().field_get_vision(coords[i].first + 1, coords[i].second + 1, side);
             }
         }
     }
 }
 
+std::pair<unsigned int, unsigned int> ship::get_coordinates()const {
+    return coordinates_;
+}
+
+void ship::set_coordinates(const std::pair<unsigned int, unsigned int> new_coordinates) {
+    coordinates_ = new_coordinates;
+}
+
 void ship::nuclear_bomb() {
-    for (int i = 0; i < durability_.size(); i++) {
+    for (auto& i : durability_) {
         durability_[i] = 0;
     }
 }

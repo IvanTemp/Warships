@@ -20,7 +20,7 @@ public:
 	ship get_ship_by_index(const unsigned int id)const;
 	void damage_by_index_bot(const int dmg, const int difficulty);
 	void damage_by_index_bot_v2(unsigned int id, int dmg, const int difficulty);
-	void damage_by_index_player(ship sheep);
+	void damage_by_index_player(const ship sheep);
 	void aircraft_attack(const bool angle, const int dmg);
 	void heavy_cruiser_attack(const int dmg);
 	void nuclear_bomb();

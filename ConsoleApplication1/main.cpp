@@ -10,11 +10,16 @@
 #include "Heavy_Cruiser.h"
 #include "Tsundere.h"
 #include "Small.h"
+#include "GameInformation.h"
+
+//Game Information
+GameInformation game_info();
+//////////////////
 
 int main(int argc, char* argv[]) {
 	srand(time(nullptr));
 
-	if constexpr (DEBUG_MODE) {
+	if (game_info().get_debug_mode()) {
 		std::cout << "WARNING! DEBUG MODE ON! \n" << std::endl;
 	}
 	else {
@@ -25,7 +30,7 @@ int main(int argc, char* argv[]) {
 		std::cout << "Warning! The game is not designed for such a large field size! Please limit yourself to 26 cells!" << std::endl;
 		return -26;
 	}
-
+	
 	//FLEET 1
 	
 	Aircraft_Carrier air1;
@@ -75,26 +80,26 @@ int main(int argc, char* argv[]) {
 	///////////////
 
 	//DEBUG FUNCTIONS
-	if (DEBUG_MODE) {
+	if (game_info().get_debug_mode()) {
 		fleet_1.print(std::cout);
 		fleet_2.print(std::cout);
-		output_field_id_indexes(false);
-		output_field_war(false);
-		output_field_id_indexes(true);
-		output_field_war(true);
+		game_info().output_field_id_indexes(false);
+		game_info().output_field_war(false);
+		game_info().output_field_id_indexes(true);
+		game_info().output_field_war(true);
 		////INITIALISATION FIELDS
-		initialize_field_final(fleet_1);
-		initialize_field_final(fleet_2);
+		game_info().initialize_field_final(fleet_1);
+		game_info().initialize_field_final(fleet_2);
 		/////////////////////////
 		std::cout << "Game Fields:" << std::endl << std::endl;
-		output_field_final(false, fleet_1.get_name(), fleet_2.get_name());
-		output_field_final(true, fleet_1.get_name(), fleet_2.get_name());
+		game_info().output_field_final(false, fleet_1.get_name(), fleet_2.get_name());
+		game_info().output_field_final(true, fleet_1.get_name(), fleet_2.get_name());
 	}
 	/////////////////
 
 	//Achievements
-	std::vector <std::pair<std::string, bool>> achievement_array = read_achievements();
-	output_achievement_info(achievement_array);
+	std::vector <std::pair<std::string, bool>> achievement_array = game_info().read_achievements_from_file();
+	game_info().output_achievement_info(achievement_array);
 	//////////////
 
 	if (fleet_1.get_ship_vector().size() != fleet_2.get_ship_vector().size()) {
@@ -107,7 +112,7 @@ int main(int argc, char* argv[]) {
 	std::cout << "Start game?\n\n";
 	system("pause");
 
-	if (!DEBUG_MODE) { system("cls"); }
+	if (!game_info().get_debug_mode()) { system("cls"); }
 
 	//Selecting a game mode
 	std::string battle_mode;
@@ -115,12 +120,12 @@ int main(int argc, char* argv[]) {
 	{
 		std::cout << "Select battle mode (PVE / PvP): "; //USE PVP FOR ATTACKS TESTS
 		std::cin >> battle_mode;
-		ha_you_are_small_now(battle_mode);
+		game_info().ha_you_are_small_now(battle_mode); //Почему я не мог оставить эту функцию в generator.cpp....
 		if (battle_mode == "pve" || battle_mode == "pvp")
 		{
 			break;
 		}
-		if constexpr (!DEBUG_MODE) { system("cls"); }
+		if (!game_info().get_debug_mode()) { system("cls"); }
 		std::cout << "E-error! This is inappropriate... I... What should I...?" << std::endl << std::endl;
 		std::cout << "You scared the program with your wrong input. Be careful next time." << std::endl << std::endl;
 		system("pause");
@@ -128,37 +133,37 @@ int main(int argc, char* argv[]) {
 
 	int difficulty = 0, round = 0, first = rand() % 2;
 	if (battle_mode == "pvp" || battle_mode == "p") { //PVP
-		if constexpr (DEBUG_MODE) { std::cout << "First side: " << first << std::endl; }
+		if (game_info().get_debug_mode()) { std::cout << "First side: " << first << std::endl; }
 		else {
 			system("cls");
 		}
 		while (fleet_1.get_health() && fleet_2.get_health()) {
 			switch (first % 2) {
 				case 0:
-					initialize_field_final(fleet_1);
+					game_info().initialize_field_final(fleet_1);
 					std::cout << fleet_1.get_name() << " turn." << std::endl << std::endl;
-					output_field_final(false, fleet_1.get_name(), fleet_2.get_name());
-					do_action(fleet_1, fleet_2, order, round);
+					game_info().output_field_final(false, fleet_1.get_name(), fleet_2.get_name());
+					game_info().do_action(fleet_1, fleet_2, order, round);
 					break;
 				case 1:
-					initialize_field_final(fleet_2);
+					game_info().initialize_field_final(fleet_2);
 					std::cout << fleet_2.get_name() << " turn." << std::endl << std::endl;
-					output_field_final(true, fleet_1.get_name(), fleet_2.get_name());
-					do_action(fleet_2, fleet_1, order, round);
+					game_info().output_field_final(true, fleet_1.get_name(), fleet_2.get_name());
+					game_info().do_action(fleet_2, fleet_1, order, round);
 					break;
 			}
 			switch (first + 1 % 2) {
 				case 0:
-					initialize_field_final(fleet_1);
+					game_info().initialize_field_final(fleet_1);
 					std::cout << fleet_1.get_name() << " turn." << std::endl << std::endl;
-					output_field_final(false, fleet_1.get_name(), fleet_2.get_name());
-					do_action(fleet_1, fleet_2, order, round);
+					game_info().output_field_final(false, fleet_1.get_name(), fleet_2.get_name());
+					game_info().do_action(fleet_1, fleet_2, order, round);
 					break;
 				case 1:
-					initialize_field_final(fleet_2);
+					game_info().initialize_field_final(fleet_2);
 					std::cout << fleet_2.get_name() << " turn." << std::endl << std::endl;
-					output_field_final(true, fleet_1.get_name(), fleet_2.get_name());
-					do_action(fleet_2, fleet_1, order, round);
+					game_info().output_field_final(true, fleet_1.get_name(), fleet_2.get_name());
+					game_info().do_action(fleet_2, fleet_1, order, round);
 					break;
 				}
 			first++;
@@ -167,7 +172,7 @@ int main(int argc, char* argv[]) {
 	else if (battle_mode == "pve" || battle_mode == "e") //PVE
 	{
 		while (fleet_1.get_health() && fleet_2.get_health()) {
-			if (!DEBUG_MODE) { system("cls"); }
+			if (!game_info().get_debug_mode()) { system("cls"); }
 			std::cout << "Select difficulty level NUMBER: " << std::endl;
 			std::cout << "1)Normal" << std::endl; //Everything is fair
 			std::cout << "2)Hard" << std::endl; //Bot has the right to make mistake
@@ -181,43 +186,43 @@ int main(int argc, char* argv[]) {
 			}
 
 			if (difficulty >= 0 && difficulty <= 2) { //0 - 2(1 - 3 for user)
-				if constexpr (DEBUG_MODE) { std::cout << "First side: " << first << std::endl; }
+				if (game_info().get_debug_mode()) { std::cout << "First side: " << first << std::endl; }
 				else {
 					system("cls");
 				}
 				while (fleet_1.get_health() && fleet_2.get_health()) {
 					switch (first % 2) { //0 - player; 1 - bot
 						case 0:
-							initialize_field_final(fleet_1);
+							game_info().initialize_field_final(fleet_1);
 							std::cout << fleet_1.get_name() << " turn." << std::endl << std::endl;
-							output_field_final(false, fleet_1.get_name(), fleet_2.get_name());
-							do_action(fleet_1, fleet_2, order, round);
+							game_info().output_field_final(false, fleet_1.get_name(), fleet_2.get_name());
+							game_info().do_action(fleet_1, fleet_2, order, round);
 							break;
 						case 1:
-							initialize_field_final(fleet_2);
+							game_info().initialize_field_final(fleet_2);
 							std::cout << fleet_2.get_name() << " turn." << std::endl << std::endl;
 							fleet_2.damage_by_index_bot_v2(order[round], fleet_2.get_ship_by_index(order[round]).get_type()->get_damage_value(), difficulty);
 							break;
 						}
 					switch (first + 1 % 2) {
 						case 0:
-							initialize_field_final(fleet_1);
+							game_info().initialize_field_final(fleet_1);
 							std::cout << fleet_1.get_name() << " turn." << std::endl << std::endl;
-							output_field_final(false, fleet_1.get_name(), fleet_2.get_name());
-							do_action(fleet_1, fleet_2, order, round);
+							game_info().output_field_final(false, fleet_1.get_name(), fleet_2.get_name());
+							game_info().do_action(fleet_1, fleet_2, order, round);
 							break;
 						case 1:
-							initialize_field_final(fleet_2);
+							game_info().initialize_field_final(fleet_2);
 							std::cout << fleet_2.get_name() << " turn." << std::endl << std::endl;
-							output_field_final(true, fleet_1.get_name(), fleet_2.get_name());
-							do_action(fleet_2, fleet_1, order, round);
+							game_info().output_field_final(true, fleet_1.get_name(), fleet_2.get_name());
+							game_info().do_action(fleet_2, fleet_1, order, round);
 							break;
 					}
 					first++;
 				}
 			}
 			else {
-				if (!DEBUG_MODE) { system("cls"); }
+				if (!game_info().get_debug_mode()) { system("cls"); }
 				std::cout << "E-error! This is inappropriate... I... What should I...?" << std::endl << std::endl;
 				std::cout << "You scared the program with your wrong input. Be careful next time." << std::endl << std::endl;
 				system("pause");
@@ -226,7 +231,7 @@ int main(int argc, char* argv[]) {
 	}
 	else  // Protect from Epic Games Store users
 	{
-		if (!DEBUG_MODE) { system("cls"); }
+		if (!game_info().get_debug_mode()) { system("cls"); }
 		std::cout << "E-error! This is inappropriate... I... What should I...?" << std::endl << std::endl;
 		std::cout << "You scared the program with your wrong input. Be careful next time." << std::endl << std::endl;
 		system("pause");
@@ -236,7 +241,7 @@ int main(int argc, char* argv[]) {
 	if (fleet_1.get_health() > fleet_2.get_health()) {
 		std::cout << fleet_1.get_name() << " won!";
 		if (battle_mode == "pve" && ironman) {
-			give_achievement(achievement_array, difficulty);
+			game_info().give_achievement(achievement_array, difficulty);
 		}
 	}
 	else if (fleet_1.get_health() < fleet_2.get_health()) {
@@ -246,10 +251,10 @@ int main(int argc, char* argv[]) {
 		std::cout << "Friendship";
 	}
 	if (difficulty == 2 && ironman) {
-		give_achievement(achievement_array, 2);
+		game_info().give_achievement(achievement_array, 2);
 	}
 	if (battle_mode == "pvp" && ironman) {
-		give_achievement(achievement_array, 3);
+		game_info().give_achievement(achievement_array, 3);
 	}
 
 	//Let's output fleets to the file output.txt (names in the project parameters)
