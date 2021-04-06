@@ -160,15 +160,9 @@ bool Field::return_field_war_value(const bool& side, const int& x, const int& y)
 
 void Field::ha_you_are_small_now(std::string& str)
 {
-	std::string small = "abcdefghijklmnopqrstuvwxyz";
-	std::string big = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	for (int i = 0; i < str.length(); i++)
 	{
-		for (int j = 0; j < big.length(); j++)
-		{
-			if (str[i] == big[j])
-				str[i] = small[j];
-		}
+		str[i] = std::toupper(str[i]);
 	}
 }
 
