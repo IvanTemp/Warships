@@ -2,26 +2,26 @@
 #include <string>
 #include <vector>
 #include <algorithm>
-#include "ship.h"
-#include "Aircraft_Carrier.h"
-#include "Heavy_Cruiser.h"
+#include "Ship.h"
+#include "AircraftCarrier.h"
+#include "HeavyCruiser.h"
 #include "Tsundere.h"
 #include "Small.h"
 
 
-int ship::count_ = 0;
+int Ship::count_ = 0;
 
-ship::ship(const std::string& nm, const int IDen) : name_(nm), id_(IDen), type_(nullptr), cid_(count_++)
+Ship::Ship(const std::string& nm, const int IDen) : name_(nm), id_(IDen), type_(nullptr), cid_(count_++)
 {
 }
 
-ship::ship(const std::string& nm, type& tp, const int IDen) : name_(nm), id_(IDen), type_(&tp), cid_(count_++)
+Ship::Ship(const std::string& nm, BasicType& tp, const int IDen) : name_(nm), id_(IDen), type_(&tp), cid_(count_++)
 {
     durability_.resize(type_->get_size());
     std::fill(durability_.begin(), durability_.end(), type_->get_default_durability());
 }
 
-void ship::print(std::ostream& out) const
+void Ship::print(std::ostream& out) const
 {
     out << "[" << id_ << "]\t";
     out << name_ << "\t";
@@ -34,7 +34,7 @@ void ship::print(std::ostream& out) const
         }
         else
         {
-            std::cout << "none type";
+            std::cout << "none BasicType";
         }
     std::cout << "\t";
     out << "Durability: ";
@@ -45,7 +45,7 @@ void ship::print(std::ostream& out) const
     out << std::endl;
 }
 
-void ship::read(std::istream& in)
+void Ship::read(std::istream& in)
 {
     std::string temp;
     std::getline(in, temp);
@@ -56,11 +56,11 @@ void ship::read(std::istream& in)
     std::getline(in, temp);
     if (temp == "Aircraft Carrier") 
     {
-        type_ = new Aircraft_Carrier();
+        type_ = new AircraftCarrier();
     }
     else if (temp == "Heavy Cruiser")
     {
-        type_ = new Heavy_Cruiser();
+        type_ = new HeavyCruiser();
     }
     else if (temp == "Tsundere")
     {
@@ -78,32 +78,32 @@ void ship::read(std::istream& in)
     std::fill(durability_.begin(), durability_.end(), type_->get_default_durability());
 }
 
-void ship::set_name(const std::string &name)
+void Ship::set_name(const std::string &name)
 {
     name_ = name;
 }
 
-std::string ship::get_name() const
+std::string Ship::get_name() const
 {
     return name_;
 }
 
-void ship::set_type(const type* tp)
+void Ship::set_type(const BasicType* tp)
 {
-    type_ = (type*)tp;
+    type_ = (BasicType*)tp;
 }
 
- type* ship::get_type() const
+ BasicType* Ship::get_type() const
 {
     return type_;
 }
 
-void ship::set_durability(const std::vector<int> &durability)
+void Ship::set_durability(const std::vector<int> &durability)
 {
     durability_ = durability;
 }
 
-unsigned int ship::get_durability_sum() const {
+unsigned int Ship::get_durability_sum() const {
     unsigned int sum = 0;
     for (unsigned int i = 0; i < durability_.size(); i++) {
         sum += durability_[i];
@@ -111,22 +111,22 @@ unsigned int ship::get_durability_sum() const {
     return sum;
 }
 
-std::vector<int> ship::get_durability() const
+std::vector<int> Ship::get_durability() const
 {
     return durability_;
 }
 
-void ship::damage_by_index(const int dmg, const int ind) {
+void Ship::damage_by_index(const int dmg, const int ind) {
     if (durability_[ind] - dmg > 0) { durability_[ind] -= dmg; }
     else { durability_[ind] = 0; }
 }
 
-int ship::get_id() const
+int Ship::get_id() const
 {
     return id_;
 }
 
-bool ship::operator==(const ship& right) const
+bool Ship::operator==(const Ship& right) const
 {
     bool durabilityIsEqual = false;
     std::string s = std::to_string(durability_.size()) + std::to_string(right.durability_.size());
@@ -146,12 +146,12 @@ bool ship::operator==(const ship& right) const
     return (name_ == right.name_ && type_ == right.type_ && id_ == right.id_ && durabilityIsEqual);
 }
 
-bool ship::operator!=(const ship& right) const
+bool Ship::operator!=(const Ship& right) const
 {
     return !(*this == right);
 }
 
-ship& ship::operator=(const ship& right)
+Ship& Ship::operator=(const Ship& right)
 {
     if (this != &right)
     {
@@ -162,9 +162,9 @@ ship& ship::operator=(const ship& right)
     return *this;
 }
 
-ship ship::operator++(int)
+Ship Ship::operator++(int)
 {
-    ship copyThis(*this);
+    Ship copyThis(*this);
     for (int i = 0; i < durability_.size(); i++)
     {
         if (durability_[i] == Tsundere_Durability)
@@ -175,7 +175,7 @@ ship ship::operator++(int)
     return copyThis;
 }
 
-void ship::klee(const std::vector <std::pair<unsigned int, unsigned int>> coords, const bool side)const {
+void Ship::klee(const std::vector <std::pair<unsigned int, unsigned int>> coords, const bool side)const {
     extern void field_get_vision(const unsigned int x, const unsigned int y, const bool side);
     if (DEBUG_MODE) {
         for (int i = 0; i < coords.size(); i++) {
@@ -211,19 +211,19 @@ void ship::klee(const std::vector <std::pair<unsigned int, unsigned int>> coords
     }
 }
 
-void ship::nuclear_bomb() {
+void Ship::nuclear_bomb() {
     for (int i = 0; i < durability_.size(); i++) {
         durability_[i] = 0;
     }
 }
 
-std::istream& operator>>(std::istream& in, ship& shp)
+std::istream& operator>>(std::istream& in, Ship& shp)
 {
     shp.read(in);
     return in;
 }
 
-std::ostream& operator<<(std::ostream& out, const ship& shp)
+std::ostream& operator<<(std::ostream& out, const Ship& shp)
 {
     shp.print(out);
     return out;

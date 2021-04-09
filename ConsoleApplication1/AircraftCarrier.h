@@ -1,14 +1,14 @@
 #pragma once
-#include "type.h"
+#include "BasicType.h"
 #include <string>
 #include <iostream>
 
-class Aircraft_Carrier :
-    public type
+class AircraftCarrier :
+    public BasicType
 {
 public:
-    Aircraft_Carrier() {}
-    virtual ~Aircraft_Carrier() {}
+    AircraftCarrier() {}
+    virtual ~AircraftCarrier() {}
     virtual void print()const override;
     virtual int get_size()const override;
 	virtual int get_damage_value() const override;

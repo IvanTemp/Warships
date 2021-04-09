@@ -3,8 +3,8 @@
 #include <stdexcept>
 #include <vector>
 #include <iostream>
-#include "fleet.h"
-#include "generator.h"
+#include "Fleet.h"
+#include "Generator.h"
 #include "Field.h"
 
 std::vector <std::pair <unsigned int, unsigned int>> bots_memory; //BOT Repository Of Detected Cells
@@ -13,7 +13,7 @@ int Fleet::count_ = 0;
 
 Fleet::Fleet(const std::string& nm) :name_(nm), side_(count_++) {}
 
-Fleet::Fleet(const std::string& nm, const std::vector<ship>& v) : name_(nm), ship_vector_(v), side_(count_++) {}
+Fleet::Fleet(const std::string& nm, const std::vector<Ship>& v) : name_(nm), ship_vector_(v), side_(count_++) {}
 
 void Fleet::print(std::ostream& out) const
 {
@@ -38,7 +38,7 @@ void Fleet::read(std::istream& in)
 	getline(in, count);
 	for (int i = 0; i < stoi(count); i++)
 	{
-		ship newShip;
+		Ship newShip;
 		newShip.read(in);
 		add_ship_to_fleet(newShip);
 	}
@@ -54,7 +54,7 @@ std::string Fleet::get_name() const
 	return name_;
 }
 
-std::vector<ship> Fleet::get_ship_vector() const
+std::vector<Ship> Fleet::get_ship_vector() const
 {
 	return ship_vector_;
 }
@@ -72,7 +72,7 @@ unsigned int Fleet::get_health() const
 	return hp;
 }
 
-bool Fleet::add_ship_to_fleet(const ship& shp)
+bool Fleet::add_ship_to_fleet(const Ship& shp)
 {
 	for (int i = 0; i < ship_vector_.size(); i++)
 	{
@@ -86,7 +86,7 @@ bool Fleet::add_ship_to_fleet(const ship& shp)
 	return true;
 }
 
-bool Fleet::remove_ship_from_fleet(const ship& shp)
+bool Fleet::remove_ship_from_fleet(const Ship& shp)
 {
 	//Проверка на пустой
 	int len = ship_vector_.size();
@@ -116,7 +116,7 @@ bool Fleet::get_side()const {
 	return side_;
 }
 
-ship Fleet::get_ship_by_index(const unsigned int id)const {
+Ship Fleet::get_ship_by_index(const unsigned int id)const {
 	return ship_vector_.at(id);
 	//try
 	//{
@@ -180,7 +180,7 @@ void Fleet::damage_by_index_bot_v2(unsigned int id, int dmg, const int difficult
 	std::string type = ship_vector_[id].get_type()->get_name();
 }
 
-void Fleet::damage_by_index_player(ship sheep, Field field) {
+void Fleet::damage_by_index_player(Ship sheep, Field field) {
 	std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
 	int x = 0, y = -1;
 	unsigned int dmg = sheep.get_type()->get_damage_value();
@@ -378,13 +378,13 @@ void Fleet::nuclear_bomb() { //test func
 	}
 }
 
-Fleet& Fleet::operator+=(const ship& ship)
+Fleet& Fleet::operator+=(const Ship& ship)
 {
 	add_ship_to_fleet(ship);
 	return *this;
 }
 
-Fleet& Fleet::operator-=(const ship& ship)
+Fleet& Fleet::operator-=(const Ship& ship)
 {
 	remove_ship_from_fleet(ship);
 	return *this;

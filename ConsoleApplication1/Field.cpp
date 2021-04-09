@@ -279,7 +279,7 @@ void Field::field_get_vision(const unsigned int x, const unsigned int y, const b
 	field_war[side][x][y] = true;
 }
 
-void Field::generate_ship(const ship& sheep, const bool side)
+void Field::generate_ship(const Ship& sheep, const bool side)
 {
 	bool stop = false;
 	int x = 0, y = 0, rotation = 0;
@@ -829,7 +829,7 @@ void Field::small_move(const unsigned int index, const int side)
 	std::cout << "Complete!\n\n";
 }
 
-void Field::get_damage(const bool side, const unsigned int x, const unsigned int y, const int dmg, std::vector<ship>& fleet)
+void Field::get_damage(const bool side, const unsigned int x, const unsigned int y, const int dmg, std::vector<Ship>& fleet)
 {
 	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	int index = field_id[side][x][y].first - 2;

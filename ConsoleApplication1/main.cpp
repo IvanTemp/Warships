@@ -3,12 +3,12 @@
 #include <iostream>
 #include <stdexcept>
 #include <fstream>
-#include "ship.h"
-//#include "generator.h"
+#include "Ship.h"
+//#include "Generator.h"
 #include "Field.h"
-#include "fleet.h"
-#include "Aircraft_Carrier.h"
-#include "Heavy_Cruiser.h"
+#include "Fleet.h"
+#include "AircraftCarrier.h"
+#include "HeavyCruiser.h"
 #include "Tsundere.h"
 #include "Small.h"
 //ñùüüóòå
@@ -20,7 +20,7 @@ int main(int argc, char* argv[]) {
 		std::cout << "WARNING! DEBUG MODE ON! \n" << std::endl;
 	}
 	else {
-		std::cout << "This is a playable build! Most of the information unnecessary to the player will be shown only after enabling DEBUG_MODE in ship.h!\n\n";
+		std::cout << "This is a playable build! Most of the information unnecessary to the player will be shown only after enabling DEBUG_MODE in Ship.h!\n\n";
 	}
 
 	if constexpr (width_height > 26) {
@@ -30,8 +30,8 @@ int main(int argc, char* argv[]) {
 
 	//FLEET 1
 	
-	Aircraft_Carrier air1;
-	Heavy_Cruiser HwCrus1, HwCrus2;
+	AircraftCarrier air1;
+	HeavyCruiser HwCrus1, HwCrus2;
 	Tsundere Tsun1, Tsun2, Tsun3;
 	Small Sm1, Sm2, Sm3, Sm4;
 	Fleet fleet_1 = { "Eagle Union",{

@@ -1,10 +1,10 @@
 #pragma once
-#include "type.h"
+#include "BasicType.h"
 #include <string>
 #include <iostream>
 
 class Small :
-    public type
+    public BasicType
 {
 public:
     virtual void print()const override;

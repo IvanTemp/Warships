@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "fleet.h"
+#include "Fleet.h"
 #include <iostream>
 #include <locale>
 #include <vector>
@@ -23,13 +23,13 @@ public:
 	void output_field_id_indexes(const bool side);
 	void output_field_war(const bool side);
 	void field_get_vision(const unsigned int x, const unsigned int y, const bool side);
-	void generate_ship(const ship& sheep, const bool side);
+	void generate_ship(const Ship& sheep, const bool side);
 	std::vector <unsigned int> first_order(Fleet& fleet1, Fleet& fleet2);
 	std::pair <unsigned int, unsigned int> return_x_y(const unsigned int id, const int side);
 	char int_to_letter(const int i);
 	bool area_is_clear(const bool side, const unsigned int x, const unsigned int y);
 	void small_move(const unsigned int index, const int side);
-	void get_damage(const bool side, const unsigned int x, const unsigned int y, const int dmg, std::vector <ship>& fleet);
+	void get_damage(const bool side, const unsigned int x, const unsigned int y, const int dmg, std::vector <Ship>& fleet);
 private:
 	std::string field_final[2][width_height][width_height] = { "#", "#", "#" }; //The field seen by the player and the AI
 	std::pair<unsigned int, unsigned int> field_id[2][width_height][width_height] = { (std::make_pair(0, 0)) };

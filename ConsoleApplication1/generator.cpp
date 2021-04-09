@@ -4,8 +4,8 @@
 #include <map>
 #include <string>
 #include <fstream>
-#include "generator.h"
-#include "fleet.h"
+#include "Generator.h"
+#include "Fleet.h"
 
 std::string field_final[2][width_height][width_height] = {"#", "#", "#"}; //The field seen by the player and the AI
 std::pair<unsigned int, unsigned int> field_id[2][width_height][width_height] = {(std::make_pair(0, 0))};
@@ -68,7 +68,7 @@ void do_action(Fleet& whose, Fleet& whom, const std::vector<unsigned int>& order
 	if constexpr (DEBUG_MODE) { std::cout << "[DEBUG INFO]order[round] = " << order[round] << std::endl; }
 	std::cout << "Current position: " << int_to_letter(return_x_y(order[round] + 2, whose.get_side()).first) << " " <<
 		return_x_y(order[round] + 2, whose.get_side()).second << std::endl;
-	std::cout << "Current type: " << whose.get_ship_by_index(order[round]).get_type()->get_name() << std::endl;
+	std::cout << "Current BasicType: " << whose.get_ship_by_index(order[round]).get_type()->get_name() << std::endl;
 	std::cout << "What do you want?\n\n";
 	std::string action;
 	while (true)
@@ -128,7 +128,7 @@ void do_action(Fleet& whose, Fleet& whom, const std::vector<unsigned int>& order
 			if (whose.get_ship_by_index(order[round]).get_type()->get_name() == "Aircraft Carrier")
 			{
 				ha_you_are_small_now(action);
-				std::cout << "Specify the type of attack (1x3 or 3x1): \n" << std::endl;
+				std::cout << "Specify the BasicType of attack (1x3 or 3x1): \n" << std::endl;
 				std::cin >> action;
 				ha_you_are_small_now(action);
 				if (action == "1x3" || action == "1")
@@ -297,7 +297,7 @@ void field_get_vision(const unsigned int x, const unsigned int y, const bool sid
 	field_war[side][x][y] = true;
 }
 
-void generate_ship(const ship& sheep, const bool side)
+void generate_ship(const Ship& sheep, const bool side)
 {
 	bool stop = false;
 	int x = 0, y = 0, rotation = 0;
@@ -847,7 +847,7 @@ void small_move(const unsigned int index, const int side)
 	std::cout << "Complete!\n\n";
 }
 
-void get_damage(const bool side, const unsigned int x, const unsigned int y, const int dmg, std::vector<ship>& fleet)
+void get_damage(const bool side, const unsigned int x, const unsigned int y, const int dmg, std::vector<Ship>& fleet)
 {
 	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	int index = field_id[side][x][y].first - 2;

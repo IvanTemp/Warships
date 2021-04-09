@@ -1,5 +1,5 @@
 /*#pragma once
-#include "fleet.h"
+#include "Fleet.h"
 
 
 void output_achievement_info(const std::vector <std::pair<std::string, bool>> &achievements);
@@ -28,7 +28,7 @@ void output_field_war(const bool side);
 
 void field_get_vision(const unsigned int x, const unsigned int y, const bool side);
 
-void generate_ship(const ship& sheep, const bool side);
+void generate_ship(const Ship& sheep, const bool side);
 
 std::vector <unsigned int> first_order(Fleet& fleet1, Fleet& fleet2);
 
@@ -40,5 +40,5 @@ bool area_is_clear(const bool side, const unsigned int x, const unsigned int y);
 
 void small_move(const unsigned int index, const int side);
 
-void get_damage(const bool side, const unsigned int x, const unsigned int y, const int dmg, std::vector <ship>& fleet);
+void get_damage(const bool side, const unsigned int x, const unsigned int y, const int dmg, std::vector <Ship>& fleet);
 */
