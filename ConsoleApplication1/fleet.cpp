@@ -179,7 +179,7 @@ void Fleet::damage_by_index_bot_v2(unsigned int id, int dmg, const int difficult
 	std::string type = ship_vector_[id].get_type()->get_name();
 }
 
-void Fleet::damage_by_index_player(Ship sheep) {
+void Fleet::damage_by_index_player(Ship &sheep) { //sheep - who is attack
 	std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
 	int x = 0, y = -1;
 	unsigned int dmg = sheep.get_type()->get_damage_value();
@@ -356,11 +356,7 @@ void Fleet::heavy_cruiser_attack(const int dmg)
 	{
 		for (y = temp_y; y < temp_y + 3; y++)
 		{
-			if (x < 0 || x >= width_height || y < 0 || y >= width_height)
-			{
-				std::cout << "Captain! You shot out of bounds!" << std::endl;
-			}
-			else
+			if (x >= 0 && x < width_height && y >= 0 && y < width_height)
 			{
 				if (field_id_[x][y].first > 1)
 				{
@@ -378,6 +374,10 @@ void Fleet::heavy_cruiser_attack(const int dmg)
 					std::cout << "Miss! X = " << alf[x] << "; Y = " << y << std::endl;
 				}
 				field_get_vision(x, y);
+			}
+			else
+			{
+				std::cout << "Captain! You shot out of bounds!" << std::endl;
 			}
 		}
 	}
@@ -947,7 +947,7 @@ void Fleet::klee(const std::vector<std::pair<unsigned int, unsigned int>> coords
 {
 	if (DEBUG_MODE) {
 		for (int i = 0; i < coords.size(); i++) {
-			std::cout << "[DEBUG INFO]" << i << ": X = " << coords[i].first << "; Y = " << coords[i].second << std::endl;
+			std::cout << "[Klee]" << i << ": X = " << coords[i].first << "; Y = " << coords[i].second << std::endl;
 		}
 		std::cout << std::endl;
 	}
@@ -981,7 +981,7 @@ void Fleet::klee(const std::vector<std::pair<unsigned int, unsigned int>> coords
 
 void Fleet::get_damage(const int dmg, const unsigned int x, const unsigned int y)
 {
-	unsigned int id = field_id_[x][y].first;
+	const unsigned int id = field_id_[x][y].first - 2;
 	ship_vector_[id].damage_by_index(dmg, field_id_[x][y].second);
 	std::cout << "Dodge this! You are hit!" << std::endl;
 	std::cout << "You hit him in " << int_to_letter(x) << " " << y << std::endl;

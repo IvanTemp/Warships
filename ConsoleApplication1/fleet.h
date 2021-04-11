@@ -15,13 +15,13 @@ public:
 	std::string get_name()const;
 	std::vector<Ship> get_ship_vector()const;
 	unsigned int get_health()const;
-	bool add_ship_to_fleet(const Ship &ship);
-	bool remove_ship_from_fleet(const Ship &ship);
+	bool add_ship_to_fleet(const Ship& ship);
+	bool remove_ship_from_fleet(const Ship& ship);
 	bool get_side() const;
 	Ship get_ship_by_index(const unsigned int id)const;
 	void damage_by_index_bot(const int dmg, const int difficulty);
 	void damage_by_index_bot_v2(unsigned int id, int dmg, const int difficulty);
-	void damage_by_index_player(Ship sheep);
+	void damage_by_index_player(Ship &sheep);
 	void aircraft_attack(const bool angle, const int dmg);
 	void heavy_cruiser_attack(const int dmg);
 	void nuclear_bomb();
@@ -36,7 +36,7 @@ public:
 	void output_field_id_indexes()const;
 	void output_field_war()const;
 	void field_get_vision(const unsigned int x, const unsigned int y);
-	std::pair <unsigned int, unsigned int> return_x_y(const unsigned int &id)const;
+	std::pair <unsigned int, unsigned int> return_x_y(const unsigned int& id)const;
 	void generate_fleet();
 	void do_action(Fleet& whom, const std::vector<unsigned int>& order, const int& round);
 	void get_damage(const int dmg, const unsigned int x, const unsigned int y);

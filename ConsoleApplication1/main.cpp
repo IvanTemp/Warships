@@ -99,8 +99,8 @@ int main(int argc, char* argv[]) {
 	}
 
 	//TURNS
-	std::vector <unsigned int> order = first_order(std::max(fleet_1.get_ship_vector().size(), fleet_2.get_ship_vector().size()));
-	//std::vector <unsigned int> order = { 1 };
+	//std::vector <unsigned int> order = first_order(std::max(fleet_1.get_ship_vector().size(), fleet_2.get_ship_vector().size()));
+	std::vector <unsigned int> order = { 3 };
 	std::cout << "Start game?\n\n";
 	system("pause");
 
@@ -123,14 +123,14 @@ int main(int argc, char* argv[]) {
 		system("pause");
 	}
 
-	int difficulty = 0, round = 0, first = rand() % 2;
+	int difficulty = 0, round = 0, first = rand() % 2, temple = 0;
 	if (battle_mode == "pvp" || battle_mode == "p") { //PVP
 		if constexpr (DEBUG_MODE) { std::cout << "First side: " << first << std::endl; }
 		else {
 			system("cls");
 		}
 		while (fleet_1.get_health() && fleet_2.get_health()) {
-			switch (first % 2) {
+			switch (temple % 2) {
 				case 0:
 					fleet_1.initialize_field_final();
 					std::cout << fleet_1.get_name() << " turn." << std::endl << std::endl;
@@ -145,7 +145,8 @@ int main(int argc, char* argv[]) {
 					break;
 			}
 			if (!fleet_1.get_health() || !fleet_2.get_health()) break;
-			switch (first + 1 % 2) {
+			temple++;
+			switch (temple % 2) {
 				case 0:
 					fleet_1.initialize_field_final();
 					std::cout << fleet_1.get_name() << " turn." << std::endl << std::endl;
@@ -160,6 +161,7 @@ int main(int argc, char* argv[]) {
 					break;
 				}
 			first++;
+			temple++;
 		}
 	}
 	else if (battle_mode == "pve" || battle_mode == "e") //PVE
@@ -184,7 +186,7 @@ int main(int argc, char* argv[]) {
 					system("cls");
 				}
 				while (fleet_1.get_health() && fleet_2.get_health()) {
-					switch (first % 2) {
+					switch (temple % 2) {
 					case 0:
 						fleet_1.initialize_field_final();
 						std::cout << fleet_1.get_name() << " turn." << std::endl << std::endl;
@@ -198,8 +200,9 @@ int main(int argc, char* argv[]) {
 						fleet_2.do_action(fleet_1, order, round);
 						break;
 					}
-					if (fleet_1.get_health() && fleet_2.get_health()) break;
-					switch (first + 1 % 2) {
+					if (!fleet_1.get_health() || !fleet_2.get_health()) break;
+					temple++;
+					switch (temple % 2) {
 					case 0:
 						fleet_1.initialize_field_final();
 						std::cout << fleet_1.get_name() << " turn." << std::endl << std::endl;
@@ -214,6 +217,7 @@ int main(int argc, char* argv[]) {
 						break;
 					}
 					first++;
+					temple++;
 				}
 			}
 			else {
