@@ -38,7 +38,7 @@ public:
 	void field_get_vision(const unsigned int x, const unsigned int y);
 	std::pair <unsigned int, unsigned int> return_x_y(const unsigned int& id)const;
 	void generate_fleet();
-	void do_action(Fleet& whom, const std::vector<unsigned int>& order, const int& round);
+	void do_action(Fleet& whom, const unsigned& current_ship_id);
 	void get_damage(const int dmg, const unsigned int x, const unsigned int y);
 	void small_move(const unsigned int index);
 	bool area_is_clear(const unsigned int x, const unsigned int y)const;

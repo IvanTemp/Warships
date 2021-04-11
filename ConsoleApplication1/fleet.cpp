@@ -851,19 +851,19 @@ void Fleet::generate_fleet()
 	}
 }
 
-void Fleet::do_action(Fleet& whom, const std::vector<unsigned int>& order, const int& round)
+void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 {
-	if constexpr (DEBUG_MODE) { std::cout << "[DEBUG INFO]order[round] = " << order[round] << std::endl; }
-	std::cout << "Current position: " << int_to_letter(return_x_y(order[round] + 2).first) << " " <<
-		return_x_y(order[round] + 2).second << std::endl;
-	std::cout << "Current type: " << ship_vector_[order[round]].get_type()->get_name() << std::endl;
+	if constexpr (DEBUG_MODE) { std::cout << "[DEBUG INFO]order[round] = " << current_ship_id << std::endl; }
+	std::cout << "Current position: " << int_to_letter(return_x_y(current_ship_id + 2).first) << " " <<
+		return_x_y(current_ship_id + 2).second << std::endl;
+	std::cout << "Current type: " << ship_vector_[current_ship_id].get_type()->get_name() << std::endl;
 	std::cout << "What do you want?\n\n";
 	std::string action;
 	while (true)
 	{
-		if (ship_vector_[order[round]].get_durability_sum())
+		if (ship_vector_[current_ship_id].get_durability_sum())
 		{
-			if (ship_vector_[order[round]].get_type()->get_name() == "Small")
+			if (ship_vector_[current_ship_id].get_type()->get_name() == "Small")
 			{
 				//single-deck abilities
 				std::cout << "-Shoot\n-Move\n" << std::endl;
@@ -872,12 +872,12 @@ void Fleet::do_action(Fleet& whom, const std::vector<unsigned int>& order, const
 				if (action == "shoot")
 				{
 					//Shot
-					whom.damage_by_index_player(ship_vector_[order[round]]);
+					whom.damage_by_index_player(ship_vector_[current_ship_id]);
 					break;
 				}
 				if (action == "move")
 				{
-					small_move(order[round]);
+					small_move(current_ship_id);
 					initialize_field_final();
 					break;
 				}
@@ -885,19 +885,19 @@ void Fleet::do_action(Fleet& whom, const std::vector<unsigned int>& order, const
 				system("pause");
 				continue;
 			}
-			if (ship_vector_[order[round]].get_type()->get_name() == "Tsundere")
+			if (ship_vector_[current_ship_id].get_type()->get_name() == "Tsundere")
 			{
 				std::cout << "-Shoot\n-Repair\n" << std::endl;
 				std::cin >> action;
 				ha_you_are_small_now(action);
 				if (action == "shoot")
 				{
-					whom.damage_by_index_player(ship_vector_[order[round]]);
+					whom.damage_by_index_player(ship_vector_[current_ship_id]);
 					break;
 				}
 				if (action == "repair")
 				{
-					ship_vector_[order[round]]++;
+					ship_vector_[current_ship_id]++;
 					std::cout << "Ship repaired!" << std::endl;
 					initialize_field_final();
 					break;
@@ -906,14 +906,14 @@ void Fleet::do_action(Fleet& whom, const std::vector<unsigned int>& order, const
 				system("pause");
 				continue;
 			}
-			if (ship_vector_[order[round]].get_type()->get_name() == "Heavy Cruiser")
+			if (ship_vector_[current_ship_id].get_type()->get_name() == "Heavy Cruiser")
 			{
 				//Shot
 				std::cout << "Point the center where to shoot (Write X and Y coordinates): ";
-				whom.heavy_cruiser_attack(ship_vector_[order[round]].get_type()->get_damage_value());
+				whom.heavy_cruiser_attack(ship_vector_[current_ship_id].get_type()->get_damage_value());
 				break;
 			}
-			if (ship_vector_[order[round]].get_type()->get_name() == "Aircraft Carrier")
+			if (ship_vector_[current_ship_id].get_type()->get_name() == "Aircraft Carrier")
 			{
 				ha_you_are_small_now(action);
 				std::cout << "Specify the type of attack (1x3 or 3x1): \n" << std::endl;
@@ -921,12 +921,12 @@ void Fleet::do_action(Fleet& whom, const std::vector<unsigned int>& order, const
 				ha_you_are_small_now(action);
 				if (action == "1x3" || action == "1")
 				{
-					whom.aircraft_attack(true, ship_vector_[order[round]].get_type()->get_damage_value());
+					whom.aircraft_attack(true, ship_vector_[current_ship_id].get_type()->get_damage_value());
 					break;
 				}
 				if (action == "3x1" || action == "3")
 				{
-					whom.aircraft_attack(false, ship_vector_[order[round]].get_type()->get_damage_value());
+					whom.aircraft_attack(false, ship_vector_[current_ship_id].get_type()->get_damage_value());
 					break;
 				}
 				std::cout << "Wrong command!" << std::endl;
