@@ -17,7 +17,7 @@ Fleet::Fleet(const std::string& nm, const std::vector<Ship>& v) : name_(nm), shi
 void Fleet::print(std::ostream& out) const
 {
 	out << "=====Fleet " << name_ << "=====" << std::endl;
-	if (ship_vector_.size())
+	if (!ship_vector_.empty())
 	{
 		for (const auto& x : ship_vector_)
 		{
@@ -129,54 +129,100 @@ Ship Fleet::get_ship_by_index(const unsigned int id)const {
 }
 
 void Fleet::damage_by_index_bot(const int dmg, const int difficulty) {
-	//srand(time(nullptr));
-	//int x = 0, y = 0;
-	////Gura AI(c). All rights not reserved.
-	//bool GwSUtPaLT = true; //Gura was still unable to plant a large tree
-	//unsigned int attempts = difficulty;
-	//while (GwSUtPaLT) {
-	//	x = rand() % width_height, y = rand() % width_height;
-	//	if (DEBUG_MODE) std::cout << "[DEBUG INFO]Trying to: x = " << x << "; y = " << y << std::endl;
+	srand(time(nullptr));
+	int x = 0, y = 0;
+	//Gura AI beta(not c). All rights not reserved.
+	bool GwSUtPaLT = true; //Gura was still unable to plant a large tree
+	unsigned int attempts = difficulty;
+	while (GwSUtPaLT) {
+		x = rand() % width_height, y = rand() % width_height;
+		if (DEBUG_MODE) std::cout << "[DEBUG INFO]Trying to: x = " << x << "; y = " << y << std::endl;
 
-	//	if (bots_memory.size()) { //I)Finishing off found ships
-	//		x = bots_memory[0].first, y = bots_memory[0].second;
-	//		bots_memory.erase(bots_memory.begin());
-	//		GwSUtPaLT = false;
-	//	}
-	//	else {
-	//		if (field.return_field_war_value(side_, x, y) == 0) { // II)Protection against shooting at empty cells
-	//			if (attempts) {
-	//				if (field.return_field_id_value(side_, x, y) < 2) {
-	//					if (difficulty < 2) {
-	//						attempts--;
-	//					}
-	//				}
-	//				else {
-	//					GwSUtPaLT = false;
-	//				}
-	//			}
-	//			else {
-	//				GwSUtPaLT = false;
-	//			}
-	//		}
-	//	}
-	//}
-	//if (DEBUG_MODE) std::cout << "[DEBUG INFO]Gura AI(c) decided that: x = " << x << "; y = " << y << std::endl;
+		if (bots_memory.empty()) {
+			if (field_war_[x][y] == 0) { // I)Protection against shooting at empty cells
+				if (attempts) {
+					if (field_id_[x][y].first < 2) {
+						if (difficulty < 2) {
+							attempts--;
+						}
+					}
+					else {
+						GwSUtPaLT = false;
+					}
+				}
+				else {
+					GwSUtPaLT = false;
+				}
+			}
+		}
+		else { //II)Finishing off found ships
+			x = bots_memory[0].first, y = bots_memory[0].second;
+			bots_memory.erase(bots_memory.begin());
+			GwSUtPaLT = false;
+		}
+	}
+	if (DEBUG_MODE) std::cout << "[DEBUG INFO]Gura AI(c) decided that: x = " << x << "; y = " << y << std::endl;
 
-	//const char strx = field.int_to_letter(x);
+	const char string_x = int_to_letter(x);
 
-	//if (field.return_field_id_value(side_, x, y) > 1) {
-	//	field.get_damage(side_, x, y, dmg, ship_vector_);
-	//}
-	//else {
-	//	std::cout << "The enemy missed! X = " << strx << "; Y = " << y << std::endl;
-	//}
-	//field.field_get_vision(x, y, side_);
+	if (field_id_[x][y].first > 1) {
+		get_damage(dmg, x, y);
+	}
+	else {
+		std::cout << "The enemy missed! X = " << string_x << "; Y = " << y << std::endl;
+	}
+	field_get_vision(x, y);
 }
 
-void Fleet::damage_by_index_bot_v2(unsigned int id, int dmg, const int difficulty) {
+void Fleet::gura_ai(const int id, int dmg, const int difficulty, Fleet& fleet_of_bot) {
+	//Gura AI(not copyrighted) Reborn
 	srand(time(nullptr));
-	std::string type = ship_vector_[id].get_type()->get_name();
+	const std::string type = ship_vector_[id].get_type()->get_name();
+
+	std::cout << "Bot's ship is " << type;
+	if (DEBUG_MODE) std::cout << "[GURA AI]Current position: " << return_x_y(id + 2).first << return_x_y(id + 2).second << std::endl;
+	
+	if (type == "Small")
+	{
+		const std::pair <int, int> coordinates = return_x_y(id + 2);
+		if (!fleet_of_bot.field_war_[coordinates.first][coordinates.second]) //Если корабль не обнаружен
+		{
+			damage_by_index_bot(ship_vector_[id].get_type()->get_damage_value(), difficulty);
+		} else //move
+		{
+			std::vector<std::pair<int, int>> possible_coordinates;
+			for (int y = coordinates.second - 1; y < coordinates.second + 1; y++)
+			{
+				for (int x = coordinates.first - 1; x < coordinates.first + 1; x++)
+				{
+					if (fleet_of_bot.field_id_[x][y].first < 1 && !fleet_of_bot.field_war_) //Если клетка пустая и неизведанная
+					{
+						possible_coordinates.emplace_back(std::make_pair(x, y));
+					}
+				}
+			}
+			small_move_bot(possible_coordinates[rand() % possible_coordinates.size() - 1], id);
+			fleet_of_bot.initialize_field_final();
+		}
+	} else if (type == "Tsundere")
+	{
+		if (ship_vector_[id].get_durability_sum() != ship_vector_[id].get_type()->get_default_durability() * ship_vector_[id].get_type()->get_size()) //Если хп неполное
+		{
+			damage_by_index_bot(ship_vector_[id].get_type()->get_damage_value(), difficulty);
+		} else //repair
+		{
+			ship_vector_[id]++;
+			std::cout << "Ship repaired!" << std::endl;
+			fleet_of_bot.initialize_field_final();
+		}
+	} else if (type == "Heavy Cruiser")
+	{
+		heavy_cruiser_attack_bot(ship_vector_[id].get_type()->get_damage_value(), difficulty);
+		initialize_field_final();
+	} else
+	{
+		//ДОДЕЛАТЬ
+	}
 }
 
 void Fleet::damage_by_index_player(Ship &sheep) { //sheep - who is attack
@@ -229,6 +275,61 @@ void Fleet::damage_by_index_player(Ship &sheep) { //sheep - who is attack
 		std::cout << "Miss! X = " << alf[x] << "; Y = " << y << std::endl;
 	}
 	field_get_vision(x, y);
+}
+
+void Fleet::heavy_cruiser_attack_bot(const int dmg, const int difficulty)
+{
+	bool GwSUtPaLT = true; //Gura was still unable to plant a large tree
+	int x = 0, y = 0, random_x = 0, random_y = 0, attempts = 0, counter = 0, max = 0;
+	
+	while (GwSUtPaLT && attempts < difficulty + 1)
+	{
+		if (bots_memory.empty()) {//I)Сканируем на количество неисследованных клеток, подбираем наиболее подходящий(если сложность hard)
+			counter = 0;
+			random_x = 1 + rand() % (width_height - 3), random_y = 1 + rand() % (width_height - 3);
+			for (int i = y - 1; i < y + 3; i++)
+			{
+				for (int j = x - 1; j < x + 3; j++)
+				{
+					if (!field_war_[j][i])
+					{
+						counter++;
+					}
+				}
+			}
+			if (max < counter) {
+				max = counter;
+				x = random_x;
+				y = random_y;
+			}
+			attempts++;
+		}
+		else { //II)Finishing off found ships
+			x = bots_memory[0].first, y = bots_memory[0].second;
+			bots_memory.erase(bots_memory.begin());
+			GwSUtPaLT = false;
+		}
+	}
+	
+	if (DEBUG_MODE) { std::cout << "[HEAVY CRUISER ATTACK BOT]Gura desided, that X = " << x << "; Y = " << y << std::endl; }
+	x--;
+	y--;
+	int temp_x = x, temp_y = y;
+	for (y = temp_y; y < temp_y + 3; y++)
+	{
+		for (x = temp_x; x < temp_x + 3; x++)
+		{
+			if (field_id_[x][y].first > 1)
+			{
+				get_damage(dmg, x, y);
+			}
+			else
+			{
+				std::cout << "Miss! X = " << int_to_letter(x) << "; Y = " << y << std::endl;
+			}
+			field_get_vision(x, y);
+		}
+	}
 }
 
 void Fleet::aircraft_attack(const bool angle, const int dmg)
@@ -319,7 +420,7 @@ void Fleet::aircraft_attack(const bool angle, const int dmg)
 	}
 }
 
-void Fleet::heavy_cruiser_attack(const int dmg)
+void Fleet::heavy_cruiser_attack_player(const int dmg)
 {
 	int x = 0, y = -1;
 	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -536,8 +637,9 @@ void Fleet::field_get_vision(const unsigned int x, const unsigned int y)
 	field_war_[x][y] = true;
 }
 
-std::pair<unsigned int, unsigned int> Fleet::return_x_y(const unsigned int &id)const
+std::pair<int, int> Fleet::return_x_y(const int& id)const
 {
+	//ID ON MAP!
 	unsigned int start_x = 0, start_y = 0;
 	for (unsigned int y = 0; y < width_height; y++)
 	{
@@ -854,8 +956,7 @@ void Fleet::generate_fleet()
 void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 {
 	if constexpr (DEBUG_MODE) { std::cout << "[DEBUG INFO]order[round] = " << current_ship_id << std::endl; }
-	std::cout << "Current position: " << int_to_letter(return_x_y(current_ship_id + 2).first) << " " <<
-		return_x_y(current_ship_id + 2).second << std::endl;
+	std::cout << "Current position: " << int_to_letter(return_x_y(current_ship_id + 2).first) << " " << return_x_y(current_ship_id + 2).second << std::endl;
 	std::cout << "Current type: " << ship_vector_[current_ship_id].get_type()->get_name() << std::endl;
 	std::cout << "What do you want?\n\n";
 	std::string action;
@@ -865,7 +966,6 @@ void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 		{
 			if (ship_vector_[current_ship_id].get_type()->get_name() == "Small")
 			{
-				//single-deck abilities
 				std::cout << "-Shoot\n-Move\n" << std::endl;
 				std::cin >> action;
 				ha_you_are_small_now(action);
@@ -877,7 +977,7 @@ void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 				}
 				if (action == "move")
 				{
-					small_move(current_ship_id);
+					small_move_player(current_ship_id);
 					initialize_field_final();
 					break;
 				}
@@ -910,7 +1010,7 @@ void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 			{
 				//Shot
 				std::cout << "Point the center where to shoot (Write X and Y coordinates): ";
-				whom.heavy_cruiser_attack(ship_vector_[current_ship_id].get_type()->get_damage_value());
+				whom.heavy_cruiser_attack_player(ship_vector_[current_ship_id].get_type()->get_damage_value());
 				break;
 			}
 			if (ship_vector_[current_ship_id].get_type()->get_name() == "Aircraft Carrier")
@@ -1004,7 +1104,7 @@ void Fleet::get_damage(const int dmg, const unsigned int x, const unsigned int y
 	}
 }
 
-void Fleet::small_move(const unsigned int index)
+void Fleet::small_move_player(const unsigned int index)
 {
 	int x = 0, y = -1;
 	std::cout << "Where are we going? (Write X and Y coordinates): ";
@@ -1017,7 +1117,7 @@ void Fleet::small_move(const unsigned int index)
 	{
 		std::cout << "Captain! Are you trying to steer the ship out of the battlefield?\n" << std::endl;
 		system("pause");
-		small_move(index);
+		small_move_player(index);
 		return;
 	}
 	strx = std::toupper(strx);
@@ -1032,22 +1132,20 @@ void Fleet::small_move(const unsigned int index)
 		{
 			std::cout << "Captain! Are you trying to steer the ship out of the battlefield?\n" << std::endl;
 			system("pause");
-			small_move(index);
+			small_move_player(index);
 			return;
 		}
 	}
 
-	std::pair<unsigned int, unsigned int> start = return_x_y(index + 2);
+	const std::pair<unsigned int, unsigned int> start = return_x_y(index + 2);
 
 	if constexpr (DEBUG_MODE)
 	{
 		std::cout << "[Move small]Start X = " << start.first << "; Start Y = " << start.second << std::endl;
 		std::cout << "[Move small]X = " << x << "; Y = " << y << std::endl;
-		std::cout << "[Move small]shift: " << start.first - x << " " << start.second - y << " " << std::endl;
 	}
 
-	if ((start.first - x <= 1 || start.first - x >= UINT_MAX - 1) && (start.second - y <= 1 || start.second - y >=
-		UINT_MAX - 1))
+	if ((start.first - x <= 1 || start.first - x >= UINT_MAX - 1) && (start.second - y <= 1 || start.second - y >= UINT_MAX - 1))
 	{
 		field_id_[start.first][start.second].first = 0;
 		if (area_is_clear(x, y))
@@ -1135,7 +1233,7 @@ void Fleet::small_move(const unsigned int index)
 			field_id_[start.first][start.second].first = index + 2;
 			std::cout << "Captain! This square is already taken!\n" << std::endl;
 			system("pause");
-			small_move(index);
+			small_move_player(index);
 			return;
 		}
 	}
@@ -1145,10 +1243,98 @@ void Fleet::small_move(const unsigned int index)
 		std::cout << "Captain! This is not a <<Meteor>> for you, a single-decker can only move one square.\n" <<
 			std::endl;
 		system("pause");
-		small_move(index);
+		small_move_player(index);
 		return;
 	}
 	std::cout << "Complete!\n\n";
+}
+
+void Fleet::small_move_bot(const std::pair<int, int> coordinates, const int index)
+{
+	const std::pair<unsigned int, unsigned int> start = return_x_y(index + 2);
+
+	if constexpr (DEBUG_MODE)
+	{
+		std::cout << "[Move small]Start on: X = " << start.first << "; Start Y = " << start.second << std::endl;
+		std::cout << "[Move small]Move on: X = " << coordinates.first << "; Y = " << coordinates.second << std::endl;
+	}
+
+	field_id_[start.first][start.second].first = 0;
+	if (start.second)
+	{
+		if (start.first)
+		{
+			if (area_is_clear(start.first - 1, start.second - 1))
+				field_id_[start.first - 1][start.second - 1].first = 0;
+		}
+		if (area_is_clear(start.first, start.second - 1))
+			field_id_[start.first][start.second - 1].first = 0;
+		if (start.first < width_height)
+		{
+			if (area_is_clear(start.first + 1, start.second - 1))
+				field_id_[start.first + 1][start.second - 1].first = 0;
+		}
+	}
+	if (start.first)
+	{
+	if (area_is_clear(start.first - 1, start.second))
+			field_id_[start.first - 1][start.second].first = 0;
+	}
+	if (start.first < width_height - 1)
+	{
+		if (area_is_clear(start.first + 1, start.second))
+			field_id_[start.first + 1][start.second].
+			first = 0;
+	}
+	if (start.second < width_height - 1)
+	{
+		if (start.first)
+		{
+			if (area_is_clear(start.first - 1, start.second + 1))
+				field_id_[start.first - 1][start.second + 1].first = 0;
+		}
+		if (area_is_clear(start.first, start.second + 1))
+			field_id_[start.first][start.second + 1].
+			first = 0;
+		if (start.first < width_height - 1)
+		{
+			if (area_is_clear(start.first + 1, start.second + 1))
+				field_id_[start.first + 1][start.second + 1].first = 0;
+		}
+	}
+	if (coordinates.second)
+	{
+		if (coordinates.first)
+		{
+			field_id_[coordinates.first - 1][coordinates.second - 1].first = 1;
+		}
+		field_id_[coordinates.first][coordinates.second - 1].first = 1;
+		if (coordinates.first < width_height)
+		{
+			field_id_[coordinates.first + 1][coordinates.second - 1].first = 1;
+		}
+	}
+	if (coordinates.first)
+	{
+		field_id_[coordinates.first - 1][coordinates.second].first = 1;
+	}
+	if (coordinates.first < width_height - 1)
+	{
+		field_id_[coordinates.first + 1][coordinates.second].first = 1;
+	}
+	if (coordinates.second < width_height - 1)
+	{
+		if (coordinates.first)
+		{
+			field_id_[coordinates.first - 1][coordinates.second + 1].first = 1;
+		}
+		field_id_[coordinates.first][coordinates.second + 1].first = 1;
+		if (coordinates.first < width_height - 1)
+		{
+			field_id_[coordinates.first + 1][coordinates.second + 1].first = 1;
+		}
+	}
+	field_id_[coordinates.first][coordinates.second].first = index + 2;
 }
 
 bool Fleet::area_is_clear(const unsigned int x, const unsigned int y)const

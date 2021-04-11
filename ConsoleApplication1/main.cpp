@@ -55,7 +55,7 @@ int main(int argc, char* argv[]) {
 		std::cout << fleet_2.get_name() << " is loaded from file!" << std::endl << std::endl;
 		fin.close();
 		//Check fleet_2 for empty
-		if (!fleet_2.get_ship_vector().size()) {
+		if (fleet_2.get_ship_vector().empty()) {
 			std::cout << "Warning! Connect the file with the second fleet!" << std::endl;
 			return -2;
 		}

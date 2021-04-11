@@ -145,7 +145,6 @@
     <ClCompile Include="AircraftCarrier.cpp" />
     <ClCompile Include="Fleet.cpp" />
     <ClCompile Include="functions.cpp" />
-    <ClCompile Include="OLDgenerator.cpp" />
     <ClCompile Include="HeavyCruiser.cpp" />
     <ClCompile Include="Ship.cpp" />
     <ClCompile Include="main.cpp" />
@@ -157,7 +156,6 @@
     <ClInclude Include="AircraftCarrier.h" />
     <ClInclude Include="Fleet.h" />
     <ClInclude Include="functions.h" />
-    <ClInclude Include="OLDGenerator.h" />
     <ClInclude Include="HeavyCruiser.h" />
     <ClInclude Include="Ship.h" />
     <ClInclude Include="Small.h" />
