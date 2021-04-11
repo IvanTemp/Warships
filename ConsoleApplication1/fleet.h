@@ -41,8 +41,8 @@ public:
 	void do_action(Fleet& whose, Fleet& whom, const std::vector<unsigned int>& order, const int& round);
 	void get_damage(const unsigned int index, const int dmg, const unsigned int x, const unsigned int y); 
 	void small_move(const unsigned int index);
-	bool area_is_clear(const unsigned int x, const unsigned int y);
-	void klee(const std::vector <std::pair<unsigned int, unsigned int>> coords)const;
+	bool area_is_clear(const unsigned int x, const unsigned int y)const;
+	void klee(const std::vector <std::pair<unsigned int, unsigned int>> coords);
 
 private:
 	static int count_;

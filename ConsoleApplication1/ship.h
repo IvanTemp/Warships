@@ -37,7 +37,6 @@ public:
 	Ship& operator= (const Ship& right);
 	Ship operator++ (int); //repair function
 	Ship operator-- (int); //repair function
-	void klee(const std::vector<std::pair<unsigned int, unsigned int>> coords)const;
 	static int get_count() { return count_; }
 
 private:

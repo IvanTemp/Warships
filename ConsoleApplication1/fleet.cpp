@@ -863,8 +863,8 @@ void Fleet::do_action(Fleet& whose, Fleet& whom, const std::vector<unsigned int>
 				}
 				if (action == "move")
 				{
-					small_move(order[round], whose.get_side());
-					initialize_field_final(whose);
+					small_move(order[round]);
+					initialize_field_final();
 					break;
 				}
 				std::cout << "Wrong command!" << std::endl;
@@ -885,7 +885,7 @@ void Fleet::do_action(Fleet& whose, Fleet& whom, const std::vector<unsigned int>
 				{
 					whose.get_ship_by_index(order[round])++;
 					std::cout << "Ship repaired!" << std::endl;
-					initialize_field_final(whose);
+					initialize_field_final();
 					break;
 				}
 				std::cout << "Wrong command!" << std::endl;
@@ -929,6 +929,42 @@ void Fleet::do_action(Fleet& whose, Fleet& whom, const std::vector<unsigned int>
 	if constexpr (!DEBUG_MODE) { system("cls"); }
 }
 
+void Fleet::klee(const std::vector<std::pair<unsigned int, unsigned int>> coords)
+{
+	if (DEBUG_MODE) {
+		for (int i = 0; i < coords.size(); i++) {
+			std::cout << "[DEBUG INFO]" << i << ": X = " << coords[i].first << "; Y = " << coords[i].second << std::endl;
+		}
+		std::cout << std::endl;
+	}
+	for (auto& i : coords) {
+		if (i.first) {
+			if (i.second) {
+				field_get_vision(i.first - 1, i.second - 1);
+			}
+			field_get_vision(i.first - 1, i.second);
+			if (i.second < width_height - 1) {
+				field_get_vision(i.first - 1, i.second + 1);
+			}
+		}
+		if (i.second) {
+			field_get_vision(i.first, i.second - 1);
+		}
+		if (i.second < width_height - 1) {
+			field_get_vision(i.first, i.second + 1);
+		}
+		if (i.first < width_height - 1) {
+			if (i.second) {
+				field_get_vision(i.first + 1, i.second - 1);
+			}
+			field_get_vision(i.first + 1, i.second);
+			if (i.second < width_height - 1) {
+				field_get_vision(i.first + 1, i.second + 1);
+			}
+		}
+	}
+}
+
 void Fleet::get_damage(const unsigned int index, const int dmg, const unsigned int x, const unsigned int y)
 {
 	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -950,7 +986,7 @@ void Fleet::get_damage(const unsigned int index, const int dmg, const unsigned i
 				}
 			}
 		}
-		ship_vector_[index].klee(coords);
+		klee(coords);
 	}
 }
 
@@ -1006,48 +1042,42 @@ void Fleet::small_move(const unsigned int index)
 			{
 				if (start.first)
 				{
-					if (area_is_clear(side, start.first - 1, start.second - 1))
-						field_id[side][start.first - 1][start.
-						second - 1].first = 0;
+					if (area_is_clear(start.first - 1, start.second - 1))
+						field_id_[start.first - 1][start.second - 1].first = 0;
 				}
-				if (area_is_clear(side, start.first, start.second - 1))
-					field_id[side][start.first][start.second - 1].
-					first = 0;
+				if (area_is_clear(start.first, start.second - 1))
+					field_id_[start.first][start.second - 1].first = 0;
 				if (start.first < width_height)
 				{
-					if (area_is_clear(side, start.first + 1, start.second - 1))
-						field_id[side][start.first + 1][start.
-						second - 1].first = 0;
+					if (area_is_clear(start.first + 1, start.second - 1))
+						field_id_[start.first + 1][start.second - 1].first = 0;
 				}
 			}
 			if (start.first)
 			{
-				if (area_is_clear(side, start.first - 1, start.second))
-					field_id[side][start.first - 1][start.second].
-					first = 0;
+				if (area_is_clear(start.first - 1, start.second))
+					field_id_[start.first - 1][start.second].first = 0;
 			}
 			if (start.first < width_height - 1)
 			{
-				if (area_is_clear(side, start.first + 1, start.second))
-					field_id[side][start.first + 1][start.second].
+				if (area_is_clear(start.first + 1, start.second))
+					field_id_[start.first + 1][start.second].
 					first = 0;
 			}
 			if (start.second < width_height - 1)
 			{
 				if (start.first)
 				{
-					if (area_is_clear(side, start.first - 1, start.second + 1))
-						field_id[side][start.first - 1][start.
-						second + 1].first = 0;
+					if (area_is_clear(start.first - 1, start.second + 1))
+						field_id_[start.first - 1][start.second + 1].first = 0;
 				}
-				if (area_is_clear(side, start.first, start.second + 1))
-					field_id[side][start.first][start.second + 1].
+				if (area_is_clear(start.first, start.second + 1))
+					field_id_[start.first][start.second + 1].
 					first = 0;
 				if (start.first < width_height - 1)
 				{
-					if (area_is_clear(side, start.first + 1, start.second + 1))
-						field_id[side][start.first + 1][start.
-						second + 1].first = 0;
+					if (area_is_clear(start.first + 1, start.second + 1))
+						field_id_[start.first + 1][start.second + 1].first = 0;
 				}
 			}
 
@@ -1055,40 +1085,40 @@ void Fleet::small_move(const unsigned int index)
 			{
 				if (x)
 				{
-					field_id[side][x - 1][y - 1].first = 1;
+					field_id_[x - 1][y - 1].first = 1;
 				}
-				field_id[side][x][y - 1].first = 1;
+				field_id_[x][y - 1].first = 1;
 				if (x < width_height)
 				{
-					field_id[side][x + 1][y - 1].first = 1;
+					field_id_[x + 1][y - 1].first = 1;
 				}
 			}
 			if (x)
 			{
-				field_id[side][x - 1][y].first = 1;
+				field_id_[x - 1][y].first = 1;
 			}
 			if (x < width_height - 1)
 			{
-				field_id[side][x + 1][y].first = 1;
+				field_id_[x + 1][y].first = 1;
 			}
 			if (y < width_height - 1)
 			{
 				if (x)
 				{
-					field_id[side][x - 1][y + 1].first = 1;
+					field_id_[x - 1][y + 1].first = 1;
 				}
-				field_id[side][x][y + 1].first = 1;
+				field_id_[x][y + 1].first = 1;
 				if (x < width_height - 1)
 				{
-					field_id[side][x + 1][y + 1].first = 1;
+					field_id_[x + 1][y + 1].first = 1;
 				}
 			}
 
-			field_id[side][x][y].first = index + 2;
+			field_id_[x][y].first = index + 2;
 		}
 		else
 		{
-			field_id[side][start.first][start.second].first = index + 2;
+			field_id_[start.first][start.second].first = index + 2;
 			std::cout << "Captain! This square is already taken!\n" << std::endl;
 			system("pause");
 			small_move(index);
@@ -1107,7 +1137,7 @@ void Fleet::small_move(const unsigned int index)
 	std::cout << "Complete!\n\n";
 }
 
-bool Fleet::area_is_clear(const unsigned int x, const unsigned int y) 
+bool Fleet::area_is_clear(const unsigned int x, const unsigned int y)const
 {
 	if (y)
 	{
@@ -1142,40 +1172,4 @@ bool Fleet::area_is_clear(const unsigned int x, const unsigned int y)
 		}
 	}
 	return true;
-}
-
-void Fleet::klee(const std::vector <std::pair<unsigned int, unsigned int>> coords)const {
-	extern void field_get_vision(const unsigned int x, const unsigned int y, const bool side);
-	if (DEBUG_MODE) {
-		for (int i = 0; i < coords.size(); i++) {
-			std::cout << "[DEBUG INFO]" << i << ": X = " << coords[i].first << "; Y = " << coords[i].second << std::endl;
-		}
-		std::cout << std::endl;
-	}
-	for (int i = 0; i < coords.size(); i++) {
-		if (coords[i].first) {
-			if (coords[i].second) {
-				field_get_vision(coords[i].first - 1, coords[i].second - 1);
-			}
-			field_get_vision(coords[i].first - 1, coords[i].second);
-			if (coords[i].second < width_height - 1) {
-				field_get_vision(coords[i].first - 1, coords[i].second + 1);
-			}
-		}
-		if (coords[i].second) {
-			field_get_vision(coords[i].first, coords[i].second - 1);
-		}
-		if (coords[i].second < width_height - 1) {
-			field_get_vision(coords[i].first, coords[i].second + 1);
-		}
-		if (coords[i].first < width_height - 1) {
-			if (coords[i].second) {
-				field_get_vision(coords[i].first + 1, coords[i].second - 1);
-			}
-			field_get_vision(coords[i].first + 1, coords[i].second);
-			if (coords[i].second < width_height - 1) {
-				field_get_vision(coords[i].first + 1, coords[i].second + 1);
-			}
-		}
-	}
 }
