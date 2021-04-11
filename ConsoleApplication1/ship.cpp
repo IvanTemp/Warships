@@ -167,9 +167,13 @@ Ship Ship::operator++(int)
     Ship copyThis(*this);
     for (int i = 0; i < durability_.size(); i++)
     {
-        if (durability_[i] == Tsundere_Durability)
+        if (durability_[i] < Tsundere_Durability)
         {
             durability_[i]++;
+            if (durability_[i] < Tsundere_Durability)
+            {
+                durability_[i]++;
+            }
         }
     }
     return copyThis;
@@ -180,7 +184,10 @@ Ship Ship::operator--(int)
     Ship copyThis(*this);
     for (int i = 0; i < durability_.size(); i++)
     {
-        durability_[i]--;
+        if (durability_[i] != 0)
+        {
+            durability_[i]--;
+        }
     }
     return copyThis;
 }

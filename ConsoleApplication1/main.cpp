@@ -98,7 +98,9 @@ int main(int argc, char* argv[]) {
 		ironman = false;
 	}
 
+	//TURNS
 	std::vector <unsigned int> order = first_order(std::max(fleet_1.get_ship_vector().size(), fleet_2.get_ship_vector().size()));
+	//std::vector <unsigned int> order = { 1 };
 	std::cout << "Start game?\n\n";
 	system("pause");
 
@@ -142,7 +144,7 @@ int main(int argc, char* argv[]) {
 					fleet_2.do_action(fleet_1, order, round);
 					break;
 			}
-			if (fleet_1.get_health() && fleet_2.get_health()) break;
+			if (!fleet_1.get_health() || !fleet_2.get_health()) break;
 			switch (first + 1 % 2) {
 				case 0:
 					fleet_1.initialize_field_final();

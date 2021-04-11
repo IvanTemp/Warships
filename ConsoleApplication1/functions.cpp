@@ -57,7 +57,7 @@ void ha_you_are_small_now(std::string& str)
 {
 	for (int i = 0; i < str.length(); i++)
 	{
-		str[i] = std::toupper(str[i]);
+		str[i] = std::tolower(str[i]);
 	}
 }
 

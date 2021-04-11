@@ -36,7 +36,7 @@ public:
 	bool operator != (const Ship& right)const;
 	Ship& operator= (const Ship& right);
 	Ship operator++ (int); //repair function
-	Ship operator-- (int); //repair function
+	Ship operator-- (int); //anti repair function
 	static int get_count() { return count_; }
 
 private:
