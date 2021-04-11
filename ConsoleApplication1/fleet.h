@@ -25,13 +25,13 @@ public:
 	void aircraft_attack(const bool angle, const int dmg);
 	void heavy_cruiser_attack(const int dmg);
 	void nuclear_bomb();
-	Fleet& operator +=(const Ship& ship); //repair
-	Fleet& operator -=(const Ship& ship); //anti repair
+	Fleet& operator +=(const Ship& ship); //add ship
+	Fleet& operator -=(const Ship& ship); //del ship
 	std::string return_field_final(const unsigned& x, const unsigned& y)const;
 	unsigned int return_field_id(const unsigned& x, const unsigned& y)const;
 	unsigned int return_field_index(const unsigned& x, const unsigned& y)const;
 	bool return_field_war(const unsigned& x, const unsigned& y)const;
-	void initialize_field_final(const Fleet& fleet);
+	void initialize_field_final();
 	void output_field_final(const Fleet& fleet2)const;
 	void output_field_id_indexes()const;
 	void output_field_war()const;
@@ -39,7 +39,10 @@ public:
 	std::pair <unsigned int, unsigned int> return_x_y(const unsigned int &id)const;
 	void generate_fleet();
 	void do_action(Fleet& whose, Fleet& whom, const std::vector<unsigned int>& order, const int& round);
-	void Fleet::get_damage(const unsigned int index, const int dmg, const unsigned int x, const unsigned int y);
+	void get_damage(const unsigned int index, const int dmg, const unsigned int x, const unsigned int y); 
+	void small_move(const unsigned int index);
+	bool area_is_clear(const unsigned int x, const unsigned int y);
+	void klee(const std::vector <std::pair<unsigned int, unsigned int>> coords)const;
 
 private:
 	static int count_;

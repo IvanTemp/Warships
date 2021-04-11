@@ -143,7 +143,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AircraftCarrier.cpp" />
-    <ClCompile Include="Field.cpp" />
     <ClCompile Include="Fleet.cpp" />
     <ClCompile Include="functions.cpp" />
     <ClCompile Include="OLDgenerator.cpp" />
@@ -156,7 +155,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AircraftCarrier.h" />
-    <ClInclude Include="Field.h" />
     <ClInclude Include="Fleet.h" />
     <ClInclude Include="functions.h" />
     <ClInclude Include="OLDGenerator.h" />

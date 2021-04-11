@@ -175,46 +175,14 @@ Ship Ship::operator++(int)
     return copyThis;
 }
 
-void Ship::klee(const std::vector <std::pair<unsigned int, unsigned int>> coords)const {
-    extern void field_get_vision(const unsigned int x, const unsigned int y, const bool side);
-    if (DEBUG_MODE) {
-        for (int i = 0; i < coords.size(); i++) {
-            std::cout << "[DEBUG INFO]" << i << ": X = " << coords[i].first << "; Y = " << coords[i].second << std::endl;
-        }
-        std::cout << std::endl;
+Ship Ship::operator--(int)
+{
+    Ship copyThis(*this);
+    for (int i = 0; i < durability_.size(); i++)
+    {
+        durability_[i]--;
     }
-    for (int i = 0; i < coords.size(); i++) {
-        if (coords[i].first) {
-            if (coords[i].second) {
-                field_get_vision(coords[i].first - 1, coords[i].second - 1, side);
-            }
-            field_get_vision(coords[i].first - 1, coords[i].second, side);
-            if (coords[i].second < width_height - 1) {
-                field_get_vision(coords[i].first - 1, coords[i].second + 1, side);
-            }
-        }
-        if (coords[i].second) {
-            field_get_vision(coords[i].first, coords[i].second - 1, side);
-        }
-        if (coords[i].second < width_height - 1) {
-            field_get_vision(coords[i].first, coords[i].second + 1, side);
-        }
-        if (coords[i].first < width_height - 1) {
-            if (coords[i].second) {
-                field_get_vision(coords[i].first + 1, coords[i].second - 1, side);
-            }
-            field_get_vision(coords[i].first + 1, coords[i].second, side);
-            if (coords[i].second < width_height - 1) {
-                field_get_vision(coords[i].first + 1, coords[i].second + 1, side);
-            }
-        }
-    }
-}
-
-void Ship::nuclear_bomb() {
-    for (int i = 0; i < durability_.size(); i++) {
-        durability_[i] = 0;
-    }
+    return copyThis;
 }
 
 std::istream& operator>>(std::istream& in, Ship& shp)
