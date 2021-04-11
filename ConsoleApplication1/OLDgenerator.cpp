@@ -7,10 +7,10 @@
 #include "Generator.h"
 #include "Fleet.h"
 
-std::string field_final[2][width_height][width_height] = {"#", "#", "#"}; //The field seen by the player and the AI
-std::pair<unsigned int, unsigned int> field_id[2][width_height][width_height] = {(std::make_pair(0, 0))};
+std::string field_final_[2][width_height][width_height] = {"#", "#", "#"}; //The field seen by the player and the AI
+std::pair<unsigned int, unsigned int> field_id_[2][width_height][width_height] = {(std::make_pair(0, 0))};
 //The field with id_(.first) and indexes(.second)
-bool field_war[2][width_height][width_height] = {(false), (false), (false)}; //The field with fog of war
+bool field_war_[2][width_height][width_height] = {(false), (false), (false)}; //The field with fog of war
 
 void output_achievement_info(const std::vector<std::pair<std::string, bool>>& achievements)
 {
@@ -155,19 +155,19 @@ void do_action(Fleet& whose, Fleet& whom, const std::vector<unsigned int>& order
 	if constexpr (!DEBUG_MODE) { system("cls"); }
 }
 
-unsigned int return_field_id_value(const bool& side, const int& x, const int& y)
+unsigned int return_field_id(const bool& side, const int& x, const int& y)
 {
-	return field_id[side][x][y].first;
+	return field_id_[side][x][y].first;
 }
 
-unsigned int return_field_index_value(const bool& side, const int& x, const int& y)
+unsigned int return_field_index(const bool& side, const int& x, const int& y)
 {
-	return field_id[side][x][y].second;
+	return field_id_[side][x][y].second;
 }
 
-bool return_field_war_value(const bool& side, const int& x, const int& y)
+bool return_field_war(const bool& side, const int& x, const int& y)
 {
-	return field_war[side][x][y];
+	return field_war_[side][x][y];
 }
 
 void ha_you_are_small_now(std::string& str)
@@ -190,19 +190,19 @@ void initialize_field_final(const Fleet& fleet)
 	{
 		for (unsigned int x = 0; x < width_height; x++)
 		{
-			if (field_id[fleet.get_side()][x][y].first > 1)
+			if (field_id_[fleet.get_side()][x][y].first > 1)
 			{
-				field_final[fleet.get_side()][x][y] = std::to_string(
-					fleet.get_ship_by_index(field_id[fleet.get_side()][x][y].first - 2).get_durability()[field_id[fleet.
+				field_final_[fleet.get_side()][x][y] = std::to_string(
+					fleet.get_ship_by_index(field_id_[fleet.get_side()][x][y].first - 2).get_durability()[field_id_[fleet.
 						get_side()][x][y].second]);
 			}
-			else if (field_war[fleet.get_side()][x][y])
+			else if (field_war_[fleet.get_side()][x][y])
 			{
-				field_final[fleet.get_side()][x][y] = "X";
+				field_final_[fleet.get_side()][x][y] = "X";
 			}
 			else
 			{
-				field_final[fleet.get_side()][x][y] = " ";
+				field_final_[fleet.get_side()][x][y] = " ";
 			}
 		}
 	}
@@ -229,14 +229,14 @@ void output_field_final(const bool& side, const std::string& name1, const std::s
 		std::cout << "\t" << y << "||";
 		for (unsigned int x = 0; x < width_height; x++)
 		{
-			std::cout << field_final[side][x][y] << "|";
+			std::cout << field_final_[side][x][y] << "|";
 		}
 		std::cout << "\t\t" << y << "||";
 		for (unsigned int x = 0; x < width_height; x++)
 		{
-			if (field_war[!side][x][y])
+			if (field_war_[!side][x][y])
 			{
-				if (field_id[!side][x][y].first > 1) { std::cout << field_final[!side][x][y] << "|"; }
+				if (field_id_[!side][x][y].first > 1) { std::cout << field_final_[!side][x][y] << "|"; }
 				else { std::cout << " |"; }
 			}
 			else
@@ -258,7 +258,7 @@ void output_field_id_indexes(const bool side)
 		std::cout << "         |";
 		for (unsigned int x = 0; x < width_height; x++)
 		{
-			std::cout << field_id[side][x][y].first << "|";
+			std::cout << field_id_[side][x][y].first << "|";
 		}
 		std::cout << std::endl;
 	}
@@ -269,7 +269,7 @@ void output_field_id_indexes(const bool side)
 		std::cout << "         |";
 		for (unsigned int x = 0; x < width_height; x++)
 		{
-			std::cout << field_id[side][x][y].second << "|";
+			std::cout << field_id_[side][x][y].second << "|";
 		}
 		std::cout << std::endl;
 	}
@@ -285,7 +285,7 @@ void output_field_war(const bool side)
 		std::cout << "         |";
 		for (unsigned int x = 0; x < width_height; x++)
 		{
-			std::cout << field_war[side][x][y] << "|";
+			std::cout << field_war_[side][x][y] << "|";
 		}
 		std::cout << std::endl;
 	}
@@ -294,7 +294,7 @@ void output_field_war(const bool side)
 
 void field_get_vision(const unsigned int x, const unsigned int y, const bool side)
 {
-	field_war[side][x][y] = true;
+	field_war_[side][x][y] = true;
 }
 
 void generate_ship(const Ship& sheep, const bool side)
@@ -385,7 +385,7 @@ void generate_ship(const Ship& sheep, const bool side)
 				for (unsigned int h = 0; h < length; h++)
 				{
 					//check for the ability to place the ship part 2
-					if (field_id[side][x][y + h * ot].first > 0)
+					if (field_id_[side][x][y + h * ot].first > 0)
 					{
 						breaks_in = false;
 					}
@@ -399,22 +399,22 @@ void generate_ship(const Ship& sheep, const bool side)
 				{
 					if (left_is_clear)
 					{
-						if (field_id[side][x - 1][y - 1 * ot].first == 0)
+						if (field_id_[side][x - 1][y - 1 * ot].first == 0)
 						{
-							field_id[side][x - 1][y - 1 * ot].first = 1;
+							field_id_[side][x - 1][y - 1 * ot].first = 1;
 						}
 					}
 
-					if (field_id[side][x][y - 1 * ot].first == 0)
+					if (field_id_[side][x][y - 1 * ot].first == 0)
 					{
-						field_id[side][x][y - 1 * ot].first = 1;
+						field_id_[side][x][y - 1 * ot].first = 1;
 					}
 
 					if (right_is_clear)
 					{
-						if (field_id[side][x + 1][y - 1 * ot].first == 0)
+						if (field_id_[side][x + 1][y - 1 * ot].first == 0)
 						{
-							field_id[side][x + 1][y - 1 * ot].first = 1;
+							field_id_[side][x + 1][y - 1 * ot].first = 1;
 						}
 					}
 				}
@@ -423,20 +423,20 @@ void generate_ship(const Ship& sheep, const bool side)
 				{
 					if (left_is_clear)
 					{
-						if (field_id[side][x - 1][y + counter * ot].first == 0)
+						if (field_id_[side][x - 1][y + counter * ot].first == 0)
 						{
-							field_id[side][x - 1][y + counter * ot].first = 1;
+							field_id_[side][x - 1][y + counter * ot].first = 1;
 						}
 					}
 
-					field_id[side][x][y + counter * ot].first = id;
-					field_id[side][x][y + counter * ot].second = counter;
+					field_id_[side][x][y + counter * ot].first = id;
+					field_id_[side][x][y + counter * ot].second = counter;
 
 					if (right_is_clear)
 					{
-						if (field_id[side][x + 1][y + counter * ot].first == 0)
+						if (field_id_[side][x + 1][y + counter * ot].first == 0)
 						{
-							field_id[side][x + 1][y + counter * ot].first = 1;
+							field_id_[side][x + 1][y + counter * ot].first = 1;
 						}
 					}
 				}
@@ -446,22 +446,22 @@ void generate_ship(const Ship& sheep, const bool side)
 				{
 					if (left_is_clear)
 					{
-						if (field_id[side][x - 1][y + length * ot].first == 0)
+						if (field_id_[side][x - 1][y + length * ot].first == 0)
 						{
-							field_id[side][x - 1][y + length * ot].first = 1;
+							field_id_[side][x - 1][y + length * ot].first = 1;
 						}
 					}
 
-					if (field_id[side][x][y + length * ot].first == 0)
+					if (field_id_[side][x][y + length * ot].first == 0)
 					{
-						field_id[side][x][y + length * ot].first = 1;
+						field_id_[side][x][y + length * ot].first = 1;
 					}
 
 					if (right_is_clear)
 					{
-						if (field_id[side][x + 1][y + length * ot].first == 0)
+						if (field_id_[side][x + 1][y + length * ot].first == 0)
 						{
-							field_id[side][x + 1][y + length * ot].first = 1;
+							field_id_[side][x + 1][y + length * ot].first = 1;
 						}
 					}
 				}
@@ -499,7 +499,7 @@ void generate_ship(const Ship& sheep, const bool side)
 				for (unsigned int h = 0; h < length; h++)
 				{
 					//check for the ability to place the ship part 2
-					if (field_id[side][x + h * ot][y].first > 0)
+					if (field_id_[side][x + h * ot][y].first > 0)
 					{
 						breaks_in = false;
 					}
@@ -513,22 +513,22 @@ void generate_ship(const Ship& sheep, const bool side)
 				{
 					if (down_is_clear)
 					{
-						if (field_id[side][x - 1 * ot][y + 1].first == 0)
+						if (field_id_[side][x - 1 * ot][y + 1].first == 0)
 						{
-							field_id[side][x - 1 * ot][y + 1].first = 1;
+							field_id_[side][x - 1 * ot][y + 1].first = 1;
 						}
 					}
 
-					if (field_id[side][x - 1 * ot][y].first == 0)
+					if (field_id_[side][x - 1 * ot][y].first == 0)
 					{
-						field_id[side][x - 1 * ot][y].first = 1;
+						field_id_[side][x - 1 * ot][y].first = 1;
 					}
 
 					if (up_is_clear)
 					{
-						if (field_id[side][x - 1 * ot][y - 1].first == 0)
+						if (field_id_[side][x - 1 * ot][y - 1].first == 0)
 						{
-							field_id[side][x - 1 * ot][y - 1].first = 1;
+							field_id_[side][x - 1 * ot][y - 1].first = 1;
 						}
 					}
 				}
@@ -536,20 +536,20 @@ void generate_ship(const Ship& sheep, const bool side)
 				{
 					if (up_is_clear)
 					{
-						if (field_id[side][x + counter * ot][y - 1].first == 0)
+						if (field_id_[side][x + counter * ot][y - 1].first == 0)
 						{
-							field_id[side][x + counter * ot][y - 1].first = 1;
+							field_id_[side][x + counter * ot][y - 1].first = 1;
 						}
 					}
 
-					field_id[side][x + counter * ot][y].first = id;
-					field_id[side][x + counter * ot][y].second = counter;
+					field_id_[side][x + counter * ot][y].first = id;
+					field_id_[side][x + counter * ot][y].second = counter;
 
 					if (down_is_clear)
 					{
-						if (field_id[side][x + counter * ot][y + 1].first == 0)
+						if (field_id_[side][x + counter * ot][y + 1].first == 0)
 						{
-							field_id[side][x + counter * ot][y + 1].first = 1;
+							field_id_[side][x + counter * ot][y + 1].first = 1;
 						}
 					}
 				}
@@ -559,22 +559,22 @@ void generate_ship(const Ship& sheep, const bool side)
 				{
 					if (down_is_clear)
 					{
-						if (field_id[side][x + length * ot][y + 1].first == 0)
+						if (field_id_[side][x + length * ot][y + 1].first == 0)
 						{
-							field_id[side][x + length * ot][y + 1].first = 1;
+							field_id_[side][x + length * ot][y + 1].first = 1;
 						}
 					}
 
-					if (field_id[side][x + length * ot][y].first == 0)
+					if (field_id_[side][x + length * ot][y].first == 0)
 					{
-						field_id[side][x + length * ot][y].first = 1;
+						field_id_[side][x + length * ot][y].first = 1;
 					}
 
 					if (up_is_clear)
 					{
-						if (field_id[side][x + length * ot][y - 1].first == 0)
+						if (field_id_[side][x + length * ot][y - 1].first == 0)
 						{
-							field_id[side][x + length * ot][y - 1].first = 1;
+							field_id_[side][x + length * ot][y - 1].first = 1;
 						}
 					}
 				}
@@ -640,7 +640,7 @@ std::pair<unsigned int, unsigned int> return_x_y(const unsigned int id, const in
 	{
 		for (unsigned int x = 0; x < width_height; x++)
 		{
-			if (field_id[side][x][y].first == id)
+			if (field_id_[side][x][y].first == id)
 			{
 				start_x = x;
 				start_y = y;
@@ -663,32 +663,32 @@ bool area_is_clear(const bool side, const unsigned int x, const unsigned int y)
 	{
 		if (x)
 		{
-			if (field_id[side][x - 1][y - 1].first > 1) return false;
+			if (field_id_[side][x - 1][y - 1].first > 1) return false;
 		}
-		if (field_id[side][x][y - 1].first > 1) return false;
+		if (field_id_[side][x][y - 1].first > 1) return false;
 		if (x < width_height - 1)
 		{
-			if (field_id[side][x + 1][y - 1].first > 1) return false;
+			if (field_id_[side][x + 1][y - 1].first > 1) return false;
 		}
 	}
 	if (x)
 	{
-		if (field_id[side][x - 1][y].first > 1) return false;
+		if (field_id_[side][x - 1][y].first > 1) return false;
 	}
 	if (x < width_height - 1)
 	{
-		if (field_id[side][x + 1][y].first > 1) return false;
+		if (field_id_[side][x + 1][y].first > 1) return false;
 	}
 	if (y < width_height - 1)
 	{
 		if (x)
 		{
-			if (field_id[side][x - 1][y + 1].first > 1) return false;
+			if (field_id_[side][x - 1][y + 1].first > 1) return false;
 		}
-		if (field_id[side][x][y + 1].first > 1) return false;
+		if (field_id_[side][x][y + 1].first > 1) return false;
 		if (x < width_height - 1)
 		{
-			if (field_id[side][x + 1][y + 1].first > 1) return false;
+			if (field_id_[side][x + 1][y + 1].first > 1) return false;
 		}
 	}
 	return true;
@@ -739,7 +739,7 @@ void small_move(const unsigned int index, const int side)
 	if ((start.first - x <= 1 || start.first - x >= UINT_MAX - 1) && (start.second - y <= 1 || start.second - y >=
 		UINT_MAX - 1))
 	{
-		field_id[side][start.first][start.second].first = 0;
+		field_id_[side][start.first][start.second].first = 0;
 		if (area_is_clear(side, x, y))
 		{
 			if (start.second)
@@ -747,29 +747,29 @@ void small_move(const unsigned int index, const int side)
 				if (start.first)
 				{
 					if (area_is_clear(side, start.first - 1, start.second - 1))
-						field_id[side][start.first - 1][start.
+						field_id_[side][start.first - 1][start.
 							second - 1].first = 0;
 				}
 				if (area_is_clear(side, start.first, start.second - 1))
-					field_id[side][start.first][start.second - 1].
+					field_id_[side][start.first][start.second - 1].
 						first = 0;
 				if (start.first < width_height)
 				{
 					if (area_is_clear(side, start.first + 1, start.second - 1))
-						field_id[side][start.first + 1][start.
+						field_id_[side][start.first + 1][start.
 							second - 1].first = 0;
 				}
 			}
 			if (start.first)
 			{
 				if (area_is_clear(side, start.first - 1, start.second))
-					field_id[side][start.first - 1][start.second].
+					field_id_[side][start.first - 1][start.second].
 						first = 0;
 			}
 			if (start.first < width_height - 1)
 			{
 				if (area_is_clear(side, start.first + 1, start.second))
-					field_id[side][start.first + 1][start.second].
+					field_id_[side][start.first + 1][start.second].
 						first = 0;
 			}
 			if (start.second < width_height - 1)
@@ -777,16 +777,16 @@ void small_move(const unsigned int index, const int side)
 				if (start.first)
 				{
 					if (area_is_clear(side, start.first - 1, start.second + 1))
-						field_id[side][start.first - 1][start.
+						field_id_[side][start.first - 1][start.
 							second + 1].first = 0;
 				}
 				if (area_is_clear(side, start.first, start.second + 1))
-					field_id[side][start.first][start.second + 1].
+					field_id_[side][start.first][start.second + 1].
 						first = 0;
 				if (start.first < width_height - 1)
 				{
 					if (area_is_clear(side, start.first + 1, start.second + 1))
-						field_id[side][start.first + 1][start.
+						field_id_[side][start.first + 1][start.
 							second + 1].first = 0;
 				}
 			}
@@ -795,40 +795,40 @@ void small_move(const unsigned int index, const int side)
 			{
 				if (x)
 				{
-					field_id[side][x - 1][y - 1].first = 1;
+					field_id_[side][x - 1][y - 1].first = 1;
 				}
-				field_id[side][x][y - 1].first = 1;
+				field_id_[side][x][y - 1].first = 1;
 				if (x < width_height)
 				{
-					field_id[side][x + 1][y - 1].first = 1;
+					field_id_[side][x + 1][y - 1].first = 1;
 				}
 			}
 			if (x)
 			{
-				field_id[side][x - 1][y].first = 1;
+				field_id_[side][x - 1][y].first = 1;
 			}
 			if (x < width_height - 1)
 			{
-				field_id[side][x + 1][y].first = 1;
+				field_id_[side][x + 1][y].first = 1;
 			}
 			if (y < width_height - 1)
 			{
 				if (x)
 				{
-					field_id[side][x - 1][y + 1].first = 1;
+					field_id_[side][x - 1][y + 1].first = 1;
 				}
-				field_id[side][x][y + 1].first = 1;
+				field_id_[side][x][y + 1].first = 1;
 				if (x < width_height - 1)
 				{
-					field_id[side][x + 1][y + 1].first = 1;
+					field_id_[side][x + 1][y + 1].first = 1;
 				}
 			}
 
-			field_id[side][x][y].first = index + 2;
+			field_id_[side][x][y].first = index + 2;
 		}
 		else
 		{
-			field_id[side][start.first][start.second].first = index + 2;
+			field_id_[side][start.first][start.second].first = index + 2;
 			std::cout << "Captain! This square is already taken!\n" << std::endl;
 			system("pause");
 			small_move(index, side);
@@ -837,7 +837,7 @@ void small_move(const unsigned int index, const int side)
 	}
 	else
 	{
-		field_id[side][start.first][start.second].first = index + 2;
+		field_id_[side][start.first][start.second].first = index + 2;
 		std::cout << "Captain! This is not a <<Meteor>> for you, a single-decker can only move one square.\n" <<
 			std::endl;
 		system("pause");
@@ -850,8 +850,8 @@ void small_move(const unsigned int index, const int side)
 void get_damage(const bool side, const unsigned int x, const unsigned int y, const int dmg, std::vector<Ship>& fleet)
 {
 	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	int index = field_id[side][x][y].first - 2;
-	fleet[index].damage_by_index(dmg, field_id[side][x][y].second);
+	int index = field_id_[side][x][y].first - 2;
+	fleet[index].damage_by_index(dmg, field_id_[side][x][y].second);
 	std::cout << "Dodge this! You are hit!" << std::endl;
 	std::cout << "You hit him in " << alf[x] << " " << y << std::endl;
 
@@ -876,7 +876,7 @@ void get_damage(const bool side, const unsigned int x, const unsigned int y, con
 		{
 			for (int y = 0; y < width_height; y++)
 			{
-				if (return_field_id_value(side, x, y) == index + 2)
+				if (return_field_id(side, x, y) == index + 2)
 				{
 					coords.emplace_back(std::make_pair(x, y));
 				}

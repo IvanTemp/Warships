@@ -175,7 +175,7 @@ Ship Ship::operator++(int)
     return copyThis;
 }
 
-void Ship::klee(const std::vector <std::pair<unsigned int, unsigned int>> coords, const bool side)const {
+void Ship::klee(const std::vector <std::pair<unsigned int, unsigned int>> coords)const {
     extern void field_get_vision(const unsigned int x, const unsigned int y, const bool side);
     if (DEBUG_MODE) {
         for (int i = 0; i < coords.size(); i++) {

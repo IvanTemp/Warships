@@ -10,8 +10,6 @@
 #define Tsundere_Durability 5
 #define Small_Durability 4
 
-#define achievement_file "achievements.db"
-
 #define DEBUG_MODE 1
 ///////////////
 
@@ -38,8 +36,9 @@ public:
 	bool operator != (const Ship& right)const;
 	Ship& operator= (const Ship& right);
 	Ship operator++ (int); //repair function
-	void klee(const std::vector<std::pair<unsigned int, unsigned int>> coords, const bool side) const;
+	void klee(const std::vector<std::pair<unsigned int, unsigned int>> coords)const;
 	static int get_count() { return count_; }
+	void get_damage(const unsigned int index, const int dmg, const unsigned int x, const unsigned int y)
 	void nuclear_bomb();
 
 private:

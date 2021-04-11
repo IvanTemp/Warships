@@ -401,3 +401,556 @@ std::ostream& operator<<(std::ostream& out, const Fleet& shp)
 	shp.print(out);
 	return out;
 }
+
+std::string Fleet::return_field_final(const unsigned& x, const unsigned& y) const
+{
+	return field_final_[x][y];
+}
+
+unsigned int Fleet::return_field_id(const unsigned& x, const unsigned& y)const
+{
+	return field_id_[x][y].first;
+}
+
+unsigned int Fleet::return_field_index(const unsigned& x, const unsigned& y)const
+{
+	return field_id_[x][y].second;
+}
+
+bool Fleet::return_field_war(const unsigned& x, const unsigned& y)const
+{
+	return field_war_[x][y];
+}
+
+void Fleet::initialize_field_final(const Fleet& fleet)
+{
+	for (unsigned int y = 0; y < width_height; y++)
+	{
+		for (unsigned int x = 0; x < width_height; x++)
+		{
+			if (field_id_[x][y].first > 1)
+			{
+				field_final_[x][y] = std::to_string(
+					fleet.get_ship_by_index(field_id_[x][y].first - 2).get_durability()[field_id_[x][y].second]);
+			}
+			else if (field_war_[x][y])
+			{
+				field_final_[x][y] = "X";
+			}
+			else
+			{
+				field_final_[x][y] = " ";
+			}
+		}
+	}
+}
+
+void Fleet::output_field_final(const Fleet& fleet2)const //Передаём только вражеский флот, призываем через текущий
+{
+	std::string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	std::map<int, std::string> SideToName = { {0, name_}, {1, fleet2.name_} };
+	std::cout << "\tSide: " << name_ << "\t\tSide: " << fleet2.name_ << std::endl;
+	std::cout << "\t ||";
+	for (unsigned int x = 0; x < width_height; x++)
+	{
+		std::cout << letters[x] << "|";
+	}
+	std::cout << "\t\t   ";
+	for (unsigned int x = 0; x < width_height; x++)
+	{
+		std::cout << letters[x] << "|";
+	}
+	std::cout << std::endl;
+	for (unsigned int y = 0; y < width_height; y++)
+	{
+		std::cout << "\t" << y << "||";
+		for (unsigned int x = 0; x < width_height; x++)
+		{
+			std::cout << field_final_[x][y] << "|";
+		}
+		std::cout << "\t\t" << y << "||";
+		for (unsigned int x = 0; x < width_height; x++)
+		{
+			if (fleet2.field_war_[x][y])
+			{
+				if (fleet2.field_id_[x][y].first > 1) { std::cout << field_final_[x][y] << "|"; }
+				else { std::cout << " |"; }
+			}
+			else
+			{
+				std::cout << "#" << "|";
+			}
+		}
+		std::cout << std::endl;
+	}
+	std::cout << std::endl;
+}
+
+void Fleet::output_field_id_indexes()const
+{
+	//DEBUG FUNC
+	std::cout << "id[" << side_ << "](NOT FOR USER): \n\n";
+	for (unsigned int y = 0; y < width_height; y++)
+	{
+		std::cout << "         |";
+		for (unsigned int x = 0; x < width_height; x++)
+		{
+			std::cout << field_id_[x][y].first << "|";
+		}
+		std::cout << std::endl;
+	}
+	std::cout << std::endl << std::endl << std::endl;
+}
+
+void Fleet::output_field_war()const
+{
+	//DEBUG FUNC
+	std::cout << "War[" << side_ << "](NOT FOR USER): \n\n";
+	for (unsigned int y = 0; y < width_height; y++)
+	{
+		std::cout << "         |";
+		for (unsigned int x = 0; x < width_height; x++)
+		{
+			std::cout << field_war_[x][y] << "|";
+		}
+		std::cout << std::endl;
+	}
+	std::cout << std::endl;
+}
+
+void Fleet::field_get_vision(const unsigned int x, const unsigned int y)
+{
+	field_war_[x][y] = true;
+}
+
+std::pair<unsigned int, unsigned int> Fleet::return_x_y(const unsigned int &id)const
+{
+	unsigned int start_x = 0, start_y = 0;
+	for (unsigned int y = 0; y < width_height; y++)
+	{
+		for (unsigned int x = 0; x < width_height; x++)
+		{
+			if (field_id_[x][y].first == id)
+			{
+				start_x = x;
+				start_y = y;
+				return std::make_pair(start_x, start_y);
+			}
+		}
+	}
+	return std::make_pair(start_x, start_y);
+}
+
+void Fleet::generate_fleet()
+{
+	for (auto& sheep : get_ship_vector()) {
+		bool stop = false;
+		int x = 0, y = 0, rotation = 0;
+		const int length = sheep.get_type()->get_size(), id = sheep.get_id();
+		bool breaks_in = true,
+			left_is_clear = false,
+			right_is_clear = false,
+			up_is_clear = false,
+			down_is_clear = false;
+		while (!stop)
+		{
+			x = rand() % width_height;
+			y = rand() % width_height;
+			rotation = rand() % 4;
+			//TEST YOUR OUTPUT HERE //rotation: 0 - North, 1 - East, 2 - South - 3 - West
+			//x = 5; y = 5; rotation = 0;
+			if constexpr (DEBUG_MODE)
+			{
+				std::cout << "[Generator]Trying to: x = " << x;
+				std::cout << "; y = " << y;
+				std::cout << "; rotation = " << rotation;
+				std::cout << "; id_: " << id;
+				std::cout << "; Length: " << length;
+				std::cout << "; Default durability: " << sheep.get_durability()[0];
+				std::cout << "; Status: ";
+			}
+
+			std::map<int, int> optimization_map = { {0, -1}, {1, 1}, {2, 1}, {3, -1} };
+
+			const int ot = optimization_map[rotation]; //magic coefficient
+
+			breaks_in = true;
+			left_is_clear = false;
+			right_is_clear = false;
+			up_is_clear = false;
+			down_is_clear = false;
+
+			//checking for space on all sides
+			if (x)
+			{
+				left_is_clear = true;
+			}
+
+			if (y)
+			{
+				up_is_clear = true;
+			}
+
+			if (x < width_height - 1)
+			{
+				right_is_clear = true;
+			}
+
+			if (y < width_height - 1)
+			{
+				down_is_clear = true;
+			}
+			/////////////////////////////////
+
+			if (rotation == 0 || rotation == 2)
+			{
+				//vertical
+
+				if (length > 1)
+				{
+					//check for the ability to place the ship
+					if (ot > 0)
+					{
+						if (y + length >= width_height - 1)
+						{
+							breaks_in = false;
+						}
+					}
+					else
+					{
+						if (y - length < 0)
+						{
+							breaks_in = false;
+						}
+					}
+				}
+
+				if (breaks_in)
+				{
+					for (unsigned int h = 0; h < length; h++)
+					{
+						//check for the ability to place the ship part 2
+						if (field_id_[x][y + h * ot].first > 0)
+						{
+							breaks_in = false;
+						}
+					}
+				}
+
+				if (breaks_in)
+				{
+					ot > 0 ? breaks_in = up_is_clear : breaks_in = down_is_clear;
+					if (breaks_in)
+					{
+						if (left_is_clear)
+						{
+							if (field_id_[x - 1][y - 1 * ot].first == 0)
+							{
+								field_id_[x - 1][y - 1 * ot].first = 1;
+							}
+						}
+
+						if (field_id_[x][y - 1 * ot].first == 0)
+						{
+							field_id_[x][y - 1 * ot].first = 1;
+						}
+
+						if (right_is_clear)
+						{
+							if (field_id_[x + 1][y - 1 * ot].first == 0)
+							{
+								field_id_[x + 1][y - 1 * ot].first = 1;
+							}
+						}
+					}
+
+					for (int counter = 0; counter < length; counter++)
+					{
+						if (left_is_clear)
+						{
+							if (field_id_[x - 1][y + counter * ot].first == 0)
+							{
+								field_id_[x - 1][y + counter * ot].first = 1;
+							}
+						}
+
+						field_id_[x][y + counter * ot].first = id;
+						field_id_[x][y + counter * ot].second = counter;
+
+						if (right_is_clear)
+						{
+							if (field_id_[x + 1][y + counter * ot].first == 0)
+							{
+								field_id_[x + 1][y + counter * ot].first = 1;
+							}
+						}
+					}
+
+					ot > 0 ? breaks_in = down_is_clear : breaks_in = up_is_clear;
+					if (breaks_in)
+					{
+						if (left_is_clear)
+						{
+							if (field_id_[x - 1][y + length * ot].first == 0)
+							{
+								field_id_[x - 1][y + length * ot].first = 1;
+							}
+						}
+
+						if (field_id_[x][y + length * ot].first == 0)
+						{
+							field_id_[x][y + length * ot].first = 1;
+						}
+
+						if (right_is_clear)
+						{
+							if (field_id_[x + 1][y + length * ot].first == 0)
+							{
+								field_id_[x + 1][y + length * ot].first = 1;
+							}
+						}
+					}
+					if constexpr (DEBUG_MODE)
+					{
+						std::cout << "Successfully!" << std::endl;
+					}
+					stop = true;
+				}
+			}
+			else
+			{
+				//horizontal
+				if (length > 1)
+				{
+					//check for the ability to place the ship
+					if (ot > 0)
+					{
+						if (x + length >= width_height - 1)
+						{
+							breaks_in = false;
+						}
+					}
+					else
+					{
+						if (x - length < 0)
+						{
+							breaks_in = false;
+						}
+					}
+				}
+
+				if (breaks_in)
+				{
+					for (unsigned int h = 0; h < length; h++)
+					{
+						//check for the ability to place the ship part 2
+						if (field_id_[x + h * ot][y].first > 0)
+						{
+							breaks_in = false;
+						}
+					}
+				}
+
+				if (breaks_in)
+				{
+					ot > 0 ? breaks_in = left_is_clear : breaks_in = right_is_clear;
+					if (breaks_in)
+					{
+						if (down_is_clear)
+						{
+							if (field_id_[x - 1 * ot][y + 1].first == 0)
+							{
+								field_id_[x - 1 * ot][y + 1].first = 1;
+							}
+						}
+
+						if (field_id_[x - 1 * ot][y].first == 0)
+						{
+							field_id_[x - 1 * ot][y].first = 1;
+						}
+
+						if (up_is_clear)
+						{
+							if (field_id_[x - 1 * ot][y - 1].first == 0)
+							{
+								field_id_[x - 1 * ot][y - 1].first = 1;
+							}
+						}
+					}
+					for (int counter = 0; counter < length; counter++)
+					{
+						if (up_is_clear)
+						{
+							if (field_id_[x + counter * ot][y - 1].first == 0)
+							{
+								field_id_[x + counter * ot][y - 1].first = 1;
+							}
+						}
+
+						field_id_[x + counter * ot][y].first = id;
+						field_id_[x + counter * ot][y].second = counter;
+
+						if (down_is_clear)
+						{
+							if (field_id_[x + counter * ot][y + 1].first == 0)
+							{
+								field_id_[x + counter * ot][y + 1].first = 1;
+							}
+						}
+					}
+
+					ot > 0 ? breaks_in = right_is_clear : breaks_in = left_is_clear;
+					if (breaks_in)
+					{
+						if (down_is_clear)
+						{
+							if (field_id_[x + length * ot][y + 1].first == 0)
+							{
+								field_id_[x + length * ot][y + 1].first = 1;
+							}
+						}
+
+						if (field_id_[x + length * ot][y].first == 0)
+						{
+							field_id_[x + length * ot][y].first = 1;
+						}
+
+						if (up_is_clear)
+						{
+							if (field_id_[x + length * ot][y - 1].first == 0)
+							{
+								field_id_[x + length * ot][y - 1].first = 1;
+							}
+						}
+					}
+					if constexpr (DEBUG_MODE)
+					{
+						std::cout << "Successfully!" << std::endl;
+					}
+					stop = true;
+				}
+			}
+			if (DEBUG_MODE && !stop)
+			{
+				std::cout << "Failed!" << std::endl;
+			}
+		}
+	}
+}
+
+void Fleet::do_action(Fleet& whose, Fleet& whom, const std::vector<unsigned int>& order, const int& round)
+{
+	if constexpr (DEBUG_MODE) { std::cout << "[DEBUG INFO]order[round] = " << order[round] << std::endl; }
+	std::cout << "Current position: " << int_to_letter(return_x_y(order[round] + 2).first) << " " <<
+		return_x_y(order[round] + 2).second << std::endl;
+	std::cout << "Current type: " << whose.get_ship_by_index(order[round]).get_type()->get_name() << std::endl;
+	std::cout << "What do you want?\n\n";
+	std::string action;
+	while (true)
+	{
+		if (whose.get_ship_by_index(order[round]).get_durability_sum())
+		{
+			if (whose.get_ship_by_index(order[round]).get_type()->get_name() == "Small")
+			{
+				//single-deck abilities
+				std::cout << "-Shoot\n-Move\n" << std::endl;
+				std::cin >> action;
+				ha_you_are_small_now(action);
+				if (action == "shoot")
+				{
+					//Shot
+					whom.damage_by_index_player(whose.get_ship_by_index(order[round]));
+					break;
+				}
+				if (action == "move")
+				{
+					small_move(order[round], whose.get_side());
+					initialize_field_final(whose);
+					break;
+				}
+				std::cout << "Wrong command!" << std::endl;
+				system("pause");
+				continue;
+			}
+			if (whose.get_ship_by_index(order[round]).get_type()->get_name() == "Tsundere")
+			{
+				std::cout << "-Shoot\n-Repair\n" << std::endl;
+				std::cin >> action;
+				ha_you_are_small_now(action);
+				if (action == "shoot")
+				{
+					whom.damage_by_index_player(whose.get_ship_by_index(order[round]));
+					break;
+				}
+				if (action == "repair")
+				{
+					whose.get_ship_by_index(order[round])++;
+					std::cout << "Ship repaired!" << std::endl;
+					initialize_field_final(whose);
+					break;
+				}
+				std::cout << "Wrong command!" << std::endl;
+				system("pause");
+				continue;
+			}
+			if (whose.get_ship_by_index(order[round]).get_type()->get_name() == "Heavy Cruiser")
+			{
+				//Shot
+				std::cout << "Point the center where to shoot (Write X and Y coordinates): ";
+				whom.heavy_cruiser_attack(whose.get_ship_by_index(order[round]).get_type()->get_damage_value());
+				break;
+			}
+			if (whose.get_ship_by_index(order[round]).get_type()->get_name() == "Aircraft Carrier")
+			{
+				ha_you_are_small_now(action);
+				std::cout << "Specify the type of attack (1x3 or 3x1): \n" << std::endl;
+				std::cin >> action;
+				ha_you_are_small_now(action);
+				if (action == "1x3" || action == "1")
+				{
+					whom.aircraft_attack(true, whose.get_ship_by_index(order[round]).get_type()->get_damage_value());
+					break;
+				}
+				if (action == "3x1" || action == "3")
+				{
+					whom.aircraft_attack(false, whose.get_ship_by_index(order[round]).get_type()->get_damage_value());
+					break;
+				}
+				std::cout << "Wrong command!" << std::endl;
+				system("pause");
+			}
+		}
+		else
+		{
+			std::cout << "This ship is sunk, you miss this turn." << std::endl;
+			return;
+		}
+	}
+	system("pause");
+	if constexpr (!DEBUG_MODE) { system("cls"); }
+}
+
+void Fleet::get_damage(const unsigned int index, const int dmg, const unsigned int x, const unsigned int y)
+{
+	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	ship_vector_[index].damage_by_index(dmg, index);
+	std::cout << "Dodge this! You are hit!" << std::endl;
+	std::cout << "You hit him in " << alf[x] << " " << y << std::endl;
+
+	std::vector<std::pair<unsigned int, unsigned int>> coords;
+
+	if (!ship_vector_[index].get_durability_sum())
+	{
+		for (int x = 0; x < width_height; x++)
+		{
+			for (int y = 0; y < width_height; y++)
+			{
+				if (field_id_[x][y].first == index + 2)
+				{
+					coords.emplace_back(std::make_pair(x, y));
+				}
+			}
+		}
+		ship_vector_[index].klee(coords);
+	}
+}

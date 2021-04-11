@@ -117,7 +117,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -132,7 +132,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -144,20 +144,22 @@
   <ItemGroup>
     <ClCompile Include="AircraftCarrier.cpp" />
     <ClCompile Include="Field.cpp" />
-    <ClCompile Include="fleet.cpp" />
-    <ClCompile Include="generator.cpp" />
+    <ClCompile Include="Fleet.cpp" />
+    <ClCompile Include="functions.cpp" />
+    <ClCompile Include="OLDgenerator.cpp" />
     <ClCompile Include="HeavyCruiser.cpp" />
     <ClCompile Include="Ship.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Small.cpp" />
     <ClCompile Include="Tsundere.cpp" />
-    <ClCompile Include="type.cpp" />
+    <ClCompile Include="BasicType.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AircraftCarrier.h" />
     <ClInclude Include="Field.h" />
     <ClInclude Include="Fleet.h" />
-    <ClInclude Include="Generator.h" />
+    <ClInclude Include="functions.h" />
+    <ClInclude Include="OLDGenerator.h" />
     <ClInclude Include="HeavyCruiser.h" />
     <ClInclude Include="Ship.h" />
     <ClInclude Include="Small.h" />

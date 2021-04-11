@@ -10,11 +10,11 @@ void give_achievement(std::vector <std::pair<std::string, bool>>& achievement_ar
 
 void do_action(Fleet& whose, Fleet& whom, const std::vector<unsigned int>& order, const int& round);
 
-unsigned int return_field_id_value(const bool& side, const int& x, const int& y);
+unsigned int return_field_id(const bool& side, const int& x, const int& y);
 
-unsigned int return_field_index_value(const bool& side, const int& x, const int& y);
+unsigned int return_field_index(const bool& side, const int& x, const int& y);
 
-bool return_field_war_value(const bool& side, const int& x, const int& y);
+bool return_field_war(const bool& side, const int& x, const int& y);
 
 void ha_you_are_small_now(std::string& str);
 
