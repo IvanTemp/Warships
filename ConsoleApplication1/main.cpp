@@ -64,10 +64,10 @@ int main(int argc, char* argv[]) {
 	fleet_1.print(std::cout);
 	fleet_2.print(std::cout);
 	
-
 	//Gemu ga hajimarimasu
 	bool ironman = true;
-
+	fleet_1.generate_fleet();
+	fleet_2.generate_fleet();
 	///////////////
 
 	//DEBUG FUNCTIONS
@@ -133,13 +133,13 @@ int main(int argc, char* argv[]) {
 					fleet_1.initialize_field_final();
 					std::cout << fleet_1.get_name() << " turn." << std::endl << std::endl;
 					fleet_1.output_field_final(fleet_2);
-					fleet_1.do_action(fleet_1, fleet_2, order, round);
+					fleet_1.do_action(fleet_2, order, round);
 					break;
 				case 1:
 					fleet_2.initialize_field_final();
 					std::cout << fleet_2.get_name() << " turn." << std::endl << std::endl;
 					fleet_2.output_field_final(fleet_1);
-					fleet_2.do_action(fleet_2, fleet_1, order, round);
+					fleet_2.do_action(fleet_1, order, round);
 					break;
 			}
 			if (fleet_1.get_health() && fleet_2.get_health()) break;
@@ -148,13 +148,13 @@ int main(int argc, char* argv[]) {
 					fleet_1.initialize_field_final();
 					std::cout << fleet_1.get_name() << " turn." << std::endl << std::endl;
 					fleet_1.output_field_final(fleet_2);
-					fleet_1.do_action(fleet_1, fleet_2, order, round);
+					fleet_1.do_action(fleet_2, order, round);
 					break;
 				case 1:
 					fleet_2.initialize_field_final();
 					std::cout << fleet_2.get_name() << " turn." << std::endl << std::endl;
 					fleet_2.output_field_final(fleet_1);
-					fleet_2.do_action(fleet_2, fleet_1, order, round);
+					fleet_2.do_action(fleet_1, order, round);
 					break;
 				}
 			first++;
@@ -187,13 +187,13 @@ int main(int argc, char* argv[]) {
 						fleet_1.initialize_field_final();
 						std::cout << fleet_1.get_name() << " turn." << std::endl << std::endl;
 						fleet_1.output_field_final(fleet_2);
-						fleet_1.do_action(fleet_1, fleet_2, order, round);
+						fleet_1.do_action(fleet_2, order, round);
 						break;
 					case 1:
 						fleet_2.initialize_field_final();
 						std::cout << fleet_2.get_name() << " turn." << std::endl << std::endl;
 						fleet_2.output_field_final(fleet_1);
-						fleet_2.do_action(fleet_2, fleet_1, order, round);
+						fleet_2.do_action(fleet_1, order, round);
 						break;
 					}
 					if (fleet_1.get_health() && fleet_2.get_health()) break;
@@ -202,13 +202,13 @@ int main(int argc, char* argv[]) {
 						fleet_1.initialize_field_final();
 						std::cout << fleet_1.get_name() << " turn." << std::endl << std::endl;
 						fleet_1.output_field_final(fleet_2);
-						fleet_1.do_action(fleet_1, fleet_2, order, round);
+						fleet_1.do_action(fleet_2, order, round);
 						break;
 					case 1:
 						fleet_2.initialize_field_final();
 						std::cout << fleet_2.get_name() << " turn." << std::endl << std::endl;
 						fleet_2.output_field_final(fleet_1);
-						fleet_2.do_action(fleet_2, fleet_1, order, round);
+						fleet_2.do_action(fleet_1, order, round);
 						break;
 					}
 					first++;

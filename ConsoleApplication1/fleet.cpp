@@ -180,7 +180,7 @@ void Fleet::damage_by_index_bot_v2(unsigned int id, int dmg, const int difficult
 }
 
 void Fleet::damage_by_index_player(Ship sheep) {
-	/*std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
+	std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
 	int x = 0, y = -1;
 	unsigned int dmg = sheep.get_type()->get_damage_value();
 	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -207,19 +207,19 @@ void Fleet::damage_by_index_player(Ship sheep) {
 
 	if (DEBUG_MODE) { std::cout << "[DEBUG INFO]int X = " << x << " Y = " << y << std::endl; }
 
-	if (field.return_field_id_value(side_, x, y) > 1)
+	if (field_id_[x][y].first > 1)
 	{
-		if (ship_vector_[field.return_field_id_value(side_, x, y) - 2].get_durability()[field.return_field_index_value(side_, x, y)])
+		if (ship_vector_[field_id_[x][y].first - 2].get_durability()[field_id_[x][y].second])
 		{
-			if (ship_vector_[field.return_field_id_value(side_, x, y) - 2].get_type()->get_name() == "Small" && sheep.get_type()->get_name() == "Tsundere")
+			if (ship_vector_[field_id_[x][y].first - 2].get_type()->get_name() == "Small" && sheep.get_type()->get_name() == "Tsundere")
 			{
 				dmg = Small_Durability;
 			}
-			else if (ship_vector_[field.return_field_id_value(side_, x, y) - 2].get_type()->get_name() == "Aircraft Carrier" && sheep.get_type()->get_name() == "Small")
+			else if (ship_vector_[field_id_[x][y].first - 2].get_type()->get_name() == "Aircraft Carrier" && sheep.get_type()->get_name() == "Small")
 			{
 				dmg *= 2;
 			}
-			field.get_damage(side_, x, y, dmg, ship_vector_);
+			get_damage(dmg, x, y);
 		}
 		else {
 			std::cout << "Why did you shoot at an already sunk ship?" << std::endl;
@@ -228,87 +228,87 @@ void Fleet::damage_by_index_player(Ship sheep) {
 	else {
 		std::cout << "Miss! X = " << alf[x] << "; Y = " << y << std::endl;
 	}
-	field.field_get_vision(x, y, side_);*/
+	field_get_vision(x, y);
 }
 
 void Fleet::aircraft_attack(const bool angle, const int dmg)
 {
-	//std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
-	//int x = 0, y = -1;
-	//std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	//char char_x = ' ';
-	//std::cin >> char_x >> y;
-	//if (DEBUG_MODE) std::cout << "[DEBUG INFO]X = " << char_x << "; Y = " << y << std::endl;
+	std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
+	int x = 0, y = -1;
+	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	char char_x = ' ';
+	std::cin >> char_x >> y;
+	if (DEBUG_MODE) std::cout << "[DEBUG INFO]X = " << char_x << "; Y = " << y << std::endl;
 
-	//if (y > width_height) {
-	//	std::cout << "Captain! You shot out of bounds!" << std::endl;
-	//	return;
-	//}
+	if (y > width_height) {
+		std::cout << "Captain! You shot out of bounds!" << std::endl;
+		return;
+	}
 
-	//char_x = std::toupper(char_x);
-	//for (int i = 0; i < width_height; i++) {
-	//	if (alf[i] == char_x) {
-	//		x = i;
-	//		break;
-	//	}
-	//	if (i == width_height - 1) {
-	//		std::cout << "Captain! You shot out of bounds!" << std::endl;
-	//		return;
-	//	}
-	//}
+	char_x = std::toupper(char_x);
+	for (int i = 0; i < width_height; i++) {
+		if (alf[i] == char_x) {
+			x = i;
+			break;
+		}
+		if (i == width_height - 1) {
+			std::cout << "Captain! You shot out of bounds!" << std::endl;
+			return;
+		}
+	}
 
-	//if (DEBUG_MODE) { std::cout << "[DEBUG INFO]int X = " << x << " Y = " << y << std::endl; }
+	if (DEBUG_MODE) { std::cout << "[DEBUG INFO]int X = " << x << " Y = " << y << std::endl; }
 
-	//if (angle == 1) // horizontal
-	//{
-	//	x--;;
-	//	const int temp_x = x + 3;
-	//	for (; x < temp_x; x++) {
-	//		if (x < 0 || x >= width_height) {
-	//			std::cout << "Captain! You shot out of bounds!" << std::endl;
-	//			return;
-	//		}
-	//		if (field.return_field_id_value(side_, x, y) > 1) {
-	//			if (ship_vector_[field.return_field_id_value(side_, x, y) - 2].get_durability()[field.return_field_index_value(side_, x, y)]) {
-	//				field.get_damage(side_, x, y, dmg, ship_vector_);
-	//			}
-	//			else {
-	//				std::cout << "Why did you shoot at an already sunk ship?" << std::endl;
-	//			}
-	//		}
-	//		else {
-	//			std::cout << "Miss! X = " << alf[x] << "; Y = " << y << std::endl;
-	//		}
-	//	}
-	//}
-	//else // vertical
-	//{
-	//	y--;
-	//	int temp_y = y + 3;
-	//	for (y; y < temp_y; y++) {
-	//		if (y < 0 or y >= width_height) {
-	//			std::cout << "Captain! You shot out of bounds!" << std::endl;
-	//			return;
-	//		}
-	//		if (field.return_field_id_value(side_, x, y) > 1) {
-	//			if (ship_vector_[field.return_field_id_value(side_, x, y) - 2].get_durability()[field.return_field_index_value(side_, x, y)]) {
-	//				field.get_damage(side_, x, y, dmg, ship_vector_);
-	//			}
-	//			else {
-	//				std::cout << "Why did you shoot at an already sunk ship?" << std::endl;
-	//			}
-	//		}
-	//		else {
-	//			std::cout << "Miss! X = " << alf[x] << "; Y = " << y << std::endl;
-	//		}
-	//	}
-	//}
-	//field.field_get_vision(x, y, side_);
+	if (angle == 1) // horizontal
+	{
+		x--;;
+		const int temp_x = x + 3;
+		for (; x < temp_x; x++) {
+			if (x < 0 || x >= width_height) {
+				std::cout << "Captain! You shot out of bounds!" << std::endl;
+				return;
+			}
+			if (field_id_[x][y].first > 1) {
+				if (ship_vector_[field_id_[x][y].first - 2].get_durability()[field_id_[x][y].second]) {
+					get_damage(dmg, x, y);
+				}
+				else {
+					std::cout << "Why did you shoot at an already sunk ship?" << std::endl;
+				}
+			}
+			else {
+				std::cout << "Miss! X = " << alf[x] << "; Y = " << y << std::endl;
+			}
+		}
+	}
+	else // vertical
+	{
+		y--;
+		int temp_y = y + 3;
+		for (y; y < temp_y; y++) {
+			if (y < 0 or y >= width_height) {
+				std::cout << "Captain! You shot out of bounds!" << std::endl;
+				return;
+			}
+			if (field_id_[x][y].first > 1) {
+				if (ship_vector_[field_id_[x][y].first - 2].get_durability()[field_id_[x][y].second]) {
+					get_damage(dmg, x, y);
+				}
+				else {
+					std::cout << "Why did you shoot at an already sunk ship?" << std::endl;
+				}
+			}
+			else {
+				std::cout << "Miss! X = " << alf[x] << "; Y = " << y << std::endl;
+			}
+		}
+	}
+	field_get_vision(x, y);
 }
 
 void Fleet::heavy_cruiser_attack(const int dmg)
 {
-	/*int x = 0, y = -1;
+	int x = 0, y = -1;
 	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	char char_x;
 	std::cin >> char_x >> y;
@@ -351,9 +351,9 @@ void Fleet::heavy_cruiser_attack(const int dmg)
 				}
 				else
 				{
-					if (field.return_field_id_value(side_, x, y) > 1) {
-						if (ship_vector_[field.return_field_id_value(side_, x, y) - 2].get_durability()[field.return_field_index_value(side_, x, y)]) {
-							field.get_damage(side_, x, y, dmg, ship_vector_);
+					if (field_id_[x][y].first > 1) {
+						if (ship_vector_[field_id_[x][y].first - 2].get_durability()[field_id_[x][y].second]) {
+							get_damage(dmg, x, y);
 						}
 						else {
 							std::cout << "Why did you shoot at an already sunk ship?" << std::endl;
@@ -362,16 +362,16 @@ void Fleet::heavy_cruiser_attack(const int dmg)
 					else {
 						std::cout << "Miss! X = " << alf[x] << "; Y = " << y << std::endl;
 					}
-					field.field_get_vision(x, y, side_);
+					field_get_vision(x, y);
 				}
 			}
 		}
-	}*/
+	}
 }
 
 void Fleet::nuclear_bomb() { //test func
 	for (int i = 0; i < ship_vector_.size(); i++) {
-		for (int j = 0; j < ship_vector_[i].get_durability().size(); j++)
+		for (int j = 0; j < ship_vector_[i].get_type(); j++)
 		{
 			ship_vector_[i]--;
 		}
@@ -837,19 +837,19 @@ void Fleet::generate_fleet()
 	}
 }
 
-void Fleet::do_action(Fleet& whose, Fleet& whom, const std::vector<unsigned int>& order, const int& round)
+void Fleet::do_action(Fleet& whom, const std::vector<unsigned int>& order, const int& round)
 {
 	if constexpr (DEBUG_MODE) { std::cout << "[DEBUG INFO]order[round] = " << order[round] << std::endl; }
 	std::cout << "Current position: " << int_to_letter(return_x_y(order[round] + 2).first) << " " <<
 		return_x_y(order[round] + 2).second << std::endl;
-	std::cout << "Current type: " << whose.get_ship_by_index(order[round]).get_type()->get_name() << std::endl;
+	std::cout << "Current type: " << get_ship_by_index(order[round]).get_type()->get_name() << std::endl;
 	std::cout << "What do you want?\n\n";
 	std::string action;
 	while (true)
 	{
-		if (whose.get_ship_by_index(order[round]).get_durability_sum())
+		if (get_ship_by_index(order[round]).get_durability_sum())
 		{
-			if (whose.get_ship_by_index(order[round]).get_type()->get_name() == "Small")
+			if (get_ship_by_index(order[round]).get_type()->get_name() == "Small")
 			{
 				//single-deck abilities
 				std::cout << "-Shoot\n-Move\n" << std::endl;
@@ -858,7 +858,7 @@ void Fleet::do_action(Fleet& whose, Fleet& whom, const std::vector<unsigned int>
 				if (action == "shoot")
 				{
 					//Shot
-					whom.damage_by_index_player(whose.get_ship_by_index(order[round]));
+					whom.damage_by_index_player(get_ship_by_index(order[round]));
 					break;
 				}
 				if (action == "move")
@@ -871,19 +871,19 @@ void Fleet::do_action(Fleet& whose, Fleet& whom, const std::vector<unsigned int>
 				system("pause");
 				continue;
 			}
-			if (whose.get_ship_by_index(order[round]).get_type()->get_name() == "Tsundere")
+			if (get_ship_by_index(order[round]).get_type()->get_name() == "Tsundere")
 			{
 				std::cout << "-Shoot\n-Repair\n" << std::endl;
 				std::cin >> action;
 				ha_you_are_small_now(action);
 				if (action == "shoot")
 				{
-					whom.damage_by_index_player(whose.get_ship_by_index(order[round]));
+					whom.damage_by_index_player(get_ship_by_index(order[round]));
 					break;
 				}
 				if (action == "repair")
 				{
-					whose.get_ship_by_index(order[round])++;
+					get_ship_by_index(order[round])++;
 					std::cout << "Ship repaired!" << std::endl;
 					initialize_field_final();
 					break;
@@ -892,14 +892,14 @@ void Fleet::do_action(Fleet& whose, Fleet& whom, const std::vector<unsigned int>
 				system("pause");
 				continue;
 			}
-			if (whose.get_ship_by_index(order[round]).get_type()->get_name() == "Heavy Cruiser")
+			if (get_ship_by_index(order[round]).get_type()->get_name() == "Heavy Cruiser")
 			{
 				//Shot
 				std::cout << "Point the center where to shoot (Write X and Y coordinates): ";
-				whom.heavy_cruiser_attack(whose.get_ship_by_index(order[round]).get_type()->get_damage_value());
+				whom.heavy_cruiser_attack(get_ship_by_index(order[round]).get_type()->get_damage_value());
 				break;
 			}
-			if (whose.get_ship_by_index(order[round]).get_type()->get_name() == "Aircraft Carrier")
+			if (get_ship_by_index(order[round]).get_type()->get_name() == "Aircraft Carrier")
 			{
 				ha_you_are_small_now(action);
 				std::cout << "Specify the type of attack (1x3 or 3x1): \n" << std::endl;
@@ -907,12 +907,12 @@ void Fleet::do_action(Fleet& whose, Fleet& whom, const std::vector<unsigned int>
 				ha_you_are_small_now(action);
 				if (action == "1x3" || action == "1")
 				{
-					whom.aircraft_attack(true, whose.get_ship_by_index(order[round]).get_type()->get_damage_value());
+					whom.aircraft_attack(true, get_ship_by_index(order[round]).get_type()->get_damage_value());
 					break;
 				}
 				if (action == "3x1" || action == "3")
 				{
-					whom.aircraft_attack(false, whose.get_ship_by_index(order[round]).get_type()->get_damage_value());
+					whom.aircraft_attack(false, get_ship_by_index(order[round]).get_type()->get_damage_value());
 					break;
 				}
 				std::cout << "Wrong command!" << std::endl;
@@ -965,22 +965,22 @@ void Fleet::klee(const std::vector<std::pair<unsigned int, unsigned int>> coords
 	}
 }
 
-void Fleet::get_damage(const unsigned int index, const int dmg, const unsigned int x, const unsigned int y)
+void Fleet::get_damage(const int dmg, const unsigned int x, const unsigned int y)
 {
-	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	ship_vector_[index].damage_by_index(dmg, index);
+	unsigned int id = field_id_[x][y].first;
+	ship_vector_[id].damage_by_index(dmg, field_id_[x][y].second);
 	std::cout << "Dodge this! You are hit!" << std::endl;
-	std::cout << "You hit him in " << alf[x] << " " << y << std::endl;
+	std::cout << "You hit him in " << int_to_letter(x) << " " << y << std::endl;
 
 	std::vector<std::pair<unsigned int, unsigned int>> coords;
 
-	if (!ship_vector_[index].get_durability_sum())
+	if (!ship_vector_[id].get_durability_sum())
 	{
 		for (int x = 0; x < width_height; x++)
 		{
 			for (int y = 0; y < width_height; y++)
 			{
-				if (field_id_[x][y].first == index + 2)
+				if (field_id_[x][y].first == id + 2)
 				{
 					coords.emplace_back(std::make_pair(x, y));
 				}
