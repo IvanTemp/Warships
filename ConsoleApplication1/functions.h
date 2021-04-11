@@ -10,4 +10,3 @@ void give_achievement(std::vector <std::pair<std::string, bool>>& achievement_ar
 void ha_you_are_small_now(std::string& str);
 char int_to_letter(const int i);
 std::vector<unsigned int> first_order(const unsigned int count); //count - length of order
-bool area_is_clear(auto& field, const bool side, const unsigned int x, const unsigned int y);

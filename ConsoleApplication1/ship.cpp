@@ -38,9 +38,9 @@ void Ship::print(std::ostream& out) const
         }
     std::cout << "\t";
     out << "Durability: ";
-    for (int i = 0; i < durability_.size(); i++)
+    for (auto i : durability_)
     {
-        out << " " << durability_[i];
+        out << " " << i;
     }
     out << std::endl;
 }
@@ -105,8 +105,8 @@ void Ship::set_durability(const std::vector<int> &durability)
 
 unsigned int Ship::get_durability_sum() const {
     unsigned int sum = 0;
-    for (unsigned int i = 0; i < durability_.size(); i++) {
-        sum += durability_[i];
+    for (auto& i : durability_) {
+        sum += i;
     }
     return sum;
 }
@@ -128,22 +128,23 @@ int Ship::get_id() const
 
 bool Ship::operator==(const Ship& right) const
 {
-    bool durabilityIsEqual = false;
-    std::string s = std::to_string(durability_.size()) + std::to_string(right.durability_.size());
-    std::sort(s.begin(), s.end());
-    for (int x = 0; x < s[0] - '0'; x++)
-    {
-        if (durability_[x] == right.durability_[x])
-        {
-            durabilityIsEqual = 1;
-        }
-        else
-        {
-            durabilityIsEqual = 0;
-            break;
-        }
-    }
-    return (name_ == right.name_ && type_ == right.type_ && id_ == right.id_ && durabilityIsEqual);
+    //bool durabilityIsEqual = false;
+    //std::string s = std::to_string(durability_.size()) + std::to_string(right.durability_.size());
+    //std::sort(s.begin(), s.end());
+    //for (int x = 0; x < s[0] - '0'; x++)
+    //{
+    //    if (durability_[x] == right.durability_[x])
+    //    {
+    //        durabilityIsEqual = 1;
+    //    }
+    //    else
+    //    {
+    //        durabilityIsEqual = 0;
+    //        break;
+    //    }
+    //}
+    //return (name_ == right.name_ && type_ == right.type_ && id_ == right.id_ && durabilityIsEqual);
+    return (name_ == right.name_ && type_ == right.type_ && id_ == right.id_ && durability_ == right.durability_);
 }
 
 bool Ship::operator!=(const Ship& right) const
@@ -165,14 +166,14 @@ Ship& Ship::operator=(const Ship& right)
 Ship Ship::operator++(int)
 {
     Ship copyThis(*this);
-    for (int i = 0; i < durability_.size(); i++)
+    for (auto& i : durability_)
     {
-        if (durability_[i] < Tsundere_Durability)
+        if (i < Tsundere_Durability)
         {
-            durability_[i]++;
-            if (durability_[i] < Tsundere_Durability)
+            i++;
+            if (i < Tsundere_Durability)
             {
-                durability_[i]++;
+                i++;
             }
         }
     }
@@ -182,11 +183,11 @@ Ship Ship::operator++(int)
 Ship Ship::operator--(int)
 {
     Ship copyThis(*this);
-    for (int i = 0; i < durability_.size(); i++)
+    for (auto& i : durability_)
     {
-        if (durability_[i] != 0)
+        if (i != 0)
         {
-            durability_[i]--;
+            i--;
         }
     }
     return copyThis;

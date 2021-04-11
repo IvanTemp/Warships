@@ -61,11 +61,11 @@ std::vector<Ship> Fleet::get_ship_vector() const
 unsigned int Fleet::get_health() const
 {
 	unsigned int hp = 0;
-	for (int i = 0; i < ship_vector_.size(); i++)
+	for (auto& i : ship_vector_)
 	{
-		for (int j = 0; j < ship_vector_[i].get_durability().size(); j++)
+		for (int j = 0; j < i.get_durability().size(); j++)
 		{
-			hp += ship_vector_[i].get_durability()[j];
+			hp += i.get_durability()[j];
 		}
 	}
 	return hp;
@@ -73,9 +73,9 @@ unsigned int Fleet::get_health() const
 
 bool Fleet::add_ship_to_fleet(const Ship& shp)
 {
-	for (int i = 0; i < ship_vector_.size(); i++)
+	for (auto& i : ship_vector_)
 	{
-		if (ship_vector_[i] == shp)
+		if (i == shp)
 		{
 			std::cout << "Ship is already added" << std::endl;
 			return false;
@@ -93,9 +93,9 @@ bool Fleet::remove_ship_from_fleet(const Ship& shp)
 		return false;
 	//Добавим проверку удаления несуществующего
 	bool flag = 0;
-	for (int i = 0; i < ship_vector_.size(); i++)
+	for (auto& i : ship_vector_)
 	{
-		if (ship_vector_[i] == shp)
+		if (i == shp)
 		{
 			//Само удаление
 			ship_vector_.erase(std::remove(ship_vector_.begin(), ship_vector_.end(), shp));
@@ -384,10 +384,10 @@ void Fleet::heavy_cruiser_attack(const int dmg)
 }
 
 void Fleet::nuclear_bomb() { //test func
-	for (int i = 0; i < ship_vector_.size(); i++) {
-		for (int j = 0; j < ship_vector_[i].get_type()->get_default_durability(); j++)
+	for (auto& i : ship_vector_) {
+		for (int j = 0; j < i.get_type()->get_default_durability(); j++)
 		{
-			ship_vector_[i]--;
+			i--;
 		}
 	}
 }
@@ -640,7 +640,7 @@ void Fleet::generate_fleet()
 
 				if (breaks_in)
 				{
-					for (unsigned int h = 0; h < length; h++)
+					for (int h = 0; h < length; h++)
 					{
 						//check for the ability to place the ship part 2
 						if (field_id_[x][y + h * ot].first > 0)
@@ -754,7 +754,7 @@ void Fleet::generate_fleet()
 
 				if (breaks_in)
 				{
-					for (unsigned int h = 0; h < length; h++)
+					for (int h = 0; h < length; h++)
 					{
 						//check for the ability to place the ship part 2
 						if (field_id_[x + h * ot][y].first > 0)
@@ -943,7 +943,7 @@ void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 	if constexpr (!DEBUG_MODE) { system("cls"); }
 }
 
-void Fleet::klee(const std::vector<std::pair<unsigned int, unsigned int>> coords)
+void Fleet::klee(const auto& coords)
 {
 	if (DEBUG_MODE) {
 		for (int i = 0; i < coords.size(); i++) {

@@ -42,7 +42,7 @@ public:
 	void get_damage(const int dmg, const unsigned int x, const unsigned int y);
 	void small_move(const unsigned int index);
 	bool area_is_clear(const unsigned int x, const unsigned int y)const;
-	void klee(const std::vector <std::pair<unsigned int, unsigned int>> coords);
+	void klee(const auto& coords);
 
 private:
 	static int count_;

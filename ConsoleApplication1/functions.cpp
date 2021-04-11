@@ -28,15 +28,15 @@ std::vector<std::pair<std::string, bool>> read_achievements()
 	std::ifstream achievement_in(achievement_file);
 	std::string str;
 	getline(achievement_in, str);
-	for (int i = 0; i < str.length(); i++)
+	for (int i = 0; i < str.size(); i++)
 	{
 		str[i] == '1' ? achievement_array[i].second = true : achievement_array[i].second = false;
 	}
 	achievement_in.close();
 	std::ofstream achievement_out(achievement_file);
-	for (int i = 0; i < achievement_array.size(); i++)
+	for (auto& i : achievement_array)
 	{
-		achievement_out << achievement_array[i].second;
+		achievement_out << i.second;
 	}
 	achievement_out.close();
 	return achievement_array;
@@ -55,7 +55,7 @@ void give_achievement(std::vector<std::pair<std::string, bool>>& achievement_arr
 
 void ha_you_are_small_now(std::string& str)
 {
-	for (int i = 0; i < str.length(); i++)
+	for (unsigned int i = 0; i < str.size(); i++)
 	{
 		str[i] = std::tolower(str[i]);
 	}
