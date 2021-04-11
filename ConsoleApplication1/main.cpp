@@ -105,8 +105,7 @@ int main(int argc, char* argv[]) {
 		ironman = false;
 	}
 
-	//std::vector <unsigned int> order = first_order(fleet_1, fleet_2);
-	std::vector <unsigned int> order = {5};
+	std::vector <unsigned int> order = first_order(std::max(fleet_1.get_ship_vector().size(), fleet_2.get_ship_vector().size()));
 	std::cout << "Start game?\n\n";
 	system("pause");
 
