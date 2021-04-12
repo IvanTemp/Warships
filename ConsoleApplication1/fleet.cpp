@@ -129,34 +129,24 @@ Ship Fleet::get_ship_by_index(const unsigned int id)const {
 }
 
 void Fleet::damage_by_index_bot(const int dmg, const int difficulty) {
-	srand(time(nullptr));
-	int x = 0, y = 0;
-	//Gura AI beta(not c). All rights not reserved.
 	bool GwSUtPaLT = true; //Gura was still unable to plant a large tree
-	unsigned int attempts = difficulty;
-	while (GwSUtPaLT) {
-		x = rand() % width_height, y = rand() % width_height;
-		if (DEBUG_MODE) std::cout << "[DEBUG INFO]Trying to: x = " << x << "; y = " << y << std::endl;
+	int x = 0, y = 0, random_x = 0, random_y = 0, attempts = 0, counter = 0, max = 0;
 
-		if (bots_memory.empty()) {
-			if (field_war_[x][y] == 0) { // I)Protection against shooting at empty cells
-				if (attempts) {
-					if (field_id_[x][y].first < 2) {
-						if (difficulty < 2) {
-							attempts--;
-						}
-					}
-					else {
-						GwSUtPaLT = false;
-					}
-				}
-				else {
-					GwSUtPaLT = false;
-				}
+	while (GwSUtPaLT && attempts < difficulty + 1)
+	{
+		if (bots_memory.empty()) {//I)Сканируем на количество неисследованных клеток, подбираем наиболее подходящий(если сложность hard)
+			counter = 0;
+			x = 1 + rand() % (width_height - 1);
+			y = 1 + rand() % (width_height - 1);
+			if (difficulty < 2) attempts++;
+			else if (field_id_[x][y].first > 1)
+			{
+				GwSUtPaLT = false;
 			}
 		}
 		else { //II)Finishing off found ships
-			x = bots_memory[0].first, y = bots_memory[0].second;
+			x = bots_memory[0].first;
+			y = bots_memory[0].second;
 			bots_memory.erase(bots_memory.begin());
 			GwSUtPaLT = false;
 		}
@@ -167,6 +157,10 @@ void Fleet::damage_by_index_bot(const int dmg, const int difficulty) {
 
 	if (field_id_[x][y].first > 1) {
 		get_damage(dmg, x, y);
+		if (ship_vector_[field_id_[x][y].first].get_durability_sum())
+		{
+			bots_memory.emplace_back(std::make_pair(x, y));
+		}
 	}
 	else {
 		std::cout << "The enemy missed! X = " << string_x << "; Y = " << y << std::endl;
@@ -208,9 +202,9 @@ void Fleet::ai(const int id, int dmg, const int difficulty, Fleet& fleet_of_play
 		}
 	} else if (type == "Tsundere")
 	{
-		if (ship_vector_[id].get_durability_sum() != ship_vector_[id].get_type()->get_default_durability() * ship_vector_[id].get_type()->get_size()) //Если хп неполное
+		if (ship_vector_[id].get_durability_sum() == ship_vector_[id].get_type()->get_default_durability() * ship_vector_[id].get_type()->get_size()) //Если хп полное
 		{
-			damage_by_index_bot(ship_vector_[id].get_type()->get_damage_value(), difficulty);
+			fleet_of_player.damage_by_index_bot(ship_vector_[id].get_type()->get_damage_value(), difficulty);
 		} else //repair
 		{
 			ship_vector_[id]++;
@@ -308,7 +302,11 @@ void Fleet::heavy_cruiser_attack_bot(const int dmg, const int difficulty)
 				x = random_x;
 				y = random_y;
 			}
-			attempts++;
+			if (difficulty < 2) attempts++;
+			else if (field_id_[x][y].first > 1)
+			{
+				GwSUtPaLT = false;
+			}
 		}
 		else { //II)Finishing off found ships
 			x = bots_memory[0].first;
@@ -329,6 +327,10 @@ void Fleet::heavy_cruiser_attack_bot(const int dmg, const int difficulty)
 			if (field_id_[x][y].first > 1)
 			{
 				get_damage(dmg, x, y);
+				if (ship_vector_[field_id_[x][y].first].get_durability_sum())
+				{
+					bots_memory.emplace_back(std::make_pair(x, y));
+				}
 			}
 			else
 			{
@@ -378,7 +380,6 @@ void Fleet::aircraft_attack_player(const bool angle, const int dmg)
 				if (ship_vector_[field_id_[x][y].first - 2].get_durability()[field_id_[x][y].second]) 
 				{
 					get_damage(dmg, x, y);
-					field_get_vision(x, y);
 				}
 				else 
 				{
@@ -388,7 +389,6 @@ void Fleet::aircraft_attack_player(const bool angle, const int dmg)
 			else 
 			{
 				std::cout << "Miss! X = " << int_to_letter(x) << "; Y = " << y << std::endl;
-				field_get_vision(x, y);
 			}
 		}
 	}
@@ -407,7 +407,6 @@ void Fleet::aircraft_attack_player(const bool angle, const int dmg)
 				if (ship_vector_[field_id_[x][y].first - 2].get_durability()[field_id_[x][y].second]) 
 				{
 					get_damage(dmg, x, y);
-					field_get_vision(x, y);
 				}
 				else 
 				{
@@ -417,8 +416,8 @@ void Fleet::aircraft_attack_player(const bool angle, const int dmg)
 			else 
 			{
 				std::cout << "Miss! X = " << int_to_letter(x) << "; Y = " << y << std::endl;
-				field_get_vision(x, y);
 			}
+			field_get_vision(x, y);
 		}
 	}
 }
@@ -449,7 +448,11 @@ void Fleet::aircraft_attack_bot(const bool angle, const int dmg, const int diffi
 				x = random_x;
 				y = random_y;
 			}
-			attempts++;
+			if (difficulty < 2) attempts++;
+			else if (field_id_[x][y].first > 1)
+			{
+				GwSUtPaLT = false;
+			}
 		}
 		else { //II)Finishing off found ships
 			x = bots_memory[0].first;
@@ -470,12 +473,14 @@ void Fleet::aircraft_attack_bot(const bool angle, const int dmg, const int diffi
 			if (field_id_[x][y].first > 1)
 			{
 				get_damage(dmg, x, y);
-				field_get_vision(x, y);
+				if (ship_vector_[field_id_[x][y].first].get_durability_sum())
+				{
+					bots_memory.emplace_back(std::make_pair(x, y));
+				}
 			}
 			else
 			{
 				std::cout << "Miss! X = " << int_to_letter(x) << "; Y = " << y << std::endl;
-				field_get_vision(x, y);
 			}
 		}
 	}
@@ -487,15 +492,14 @@ void Fleet::aircraft_attack_bot(const bool angle, const int dmg, const int diffi
 			if (field_id_[x][y].first > 1)
 			{
 				get_damage(dmg, x, y);
-				field_get_vision(x, y);
 			}
 			else
 			{
 				std::cout << "Miss! X = " << int_to_letter(x) << "; Y = " << y << std::endl;
-				field_get_vision(x, y);
 			}
 		}
 	}
+	field_get_vision(x, y);
 }
 
 

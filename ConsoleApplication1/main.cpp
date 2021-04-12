@@ -101,8 +101,8 @@ int main(int argc, char* argv[]) {
 	}
 
 	//TURNS
-	std::vector <unsigned int> order = first_order(std::max(fleet_1.get_ship_vector().size(), fleet_2.get_ship_vector().size()));
-	//std::vector <unsigned int> order = { 5 };
+	//std::vector <unsigned int> order = first_order(std::max(fleet_1.get_ship_vector().size(), fleet_2.get_ship_vector().size()));
+	std::vector <unsigned int> order = { 5 };
 	std::cout << "Start game?\n";
 	system("pause");
 
@@ -143,6 +143,7 @@ int main(int argc, char* argv[]) {
 					fleet_2.do_action(fleet_1, order[round]);
 					break;
 			}
+			if (!DEBUG_MODE) system("cls");
 			if (!fleet_1.get_health() || !fleet_2.get_health()) break;
 			temple++;
 			switch (temple % 2) {
@@ -161,6 +162,8 @@ int main(int argc, char* argv[]) {
 				}
 			temple--;
 			round++;
+			if (order.size() == round) round = 0;
+			if (!DEBUG_MODE) system("cls");
 		}
 	}
 	else if (battle_mode == "pve" || battle_mode == "e") //PVE
@@ -196,6 +199,7 @@ int main(int argc, char* argv[]) {
 						system("pause");
 						break;
 					}
+					if (!DEBUG_MODE) system("cls");
 					if (!fleet_1.get_health() || !fleet_2.get_health()) break;
 					temple++;
 					switch (temple % 2) {
@@ -214,6 +218,8 @@ int main(int argc, char* argv[]) {
 					}
 					temple--;
 					round++;
+					if (order.size() == round) round = 0;
+					if (!DEBUG_MODE) system("cls");
 				}
 			}
 			else {
