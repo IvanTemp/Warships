@@ -62,7 +62,9 @@ int main(int argc, char* argv[]) {
 	}
 
 	fleet_1.print(std::cout);
+	std::cout << std::endl;
 	fleet_2.print(std::cout);
+	std::cout << std::endl;
 	
 	//Gemu ga hajimarimasu
 	bool ironman = true;
@@ -99,9 +101,9 @@ int main(int argc, char* argv[]) {
 	}
 
 	//TURNS
-	//std::vector <unsigned int> order = first_order(std::max(fleet_1.get_ship_vector().size(), fleet_2.get_ship_vector().size()));
-	std::vector <unsigned int> order = { 5 };
-	std::cout << "Start game?\n\n";
+	std::vector <unsigned int> order = first_order(std::max(fleet_1.get_ship_vector().size(), fleet_2.get_ship_vector().size()));
+	//std::vector <unsigned int> order = { 5 };
+	std::cout << "Start game?\n";
 	system("pause");
 
 	if (!DEBUG_MODE) { system("cls"); }
@@ -123,12 +125,9 @@ int main(int argc, char* argv[]) {
 		system("pause");
 	}
 
-	int difficulty = 0, round = 0, first = rand() % 2, temple = 0;
+	int difficulty = 0, round = 0, temple = rand() % 2;
 	if (battle_mode == "pvp" || battle_mode == "p") { //PVP
-		if constexpr (DEBUG_MODE) { std::cout << "First side: " << first << std::endl; }
-		else {
-			system("cls");
-		}
+		if constexpr (!DEBUG_MODE) system("cls");
 		while (fleet_1.get_health() && fleet_2.get_health()) {
 			switch (temple % 2) {
 				case 0:
@@ -160,8 +159,8 @@ int main(int argc, char* argv[]) {
 					fleet_2.do_action(fleet_1, order[round]);
 					break;
 				}
-			first++;
-			temple++;
+			temple--;
+			round++;
 		}
 	}
 	else if (battle_mode == "pve" || battle_mode == "e") //PVE
@@ -177,14 +176,11 @@ int main(int argc, char* argv[]) {
 			difficulty--;
 
 			if (difficulty == 2) {
-				first = 1; //Bot will always go first Kappa
+				temple = 1; //Bot will always go first Kappa
 			}
 
 			if (difficulty >= 0 && difficulty <= 2) { //0 - 2(1 - 3 for user)
-				if constexpr (DEBUG_MODE) { std::cout << "First side: " << first << std::endl; }
-				else {
-					system("cls");
-				}
+				if constexpr (!DEBUG_MODE) system("cls");
 				while (fleet_1.get_health() && fleet_2.get_health()) {
 					switch (temple % 2) {
 					case 0:
@@ -196,8 +192,8 @@ int main(int argc, char* argv[]) {
 					case 1:
 						fleet_2.initialize_field_final();
 						std::cout << fleet_2.get_name() << " turn." << std::endl << std::endl;
-						fleet_2.output_field_final(fleet_1);
-						fleet_2.do_action(fleet_1, order[round]);
+						fleet_2.ai(order[round], fleet_2.get_ship_by_index(order[round]).get_type()->get_damage_value(), difficulty, fleet_1);
+						system("pause");
 						break;
 					}
 					if (!fleet_1.get_health() || !fleet_2.get_health()) break;
@@ -212,16 +208,16 @@ int main(int argc, char* argv[]) {
 					case 1:
 						fleet_2.initialize_field_final();
 						std::cout << fleet_2.get_name() << " turn." << std::endl << std::endl;
-						fleet_2.output_field_final(fleet_1);
-						fleet_2.do_action(fleet_1, order[round]);
+						fleet_2.ai(order[round], fleet_2.get_ship_by_index(order[round]).get_type()->get_damage_value(), difficulty, fleet_1);
+						system("pause");
 						break;
 					}
-					first++;
-					temple++;
+					temple--;
+					round++;
 				}
 			}
 			else {
-				if (!DEBUG_MODE) { system("cls"); }
+				if constexpr (!DEBUG_MODE) { system("cls"); }
 				std::cout << "E-error! This is inappropriate... I... What should I...?" << std::endl << std::endl;
 				std::cout << "You scared the program with your wrong input. Be careful next time." << std::endl << std::endl;
 				system("pause");

@@ -67,6 +67,13 @@ char int_to_letter(const int i)
 	return alf[i];
 }
 
+int letter_to_int(const char chr)
+{
+	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	for (int i = 0; i < alf.length(); i++) if (alf[i] == chr) return i;
+	return 50;
+}
+
 std::vector<unsigned int> first_order(const unsigned int count)
 {
 	std::vector<unsigned int> order_list;

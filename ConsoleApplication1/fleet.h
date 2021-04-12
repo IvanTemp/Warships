@@ -20,10 +20,11 @@ public:
 	bool get_side() const;
 	Ship get_ship_by_index(const unsigned int id)const;
 	void damage_by_index_bot(const int dmg, const int difficulty);
-	void gura_ai(const int id, int dmg, const int difficulty, Fleet& fleet_of_bot);
+	void ai(const int id, int dmg, const int difficulty, Fleet& fleet_of_player);
 	void damage_by_index_player(Ship &sheep);
 	void heavy_cruiser_attack_bot(const int dmg, const int difficulty);
-	void aircraft_attack(const bool angle, const int dmg);
+	void aircraft_attack_player(const bool angle, const int dmg);
+	void aircraft_attack_bot(const bool angle, const int dmg, const int difficulty);
 	void heavy_cruiser_attack_player(const int dmg);
 	void nuclear_bomb();
 	Fleet& operator +=(const Ship& ship); //add ship

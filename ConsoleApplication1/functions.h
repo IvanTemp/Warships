@@ -9,4 +9,5 @@ std::vector <std::pair<std::string, bool>> read_achievements();
 void give_achievement(std::vector <std::pair<std::string, bool>>& achievement_array, const int& num);
 void ha_you_are_small_now(std::string& str);
 char int_to_letter(const int i);
+int letter_to_int(const char chr);
 std::vector<unsigned int> first_order(const unsigned int count); //count - length of order
