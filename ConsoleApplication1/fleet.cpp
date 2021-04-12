@@ -390,6 +390,7 @@ void Fleet::aircraft_attack_player(const bool angle, const int dmg)
 			{
 				std::cout << "Miss! X = " << int_to_letter(x) << "; Y = " << y << std::endl;
 			}
+			field_get_vision(x, y);
 		}
 	}
 	else // vertical
@@ -482,6 +483,7 @@ void Fleet::aircraft_attack_bot(const bool angle, const int dmg, const int diffi
 			{
 				std::cout << "Miss! X = " << int_to_letter(x) << "; Y = " << y << std::endl;
 			}
+			field_get_vision(x, y);
 		}
 	}
 	else // vertical
@@ -497,11 +499,10 @@ void Fleet::aircraft_attack_bot(const bool angle, const int dmg, const int diffi
 			{
 				std::cout << "Miss! X = " << int_to_letter(x) << "; Y = " << y << std::endl;
 			}
+			field_get_vision(x, y);
 		}
 	}
-	field_get_vision(x, y);
 }
-
 
 void Fleet::heavy_cruiser_attack_player(const int dmg)
 {
