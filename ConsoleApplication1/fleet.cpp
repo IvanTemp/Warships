@@ -169,7 +169,7 @@ void Fleet::damage_by_index_bot(const int dmg, const int difficulty) {
 }
 
 void Fleet::ai(const int id, int dmg, const int difficulty, Fleet& fleet_of_player) {
-	//Gura AI(not copyrighted) Reborn v1.02.1
+	//Gura AI(not copyrighted) Reborn v1.03
 	srand(time(nullptr));
 	const std::string type = ship_vector_[id].get_type()->get_name();
 
@@ -347,7 +347,7 @@ void Fleet::aircraft_attack_player(const bool angle, const int dmg)
 	int x = 0, y = -1;
 	char char_x = ' ';
 	std::cin >> char_x >> y;
-	if (DEBUG_MODE) std::cout << "[AIRCRAFT ATTACK PLAYER]X = " << char_x << "; Y = " << y << std::endl;
+	if (DEBUG_MODE) std::cout << "[AIRCRAFT ATTACK PLAYER]X = " << char_x << "; Y = " << y  << ";" << std::endl;
 
 	if (y > width_height) {
 		std::cout << "Captain! You shot out of bounds!" << std::endl;
@@ -428,14 +428,23 @@ void Fleet::aircraft_attack_bot(const bool angle, const int dmg, int difficulty)
 	bool GwSUtPaLT = true; //Gura was still unable to plant a large tree
 	int x = 0, y = 0, random_x = 0, random_y = 0, attempts = 0, counter = 0, max = 0;
 	
-	if (difficulty == 2) difficulty = 49;
+	if (difficulty == 2) {
+		difficulty = 49;
+	}
+
+	for (int i = 0; i < bots_memory.size(); i++) {
+		if (!get_ship_by_index(field_id_[bots_memory[i].first][bots_memory[i].second].first).get_durability_sum()) {
+			bots_memory.resize(bots_memory.size() - 1);
+		}
+	}
 
 	while (GwSUtPaLT && attempts < difficulty + 1)
 	{
 		if (bots_memory.empty()) {//I)Сканируем на количество неисследованных клеток и наличие на них кораблей, подбираем наиболее подходящий(если сложность hard)
 			counter = 0;
-			random_x = 1 + rand() % (width_height - 1);
-			random_y = 1 + rand() % (width_height - 1);
+			random_x = 1 + rand() % (width_height - 2);
+			random_y = 1 + rand() % (width_height - 2);
+			if (DEBUG_MODE) { std::cout << "[AIRCRAFT ATTACK BOT]rand_x = " << random_x << "; rand_y = " << random_y << std::endl; }
 			switch (angle)
 			{
 			case 1: //horizontal
@@ -449,14 +458,12 @@ void Fleet::aircraft_attack_bot(const bool angle, const int dmg, int difficulty)
 				if (field_id_[random_x][random_y + 1].first > 1 && !field_war_[random_x][random_y + 1]) counter++;
 				break;
 			}
-			if (counter > max) {
+			if (counter >= max) {
 				max = counter;
 				x = random_x;
 				y = random_y;
 			}
-			if (counter == 3) {
-				x = random_x;
-				y = random_y;
+			if (max == 3) {
 				GwSUtPaLT = false;
 			}
 			counter = 0;
@@ -465,7 +472,7 @@ void Fleet::aircraft_attack_bot(const bool angle, const int dmg, int difficulty)
 		else { //II)Finishing off found ships
 			x = bots_memory[0].first;
 			y = bots_memory[0].second;
-			bots_memory.erase(bots_memory.begin());
+			bots_memory.clear();
 			GwSUtPaLT = false;
 		}
 	}
@@ -481,7 +488,7 @@ void Fleet::aircraft_attack_bot(const bool angle, const int dmg, int difficulty)
 			if (field_id_[x][y].first > 1)
 			{
 				get_damage(dmg, x, y);
-				if (ship_vector_[field_id_[x][y].first].get_durability_sum())
+				if (ship_vector_[field_id_[x][y].first - 2].get_durability()[field_id_[x][y].second])
 				{
 					bots_memory.emplace_back(std::make_pair(x, y));
 				}
@@ -501,6 +508,10 @@ void Fleet::aircraft_attack_bot(const bool angle, const int dmg, int difficulty)
 			if (field_id_[x][y].first > 1)
 			{
 				get_damage(dmg, x, y);
+				if (ship_vector_[field_id_[x][y].first - 2].get_durability()[field_id_[x][y].second])
+				{
+					bots_memory.emplace_back(std::make_pair(x, y));
+				}
 			}
 			else
 			{
@@ -683,7 +694,7 @@ void Fleet::output_field_final(const Fleet& fleet2)const //Передаём только враже
 	std::cout << std::endl;
 }
 
-void Fleet::output_field_id_indexes()const
+void Fleet::output_field_id()const
 {
 	//DEBUG FUNC
 	std::cout << "id[" << side_ << "](NOT FOR USER): \n\n";
@@ -693,6 +704,22 @@ void Fleet::output_field_id_indexes()const
 		for (unsigned int x = 0; x < width_height; x++)
 		{
 			std::cout << field_id_[x][y].first << "|";
+		}
+		std::cout << std::endl;
+	}
+	std::cout << std::endl << std::endl << std::endl;
+}
+
+void Fleet::output_field_index()const
+{
+	//DEBUG FUNC
+	std::cout << "index[" << side_ << "](NOT FOR USER): \n\n";
+	for (unsigned int y = 0; y < width_height; y++)
+	{
+		std::cout << "         |";
+		for (unsigned int x = 0; x < width_height; x++)
+		{
+			std::cout << field_id_[x][y].second << "|";
 		}
 		std::cout << std::endl;
 	}

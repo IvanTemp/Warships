@@ -35,7 +35,8 @@ public:
 	bool return_field_war(const unsigned& x, const unsigned& y)const;
 	void initialize_field_final();
 	void output_field_final(const Fleet& fleet2)const;
-	void output_field_id_indexes()const;
+	void output_field_id()const;
+	void output_field_index()const;
 	void output_field_war()const;
 	void field_get_vision(const unsigned int x, const unsigned int y);
 	std::pair<int, int> return_x_y(const int& id)const;

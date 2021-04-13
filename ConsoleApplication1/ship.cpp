@@ -104,7 +104,7 @@ void Ship::set_durability(const std::vector<int> &durability)
 }
 
 unsigned int Ship::get_durability_sum() const {
-    unsigned int sum = 0;
+    int sum = 0;
     for (auto& i : durability_) {
         sum += i;
     }

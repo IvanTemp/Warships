@@ -76,9 +76,11 @@ int main(int argc, char* argv[]) {
 	if (DEBUG_MODE) {
 		fleet_1.print(std::cout);
 		fleet_2.print(std::cout);
-		fleet_1.output_field_id_indexes();
+		fleet_1.output_field_id();
+		fleet_1.output_field_index();
 		fleet_1.output_field_war();
-		fleet_2.output_field_id_indexes();
+		fleet_2.output_field_id();
+		fleet_2.output_field_index();
 		fleet_2.output_field_war();
 		////INITIALISATION FIELDS
 		fleet_1.initialize_field_final();
