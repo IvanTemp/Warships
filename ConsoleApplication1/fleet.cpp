@@ -169,12 +169,12 @@ void Fleet::damage_by_index_bot(const int dmg, const int difficulty) {
 }
 
 void Fleet::ai(const int id, int dmg, const int difficulty, Fleet& fleet_of_player) {
-	//Gura AI(not copyrighted) Reborn
+	//Gura AI(not copyrighted) Reborn v1.02
 	srand(time(nullptr));
 	const std::string type = ship_vector_[id].get_type()->get_name();
 
 	std::cout << "Bot's ship is " << type << std::endl;
-	if (DEBUG_MODE) std::cout << "[GURA AI]Current position: " << return_x_y(id + 2).first << return_x_y(id + 2).second << std::endl;
+	if (DEBUG_MODE) std::cout << "[GURA AI]Current position: " << int_to_letter(return_x_y(id + 2).first) << return_x_y(id + 2).second << std::endl;
 	
 	if (type == "Small")
 	{
@@ -423,37 +423,42 @@ void Fleet::aircraft_attack_player(const bool angle, const int dmg)
 	}
 }
 
-void Fleet::aircraft_attack_bot(const bool angle, const int dmg, const int difficulty)
+void Fleet::aircraft_attack_bot(const bool angle, const int dmg, int difficulty)
 {
 	bool GwSUtPaLT = true; //Gura was still unable to plant a large tree
 	int x = 0, y = 0, random_x = 0, random_y = 0, attempts = 0, counter = 0, max = 0;
+	
+	if (difficulty == 2) difficulty = 49;
 
 	while (GwSUtPaLT && attempts < difficulty + 1)
 	{
-		if (bots_memory.empty()) {//I)Сканируем на количество неисследованных клеток, подбираем наиболее подходящий(если сложность hard)
+		if (bots_memory.empty()) {//I)Сканируем на количество неисследованных клеток и наличие на них кораблей, подбираем наиболее подходящий(если сложность hard)
 			counter = 0;
 			random_x = 1 + rand() % (width_height - 1);
 			random_y = 1 + rand() % (width_height - 1);
-			for (int i = y - 1; i < y + 3; i++)
+			switch (angle)
 			{
-				for (int j = x - 1; j < x + 3; j++)
-				{
-					if (!field_war_[j][i])
-					{
-						counter++;
-					}
-				}
+			case 1: //horizontal
+				if (field_id_[random_x - 1][random_y].first > 1 && !field_war_[random_x - 1][random_y]) counter++;
+				if (field_id_[random_x][random_y].first > 1 && !field_war_[random_x][random_y]) counter++;
+				if (field_id_[random_x + 1][random_y].first > 1 && !field_war_[random_x + 1][random_y]) counter++;
+				break;
+			case 0: //vertical
+				if (field_id_[random_x][random_y - 1].first > 1 && !field_war_[random_x][random_y - 1]) counter++;
+				if (field_id_[random_x][random_y].first > 1 && !field_war_[random_x][random_y]) counter++;
+				if (field_id_[random_x][random_y + 1].first > 1 && !field_war_[random_x][random_y + 1]) counter++;
+				break;
 			}
-			if (max < counter) {
+			if (counter > max) {
 				max = counter;
 				x = random_x;
 				y = random_y;
 			}
-			if (difficulty < 2) attempts++;
-			else if (field_id_[x][y].first > 1)
-			{
+			if (counter == 3) {
 				GwSUtPaLT = false;
 			}
+			counter = 0;
+			attempts++;
 		}
 		else { //II)Finishing off found ships
 			x = bots_memory[0].first;

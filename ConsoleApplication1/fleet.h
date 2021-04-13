@@ -24,7 +24,7 @@ public:
 	void damage_by_index_player(Ship &sheep);
 	void heavy_cruiser_attack_bot(const int dmg, const int difficulty);
 	void aircraft_attack_player(const bool angle, const int dmg);
-	void aircraft_attack_bot(const bool angle, const int dmg, const int difficulty);
+	void aircraft_attack_bot(const bool angle, const int dmg, int difficulty);
 	void heavy_cruiser_attack_player(const int dmg);
 	void nuclear_bomb();
 	Fleet& operator +=(const Ship& ship); //add ship
