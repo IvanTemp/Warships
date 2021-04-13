@@ -151,7 +151,7 @@ void Fleet::damage_by_index_bot(const int dmg, const int difficulty) {
 			GwSUtPaLT = false;
 		}
 	}
-	if (DEBUG_MODE) std::cout << "[DEBUG INFO]Gura AI(c) decided that: x = " << x << "; y = " << y << std::endl;
+	if (DEBUG_MODE) std::cout << "[DEFAULT DAMAGE BOT]Gura AI(c) decided that: x = " << x << "; y = " << y << std::endl;
 
 	const char string_x = int_to_letter(x);
 
@@ -169,7 +169,7 @@ void Fleet::damage_by_index_bot(const int dmg, const int difficulty) {
 }
 
 void Fleet::ai(const int id, int dmg, const int difficulty, Fleet& fleet_of_player) {
-	//Gura AI(not copyrighted) Reborn v1.02
+	//Gura AI(not copyrighted) Reborn v1.02.1
 	srand(time(nullptr));
 	const std::string type = ship_vector_[id].get_type()->get_name();
 
@@ -235,7 +235,7 @@ void Fleet::damage_by_index_player(Ship &sheep) { //sheep - who is attack
 	unsigned int dmg = sheep.get_type()->get_damage_value();
 	char char_x;
 	std::cin >> char_x >> y;
-	if (DEBUG_MODE) std::cout << "[DEBUG INFO]X = " << char_x << "; Y = " << y << std::endl;
+	if (DEBUG_MODE) std::cout << "[DEFAULT DAMAGE PLAYER]X = " << char_x << "; Y = " << y << std::endl;
 
 	if (y > width_height) {
 		std::cout << "Captain! You shot out of bounds!" << std::endl;
@@ -250,7 +250,7 @@ void Fleet::damage_by_index_player(Ship &sheep) { //sheep - who is attack
 		return;
 	}
 
-	if (DEBUG_MODE) { std::cout << "[DEBUG INFO]int X = " << x << " Y = " << y << std::endl; }
+	if (DEBUG_MODE) { std::cout << "[DEFAULT DAMAGE PLAYER]int X = " << x << " Y = " << y << std::endl; }
 
 	if (field_id_[x][y].first > 1)
 	{
@@ -347,7 +347,7 @@ void Fleet::aircraft_attack_player(const bool angle, const int dmg)
 	int x = 0, y = -1;
 	char char_x = ' ';
 	std::cin >> char_x >> y;
-	if (DEBUG_MODE) std::cout << "[DEBUG INFO]X = " << char_x << "; Y = " << y << std::endl;
+	if (DEBUG_MODE) std::cout << "[AIRCRAFT ATTACK PLAYER]X = " << char_x << "; Y = " << y << std::endl;
 
 	if (y > width_height) {
 		std::cout << "Captain! You shot out of bounds!" << std::endl;
@@ -362,7 +362,7 @@ void Fleet::aircraft_attack_player(const bool angle, const int dmg)
 		return;
 	}
 
-	if (DEBUG_MODE) { std::cout << "[DEBUG INFO]int X = " << x << " Y = " << y << std::endl; }
+	if (DEBUG_MODE) { std::cout << "[AIRCRAFT ATTACK PLAYER]int X = " << x << " Y = " << y << std::endl; }
 
 	if (angle) // horizontal
 	{
@@ -455,6 +455,8 @@ void Fleet::aircraft_attack_bot(const bool angle, const int dmg, int difficulty)
 				y = random_y;
 			}
 			if (counter == 3) {
+				x = random_x;
+				y = random_y;
 				GwSUtPaLT = false;
 			}
 			counter = 0;
@@ -514,7 +516,7 @@ void Fleet::heavy_cruiser_attack_player(const int dmg)
 	int x = 0, y = -1;
 	char char_x;
 	std::cin >> char_x >> y;
-	if (DEBUG_MODE) std::cout << "[DEBUG INFO]X = " << char_x << "; Y = " << y << std::endl;
+	if (DEBUG_MODE) std::cout << "[HEAVY CRUISER ATTACK PLAYER]X = " << char_x << "; Y = " << y << std::endl;
 
 	if (y > width_height)
 	{
@@ -530,7 +532,7 @@ void Fleet::heavy_cruiser_attack_player(const int dmg)
 		return;
 	}
 
-	if (DEBUG_MODE) { std::cout << "[DEBUG INFO]int X = " << x << " Y = " << y << std::endl; }
+	if (DEBUG_MODE) { std::cout << "[HEAVY CRUISER ATTACK PLAYER]int X = " << x << " Y = " << y << std::endl; }
 	x--;
 	y--;
 	int temp_x = x, temp_y = y;
@@ -1036,7 +1038,7 @@ void Fleet::generate_fleet()
 
 void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 {
-	if constexpr (DEBUG_MODE) { std::cout << "[DEBUG INFO]order[round] = " << current_ship_id << std::endl; }
+	if constexpr (DEBUG_MODE) { std::cout << "[DO ACTION]order[round] = " << current_ship_id << std::endl; }
 	std::cout << "Current position: " << int_to_letter(return_x_y(current_ship_id + 2).first) << " " << return_x_y(current_ship_id + 2).second << std::endl;
 	std::cout << "Current type: " << ship_vector_[current_ship_id].get_type()->get_name() << std::endl;
 	std::cout << "What do you want?\n\n";
