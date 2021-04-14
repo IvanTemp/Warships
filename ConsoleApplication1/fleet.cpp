@@ -243,7 +243,7 @@ void Fleet::ai(const int id, int dmg, const int difficulty, Fleet& fleet_of_play
 	}
 	else {
 		std::cout << "This ship is sunk, bot miss this turn." << std::endl;
-		system("cls");
+		if (!DEBUG_MODE) system("cls");
 		return;
 	}
 }
@@ -1186,7 +1186,7 @@ void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 		else
 		{
 			std::cout << "This ship is sunk, you miss this turn." << std::endl;
-			system("cls");
+			if (!DEBUG_MODE) system("cls");
 			return;
 		}
 	}
