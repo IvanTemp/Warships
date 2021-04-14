@@ -19,7 +19,7 @@ public:
 	bool remove_ship_from_fleet(const Ship& ship);
 	bool get_side() const;
 	Ship get_ship_by_index(const unsigned int id)const;
-	void damage_by_index_bot(const int dmg, const int difficulty);
+	void damage_by_index_bot(Ship sheep, const int difficulty);
 	void ai(const int id, int dmg, const int difficulty, Fleet& fleet_of_player);
 	void damage_by_index_player(Ship &sheep);
 	void heavy_cruiser_attack_bot(const int dmg, int difficulty);

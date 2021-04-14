@@ -128,9 +128,10 @@ Ship Fleet::get_ship_by_index(const unsigned int id)const {
 	//}
 }
 
-void Fleet::damage_by_index_bot(const int dmg, const int difficulty) {
+void Fleet::damage_by_index_bot(Ship sheep, const int difficulty) { //sheep - who is attack
 	bool GwSUtPaLT = true; //Gura was still unable to plant a large tree
 	int x = 0, y = 0, attempts = 0;
+	int dmg = sheep.get_type()->get_damage_value();
 
 	while (GwSUtPaLT && attempts < difficulty + 1)
 	{
@@ -154,6 +155,14 @@ void Fleet::damage_by_index_bot(const int dmg, const int difficulty) {
 	const char string_x = int_to_letter(x);
 
 	if (field_id_[x][y].first > 1) {
+		if (ship_vector_[field_id_[x][y].first - 2].get_type()->get_name() == "Small" && sheep.get_type()->get_name() == "Tsundere")
+		{
+			dmg = Small_Durability;
+		}
+		else if (ship_vector_[field_id_[x][y].first - 2].get_type()->get_name() == "Aircraft Carrier" && sheep.get_type()->get_name() == "Small")
+		{
+			dmg *= 2;
+		}
 		get_damage(dmg, x, y);
 		if (ship_vector_[field_id_[x][y].first - 2].get_durability_sum())
 		{
@@ -167,7 +176,7 @@ void Fleet::damage_by_index_bot(const int dmg, const int difficulty) {
 }
 
 void Fleet::ai(const int id, int dmg, const int difficulty, Fleet& fleet_of_player) {
-	//Gura AI(not copyrighted) Reborn v1.05.1
+	//Gura AI(not copyrighted) Reborn v1.06
 	srand(time(nullptr));
 	const std::string type = ship_vector_[id].get_type()->get_name();
 
@@ -180,7 +189,7 @@ void Fleet::ai(const int id, int dmg, const int difficulty, Fleet& fleet_of_play
 			const std::pair <int, int> coordinates = return_x_y(id + 2);
 			if (!field_war_[coordinates.first][coordinates.second]) //Если корабль не обнаружен, то атакуем
 			{
-				fleet_of_player.damage_by_index_bot(ship_vector_[id].get_type()->get_damage_value(), difficulty);
+				fleet_of_player.damage_by_index_bot(ship_vector_[id], difficulty);
 			}
 			else //move
 			{
@@ -205,7 +214,7 @@ void Fleet::ai(const int id, int dmg, const int difficulty, Fleet& fleet_of_play
 		{
 			if (ship_vector_[id].get_durability_sum() == ship_vector_[id].get_type()->get_default_durability() * ship_vector_[id].get_type()->get_size()) //Если хп полное
 			{
-				fleet_of_player.damage_by_index_bot(ship_vector_[id].get_type()->get_damage_value(), difficulty);
+				fleet_of_player.damage_by_index_bot(ship_vector_[id], difficulty);
 			}
 			else //repair
 			{
@@ -242,7 +251,7 @@ void Fleet::ai(const int id, int dmg, const int difficulty, Fleet& fleet_of_play
 void Fleet::damage_by_index_player(Ship &sheep) { //sheep - who is attack
 	std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
 	int x = 0, y = -1;
-	unsigned int dmg = sheep.get_type()->get_damage_value();
+	int dmg = sheep.get_type()->get_damage_value();
 	char char_x;
 	std::cin >> char_x >> y;
 	if (DEBUG_MODE) std::cout << "[DEFAULT DAMAGE PLAYER]X = " << char_x << "; Y = " << y << std::endl;
