@@ -132,12 +132,6 @@ void Fleet::damage_by_index_bot(const int dmg, const int difficulty) {
 	bool GwSUtPaLT = true; //Gura was still unable to plant a large tree
 	int x = 0, y = 0, attempts = 0;
 
-	for (int i = 0; i < bots_memory.size(); i++) {
-		if (!get_ship_by_index(field_id_[bots_memory[i].first][bots_memory[i].second].first).get_durability_sum()) {
-			bots_memory.resize(bots_memory.size() - 1);
-		}
-	}
-
 	while (GwSUtPaLT && attempts < difficulty + 1)
 	{
 		if (bots_memory.empty()) {//I)Сканируем на количество неисследованных клеток и наличие на них кораблей, подбираем наиболее подходящий(если сложность hard)
@@ -287,12 +281,6 @@ void Fleet::heavy_cruiser_attack_bot(const int dmg, int difficulty)
 
 	if (difficulty == 2) {
 		difficulty = 49;
-	}
-
-	for (int i = 0; i < bots_memory.size(); i++) {
-		if (!get_ship_by_index(field_id_[bots_memory[i].first][bots_memory[i].second].first).get_durability_sum()) {
-			bots_memory.resize(bots_memory.size() - 1);
-		}
 	}
 
 	while (GwSUtPaLT && attempts < difficulty + 1)
@@ -445,9 +433,10 @@ void Fleet::aircraft_attack_bot(const bool angle, const int dmg, int difficulty)
 		difficulty = 49;
 	}
 
-	for (int i = 0; i < bots_memory.size(); i++) {
-		if (!get_ship_by_index(field_id_[bots_memory[i].first][bots_memory[i].second].first).get_durability_sum()) {
-			bots_memory.resize(bots_memory.size() - 1);
+	if (DEBUG_MODE) {
+		std::cout << "[AIRCRAFT ATTACK BOT]Bots_memory:" << std::endl;
+		for (auto& i : bots_memory) {
+			std::cout << "[AIRCRAFT ATTACK BOT]X = " << i.first << "; Y = " << i.second << std::endl;
 		}
 	}
 
