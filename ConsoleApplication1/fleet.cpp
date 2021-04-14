@@ -167,11 +167,11 @@ void Fleet::damage_by_index_bot(const int dmg, const int difficulty) {
 }
 
 void Fleet::ai(const int id, int dmg, const int difficulty, Fleet& fleet_of_player) {
-	//Gura AI(not copyrighted) Reborn v1.05
+	//Gura AI(not copyrighted) Reborn v1.05.1
 	srand(time(nullptr));
 	const std::string type = ship_vector_[id].get_type()->get_name();
 
-	if (ship_vector_[id].get_durability_sum()) {
+	if (ship_vector_[id].get_durability_sum() || difficulty == 2) {
 		std::cout << "Bot's ship is " << type << std::endl;
 		if (DEBUG_MODE) std::cout << "[GURA AI]Current position: " << int_to_letter(return_x_y(id + 2).first) << return_x_y(id + 2).second << std::endl;
 
