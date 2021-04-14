@@ -29,6 +29,8 @@ public:
 	void nuclear_bomb();
 	Fleet& operator +=(const Ship& ship); //add ship
 	Fleet& operator -=(const Ship& ship); //del ship
+	bool operator ==(const Fleet& flood);
+	bool operator !=(const Fleet& flood);
 	std::string return_field_final(const unsigned& x, const unsigned& y)const;
 	unsigned int return_field_id(const unsigned& x, const unsigned& y)const;
 	unsigned int return_field_index(const unsigned& x, const unsigned& y)const;

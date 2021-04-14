@@ -97,14 +97,14 @@ int main(int argc, char* argv[]) {
 	output_achievement_info(achievement_array);
 	//////////////
 
-	if (fleet_1.get_ship_vector().size() != fleet_2.get_ship_vector().size()) {
-		std::cout << "Warning! Different number of ships in fleets! Ironman mode is disabled." << std::endl << std::endl;
+	if (fleet_1 != fleet_2) {
+		std::cout << "Warning! Dizballans! Ironman mode is disabled." << std::endl << std::endl;
 		ironman = false;
 	}
 
 	//TURNS
-	//std::vector <unsigned int> order = first_order(std::max(fleet_1.get_ship_vector().size(), fleet_2.get_ship_vector().size()));
-	std::vector <unsigned int> order = { 0 };
+	std::vector <unsigned int> order = first_order(std::max(fleet_1.get_ship_vector().size(), fleet_2.get_ship_vector().size()));
+	//std::vector <unsigned int> order = { 0 };
 	std::cout << "Start game?\n";
 	system("pause");
 
@@ -268,6 +268,6 @@ int main(int argc, char* argv[]) {
 		fleet_2.print(out);
 		out.close();
 	}
-
+	system("pause");
 	return 0;
 }

@@ -128,23 +128,7 @@ int Ship::get_id() const
 
 bool Ship::operator==(const Ship& right) const
 {
-    //bool durabilityIsEqual = false;
-    //std::string s = std::to_string(durability_.size()) + std::to_string(right.durability_.size());
-    //std::sort(s.begin(), s.end());
-    //for (int x = 0; x < s[0] - '0'; x++)
-    //{
-    //    if (durability_[x] == right.durability_[x])
-    //    {
-    //        durabilityIsEqual = 1;
-    //    }
-    //    else
-    //    {
-    //        durabilityIsEqual = 0;
-    //        break;
-    //    }
-    //}
-    //return (name_ == right.name_ && type_ == right.type_ && id_ == right.id_ && durabilityIsEqual);
-    return (name_ == right.name_ && type_ == right.type_ && id_ == right.id_ && durability_ == right.durability_);
+    return (type_->get_name() == right.type_->get_name() && id_ == right.id_ && durability_ == right.durability_);
 }
 
 bool Ship::operator!=(const Ship& right) const

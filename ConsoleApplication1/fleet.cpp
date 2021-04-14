@@ -88,27 +88,27 @@ bool Fleet::add_ship_to_fleet(const Ship& shp)
 bool Fleet::remove_ship_from_fleet(const Ship& shp)
 {
 	//Проверка на пустой
-	int len = ship_vector_.size();
+	int ship_vector_size_start = ship_vector_.size();
 	if (ship_vector_.begin() == ship_vector_.end())
 		return false;
 	//Добавим проверку удаления несуществующего
-	bool flag = 0;
+	bool flag = false;
 	for (auto& i : ship_vector_)
 	{
 		if (i == shp)
 		{
 			//Само удаление
 			ship_vector_.erase(std::remove(ship_vector_.begin(), ship_vector_.end(), shp));
-			flag = 1;
+			flag = true;
 			std::cout << "One ship removed!" << std::endl;
-			return (len > ship_vector_.size());
+			return flag;
 		}
 	}
 	if (!flag)
 	{
 		std::cout << "No ship to delete" << std::endl;
-		return false;
 	}
+	return flag;
 }
 
 bool Fleet::get_side()const {
@@ -175,76 +175,82 @@ void Fleet::damage_by_index_bot(Ship sheep, const int difficulty) { //sheep - wh
 	field_get_vision(x, y);
 }
 
-void Fleet::ai(const int id, int dmg, const int difficulty, Fleet& fleet_of_player) {
-	//Gura AI(not copyrighted) Reborn v1.06
+void Fleet::ai(const int current_ship_id, int dmg, const int difficulty, Fleet& fleet_of_player) {
+	//Gura AI(not copyrighted) Reborn v1.07
 	srand(time(nullptr));
-	const std::string type = ship_vector_[id].get_type()->get_name();
+	const std::string type = ship_vector_[current_ship_id].get_type()->get_name();
 
-	if (ship_vector_[id].get_durability_sum() || difficulty == 2) {
-		std::cout << "Bot's ship is " << type << std::endl;
-		if (DEBUG_MODE) std::cout << "[GURA AI]Current position: " << int_to_letter(return_x_y(id + 2).first) << return_x_y(id + 2).second << std::endl;
+	if (ship_vector_.size() > current_ship_id) {
+		if (ship_vector_[current_ship_id].get_durability_sum() || difficulty == 2) {
+			std::cout << "Bot's ship is " << type << std::endl;
+			if (DEBUG_MODE) std::cout << "[GURA AI]Current position: " << int_to_letter(return_x_y(current_ship_id + 2).first) << return_x_y(current_ship_id + 2).second << std::endl;
 
-		if (type == "Small")
-		{
-			const std::pair <int, int> coordinates = return_x_y(id + 2);
-			if (!field_war_[coordinates.first][coordinates.second]) //Если корабль не обнаружен, то атакуем
+			if (type == "Small")
 			{
-				fleet_of_player.damage_by_index_bot(ship_vector_[id], difficulty);
-			}
-			else //move
-			{
-				std::vector<std::pair<int, int>> possible_coordinates;
-				field_id_[coordinates.first][coordinates.second].first = 0;
-				for (int y = coordinates.second - 1; y < coordinates.second + 1; y++)
+				const std::pair <int, int> coordinates = return_x_y(current_ship_id + 2);
+				if (!field_war_[coordinates.first][coordinates.second]) //Если корабль не обнаружен, то атакуем
 				{
-					for (int x = coordinates.first - 1; x < coordinates.first + 1; x++)
+					fleet_of_player.damage_by_index_bot(ship_vector_[current_ship_id], difficulty);
+				}
+				else //move
+				{
+					std::vector<std::pair<int, int>> possible_coordinates;
+					field_id_[coordinates.first][coordinates.second].first = 0;
+					for (int y = coordinates.second - 1; y < coordinates.second + 1; y++)
 					{
-						if (area_is_clear(x, y) && !field_war_[x][y]) //Если клетка пустая и неизведанная
+						for (int x = coordinates.first - 1; x < coordinates.first + 1; x++)
 						{
-							possible_coordinates.emplace_back(std::make_pair(x, y));
+							if (area_is_clear(x, y) && !field_war_[x][y]) //Если клетка пустая и неизведанная
+							{
+								possible_coordinates.emplace_back(std::make_pair(x, y));
+							}
 						}
 					}
+					field_id_[coordinates.first][coordinates.second].first = current_ship_id + 2;
+					small_move_bot(possible_coordinates[rand() % possible_coordinates.size() - 1], current_ship_id);
+					initialize_field_final();
 				}
-				field_id_[coordinates.first][coordinates.second].first = id + 2;
-				small_move_bot(possible_coordinates[rand() % possible_coordinates.size() - 1], id);
-				initialize_field_final();
 			}
-		}
-		else if (type == "Tsundere")
-		{
-			if (ship_vector_[id].get_durability_sum() == ship_vector_[id].get_type()->get_default_durability() * ship_vector_[id].get_type()->get_size()) //Если хп полное
+			else if (type == "Tsundere")
 			{
-				fleet_of_player.damage_by_index_bot(ship_vector_[id], difficulty);
+				if (ship_vector_[current_ship_id].get_durability_sum() == ship_vector_[current_ship_id].get_type()->get_default_durability() * ship_vector_[current_ship_id].get_type()->get_size()) //Если хп полное
+				{
+					fleet_of_player.damage_by_index_bot(ship_vector_[current_ship_id], difficulty);
+				}
+				else //repair
+				{
+					ship_vector_[current_ship_id]++;
+					std::cout << "Ship repaired!" << std::endl;
+					initialize_field_final();
+				}
 			}
-			else //repair
+			else if (type == "Heavy Cruiser")
 			{
-				ship_vector_[id]++;
-				std::cout << "Ship repaired!" << std::endl;
-				initialize_field_final();
+				fleet_of_player.heavy_cruiser_attack_bot(ship_vector_[current_ship_id].get_type()->get_damage_value(), difficulty);
+				fleet_of_player.initialize_field_final();
 			}
-		}
-		else if (type == "Heavy Cruiser")
-		{
-			fleet_of_player.heavy_cruiser_attack_bot(ship_vector_[id].get_type()->get_damage_value(), difficulty);
-			fleet_of_player.initialize_field_final();
-		}
-		else
-		{
-			switch (rand() % 2)
+			else
 			{
-			case 0: //vertical
-				fleet_of_player.aircraft_attack_bot(false, ship_vector_[id].get_type()->get_damage_value(), difficulty);
-				break;
-			case 1: //horisontal
-				fleet_of_player.aircraft_attack_bot(true, ship_vector_[id].get_type()->get_damage_value(), difficulty);
-				break;
+				switch (rand() % 2)
+				{
+				case 0: //vertical
+					fleet_of_player.aircraft_attack_bot(false, ship_vector_[current_ship_id].get_type()->get_damage_value(), difficulty);
+					break;
+				case 1: //horisontal
+					fleet_of_player.aircraft_attack_bot(true, ship_vector_[current_ship_id].get_type()->get_damage_value(), difficulty);
+					break;
+				}
 			}
 		}
-	}
-	else {
-		std::cout << "This ship is sunk, bot miss this turn." << std::endl;
-		if (!DEBUG_MODE) system("cls");
-		return;
+		else {
+			std::cout << "This ship is sunk, bot miss this turn." << std::endl;
+			if (!DEBUG_MODE) system("cls");
+			return;
+		}
+	} else {
+		 std::cout << "This ship disapperared, you miss this turn." << std::endl;
+		 if (!DEBUG_MODE) system("cls");
+		 return;
 	}
 }
 
@@ -637,6 +643,20 @@ Fleet& Fleet::operator-=(const Ship& ship)
 {
 	remove_ship_from_fleet(ship);
 	return *this;
+}
+
+bool Fleet::operator==(const Fleet& flood)
+{
+	if (ship_vector_.size() != flood.ship_vector_.size()) return false;
+	for (int i = 0; i < ship_vector_.size(); i++) {
+		if (ship_vector_[i] != flood.ship_vector_[i]) return false;
+	}
+	return true;
+}
+
+bool Fleet::operator!=(const Fleet& flood)
+{
+	return !(*this == flood);
 }
 
 std::istream& operator>>(std::istream& in, Fleet& shp)
@@ -1112,80 +1132,86 @@ void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 	std::string action;
 	while (true)
 	{
-		if (ship_vector_[current_ship_id].get_durability_sum())
-		{
-			if (ship_vector_[current_ship_id].get_type()->get_name() == "Small")
+		if (ship_vector_.size() > current_ship_id) {
+			if (ship_vector_[current_ship_id].get_durability_sum())
 			{
-				std::cout << "-Shoot\n-Move\n" << std::endl;
-				std::cin >> action;
-				ha_you_are_small_now(action);
-				if (action == "shoot")
+				if (ship_vector_[current_ship_id].get_type()->get_name() == "Small")
+				{
+					std::cout << "-Shoot\n-Move\n" << std::endl;
+					std::cin >> action;
+					ha_you_are_small_now(action);
+					if (action == "shoot")
+					{
+						//Shot
+						whom.damage_by_index_player(ship_vector_[current_ship_id]);
+						break;
+					}
+					if (action == "move")
+					{
+						small_move_player(current_ship_id);
+						initialize_field_final();
+						break;
+					}
+					std::cout << "Wrong command!" << std::endl;
+					system("pause");
+					continue;
+				}
+				if (ship_vector_[current_ship_id].get_type()->get_name() == "Tsundere")
+				{
+					std::cout << "-Shoot\n-Repair\n" << std::endl;
+					std::cin >> action;
+					ha_you_are_small_now(action);
+					if (action == "shoot")
+					{
+						whom.damage_by_index_player(ship_vector_[current_ship_id]);
+						break;
+					}
+					if (action == "repair")
+					{
+						ship_vector_[current_ship_id]++;
+						std::cout << "Ship repaired!" << std::endl;
+						initialize_field_final();
+						break;
+					}
+					std::cout << "Wrong command!" << std::endl;
+					system("pause");
+					continue;
+				}
+				if (ship_vector_[current_ship_id].get_type()->get_name() == "Heavy Cruiser")
 				{
 					//Shot
-					whom.damage_by_index_player(ship_vector_[current_ship_id]);
+					std::cout << "Point the center where to shoot (Write X and Y coordinates): ";
+					whom.heavy_cruiser_attack_player(ship_vector_[current_ship_id].get_type()->get_damage_value());
 					break;
 				}
-				if (action == "move")
+				if (ship_vector_[current_ship_id].get_type()->get_name() == "Aircraft Carrier")
 				{
-					small_move_player(current_ship_id);
-					initialize_field_final();
-					break;
+					ha_you_are_small_now(action);
+					std::cout << "Specify the type of attack (1x3 or 3x1): \n" << std::endl;
+					std::cin >> action;
+					ha_you_are_small_now(action);
+					if (action == "1x3" || action == "1")
+					{
+						whom.aircraft_attack_player(true, ship_vector_[current_ship_id].get_type()->get_damage_value());
+						break;
+					}
+					if (action == "3x1" || action == "3")
+					{
+						whom.aircraft_attack_player(false, ship_vector_[current_ship_id].get_type()->get_damage_value());
+						break;
+					}
+					std::cout << "Wrong command!" << std::endl;
+					system("pause");
 				}
-				std::cout << "Wrong command!" << std::endl;
-				system("pause");
-				continue;
 			}
-			if (ship_vector_[current_ship_id].get_type()->get_name() == "Tsundere")
+			else
 			{
-				std::cout << "-Shoot\n-Repair\n" << std::endl;
-				std::cin >> action;
-				ha_you_are_small_now(action);
-				if (action == "shoot")
-				{
-					whom.damage_by_index_player(ship_vector_[current_ship_id]);
-					break;
-				}
-				if (action == "repair")
-				{
-					ship_vector_[current_ship_id]++;
-					std::cout << "Ship repaired!" << std::endl;
-					initialize_field_final();
-					break;
-				}
-				std::cout << "Wrong command!" << std::endl;
-				system("pause");
-				continue;
+				std::cout << "This ship is sunk, you miss this turn." << std::endl;
+				if (!DEBUG_MODE) system("cls");
+				return;
 			}
-			if (ship_vector_[current_ship_id].get_type()->get_name() == "Heavy Cruiser")
-			{
-				//Shot
-				std::cout << "Point the center where to shoot (Write X and Y coordinates): ";
-				whom.heavy_cruiser_attack_player(ship_vector_[current_ship_id].get_type()->get_damage_value());
-				break;
-			}
-			if (ship_vector_[current_ship_id].get_type()->get_name() == "Aircraft Carrier")
-			{
-				ha_you_are_small_now(action);
-				std::cout << "Specify the type of attack (1x3 or 3x1): \n" << std::endl;
-				std::cin >> action;
-				ha_you_are_small_now(action);
-				if (action == "1x3" || action == "1")
-				{
-					whom.aircraft_attack_player(true, ship_vector_[current_ship_id].get_type()->get_damage_value());
-					break;
-				}
-				if (action == "3x1" || action == "3")
-				{
-					whom.aircraft_attack_player(false, ship_vector_[current_ship_id].get_type()->get_damage_value());
-					break;
-				}
-				std::cout << "Wrong command!" << std::endl;
-				system("pause");
-			}
-		}
-		else
-		{
-			std::cout << "This ship is sunk, you miss this turn." << std::endl;
+		} else {
+			std::cout << "This ship disapperared, you miss this turn." << std::endl;
 			if (!DEBUG_MODE) system("cls");
 			return;
 		}
