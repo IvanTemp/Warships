@@ -167,63 +167,75 @@ void Fleet::damage_by_index_bot(const int dmg, const int difficulty) {
 }
 
 void Fleet::ai(const int id, int dmg, const int difficulty, Fleet& fleet_of_player) {
-	//Gura AI(not copyrighted) Reborn v1.04.1
+	//Gura AI(not copyrighted) Reborn v1.05
 	srand(time(nullptr));
 	const std::string type = ship_vector_[id].get_type()->get_name();
 
-	std::cout << "Bot's ship is " << type << std::endl;
-	if (DEBUG_MODE) std::cout << "[GURA AI]Current position: " << int_to_letter(return_x_y(id + 2).first) << return_x_y(id + 2).second << std::endl;
-	
-	if (type == "Small")
-	{
-		const std::pair <int, int> coordinates = return_x_y(id + 2);
-		if (!field_war_[coordinates.first][coordinates.second]) //Если корабль не обнаружен, то атакуем
+	if (ship_vector_[id].get_durability_sum()) {
+		std::cout << "Bot's ship is " << type << std::endl;
+		if (DEBUG_MODE) std::cout << "[GURA AI]Current position: " << int_to_letter(return_x_y(id + 2).first) << return_x_y(id + 2).second << std::endl;
+
+		if (type == "Small")
 		{
-			fleet_of_player.damage_by_index_bot(ship_vector_[id].get_type()->get_damage_value(), difficulty);
-		} else //move
-		{
-			std::vector<std::pair<int, int>> possible_coordinates;
-			field_id_[coordinates.first][coordinates.second].first = 0;
-			for (int y = coordinates.second - 1; y < coordinates.second + 1; y++)
+			const std::pair <int, int> coordinates = return_x_y(id + 2);
+			if (!field_war_[coordinates.first][coordinates.second]) //Если корабль не обнаружен, то атакуем
 			{
-				for (int x = coordinates.first - 1; x < coordinates.first + 1; x++)
+				fleet_of_player.damage_by_index_bot(ship_vector_[id].get_type()->get_damage_value(), difficulty);
+			}
+			else //move
+			{
+				std::vector<std::pair<int, int>> possible_coordinates;
+				field_id_[coordinates.first][coordinates.second].first = 0;
+				for (int y = coordinates.second - 1; y < coordinates.second + 1; y++)
 				{
-					if (area_is_clear(x,y) && !field_war_[x][y]) //Если клетка пустая и неизведанная
+					for (int x = coordinates.first - 1; x < coordinates.first + 1; x++)
 					{
-						possible_coordinates.emplace_back(std::make_pair(x, y));
+						if (area_is_clear(x, y) && !field_war_[x][y]) //Если клетка пустая и неизведанная
+						{
+							possible_coordinates.emplace_back(std::make_pair(x, y));
+						}
 					}
 				}
+				field_id_[coordinates.first][coordinates.second].first = id + 2;
+				small_move_bot(possible_coordinates[rand() % possible_coordinates.size() - 1], id);
+				initialize_field_final();
 			}
-			field_id_[coordinates.first][coordinates.second].first = id + 2;
-			small_move_bot(possible_coordinates[rand() % possible_coordinates.size() - 1], id);
-			initialize_field_final();
 		}
-	} else if (type == "Tsundere")
-	{
-		if (ship_vector_[id].get_durability_sum() == ship_vector_[id].get_type()->get_default_durability() * ship_vector_[id].get_type()->get_size()) //Если хп полное
+		else if (type == "Tsundere")
 		{
-			fleet_of_player.damage_by_index_bot(ship_vector_[id].get_type()->get_damage_value(), difficulty);
-		} else //repair
-		{
-			ship_vector_[id]++;
-			std::cout << "Ship repaired!" << std::endl;
-			initialize_field_final();
+			if (ship_vector_[id].get_durability_sum() == ship_vector_[id].get_type()->get_default_durability() * ship_vector_[id].get_type()->get_size()) //Если хп полное
+			{
+				fleet_of_player.damage_by_index_bot(ship_vector_[id].get_type()->get_damage_value(), difficulty);
+			}
+			else //repair
+			{
+				ship_vector_[id]++;
+				std::cout << "Ship repaired!" << std::endl;
+				initialize_field_final();
+			}
 		}
-	} else if (type == "Heavy Cruiser")
-	{
-		fleet_of_player.heavy_cruiser_attack_bot(ship_vector_[id].get_type()->get_damage_value(), difficulty);
-		fleet_of_player.initialize_field_final();
-	} else
-	{
-		switch(rand() % 2)
+		else if (type == "Heavy Cruiser")
 		{
-		case 0: //vertical
-			fleet_of_player.aircraft_attack_bot(false, ship_vector_[id].get_type()->get_damage_value(), difficulty);
-			break;
-		case 1: //horisontal
-			fleet_of_player.aircraft_attack_bot(true, ship_vector_[id].get_type()->get_damage_value(), difficulty);
-			break;
+			fleet_of_player.heavy_cruiser_attack_bot(ship_vector_[id].get_type()->get_damage_value(), difficulty);
+			fleet_of_player.initialize_field_final();
 		}
+		else
+		{
+			switch (rand() % 2)
+			{
+			case 0: //vertical
+				fleet_of_player.aircraft_attack_bot(false, ship_vector_[id].get_type()->get_damage_value(), difficulty);
+				break;
+			case 1: //horisontal
+				fleet_of_player.aircraft_attack_bot(true, ship_vector_[id].get_type()->get_damage_value(), difficulty);
+				break;
+			}
+		}
+	}
+	else {
+		std::cout << "This ship is sunk, bot miss this turn." << std::endl;
+		system("cls");
+		return;
 	}
 }
 
@@ -1165,6 +1177,7 @@ void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 		else
 		{
 			std::cout << "This ship is sunk, you miss this turn." << std::endl;
+			system("cls");
 			return;
 		}
 	}
