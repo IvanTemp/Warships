@@ -29,14 +29,14 @@ void Ship::print(std::ostream& out) const
     out << "Type: ";
         if (type_ != nullptr)
         {
-            std::cout << type_->get_name();
+            out << type_->get_name();
             if (type_->get_name().size() < 9) out << "\t";
         }
         else
         {
-            std::cout << "none BasicType";
+            out << "none BasicType";
         }
-    std::cout << "\t";
+    out << "\t";
     out << "Durability: ";
     for (auto i : durability_)
     {

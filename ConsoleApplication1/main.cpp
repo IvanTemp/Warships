@@ -242,13 +242,13 @@ int main(int argc, char* argv[]) {
 
 	//Issuance of achievements after the game
 	if (fleet_1.get_health() > fleet_2.get_health()) {
-		std::cout << fleet_1.get_name() << " won!";
+		std::cout << fleet_1.get_name() << " won!" << std::endl;
 		if (battle_mode == "pve" && ironman) {
 			give_achievement(achievement_array, difficulty);
 		}
 	}
 	else if (fleet_1.get_health() < fleet_2.get_health()) {
-		std::cout << fleet_2.get_name() << " won!";
+		std::cout << fleet_2.get_name() << " won!" << std::endl;
 	}
 	else { //IDK when it will be work :/
 		std::cout << "Friendship";
