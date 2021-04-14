@@ -167,7 +167,7 @@ void Fleet::damage_by_index_bot(const int dmg, const int difficulty) {
 }
 
 void Fleet::ai(const int id, int dmg, const int difficulty, Fleet& fleet_of_player) {
-	//Gura AI(not copyrighted) Reborn v1.04
+	//Gura AI(not copyrighted) Reborn v1.04.1
 	srand(time(nullptr));
 	const std::string type = ship_vector_[id].get_type()->get_name();
 
@@ -474,6 +474,24 @@ void Fleet::aircraft_attack_bot(const bool angle, const int dmg, int difficulty)
 			x = bots_memory[0].first;
 			y = bots_memory[0].second;
 			bots_memory.clear();
+			if (x == 0) {
+				if (angle) {
+					x++;
+				}
+			} else if (x == width_height - 1) {
+				if (angle) {
+					x--;
+				}
+			}
+			if (y == 0) {
+				if (!angle) {
+					y++;
+				}
+			} else if (x == width_height - 1) {
+				if (angle) {
+					y--;
+				}
+			}
 			GwSUtPaLT = false;
 		}
 	}
