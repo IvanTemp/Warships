@@ -12,7 +12,7 @@
 
 #define DEBUG_MODE 1
 
-#define SEED 0
+#define SEED 354735
 ///////////////
 
 class Ship
