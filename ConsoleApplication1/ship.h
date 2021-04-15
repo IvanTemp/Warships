@@ -10,9 +10,9 @@
 #define Tsundere_Durability 5
 #define Small_Durability 4
 
-#define DEBUG_MODE 1
+#define DEBUG_MODE 0
 
-#define SEED 354735 //0 - Pseudo-random
+#define SEED 0 //0 - Pseudo-random
 ///////////////
 
 class Ship

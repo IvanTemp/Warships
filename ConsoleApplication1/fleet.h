@@ -16,9 +16,12 @@ public:
 	std::vector<Ship> get_ship_vector()const;
 	unsigned int get_health()const;
 	bool add_ship_to_fleet(const Ship& ship);
-	bool remove_ship_from_fleet(const Ship& ship);
+	void remove_ship_from_fleet(const Ship& ship);
 	bool get_side() const;
 	Ship get_ship_by_index(const unsigned int id)const;
+	int find_small_ship_id();
+	int find_heavy_cruiser_ship_id();
+	int find_tsundere_ship_id();
 	void damage_by_index_bot(Ship sheep, int difficulty);
 	void ai(const int id, const int difficulty, Fleet& fleet_of_player);
 	void damage_by_index_player(Ship &sheep);
@@ -43,7 +46,9 @@ public:
 	void field_get_vision(const unsigned int x, const unsigned int y);
 	std::pair<int, int> return_x_y(const int& id)const;
 	void generate_fleet();
+	void clear_fields();
 	void do_action(Fleet& whom, const unsigned& current_ship_id);
+	void do_action_secret(Fleet& whom, Ship damager);
 	void get_damage(const int dmg, const unsigned int x, const unsigned int y);
 	void small_move_player(const std::pair<unsigned int, unsigned int>& start, const int& index);
 	void small_move_bot(const std::pair<int, int>& coordinates, const std::pair<unsigned int, unsigned int>& start, const int& index);

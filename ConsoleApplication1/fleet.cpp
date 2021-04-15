@@ -85,13 +85,8 @@ bool Fleet::add_ship_to_fleet(const Ship& shp)
 	return true;
 }
 
-bool Fleet::remove_ship_from_fleet(const Ship& shp)
+void Fleet::remove_ship_from_fleet(const Ship& shp)
 {
-	//Проверка на пустой
-	size_t ship_vector_size_start = ship_vector_.size();
-	if (ship_vector_.begin() == ship_vector_.end())
-		return false;
-	//Добавим проверку удаления несуществующего
 	bool flag = false;
 	for (auto& i : ship_vector_)
 	{
@@ -100,15 +95,13 @@ bool Fleet::remove_ship_from_fleet(const Ship& shp)
 			//Само удаление
 			ship_vector_.erase(std::remove(ship_vector_.begin(), ship_vector_.end(), shp));
 			flag = true;
-			std::cout << "One ship removed!" << std::endl;
-			return flag;
+			if constexpr (DEBUG_MODE) std::cout << "[REMOVE SHIP]One ship removed!" << std::endl;
 		}
 	}
 	if (!flag)
 	{
-		std::cout << "No ship to delete" << std::endl;
+		if constexpr (DEBUG_MODE) std::cout << "[REMOVE SHIP]No ship to delete" << std::endl;
 	}
-	return flag;
 }
 
 bool Fleet::get_side()const {
@@ -586,6 +579,7 @@ void Fleet::aircraft_attack_bot(const bool angle, const int dmg, int difficulty)
 
 void Fleet::heavy_cruiser_attack_player(const int dmg)
 {
+	std::cout << "Where are we going to scan? (Write X and Y coordinates): ";
 	int x = 0, y = -1;
 	char char_x;
 	std::cin >> char_x >> y;
@@ -1139,6 +1133,17 @@ void Fleet::generate_fleet()
 	}
 }
 
+void Fleet::clear_fields() {
+	for (int y = 0; y < width_height; y++) {
+		for (int x = 0; x < width_height; x++) {
+			field_war_[x][y] = 0;
+			field_id_[x][y].first = 0;
+			field_id_[x][y].second = 0;
+			field_final_[x][y] = "#";
+		}
+	}
+}
+
 void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 {
 	if constexpr (DEBUG_MODE) { std::cout << "[DO ACTION]order[round] = " << current_ship_id << std::endl; }
@@ -1235,6 +1240,55 @@ void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 	}
 	system("pause");
 	if constexpr (!DEBUG_MODE) { system("cls"); }
+}
+
+void Fleet::do_action_secret(Fleet& whom, Ship damager)
+{
+	std::cout << "What do you want?\n\n";
+	std::string action;
+	while (true) {
+		std::cout << "-Scan\n-Shoot\n" << std::endl;
+		std::cin >> action;
+		ha_you_are_small_now(action);
+		if (action == "scan" || action == "sc")
+		{
+			whom.heavy_cruiser_attack_player(0);
+			whom.initialize_field_final();
+			break;
+		}
+		if (action == "shoot" || action == "sh")
+		{
+			whom.damage_by_index_player(damager);
+			initialize_field_final();
+			break;
+		}
+		std::cout << "Wrong command!" << std::endl;
+		system("pause");
+		continue;
+	}
+	system("pause");
+	if constexpr (!DEBUG_MODE) { system("cls"); }
+}
+
+int	Fleet::find_small_ship_id() {
+	for (int i = 0; i < ship_vector_.size(); i++) {
+		if (ship_vector_[i].get_type()->get_name() == "Small") return i;
+	}
+	return -1;
+}
+
+int	Fleet::find_heavy_cruiser_ship_id() {
+	for (int i = 0; i < ship_vector_.size(); i++) {
+		if (ship_vector_[i].get_type()->get_name() == "Heavy Cruiser") return i;
+	}
+	return -1;
+}
+
+int	Fleet::find_tsundere_ship_id() {
+	for (int i = 0; i < ship_vector_.size(); i++) {
+		if (ship_vector_[i].get_type()->get_name() == "Tsundere") return i;
+	}
+	return -1;
 }
 
 void Fleet::klee(const auto& coords)
