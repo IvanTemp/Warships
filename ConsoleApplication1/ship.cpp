@@ -152,10 +152,10 @@ Ship Ship::operator++(int)
 	Ship copyThis(*this);
 	for (auto& i : durability_)
 	{
-		if (i < Tsundere_Durability)
+		if (i < this->get_type()->get_default_durability())
 		{
 			i++;
-			if (i < Tsundere_Durability)
+			if (i < this->get_type()->get_default_durability())
 			{
 				i++;
 			}

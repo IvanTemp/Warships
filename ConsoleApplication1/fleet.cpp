@@ -6,8 +6,6 @@
 #include <map>
 #include "Fleet.h"
 
-std::vector <std::pair <unsigned int, unsigned int>> bots_memory; //BOT Repository Of Detected Cells
-
 int Fleet::count_ = 0;
 
 Fleet::Fleet(const std::string& nm) :name_(nm), side_(count_++) {}
@@ -122,6 +120,7 @@ Ship Fleet::get_ship_by_index(const unsigned int id)const {
 }
 
 void Fleet::damage_by_index_bot(Ship sheep, int difficulty) { //sheep - who is attack
+	std::vector <std::pair <unsigned int, unsigned int>> bot_memory; //BOT Repository Of Detected Cells
 	bool GwSUtPaLT = true; //Gura was still unable to plant a large tree
 	int x = 0, y = 0, attempts = 0;
 	int dmg = sheep.get_type()->get_damage_value();
@@ -129,10 +128,10 @@ void Fleet::damage_by_index_bot(Ship sheep, int difficulty) { //sheep - who is a
 	if (difficulty == 2) {
 		difficulty = 49;
 	}
-
+	find_founded_ships(bot_memory);
 	while (GwSUtPaLT && attempts < difficulty + 1)
 	{
-		if (bots_memory.empty()) {//I)Сканируем на количество неисследованных клеток и наличие на них кораблей, подбираем наиболее подходящий(если сложность hard)
+		if (bot_memory.empty()) {//I)Сканируем на количество неисследованных клеток и наличие на них кораблей, подбираем наиболее подходящий(если сложность hard)
 			x = 1 + rand() % (width_height - 2);
 			y = 1 + rand() % (width_height - 2);
 			if constexpr (DEBUG_MODE) { std::cout << "[AIRCRAFT ATTACK BOT]rand_x = " << x << "; rand_y = " << y << std::endl; }
@@ -140,9 +139,9 @@ void Fleet::damage_by_index_bot(Ship sheep, int difficulty) { //sheep - who is a
 			attempts++;
 		}
 		else { //II)Finishing off found ships
-			x = bots_memory[0].first;
-			y = bots_memory[0].second;
-			bots_memory.clear();
+			x = bot_memory[0].first;
+			y = bot_memory[0].second;
+			bot_memory.clear();
 			GwSUtPaLT = false;
 		}
 	}
@@ -154,7 +153,7 @@ void Fleet::damage_by_index_bot(Ship sheep, int difficulty) { //sheep - who is a
 	if (field_id_[x][y].first > 1) {
 		if (ship_vector_[field_id_[x][y].first - 2].get_type()->get_name() == "Small" && sheep.get_type()->get_name() == "Tsundere")
 		{
-			dmg = Small_Durability;
+			dmg = ship_vector_[field_id_[x][y].first - 2].get_type()->get_default_durability();
 		}
 		else if (ship_vector_[field_id_[x][y].first - 2].get_type()->get_name() == "Aircraft Carrier" && sheep.get_type()->get_name() == "Small")
 		{
@@ -163,7 +162,7 @@ void Fleet::damage_by_index_bot(Ship sheep, int difficulty) { //sheep - who is a
 		get_damage(dmg, x, y);
 		if (ship_vector_[field_id_[x][y].first - 2].get_durability_sum())
 		{
-			bots_memory.emplace_back(std::make_pair(x, y));
+			bot_memory.emplace_back(std::make_pair(x, y));
 		}
 	}
 	else {
@@ -173,7 +172,7 @@ void Fleet::damage_by_index_bot(Ship sheep, int difficulty) { //sheep - who is a
 }
 
 void Fleet::ai(const int current_ship_id, const int difficulty, Fleet& fleet_of_player) {
-	//Gura AI(not copyrighted) Reborn v1.08
+	//Gura AI(not copyrighted) Reborn v1.09
 	srand(time(nullptr));
 	const std::string type = ship_vector_[current_ship_id].get_type()->get_name();
 
@@ -240,15 +239,7 @@ void Fleet::ai(const int current_ship_id, const int difficulty, Fleet& fleet_of_
 			}
 			else
 			{
-				switch (rand() % 2)
-				{
-				case 0: //vertical
-					fleet_of_player.aircraft_attack_bot(false, ship_vector_[current_ship_id].get_type()->get_damage_value(), difficulty);
-					break;
-				case 1: //horisontal
-					fleet_of_player.aircraft_attack_bot(true, ship_vector_[current_ship_id].get_type()->get_damage_value(), difficulty);
-					break;
-				}
+				fleet_of_player.aircraft_attack_bot(ship_vector_[current_ship_id].get_type()->get_damage_value(), difficulty);
 			}
 		}
 		else {
@@ -292,7 +283,7 @@ void Fleet::damage_by_index_player(Ship &sheep) { //sheep - who is attack
 		{
 			if (ship_vector_[field_id_[x][y].first - 2].get_type()->get_name() == "Small" && sheep.get_type()->get_name() == "Tsundere")
 			{
-				dmg = Small_Durability;
+				dmg = ship_vector_[field_id_[x][y].first - 2].get_type()->get_default_durability();
 			}
 			else if (ship_vector_[field_id_[x][y].first - 2].get_type()->get_name() == "Aircraft Carrier" && sheep.get_type()->get_name() == "Small")
 			{
@@ -312,16 +303,17 @@ void Fleet::damage_by_index_player(Ship &sheep) { //sheep - who is attack
 
 void Fleet::heavy_cruiser_attack_bot(const int dmg, int difficulty)
 {
+	std::vector <std::pair <unsigned int, unsigned int>> bot_memory; //BOT Repository Of Detected Cells
 	bool GwSUtPaLT = true; //Gura was still unable to plant a large tree
 	int x = 0, y = 0, random_x = 0, random_y = 0, attempts = 0, counter = 0, max = 0;
 
 	if (difficulty == 2) {
 		difficulty = 49;
 	}
-
+	find_founded_ships(bot_memory);
 	while (GwSUtPaLT && attempts < difficulty + 1)
 	{
-		if (bots_memory.empty()) {//I)Сканируем на количество неисследованных клеток и наличие на них кораблей, подбираем наиболее подходящий(если сложность hard)
+		if (bot_memory.empty()) {//I)Сканируем на количество неисследованных клеток и наличие на них кораблей, подбираем наиболее подходящий(если сложность hard)
 			counter = 0;
 			random_x = 1 + rand() % (width_height - 2);
 			random_y = 1 + rand() % (width_height - 2);
@@ -346,9 +338,9 @@ void Fleet::heavy_cruiser_attack_bot(const int dmg, int difficulty)
 			attempts++;
 		}
 		else { //II)Finishing off found ships
-			x = bots_memory[0].first;
-			y = bots_memory[0].second;
-			bots_memory.clear();
+			x = bot_memory[0].first;
+			y = bot_memory[0].second;
+			bot_memory.clear();
 			GwSUtPaLT = false;
 		}
 	}
@@ -366,7 +358,7 @@ void Fleet::heavy_cruiser_attack_bot(const int dmg, int difficulty)
 				get_damage(dmg, x, y);
 				if (ship_vector_[field_id_[x][y].first - 2].get_durability_sum())
 				{
-					bots_memory.emplace_back(std::make_pair(x, y));
+					bot_memory.emplace_back(std::make_pair(x, y));
 				}
 			}
 			else
@@ -460,25 +452,28 @@ void Fleet::aircraft_attack_player(const bool angle, const int dmg)
 	}
 }
 
-void Fleet::aircraft_attack_bot(const bool angle, const int dmg, int difficulty)
+void Fleet::aircraft_attack_bot(const int dmg, int difficulty)
 {
+	std::vector <std::pair <unsigned int, unsigned int>> bot_memory; //BOT Repository Of Detected Cells
 	bool GwSUtPaLT = true; //Gura was still unable to plant a large tree
 	int x = 0, y = 0, random_x = 0, random_y = 0, attempts = 0, counter = 0, max = 0;
+	bool angle = rand() % 2;
 	
 	if (difficulty == 2) {
 		difficulty = 49;
 	}
 
+	find_founded_ships(bot_memory);
+
 	if constexpr (DEBUG_MODE) {
-		std::cout << "[AIRCRAFT ATTACK BOT]Bots_memory:" << std::endl;
-		for (auto& i : bots_memory) {
-			std::cout << "[AIRCRAFT ATTACK BOT]X = " << i.first << "; Y = " << i.second << std::endl;
+		std::cout << "[AIRCRAFT ATTACK BOT]bot_memory:" << std::endl;
+		for (int i = 0; i < bot_memory.size(); i++) {
+			std::cout << "[AIRCRAFT ATTACK BOT]X = " << bot_memory[i].first << "; Y = " << bot_memory[i].second << std::endl;
 		}
 	}
-
 	while (GwSUtPaLT && attempts < difficulty + 1)
 	{
-		if (bots_memory.empty()) {//I)Сканируем на количество неисследованных клеток и наличие на них кораблей, подбираем наиболее подходящий(если сложность hard)
+		if (bot_memory.empty()) {//I)Сканируем на количество неисследованных клеток и наличие на них кораблей, подбираем наиболее подходящий(если сложность hard)
 			counter = 0;
 			random_x = 1 + rand() % (width_height - 2);
 			random_y = 1 + rand() % (width_height - 2);
@@ -506,10 +501,10 @@ void Fleet::aircraft_attack_bot(const bool angle, const int dmg, int difficulty)
 			}
 			attempts++;
 		}
-		else { //II)Finishing off found ships
-			x = bots_memory[0].first;
-			y = bots_memory[0].second;
-			bots_memory.clear();
+		else { //II)Finishing off found ships + выравнивание
+			x = bot_memory[0].first;
+			y = bot_memory[0].second;
+			bot_memory.clear();
 			if (x == 0) {
 				if (angle) {
 					x++;
@@ -530,6 +525,36 @@ void Fleet::aircraft_attack_bot(const bool angle, const int dmg, int difficulty)
 			}
 			GwSUtPaLT = false;
 		}
+		if (field_id_[x][y].first > 1) { //III)Попытка задеть как можно больше клеток
+			if (field_id_[x - 1][y].first > 1 && x - 1 > 0) {
+				angle = true;
+				x--;
+				if (field_id_[x - 1][y].first > 1 && x - 1 > 0 && field_id_[x + 1][y].first <= 1) {
+					x--;
+				}
+			}
+			if (field_id_[x + 1][y].first > 1 && x + 1 < width_height - 1) {
+				angle = true;
+				x++;
+				if (field_id_[x + 1][y].first > 1 && x + 1 < width_height - 1 && field_id_[x - 1][y].first <= 1) {
+					x++;
+				}
+			}
+			if (field_id_[x][y - 1].first > 1 && y - 1 > 0) {
+				angle = false;
+				y--;
+				if (field_id_[x][y - 1].first > 1 && y - 1 > 0 && field_id_[x][y + 1].first <= 1) {
+					y--;
+				}
+			}
+			if (field_id_[x][y + 1].first > 1 && y + 1 < width_height - 1) {
+				angle = false;
+				y++;
+				if (field_id_[x][y + 1].first > 1 && y + 1 < width_height - 1 && field_id_[x][y - 1].first <= 1) {
+					y++;
+				}
+			}
+		}
 	}
 
 	if constexpr (DEBUG_MODE) { std::cout << "[AIRCRAFT ATTACK BOT]Gura decided, that X = " << x << "; Y = " << y << std::endl; }
@@ -545,7 +570,7 @@ void Fleet::aircraft_attack_bot(const bool angle, const int dmg, int difficulty)
 				get_damage(dmg, x, y);
 				if (ship_vector_[field_id_[x][y].first - 2].get_durability()[field_id_[x][y].second])
 				{
-					bots_memory.emplace_back(std::make_pair(x, y));
+					bot_memory.emplace_back(std::make_pair(x, y));
 				}
 			}
 			else
@@ -565,7 +590,7 @@ void Fleet::aircraft_attack_bot(const bool angle, const int dmg, int difficulty)
 				get_damage(dmg, x, y);
 				if (ship_vector_[field_id_[x][y].first - 2].get_durability()[field_id_[x][y].second])
 				{
-					bots_memory.emplace_back(std::make_pair(x, y));
+					bot_memory.emplace_back(std::make_pair(x, y));
 				}
 			}
 			else
@@ -634,7 +659,19 @@ void Fleet::heavy_cruiser_attack_player(const int dmg)
 	}
 }
 
-void Fleet::nuclear_bomb() { //test func
+void Fleet::find_founded_ships(std::vector <std::pair <unsigned int, unsigned int>>& memory) {
+	for (int y = 0; y < width_height; y++) {
+		for (int x = 0; x < width_height; x++) {
+			if (field_id_[x][y].first > 1 && field_war_[x][y] == true) {
+				if (ship_vector_[field_id_[x][y].first - 2].get_durability()[field_id_[x][y].second]) {
+					memory.emplace_back(std::make_pair(x, y));
+				}
+			}
+		}
+	}
+}
+
+void Fleet::nuclear_bomb() {
 	for (auto& i : ship_vector_) {
 		for (int j = 0; j < i.get_type()->get_default_durability(); j++)
 		{
@@ -1209,7 +1246,7 @@ void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 				if (ship_vector_[current_ship_id].get_type()->get_name() == "Aircraft Carrier")
 				{
 					ha_you_are_small_now(action);
-					std::cout << "Specify the type of attack (1x3 or 3x1): \n" << std::endl;
+					std::cout << "Specify the type of attack (1x3 or 3x1): ";
 					std::cin >> action;
 					ha_you_are_small_now(action);
 					if (action == "1x3" || action == "1")

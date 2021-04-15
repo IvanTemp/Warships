@@ -83,8 +83,8 @@ int main(int argc, char* argv[]) {
 	///////////////
 
 	//Order
-	std::vector <unsigned int> order = first_order(std::max(fleet_1.get_ship_vector().size(), fleet_2.get_ship_vector().size()));
-	//std::vector <unsigned int> order = { 8 };
+	//std::vector <unsigned int> order = first_order(std::max(fleet_1.get_ship_vector().size(), fleet_2.get_ship_vector().size()));
+	std::vector <unsigned int> order = { 0 };
 	///////
 
 	//DEBUG FUNCTIONS
