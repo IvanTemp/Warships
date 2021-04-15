@@ -5,7 +5,7 @@
 [5]	FLX2		Type: Tsundere		Durability:  5 5
 [6]	FLX3		Type: Tsundere		Durability:  5 5
 =====Fleet Sakura Empire=====
-[2]	Ayanami1	Type: Small		Durability:  4
+[2]	Ayanami1	Type: Small		Durability:  0
 [3]	Ayanami2	Type: Small		Durability:  4
-[4]	Ayanami3	Type: Small		Durability:  0
-[5]	Ayanami4	Type: Small		Durability:  0
+[4]	Ayanami3	Type: Small		Durability:  4
+[5]	Ayanami4	Type: Small		Durability:  4

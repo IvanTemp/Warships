@@ -5,12 +5,8 @@
 
 //Game settings
 #define width_height 10 //Width & height of field
-#define Aircraft_Carrier_Durability 6
-#define Heavy_Cruiser_Durability 7
-#define Tsundere_Durability 5
-#define Small_Durability 4
 
-#define DEBUG_MODE 0
+#define DEBUG_MODE 0 //0 - off; 1 - on
 
 #define SEED 0 //0 - Pseudo-random
 ///////////////
