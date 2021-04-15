@@ -4,11 +4,18 @@
 
 void output_achievement_info(const std::vector<std::pair<std::string, bool>>& achievements)
 {
-	std::cout << "Achievements: " << std::endl;
-	for (unsigned int i = 0; i < achievements.size(); i++)
-	{
+	int counter = 0;
+	for (int i = 0; i < achievements.size(); i++) if (achievements[i].second) counter++;
+	std::cout << "Achievements[" << counter << " of " << achievements.size() << "]: " << std::endl;
+	for (int i = 0; i < 4; i++) { //Common achievements
 		std::cout << i + 1 << ")" << achievements[i].first << ": ";
 		achievements[i].second ? std::cout << "Received\n" : std::cout << "Not received\n";
+	}
+	for (int i = 4; i < achievements.size(); i++) {//Hidden achievements
+		if (achievements[i].second) {
+			std::cout << i + 1 << ")" << achievements[i].first << ": ";
+			achievements[i].second ? std::cout << "Received\n" : std::cout << "Not received\n";
+		}
 	}
 	std::cout << std::endl;
 }
@@ -21,6 +28,7 @@ std::vector<std::pair<std::string, bool>> read_achievements()
 	achievement_array.emplace_back(std::make_pair("Win a PVE match on Hard difficulty", 0));
 	achievement_array.emplace_back(std::make_pair("Try to win a PVE match on Impossible difficulty", 0));
 	achievement_array.emplace_back(std::make_pair("Play PVP match", 0));
+	achievement_array.emplace_back(std::make_pair("Complete 344460 mission", 0));
 	/////////////////////////////
 	std::ofstream aqua(
 		achievement_file, std::ios::in | std::ios::out | std::ios::app | std::ios::binary | std::ios::ate);
