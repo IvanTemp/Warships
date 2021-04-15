@@ -63,17 +63,23 @@ int main(int argc, char* argv[]) {
 			return -2;
 		}
 	}
+	////////
 
 	fleet_1.print(std::cout);
 	std::cout << std::endl;
 	fleet_2.print(std::cout);
 	std::cout << std::endl;
 	
-	//Gemu ga hajimarimasu
+	//Gemu ga hajimarimasu(прим. переводчика: Игра начинается)
 	bool ironman = true;
 	fleet_1.generate_fleet();
 	fleet_2.generate_fleet();
 	///////////////
+
+	//Order
+	std::vector <unsigned int> order = first_order(std::max(fleet_1.get_ship_vector().size(), fleet_2.get_ship_vector().size()));
+	//std::vector <unsigned int> order = { 8 };
+	///////
 
 	//DEBUG FUNCTIONS
 	if constexpr (DEBUG_MODE) {
@@ -92,6 +98,11 @@ int main(int argc, char* argv[]) {
 		std::cout << "Game Fields:" << std::endl << std::endl;
 		fleet_1.output_field_final(fleet_2);
 		fleet_2.output_field_final(fleet_1);
+		std::cout << std::endl << "Order: ";
+		for (auto& i : order) {
+			std::cout << i << " ";
+		}
+		std::cout << std::endl << std::endl;
 	}
 	/////////////////
 
@@ -105,9 +116,6 @@ int main(int argc, char* argv[]) {
 		ironman = false;
 	}
 
-	//TURNS
-	std::vector <unsigned int> order = first_order(std::max(fleet_1.get_ship_vector().size(), fleet_2.get_ship_vector().size()));
-	//std::vector <unsigned int> order = { 8 };
 	std::cout << "Start game?\n";
 	system("pause");
 
@@ -184,7 +192,7 @@ int main(int argc, char* argv[]) {
 			difficulty--;
 
 			if (difficulty == 2) {
-				temple = 1; //Bot will always go first Kappa
+				temple = 1; //Bot will always go first (Kappa)
 			}
 
 			if (difficulty >= 0 && difficulty <= 2) { //0 - 2(1 - 3 for user)

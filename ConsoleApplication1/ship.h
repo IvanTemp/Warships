@@ -12,7 +12,7 @@
 
 #define DEBUG_MODE 1
 
-#define SEED 354735 //0 - Pseudo - random
+#define SEED 354735 //0 - Pseudo-random
 ///////////////
 
 class Ship
