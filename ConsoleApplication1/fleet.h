@@ -48,7 +48,7 @@ public:
 	void generate_fleet();
 	void clear_fields();
 	void do_action(Fleet& whom, const unsigned& current_ship_id);
-	void do_action_secret(Fleet& whom, Ship damager);
+	void do_action_344460(Fleet& whom, Ship damager);
 	void get_damage(const int dmg, const unsigned int x, const unsigned int y);
 	void small_move_player(const std::pair<unsigned int, unsigned int>& start, const int& index);
 	void small_move_bot(const std::pair<int, int>& coordinates, const std::pair<unsigned int, unsigned int>& start, const int& index);
