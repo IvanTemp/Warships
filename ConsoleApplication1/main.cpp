@@ -362,7 +362,7 @@ int main(int argc, char* argv[]) {
 
 			std::cout << std::endl;
 			if constexpr (!DEBUG_MODE) system("cls");
-			std::cout << "Captain! The enemy intends to use nuclear weapons! The location is unknown, but we know that the missile silo is on one of the enemy single decks. The only way out is to sink it before the bomb explodes." << std::endl << std::endl;
+			std::cout << "Captain! The enemy intends to use nuclear weapons! The location is unknown, but we know that the missile cave is on one of the enemy single cells. The only way out is to sink it before the bomb explodes." << std::endl << std::endl;
 			system("pause");
 			system("cls");
 			bool stop = true;
@@ -370,20 +370,20 @@ int main(int argc, char* argv[]) {
 				switch (playable_fleet) {
 				case false:
 					fleet_1.output_field_final(fleet_2);
-					fleet_1.do_action_secret(fleet_2, fleet_1.get_ship_by_index(damager_id));
+					fleet_1.do_action_344460(fleet_2, fleet_1.get_ship_by_index(damager_id));
 					fleet_2.initialize_field_final();
 					if (!fleet_2.get_ship_by_index(nuclear_id).get_durability_sum()) stop = false;
 					break;
 				case true:
 					fleet_2.output_field_final(fleet_1);
-					fleet_2.do_action_secret(fleet_1, fleet_2.get_ship_by_index(damager_id));
+					fleet_2.do_action_344460(fleet_1, fleet_2.get_ship_by_index(damager_id));
 					fleet_1.initialize_field_final();
 					if (!fleet_1.get_ship_by_index(nuclear_id).get_durability_sum()) stop = false;
 					break;
 				}
 				round++;
 			}
-			if (round == 5) {
+			if (round == 8) {
 				std::cout << "Captain! The enemy launched a nuclear missile!" << std::endl;
 				system("pause");
 			}

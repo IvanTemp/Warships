@@ -1242,7 +1242,7 @@ void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 	if constexpr (!DEBUG_MODE) { system("cls"); }
 }
 
-void Fleet::do_action_secret(Fleet& whom, Ship damager)
+void Fleet::do_action_344460(Fleet& whom, Ship damager)
 {
 	std::cout << "What do you want?\n\n";
 	std::string action;
