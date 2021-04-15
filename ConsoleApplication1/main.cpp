@@ -76,7 +76,7 @@ int main(int argc, char* argv[]) {
 	///////////////
 
 	//DEBUG FUNCTIONS
-	if (DEBUG_MODE) {
+	if constexpr (DEBUG_MODE) {
 		fleet_1.print(std::cout);
 		fleet_2.print(std::cout);
 		fleet_1.output_field_id();
@@ -111,7 +111,7 @@ int main(int argc, char* argv[]) {
 	std::cout << "Start game?\n";
 	system("pause");
 
-	if (!DEBUG_MODE) { system("cls"); }
+	if constexpr (!DEBUG_MODE) { system("cls"); }
 
 	//Selecting a game mode
 	std::string battle_mode;
@@ -148,7 +148,7 @@ int main(int argc, char* argv[]) {
 					fleet_2.do_action(fleet_1, order[round]);
 					break;
 			}
-			if (!DEBUG_MODE) system("cls");
+			if constexpr (!DEBUG_MODE) system("cls");
 			if (!fleet_1.get_health() || !fleet_2.get_health()) break;
 			temple++;
 			switch (temple % 2) {
@@ -168,13 +168,13 @@ int main(int argc, char* argv[]) {
 			temple--;
 			round++;
 			if (order.size() == round) round = 0;
-			if (!DEBUG_MODE) system("cls");
+			if constexpr (!DEBUG_MODE) system("cls");
 		}
 	}
 	else if (battle_mode == "pve" || battle_mode == "e") //PVE
 	{
 		while (fleet_1.get_health() && fleet_2.get_health()) {
-			if (!DEBUG_MODE) { system("cls"); }
+			if constexpr (!DEBUG_MODE) { system("cls"); }
 			std::cout << "Select difficulty level NUMBER: " << std::endl;
 			std::cout << "1)Normal" << std::endl; //Everything is fair
 			std::cout << "2)Hard" << std::endl; //Bot has the right to make mistake
@@ -204,7 +204,7 @@ int main(int argc, char* argv[]) {
 						system("pause");
 						break;
 					}
-					if (!DEBUG_MODE) system("cls");
+					if constexpr (!DEBUG_MODE) system("cls");
 					if (!fleet_1.get_health() || !fleet_2.get_health()) break;
 					temple++;
 					switch (temple % 2) {
@@ -224,7 +224,7 @@ int main(int argc, char* argv[]) {
 					temple--;
 					round++;
 					if (order.size() == round) round = 0;
-					if (!DEBUG_MODE) system("cls");
+					if constexpr (!DEBUG_MODE) system("cls");
 				}
 			}
 			else {
@@ -237,7 +237,7 @@ int main(int argc, char* argv[]) {
 	}
 	else  // Protect from Epic Games Store users
 	{
-		if (!DEBUG_MODE) { system("cls"); }
+		if constexpr (!DEBUG_MODE) { system("cls"); }
 		std::cout << "E-error! This is inappropriate... I... What should I...?" << std::endl << std::endl;
 		std::cout << "You scared the program with your wrong input. Be careful next time." << std::endl << std::endl;
 		system("pause");

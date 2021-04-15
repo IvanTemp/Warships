@@ -138,7 +138,7 @@ void Fleet::damage_by_index_bot(Ship sheep, const int difficulty) { //sheep - wh
 		if (bots_memory.empty()) {//I)Сканируем на количество неисследованных клеток и наличие на них кораблей, подбираем наиболее подходящий(если сложность hard)
 			x = 1 + rand() % (width_height - 2);
 			y = 1 + rand() % (width_height - 2);
-			if (DEBUG_MODE) { std::cout << "[AIRCRAFT ATTACK BOT]rand_x = " << x << "; rand_y = " << y << std::endl; }
+			if constexpr (DEBUG_MODE) { std::cout << "[AIRCRAFT ATTACK BOT]rand_x = " << x << "; rand_y = " << y << std::endl; }
 			if (field_id_[x][y].first > 1) GwSUtPaLT = false;
 			attempts++;
 		}
@@ -150,7 +150,7 @@ void Fleet::damage_by_index_bot(Ship sheep, const int difficulty) { //sheep - wh
 		}
 	}
 
-	if (DEBUG_MODE) std::cout << "[DEFAULT DAMAGE BOT]Gura AI(c) decided that: x = " << x << "; y = " << y << std::endl;
+	if constexpr (DEBUG_MODE) std::cout << "[DEFAULT DAMAGE BOT]Gura AI(c) decided that: x = " << x << "; y = " << y << std::endl;
 
 	const char string_x = int_to_letter(x);
 
@@ -183,7 +183,7 @@ void Fleet::ai(const int current_ship_id, int dmg, const int difficulty, Fleet& 
 	if (ship_vector_.size() > current_ship_id) {
 		if (ship_vector_[current_ship_id].get_durability_sum() || difficulty == 2) {
 			std::cout << "Bot's ship is " << type << std::endl;
-			if (DEBUG_MODE) std::cout << "[GURA AI]Current position: " << int_to_letter(return_x_y(current_ship_id + 2).first) << return_x_y(current_ship_id + 2).second << std::endl;
+			if constexpr (DEBUG_MODE) std::cout << "[GURA AI]Current position: " << int_to_letter(return_x_y(current_ship_id + 2).first) << return_x_y(current_ship_id + 2).second << std::endl;
 
 			if (type == "Small")
 			{
@@ -244,12 +244,12 @@ void Fleet::ai(const int current_ship_id, int dmg, const int difficulty, Fleet& 
 		}
 		else {
 			std::cout << "This ship is sunk, bot miss this turn." << std::endl;
-			if (!DEBUG_MODE) system("cls");
+			if constexpr (!DEBUG_MODE) system("cls");
 			return;
 		}
 	} else {
 		 std::cout << "This ship disapperared, you miss this turn." << std::endl;
-		 if (!DEBUG_MODE) system("cls");
+		 if constexpr (!DEBUG_MODE) system("cls");
 		 return;
 	}
 }
@@ -260,7 +260,7 @@ void Fleet::damage_by_index_player(Ship &sheep) { //sheep - who is attack
 	int dmg = sheep.get_type()->get_damage_value();
 	char char_x;
 	std::cin >> char_x >> y;
-	if (DEBUG_MODE) std::cout << "[DEFAULT DAMAGE PLAYER]X = " << char_x << "; Y = " << y << std::endl;
+	if constexpr (DEBUG_MODE) std::cout << "[DEFAULT DAMAGE PLAYER]X = " << char_x << "; Y = " << y << std::endl;
 
 	if (y > width_height) {
 		std::cout << "Captain! You shot out of bounds!" << std::endl;
@@ -275,7 +275,7 @@ void Fleet::damage_by_index_player(Ship &sheep) { //sheep - who is attack
 		return;
 	}
 
-	if (DEBUG_MODE) { std::cout << "[DEFAULT DAMAGE PLAYER]int X = " << x << " Y = " << y << std::endl; }
+	if constexpr (DEBUG_MODE) { std::cout << "[DEFAULT DAMAGE PLAYER]int X = " << x << " Y = " << y << std::endl; }
 
 	if (field_id_[x][y].first > 1)
 	{
@@ -316,7 +316,7 @@ void Fleet::heavy_cruiser_attack_bot(const int dmg, int difficulty)
 			counter = 0;
 			random_x = 1 + rand() % (width_height - 2);
 			random_y = 1 + rand() % (width_height - 2);
-			if (DEBUG_MODE) { std::cout << "[AIRCRAFT ATTACK BOT]rand_x = " << random_x << "; rand_y = " << random_y << std::endl; }
+			if constexpr (DEBUG_MODE) { std::cout << "[AIRCRAFT ATTACK BOT]rand_x = " << random_x << "; rand_y = " << random_y << std::endl; }
 			if (field_id_[random_x - 1][random_y - 1].first > 1 && !field_war_[random_x - 1][random_y - 1]) counter++;
 			if (field_id_[random_x - 1][random_y].first > 1 && !field_war_[random_x - 1][random_y]) counter++;
 			if (field_id_[random_x - 1][random_y + 1].first > 1 && !field_war_[random_x - 1][random_y + 1]) counter++;
@@ -344,7 +344,7 @@ void Fleet::heavy_cruiser_attack_bot(const int dmg, int difficulty)
 		}
 	}
 	
-	if (DEBUG_MODE) { std::cout << "[HEAVY CRUISER ATTACK BOT]Gura decided, that X = " << x << "; Y = " << y << std::endl; }
+	if constexpr (DEBUG_MODE) { std::cout << "[HEAVY CRUISER ATTACK BOT]Gura decided, that X = " << x << "; Y = " << y << std::endl; }
 	x--;
 	y--;
 	int temp_x = x, temp_y = y;
@@ -375,7 +375,7 @@ void Fleet::aircraft_attack_player(const bool angle, const int dmg)
 	int x = 0, y = -1;
 	char char_x = ' ';
 	std::cin >> char_x >> y;
-	if (DEBUG_MODE) std::cout << "[AIRCRAFT ATTACK PLAYER]X = " << char_x << "; Y = " << y  << ";" << std::endl;
+	if constexpr (DEBUG_MODE) std::cout << "[AIRCRAFT ATTACK PLAYER]X = " << char_x << "; Y = " << y  << ";" << std::endl;
 
 	if (y > width_height) {
 		std::cout << "Captain! You shot out of bounds!" << std::endl;
@@ -390,7 +390,7 @@ void Fleet::aircraft_attack_player(const bool angle, const int dmg)
 		return;
 	}
 
-	if (DEBUG_MODE) { std::cout << "[AIRCRAFT ATTACK PLAYER]int X = " << x << " Y = " << y << std::endl; }
+	if constexpr (DEBUG_MODE) { std::cout << "[AIRCRAFT ATTACK PLAYER]int X = " << x << " Y = " << y << std::endl; }
 
 	if (angle) // horizontal
 	{
@@ -460,7 +460,7 @@ void Fleet::aircraft_attack_bot(const bool angle, const int dmg, int difficulty)
 		difficulty = 49;
 	}
 
-	if (DEBUG_MODE) {
+	if constexpr (DEBUG_MODE) {
 		std::cout << "[AIRCRAFT ATTACK BOT]Bots_memory:" << std::endl;
 		for (auto& i : bots_memory) {
 			std::cout << "[AIRCRAFT ATTACK BOT]X = " << i.first << "; Y = " << i.second << std::endl;
@@ -473,7 +473,7 @@ void Fleet::aircraft_attack_bot(const bool angle, const int dmg, int difficulty)
 			counter = 0;
 			random_x = 1 + rand() % (width_height - 2);
 			random_y = 1 + rand() % (width_height - 2);
-			if (DEBUG_MODE) { std::cout << "[AIRCRAFT ATTACK BOT]rand_x = " << random_x << "; rand_y = " << random_y << std::endl; }
+			if constexpr (DEBUG_MODE) { std::cout << "[AIRCRAFT ATTACK BOT]rand_x = " << random_x << "; rand_y = " << random_y << std::endl; }
 			switch (angle)
 			{
 			case 1: //horizontal
@@ -523,7 +523,7 @@ void Fleet::aircraft_attack_bot(const bool angle, const int dmg, int difficulty)
 		}
 	}
 
-	if (DEBUG_MODE) { std::cout << "[AIRCRAFT ATTACK BOT]Gura decided, that X = " << x << "; Y = " << y << std::endl; }
+	if constexpr (DEBUG_MODE) { std::cout << "[AIRCRAFT ATTACK BOT]Gura decided, that X = " << x << "; Y = " << y << std::endl; }
 
 	if (angle) // horizontal
 	{
@@ -573,7 +573,7 @@ void Fleet::heavy_cruiser_attack_player(const int dmg)
 	int x = 0, y = -1;
 	char char_x;
 	std::cin >> char_x >> y;
-	if (DEBUG_MODE) std::cout << "[HEAVY CRUISER ATTACK PLAYER]X = " << char_x << "; Y = " << y << std::endl;
+	if constexpr (DEBUG_MODE) std::cout << "[HEAVY CRUISER ATTACK PLAYER]X = " << char_x << "; Y = " << y << std::endl;
 
 	if (y > width_height)
 	{
@@ -589,7 +589,7 @@ void Fleet::heavy_cruiser_attack_player(const int dmg)
 		return;
 	}
 
-	if (DEBUG_MODE) { std::cout << "[HEAVY CRUISER ATTACK PLAYER]int X = " << x << " Y = " << y << std::endl; }
+	if constexpr (DEBUG_MODE) { std::cout << "[HEAVY CRUISER ATTACK PLAYER]int X = " << x << " Y = " << y << std::endl; }
 	x--;
 	y--;
 	int temp_x = x, temp_y = y;
@@ -1207,12 +1207,12 @@ void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 			else
 			{
 				std::cout << "This ship is sunk, you miss this turn." << std::endl;
-				if (!DEBUG_MODE) system("cls");
+				if constexpr (!DEBUG_MODE) system("cls");
 				return;
 			}
 		} else {
 			std::cout << "This ship disapperared, you miss this turn." << std::endl;
-			if (!DEBUG_MODE) system("cls");
+			if constexpr (!DEBUG_MODE) system("cls");
 			return;
 		}
 	}
@@ -1222,7 +1222,7 @@ void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 
 void Fleet::klee(const auto& coords)
 {
-	if (DEBUG_MODE) {
+	if constexpr (DEBUG_MODE) {
 		for (int i = 0; i < coords.size(); i++) {
 			std::cout << "[Klee]" << i << ": X = " << coords[i].first << "; Y = " << coords[i].second << std::endl;
 		}
