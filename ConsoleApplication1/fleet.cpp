@@ -128,10 +128,14 @@ Ship Fleet::get_ship_by_index(const unsigned int id)const {
 	//}
 }
 
-void Fleet::damage_by_index_bot(Ship sheep, const int difficulty) { //sheep - who is attack
+void Fleet::damage_by_index_bot(Ship sheep, int difficulty) { //sheep - who is attack
 	bool GwSUtPaLT = true; //Gura was still unable to plant a large tree
 	int x = 0, y = 0, attempts = 0;
 	int dmg = sheep.get_type()->get_damage_value();
+
+	if (difficulty == 2) {
+		difficulty = 49;
+	}
 
 	while (GwSUtPaLT && attempts < difficulty + 1)
 	{
@@ -175,8 +179,8 @@ void Fleet::damage_by_index_bot(Ship sheep, const int difficulty) { //sheep - wh
 	field_get_vision(x, y);
 }
 
-void Fleet::ai(const int current_ship_id, int dmg, const int difficulty, Fleet& fleet_of_player) {
-	//Gura AI(not copyrighted) Reborn v1.07
+void Fleet::ai(const int current_ship_id, const int difficulty, Fleet& fleet_of_player) {
+	//Gura AI(not copyrighted) Reborn v1.08
 	srand(time(nullptr));
 	const std::string type = ship_vector_[current_ship_id].get_type()->get_name();
 
@@ -196,19 +200,31 @@ void Fleet::ai(const int current_ship_id, int dmg, const int difficulty, Fleet& 
 				{
 					std::vector<std::pair<int, int>> possible_coordinates;
 					field_id_[coordinates.first][coordinates.second].first = 0;
-					for (int y = coordinates.second - 1; y < coordinates.second + 1; y++)
+					for (int y = coordinates.second - 1; y < coordinates.second + 2; y++)
 					{
-						for (int x = coordinates.first - 1; x < coordinates.first + 1; x++)
+						for (int x = coordinates.first - 1; x < coordinates.first + 2; x++)
 						{
-							if (area_is_clear(x, y) && !field_war_[x][y]) //Если клетка пустая и неизведанная
-							{
-								possible_coordinates.emplace_back(std::make_pair(x, y));
+							if (x >= 0 && x < width_height && y >= 0 && y < width_height) {
+								if (area_is_clear(x, y) && !field_war_[x][y]) //Если клетка пустая и неизведанная
+								{
+									possible_coordinates.emplace_back(std::make_pair(x, y));
+								}
 							}
 						}
 					}
 					field_id_[coordinates.first][coordinates.second].first = current_ship_id + 2;
-					small_move_bot(possible_coordinates[rand() % possible_coordinates.size() - 1], current_ship_id);
-					initialize_field_final();
+					if (possible_coordinates.size() > 1) {
+						small_move_bot(possible_coordinates[rand() % possible_coordinates.size()], coordinates, current_ship_id);
+						initialize_field_final();
+					}
+					else if (possible_coordinates.size() == 1) {
+						small_move_bot(possible_coordinates[0], coordinates, current_ship_id);
+						initialize_field_final();
+					}
+					else {
+						field_id_[coordinates.first][coordinates.second].first = current_ship_id + 2;
+						fleet_of_player.damage_by_index_bot(ship_vector_[current_ship_id], difficulty); //если некуда переплыть
+					}
 				}
 			}
 			else if (type == "Tsundere")
@@ -1126,7 +1142,8 @@ void Fleet::generate_fleet()
 void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 {
 	if constexpr (DEBUG_MODE) { std::cout << "[DO ACTION]order[round] = " << current_ship_id << std::endl; }
-	std::cout << "Current position: " << int_to_letter(return_x_y(current_ship_id + 2).first) << " " << return_x_y(current_ship_id + 2).second << std::endl;
+	const std::pair <int, int> coordinates = return_x_y(current_ship_id + 2);
+	std::cout << "Current position: " << int_to_letter(coordinates.first) << " " << coordinates.second << std::endl;
 	std::cout << "Current type: " << ship_vector_[current_ship_id].get_type()->get_name() << std::endl;
 	std::cout << "What do you want?\n\n";
 	std::string action;
@@ -1140,15 +1157,15 @@ void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 					std::cout << "-Shoot\n-Move\n" << std::endl;
 					std::cin >> action;
 					ha_you_are_small_now(action);
-					if (action == "shoot")
+					if (action == "shoot" || action == "s")
 					{
 						//Shot
 						whom.damage_by_index_player(ship_vector_[current_ship_id]);
 						break;
 					}
-					if (action == "move")
+					if (action == "move" || action == "m")
 					{
-						small_move_player(current_ship_id);
+						small_move_player(coordinates, current_ship_id);
 						initialize_field_final();
 						break;
 					}
@@ -1161,12 +1178,12 @@ void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 					std::cout << "-Shoot\n-Repair\n" << std::endl;
 					std::cin >> action;
 					ha_you_are_small_now(action);
-					if (action == "shoot")
+					if (action == "shoot" || action == "s")
 					{
 						whom.damage_by_index_player(ship_vector_[current_ship_id]);
 						break;
 					}
-					if (action == "repair")
+					if (action == "repair" || action == "r")
 					{
 						ship_vector_[current_ship_id]++;
 						std::cout << "Ship repaired!" << std::endl;
@@ -1281,7 +1298,7 @@ void Fleet::get_damage(const int dmg, const unsigned int x, const unsigned int y
 	}
 }
 
-void Fleet::small_move_player(const unsigned int index)
+void Fleet::small_move_player(const std::pair<unsigned int, unsigned int>& start, const int& index)
 {
 	int x = 0, y = -1;
 	std::cout << "Where are we going? (Write X and Y coordinates): ";
@@ -1293,7 +1310,7 @@ void Fleet::small_move_player(const unsigned int index)
 	{
 		std::cout << "Captain! Are you trying to steer the ship out of the battlefield?\n" << std::endl;
 		system("pause");
-		small_move_player(index);
+		small_move_player(start, index);
 		return;
 	}
 	char_x = std::toupper(char_x);
@@ -1303,8 +1320,6 @@ void Fleet::small_move_player(const unsigned int index)
 		std::cout << "Captain! You shot out of bounds!" << std::endl;
 		return;
 	}
-
-	const std::pair<unsigned int, unsigned int> start = return_x_y(index + 2);
 
 	if constexpr (DEBUG_MODE)
 	{
@@ -1400,7 +1415,7 @@ void Fleet::small_move_player(const unsigned int index)
 			field_id_[start.first][start.second].first = index + 2;
 			std::cout << "Captain! This square is already taken!\n" << std::endl;
 			system("pause");
-			small_move_player(index);
+			small_move_player(start, index);
 			return;
 		}
 	}
@@ -1410,16 +1425,14 @@ void Fleet::small_move_player(const unsigned int index)
 		std::cout << "Captain! This is not a <<Meteor>> for you, a single-decker can only move one square.\n" <<
 			std::endl;
 		system("pause");
-		small_move_player(index);
+		small_move_player(start, index);
 		return;
 	}
 	std::cout << "Complete!\n\n";
 }
 
-void Fleet::small_move_bot(const std::pair<int, int> coordinates, const int index)
+void Fleet::small_move_bot(const std::pair<int, int>& coordinates, const std::pair<unsigned int, unsigned int>& start, const int& index)
 {
-	const std::pair<unsigned int, unsigned int> start = return_x_y(index + 2);
-
 	if constexpr (DEBUG_MODE)
 	{
 		std::cout << "[Move small]Start on: X = " << start.first << "; Start Y = " << start.second << std::endl;

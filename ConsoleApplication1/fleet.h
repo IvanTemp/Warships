@@ -19,8 +19,8 @@ public:
 	bool remove_ship_from_fleet(const Ship& ship);
 	bool get_side() const;
 	Ship get_ship_by_index(const unsigned int id)const;
-	void damage_by_index_bot(Ship sheep, const int difficulty);
-	void ai(const int id, int dmg, const int difficulty, Fleet& fleet_of_player);
+	void damage_by_index_bot(Ship sheep, int difficulty);
+	void ai(const int id, const int difficulty, Fleet& fleet_of_player);
 	void damage_by_index_player(Ship &sheep);
 	void heavy_cruiser_attack_bot(const int dmg, int difficulty);
 	void aircraft_attack_player(const bool angle, const int dmg);
@@ -45,8 +45,8 @@ public:
 	void generate_fleet();
 	void do_action(Fleet& whom, const unsigned& current_ship_id);
 	void get_damage(const int dmg, const unsigned int x, const unsigned int y);
-	void small_move_player(const unsigned int index);
-	void small_move_bot(const std::pair<int, int> coordinates, const int index);
+	void small_move_player(const std::pair<unsigned int, unsigned int>& start, const int& index);
+	void small_move_bot(const std::pair<int, int>& coordinates, const std::pair<unsigned int, unsigned int>& start, const int& index);
 	bool area_is_clear(const unsigned int x, const unsigned int y)const;
 	void klee(const auto& coords);
 

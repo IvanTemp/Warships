@@ -107,7 +107,7 @@ int main(int argc, char* argv[]) {
 
 	//TURNS
 	std::vector <unsigned int> order = first_order(std::max(fleet_1.get_ship_vector().size(), fleet_2.get_ship_vector().size()));
-	//std::vector <unsigned int> order = { 0 };
+	//std::vector <unsigned int> order = { 8 };
 	std::cout << "Start game?\n";
 	system("pause");
 
@@ -200,13 +200,15 @@ int main(int argc, char* argv[]) {
 					case 1:
 						fleet_2.initialize_field_final();
 						std::cout << fleet_2.get_name() << " turn." << std::endl << std::endl;
-						fleet_2.ai(order[round], fleet_2.get_ship_by_index(order[round]).get_type()->get_damage_value(), difficulty, fleet_1);
+						fleet_2.ai(order[round], difficulty, fleet_1);
 						system("pause");
 						break;
 					}
+
 					if constexpr (!DEBUG_MODE) system("cls");
 					if (!fleet_1.get_health() || !fleet_2.get_health()) break;
 					temple++;
+
 					switch (temple % 2) {
 					case 0:
 						fleet_1.initialize_field_final();
@@ -217,7 +219,7 @@ int main(int argc, char* argv[]) {
 					case 1:
 						fleet_2.initialize_field_final();
 						std::cout << fleet_2.get_name() << " turn." << std::endl << std::endl;
-						fleet_2.ai(order[round], fleet_2.get_ship_by_index(order[round]).get_type()->get_damage_value(), difficulty, fleet_1);
+						fleet_2.ai(order[round], difficulty, fleet_1);
 						system("pause");
 						break;
 					}

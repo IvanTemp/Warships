@@ -12,7 +12,7 @@ int Small::get_size() const
 
 int Small::get_damage_value() const
 {
-	return default_durability_;
+	return damage_;
 }
 
 std::string Small::get_name() const
