@@ -88,7 +88,7 @@ bool Fleet::add_ship_to_fleet(const Ship& shp)
 bool Fleet::remove_ship_from_fleet(const Ship& shp)
 {
 	//Проверка на пустой
-	int ship_vector_size_start = ship_vector_.size();
+	size_t ship_vector_size_start = ship_vector_.size();
 	if (ship_vector_.begin() == ship_vector_.end())
 		return false;
 	//Добавим проверку удаления несуществующего

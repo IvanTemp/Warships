@@ -10,7 +10,9 @@
 #define Tsundere_Durability 5
 #define Small_Durability 4
 
-#define DEBUG_MODE 0
+#define DEBUG_MODE 1
+
+#define SEED 0
 ///////////////
 
 class Ship

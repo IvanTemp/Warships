@@ -1,11 +1,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include <stdexcept>
-#include <fstream>
 #include "functions.h"
-#include "Ship.h"
-//#include "Generator.h"
 #include "Fleet.h"
 #include "AircraftCarrier.h"
 #include "HeavyCruiser.h"
@@ -14,7 +10,14 @@
 
 
 int main(int argc, char* argv[]) {
-	srand(time(nullptr));
+	switch (SEED) {
+	case 0:
+		srand(time(nullptr));
+		break;
+	default:
+		srand(SEED);
+		break;
+	}
 
 	if constexpr (DEBUG_MODE) {
 		std::cout << "WARNING! DEBUG MODE ON! \n" << std::endl;

@@ -74,7 +74,7 @@ int letter_to_int(const char chr)
 	return 50;
 }
 
-std::vector<unsigned int> first_order(const unsigned int count)
+std::vector<unsigned int> first_order(const size_t count)
 {
 	std::vector<unsigned int> order_list;
 	bool buleidu = true; //if index hasn't already been
