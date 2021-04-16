@@ -76,13 +76,13 @@ int main(int argc, char* argv[]) {
 	
 	//Gemu ga hajimarimasu(прим. переводчика: Игра начинается)
 	bool ironman = true;
-	fleet_1.generate_fleet();
-	fleet_2.generate_fleet();
+	fleet_1.generate_field();
+	fleet_2.generate_field();
 	///////////////
 
 	//Order
-	//std::vector <int> order = first_order(std::max(fleet_1.get_ship_vector().size(), fleet_2.get_ship_vector().size()));
-	std::vector <int> order = { 0, 1, 8 };
+	std::vector <int> order = first_order(std::max(fleet_1.get_ship_vector().size(), fleet_2.get_ship_vector().size()));
+	//std::vector <int> order = { 0, 1, 8 };
 	///////
 
 	//DEBUG FUNCTIONS
@@ -132,7 +132,7 @@ int main(int argc, char* argv[]) {
 		std::cout << "Select game mode: \n-PvP\n-PvE\n-Missions\n\n";
 		std::cin >> battle_mode;
 		ha_you_are_small_now(battle_mode);
-		if (battle_mode == "pve" || battle_mode == "pvp" || battle_mode == "missions")
+		if (battle_mode == "pve" || battle_mode == "e" || battle_mode == "pvp" || battle_mode == "p" || battle_mode == "missions" || battle_mode == "m")
 		{
 			break;
 		}
@@ -251,7 +251,7 @@ int main(int argc, char* argv[]) {
 				}
 			}
 	}
-	else if (battle_mode == "missions") {
+	else if (battle_mode == "missions" || battle_mode == "m") {
 		std::string mission_number;
 		while (true)
 		{
@@ -262,13 +262,13 @@ int main(int argc, char* argv[]) {
 				//Cleaning from Aircraft Carrier
 				for (int i = 0; i < fleet_1.get_ship_vector().size();) {
 					if (fleet_1.get_ship_vector()[i].get_type()->get_name() == "Aircraft Carrier") {
-						fleet_1.remove_ship_from_fleet(fleet_1.get_ship_vector()[i]);
+						fleet_1 -= fleet_1.get_ship_vector()[i];
 					}
 					if (fleet_1.get_ship_by_index(i).get_type()->get_name() != "Aircraft Carrier") i++;
 				}
 				for (int i = 0; i < fleet_2.get_ship_vector().size();) {
 					if (fleet_2.get_ship_vector()[i].get_type()->get_name() == "Aircraft Carrier") {
-						fleet_2.remove_ship_from_fleet(fleet_2.get_ship_vector()[i]);
+						fleet_2 -= fleet_2.get_ship_vector()[i];
 					}
 					if (fleet_2.get_ship_by_index(i).get_type()->get_name() != "Aircraft Carrier") i++;
 				}
@@ -292,7 +292,7 @@ int main(int argc, char* argv[]) {
 				case false:
 					for (int i = 0; i < fleet_1.get_ship_vector().size();) {
 						if (fleet_1.get_ship_by_index(i).get_type()->get_name() == "Small") {
-							fleet_1.remove_ship_from_fleet(fleet_1.get_ship_by_index(i));
+							fleet_1 -= fleet_1.get_ship_by_index(i);
 						}
 						if (i < fleet_1.get_ship_vector().size()) {
 							if (fleet_1.get_ship_by_index(i).get_type()->get_name() != "Small") i++;
@@ -300,10 +300,10 @@ int main(int argc, char* argv[]) {
 					}
 					for (int i = 0; i < fleet_2.get_ship_vector().size();) {
 						if (fleet_2.get_ship_by_index(i).get_type()->get_name() == "Tsundere") {
-							fleet_2.remove_ship_from_fleet(fleet_2.get_ship_by_index(i));
+							fleet_2 -= fleet_2.get_ship_by_index(i);
 						}
 						if (fleet_2.get_ship_by_index(i).get_type()->get_name() == "Heavy Cruiser") {
-							fleet_2.remove_ship_from_fleet(fleet_2.get_ship_by_index(i));
+							fleet_2 -= fleet_2.get_ship_by_index(i);
 						}
 						if (fleet_2.get_ship_by_index(i).get_type()->get_name() != "Tsundere" && fleet_2.get_ship_by_index(i).get_type()->get_name() != "Heavy Cruiser") i++;
 					}
@@ -311,16 +311,16 @@ int main(int argc, char* argv[]) {
 				case true:
 					for (int i = 0; i < fleet_2.get_ship_vector().size();) {
 						if (fleet_2.get_ship_by_index(i).get_type()->get_name() == "Small") {
-							fleet_2.remove_ship_from_fleet(fleet_2.get_ship_by_index(i));
+							fleet_2 -= fleet_2.get_ship_by_index(i);
 						}
 						if (fleet_2.get_ship_by_index(i).get_type()->get_name() != "Small") i++;
 					}
 					for (int i = 0; i < fleet_1.get_ship_vector().size();) {
 						if (fleet_1.get_ship_by_index(i).get_type()->get_name() == "Tsundere") {
-							fleet_1.remove_ship_from_fleet(fleet_1.get_ship_by_index(i));
+							fleet_1 -= fleet_1.get_ship_by_index(i);
 						}
 						if (fleet_1.get_ship_by_index(i).get_type()->get_name() == "Heavy Cruiser") {
-							fleet_1.remove_ship_from_fleet(fleet_1.get_ship_by_index(i));
+							fleet_1 -= fleet_1.get_ship_by_index(i);
 						}
 						if (fleet_1.get_ship_by_index(i).get_type()->get_name() != "Tsundere" && fleet_1.get_ship_by_index(i).get_type()->get_name() != "Heavy Cruiser") i++;
 					}
@@ -331,8 +331,8 @@ int main(int argc, char* argv[]) {
 				fleet_1.clear_fields();
 				fleet_2.clear_fields();
 				////Generating fields
-				fleet_1.generate_fleet();
-				fleet_2.generate_fleet();
+				fleet_1.generate_field();
+				fleet_2.generate_field();
 				////Initialisation fields
 				fleet_1.initialize_field_final();
 				fleet_2.initialize_field_final();
@@ -349,21 +349,23 @@ int main(int argc, char* argv[]) {
 					finder_id = fleet_2.find_heavy_cruiser_ship_id();
 					damager_id = fleet_2.find_tsundere_ship_id();
 					break;
-				};
+				}
 
 				if constexpr (DEBUG_MODE) {
-					std::cout << "[MAIN]Playable fleet: " << playable_fleet << std::endl;
+					std::cout << "[344460]Playable fleet: " << playable_fleet << std::endl << std::endl << "[344460]Enemy field: " << std::endl;
 					if (playable_fleet) {
 						fleet_1.output_field_final(fleet_2);
 					}
 					else {
 						fleet_2.output_field_final(fleet_1);
 					}
+					std::cout << "[344460]Fleets info:" << std::endl;
 					fleet_1.print(std::cout);
+					std::cout << std::endl;
 					fleet_2.print(std::cout);
-					std::cout << "[MAIN]nuclear_id = " << nuclear_id << std::endl;
-					std::cout << "[MAIN]finder_id = " << finder_id << std::endl;
-					std::cout << "[MAIN]damager_id = " << damager_id << std::endl;
+					std::cout << "\n[344460]nuclear_id = " << nuclear_id << std::endl;
+					std::cout << "[344460]finder_id = " << finder_id << std::endl;
+					std::cout << "[344460]damager_id = " << damager_id << std::endl;
 				}
 
 				std::cout << std::endl;

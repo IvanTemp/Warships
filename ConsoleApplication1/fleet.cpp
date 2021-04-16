@@ -179,11 +179,11 @@ void Fleet::ai(const int current_ship_id, const int difficulty, Fleet& fleet_of_
 	if (ship_vector_.size() > current_ship_id) {
 		if (ship_vector_[current_ship_id].get_durability_sum() || difficulty == 2) {
 			std::cout << "Bot's ship is " << type << std::endl;
-			if constexpr (DEBUG_MODE) std::cout << "[GURA AI]Current position: " << int_to_letter(return_x_y(current_ship_id + 2).first) << return_x_y(current_ship_id + 2).second << std::endl;
+			if constexpr (DEBUG_MODE) std::cout << "[GURA AI]Current position: " << int_to_letter(find_ship_and_return_x_y(current_ship_id + 2).first) << find_ship_and_return_x_y(current_ship_id + 2).second << std::endl;
 
 			if (type == "Small")
 			{
-				const std::pair <int, int> coordinates = return_x_y(current_ship_id + 2);
+				const std::pair <int, int> coordinates = find_ship_and_return_x_y(current_ship_id + 2);
 				if (!field_war_[coordinates.first][coordinates.second]) //≈сли корабль не обнаружен, то атакуем
 				{
 					fleet_of_player.damage_by_index_bot(ship_vector_[current_ship_id], difficulty);
@@ -932,9 +932,8 @@ void Fleet::field_get_vision(const int x, const int y)
 	field_war_[x][y] = true;
 }
 
-std::pair<int, int> Fleet::return_x_y(const int& id)const
+std::pair<int, int> Fleet::find_ship_and_return_x_y(const int& id)const
 {
-	//ID ON MAP!
 	int start_x = 0, start_y = 0;
 	for (int y = 0; y < width_height; y++)
 	{
@@ -951,7 +950,7 @@ std::pair<int, int> Fleet::return_x_y(const int& id)const
 	return std::make_pair(start_x, start_y);
 }
 
-void Fleet::generate_fleet()
+void Fleet::generate_field()
 {
 	for (auto& sheep : get_ship_vector()) {
 		bool stop = false;
@@ -1262,7 +1261,7 @@ void Fleet::clear_fields() {
 void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 {
 	if constexpr (DEBUG_MODE) { std::cout << "[DO ACTION]order[round] = " << current_ship_id << std::endl; }
-	const std::pair <int, int> coordinates = return_x_y(current_ship_id + 2);
+	const std::pair <int, int> coordinates = find_ship_and_return_x_y(current_ship_id + 2);
 	std::cout << "Current position: \t" << int_to_letter(coordinates.first) << " " << coordinates.second << std::endl;
 	std::cout << "Current type: \t\t" << ship_vector_[current_ship_id].get_type()->get_name() << std::endl << std::endl;
 	std::cout << "What do you want? (Write command and coordinates)\n\n";
@@ -1372,7 +1371,7 @@ void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 
 void Fleet::do_action_344460(Fleet& whom, Ship damager)
 {
-	std::cout << "What do you want?\n\n";
+	std::cout << "What do you want? (Write command and coordinates)\n\n";
 	std::string action;
 	while (true) {
 		std::cout << "-Scan (3x3, no dmg)\n-Shoot\n" << std::endl;

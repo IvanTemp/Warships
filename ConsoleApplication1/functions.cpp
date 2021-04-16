@@ -90,7 +90,7 @@ int difference_modulus(int first, int second) {
 		return second - first;
 }
 
-std::vector<int> first_order(const size_t count)
+std::vector<int> first_order(const size_t count) //count - length of order
 {
 	std::vector<int> order_list;
 	bool buleidu = true; //if index hasn't already been
