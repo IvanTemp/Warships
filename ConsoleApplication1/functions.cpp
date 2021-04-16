@@ -6,24 +6,15 @@ void output_achievement_info(const std::vector<std::pair<std::string, bool>>& ac
 {
 	int counter = 0;
 	for (int i = 0; i < achievements.size(); i++) if (achievements[i].second) counter++;
-	if (achievements[4].second)
-	{
-		std::cout << "Achievements[" << counter << "/" << achievements.size() << "]: " << std::endl;
-		for (int i = 0; i < 5; i++) 
-		{ 
-			std::cout << i + 1 << ") ";
-			achievements[i].second ? std::cout << "+ " : std::cout << "- ";
-			std::cout << achievements[i].first << "\n";
-		}
+	std::cout << "Achievements[" << counter << "/" << achievements.size() << "]: " << std::endl;
+	for (int i = 0; i < 4; i++) { //Common achievements
+		std::cout << i + 1 << ")" << achievements[i].first << ": ";
+		achievements[i].second ? std::cout << "Received\n" : std::cout << "Not received\n";
 	}
-	else
-	{
-		std::cout << "Achievements[" << counter << "/" << achievements.size() - 1 << "]: " << std::endl;
-		for (int i = 0; i < 4; i++)
-		{
-			std::cout << i + 1 << ") ";
-			achievements[i].second ? std::cout << "+ " : std::cout << "- ";
-			std::cout << achievements[i].first << "\n";
+	for (int i = 4; i < achievements.size(); i++) {//Hidden achievements
+		if (achievements[i].second) {
+			std::cout << i + 1 << ")" << achievements[i].first << ": ";
+			achievements[i].second ? std::cout << "Received\n" : std::cout << "Not received\n";
 		}
 	}
 	std::cout << std::endl;
@@ -72,7 +63,7 @@ void give_achievement(std::vector<std::pair<std::string, bool>>& achievement_arr
 
 void ha_you_are_small_now(std::string& str)
 {
-	for (unsigned int i = 0; i < str.size(); i++)
+	for (int i = 0; i < str.size(); i++)
 	{
 		str[i] = std::tolower(str[i]);
 	}
@@ -86,19 +77,27 @@ char int_to_letter(const int i)
 
 int letter_to_int(const char chr)
 {
+	if (chr >= '0' && chr <= '9') return chr - '0';
 	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	for (int i = 0; i < alf.length(); i++) if (alf[i] == chr) return i;
-	return 50;
+	return 0;
 }
 
-std::vector<unsigned int> first_order(const size_t count)
+int difference_modulus(int first, int second) {
+	if (first - second > 0)
+		return first - second;
+	else
+		return second - first;
+}
+
+std::vector<int> first_order(const size_t count)
 {
-	std::vector<unsigned int> order_list;
+	std::vector<int> order_list;
 	bool buleidu = true; //if index hasn't already been
-	for (unsigned int i = 0; i < count; i++)
+	for (int i = 0; i < count; i++)
 	{
 		buleidu = true;
-		const unsigned int random_index = rand() % count;
+		const int random_index = rand() % count;
 		for (auto& j : order_list)
 		{
 			if (random_index == j)

@@ -6,9 +6,9 @@
 //Game settings
 #define width_height 10 //Width & height of field
 
-#define DEBUG_MODE 0 //0 - off; 1 - on
+#define DEBUG_MODE 1 //0 - off; 1 - on
 
-#define SEED 0 //0 - Pseudo-random
+#define SEED 1618573863 //0 - Pseudo-random
 ///////////////
 
 class Ship
@@ -26,7 +26,7 @@ public:
 	void set_type(const BasicType* type);
 	BasicType* get_type()const;
 	void set_durability(const std::vector<int> &durability);
-	unsigned int get_durability_sum()const;
+	int get_durability_sum()const;
 	std::vector<int> get_durability()const;
 	void damage_by_index(const int damage, const int index);
 	int get_id()const;

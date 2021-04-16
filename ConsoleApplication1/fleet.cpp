@@ -56,9 +56,9 @@ std::vector<Ship> Fleet::get_ship_vector() const
 	return ship_vector_;
 }
 
-unsigned int Fleet::get_health() const
+int Fleet::get_health() const
 {
-	unsigned int hp = 0;
+	int hp = 0;
 	for (auto& i : ship_vector_)
 	{
 		for (int j = 0; j < i.get_durability().size(); j++)
@@ -106,7 +106,7 @@ bool Fleet::get_side()const {
 	return side_;
 }
 
-Ship Fleet::get_ship_by_index(const unsigned int id)const {
+Ship Fleet::get_ship_by_index(const int id)const {
 	return ship_vector_.at(id);
 	//try
 	//{
@@ -120,7 +120,7 @@ Ship Fleet::get_ship_by_index(const unsigned int id)const {
 }
 
 void Fleet::damage_by_index_bot(Ship sheep, int difficulty) { //sheep - who is attack
-	std::vector <std::pair <unsigned int, unsigned int>> bot_memory; //BOT Repository Of Detected Cells
+	std::vector <std::pair <int, int>> bot_memory; //BOT Repository Of Detected Cells
 	bool GwSUtPaLT = true; //Gura was still unable to plant a large tree
 	int x = 0, y = 0, attempts = 0;
 	int dmg = sheep.get_type()->get_damage_value();
@@ -134,7 +134,7 @@ void Fleet::damage_by_index_bot(Ship sheep, int difficulty) { //sheep - who is a
 		if (bot_memory.empty()) {//I)Сканируем на количество неисследованных клеток и наличие на них кораблей, подбираем наиболее подходящий(если сложность hard)
 			x = 1 + rand() % (width_height - 2);
 			y = 1 + rand() % (width_height - 2);
-			if constexpr (DEBUG_MODE) { std::cout << "[AIRCRAFT ATTACK BOT]rand_x = " << x << "; rand_y = " << y << std::endl; }
+			if constexpr (DEBUG_MODE) { std::cout << "[DEFAULT DAMAGE BOT]rand_x = " << x << "; rand_y = " << y << std::endl; }
 			if (field_id_[x][y].first > 1) GwSUtPaLT = false;
 			attempts++;
 		}
@@ -148,7 +148,7 @@ void Fleet::damage_by_index_bot(Ship sheep, int difficulty) { //sheep - who is a
 
 	if constexpr (DEBUG_MODE) std::cout << "[DEFAULT DAMAGE BOT]Gura AI(c) decided that: x = " << x << "; y = " << y << std::endl;
 
-	const char string_x = int_to_letter(x);
+	const char str_x = int_to_letter(x);
 
 	if (field_id_[x][y].first > 1) {
 		if (ship_vector_[field_id_[x][y].first - 2].get_type()->get_name() == "Small" && sheep.get_type()->get_name() == "Tsundere")
@@ -166,13 +166,13 @@ void Fleet::damage_by_index_bot(Ship sheep, int difficulty) { //sheep - who is a
 		}
 	}
 	else {
-		std::cout << "The enemy missed! X = " << string_x << "; Y = " << y << std::endl;
+		std::cout << "The enemy missed! X = " << str_x << "; Y = " << y << std::endl;
 	}
 	field_get_vision(x, y);
 }
 
 void Fleet::ai(const int current_ship_id, const int difficulty, Fleet& fleet_of_player) {
-	//Gura AI(not copyrighted) Reborn v1.09
+	//Gura AI(not copyrighted) Reborn v1.10
 	srand(time(nullptr));
 	const std::string type = ship_vector_[current_ship_id].get_type()->get_name();
 
@@ -255,21 +255,37 @@ void Fleet::ai(const int current_ship_id, const int difficulty, Fleet& fleet_of_
 }
 
 void Fleet::damage_by_index_player(Ship &sheep) { //sheep - who is attack
-	std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
-	int x = 0, y = -1;
+	//std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
+	int x = 0, y = 0;
+	bool not_idiot = true, negative = false;
+	char char_x = ' ';
 	int dmg = sheep.get_type()->get_damage_value();
-	char char_x;
-	std::cin >> char_x >> y;
-	if constexpr (DEBUG_MODE) std::cout << "[DEFAULT DAMAGE PLAYER]X = " << char_x << "; Y = " << y << std::endl;
+	std::string str_y;
+	std::cin >> char_x >> str_y;
+	if constexpr (DEBUG_MODE) std::cout << "[DEFAULT DAMAGE PLAYER]X = " << char_x << "; Y = " << str_y << std::endl;
 
-	if (y > width_height) {
+	for (int i = 0; i < str_y.length(); i++) {
+		if (str_y[i] >= '0' && str_y[i] <= '9') {
+			not_idiot = false;
+			y *= 10;
+			y += str_y[i] - '0';
+		}
+		if (str_y[i] == '-') {
+			negative = true;
+		}
+	}
+
+	if (not_idiot) y = letter_to_int(std::toupper(str_y[0]));
+	if (negative) y *= -1;
+
+	if (y > width_height - 1 || y < 0) {
 		std::cout << "Captain! You shot out of bounds!" << std::endl;
 		return;
 	}
 	
 	char_x = std::toupper(char_x);
 	x = letter_to_int(char_x);
-	if (x > width_height - 1)
+	if (x > width_height - 1 || x < 0)
 	{
 		std::cout << "Captain! You shot out of bounds!" << std::endl;
 		return;
@@ -327,21 +343,37 @@ void Fleet::aircraft_attack_player(const int dmg)
 	}
 
 	//Get XY
-	std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
-	int x = 0, y = -1;
+	//std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
+	int x = 0, y = 0;
+	bool not_idiot = true, negative = false;
 	char char_x = ' ';
-	std::cin >> char_x >> y;
-	if constexpr (DEBUG_MODE) std::cout << "[AIRCRAFT ATTACK PLAYER]X = " << char_x << "; Y = " << y << ";" << std::endl;
+	std::string str_y;
+	std::cin >> char_x >> str_y;
+	if constexpr (DEBUG_MODE) std::cout << "[AIRCRAFT ATTACK PLAYER]X = " << char_x << "; Y = " << str_y << ";" << std::endl;
+
+	for (int i = 0; i < str_y.length(); i++) {
+		if (str_y[i] >= '0' && str_y[i] <= '9') {
+			not_idiot = false;
+			y *= 10;
+			y += str_y[i] - '0';
+		}
+		if (str_y[i] == '-') {
+			negative = true;
+		}
+	}
+
+	if (not_idiot) y = letter_to_int(std::toupper(str_y[0]));
+	if (negative) y *= -1;
 
 	//Check out of bounds
-	if (y > width_height) {
+	if (y > width_height - 1 || y < 0) {
 		std::cout << "Captain! You shot out of bounds!" << std::endl;
 		return;
 	}
 
 	char_x = std::toupper(char_x);
 	x = letter_to_int(char_x);
-	if (x > width_height - 1)
+	if (x > width_height - 1 || x < 0)
 	{
 		std::cout << "Captain! You shot out of bounds!" << std::endl;
 		return;
@@ -411,7 +443,7 @@ void Fleet::aircraft_attack_player(const int dmg)
 
 void Fleet::aircraft_attack_bot(const int dmg, int difficulty)
 {
-	std::vector <std::pair <unsigned int, unsigned int>> bot_memory; //BOT Repository Of Detected Cells
+	std::vector <std::pair <int, int>> bot_memory; //BOT Repository Of Detected Cells
 	bool GwSUtPaLT = true; //Gura was still unable to plant a large tree
 	int x = 0, y = 0, random_x = 0, random_y = 0, attempts = 0, counter = 0, max = 0;
 	bool angle = rand() % 2;
@@ -563,14 +595,30 @@ void Fleet::aircraft_attack_bot(const int dmg, int difficulty)
 
 void Fleet::heavy_cruiser_attack_player(const int dmg)
 {
-	int x = 0, y = -1;
-	char char_x; 
-	std::cout << "Where are we going to shoot? 3x3 low dmg (Write X and Y coordinates): ";
-	std::cin >> char_x >> y;
-	if constexpr (DEBUG_MODE) std::cout << "[HEAVY CRUISER ATTACK PLAYER]X = " << char_x << "; Y = " << y << std::endl;
-	
+	//std::cout << "Where are we going to shoot? 3x3 low dmg (Write X and Y coordinates): ";
+	int x = 0, y = 0;
+	bool not_idiot = true, negative = false;
+	char char_x = ' ';
+	std::string str_y;
+	std::cin >> char_x >> str_y;
+	if constexpr (DEBUG_MODE) std::cout << "[HEAVY CRUISER ATTACK PLAYER]X = " << char_x << "; Y = " << str_y << std::endl;
+
+	for (int i = 0; i < str_y.length(); i++) {
+		if (str_y[i] >= '0' && str_y[i] <= '9') {
+			not_idiot = false;
+			y *= 10;
+			y += str_y[i] - '0';
+		}
+		if (str_y[i] == '-') {
+			negative = true;
+		}
+	}
+
+	if (not_idiot) y = letter_to_int(std::toupper(str_y[0]));
+	if (negative) y *= -1;
+
 	//Check out of bounds
-	if (y > width_height || y < 0)
+	if (y > width_height - 1 || y < 0)
 	{
 		std::cout << "Captain! You shot out of bounds!" << std::endl;
 	}
@@ -619,8 +667,9 @@ void Fleet::heavy_cruiser_attack_player(const int dmg)
 
 void Fleet::heavy_cruiser_attack_bot(const int dmg, int difficulty)
 {
-	std::vector <std::pair <unsigned int, unsigned int>> bot_memory; //BOT Repository Of Detected Cells
-	bool GwSUtPaLT = true; //Gura was still unable to plant a large tree
+	std::vector <std::pair <int, int>> bot_memory; //BOT Repository Of Detected Cells
+	bool GwSUtPaLT = true, //Gura was still unable to plant a large tree
+		nice_coords_from_memory = false;
 	int x = 0, y = 0, random_x = 0, random_y = 0, attempts = 0, counter = 0, max = 0;
 
 	if (difficulty == 2) {
@@ -629,36 +678,38 @@ void Fleet::heavy_cruiser_attack_bot(const int dmg, int difficulty)
 	find_founded_ships(bot_memory);
 	while (GwSUtPaLT && attempts < difficulty + 1)
 	{
-		if (bot_memory.empty()) {//I)Сканируем на количество неисследованных клеток и наличие на них кораблей, подбираем наиболее подходящий(если сложность hard)
-			counter = 0;
-			random_x = 1 + rand() % (width_height - 2);
-			random_y = 1 + rand() % (width_height - 2);
-			if constexpr (DEBUG_MODE) { std::cout << "[AIRCRAFT ATTACK BOT]rand_x = " << random_x << "; rand_y = " << random_y << std::endl; }
-			if (field_id_[random_x - 1][random_y - 1].first > 1 && !field_war_[random_x - 1][random_y - 1]) counter++;
-			if (field_id_[random_x - 1][random_y].first > 1 && !field_war_[random_x - 1][random_y]) counter++;
-			if (field_id_[random_x - 1][random_y + 1].first > 1 && !field_war_[random_x - 1][random_y + 1]) counter++;
-			if (field_id_[random_x][random_y - 1].first > 1 && !field_war_[random_x][random_y - 1]) counter++;
-			if (field_id_[random_x][random_y].first > 1 && !field_war_[random_x][random_y]) counter++;
-			if (field_id_[random_x][random_y + 1].first > 1 && !field_war_[random_x][random_y + 1]) counter++;
-			if (field_id_[random_x + 1][random_y - 1].first > 1 && !field_war_[random_x + 1][random_y - 1]) counter++;
-			if (field_id_[random_x + 1][random_y].first > 1 && !field_war_[random_x + 1][random_y]) counter++;
-			if (field_id_[random_x + 1][random_y + 1].first > 1 && !field_war_[random_x + 1][random_y + 1]) counter++;
-			if (counter >= max) {
-				max = counter;
-				x = random_x;
-				y = random_y;
+		nice_coords_from_memory = false;
+		for (int i = 0; i < bot_memory.size(); i++) {
+			if (ship_vector_[field_id_[bot_memory[i].first][bot_memory[i].second].first].get_durability()[field_id_[bot_memory[i].first][bot_memory[i].second].second] == 1) {
+				x = bot_memory[i].first;
+				y = bot_memory[i].second;
+				nice_coords_from_memory = true;
+				bot_memory.clear();
 			}
-			if (max == 9) {
-				GwSUtPaLT = false;
-			}
-			attempts++;
 		}
-		else { //II)Finishing off found ships
-			x = bot_memory[0].first;
-			y = bot_memory[0].second;
-			bot_memory.clear();
+		if (nice_coords_from_memory) break;
+		counter = 0;
+		random_x = 1 + rand() % (width_height - 2);
+		random_y = 1 + rand() % (width_height - 2);
+		if constexpr (DEBUG_MODE) { std::cout << "[AIRCRAFT ATTACK BOT]rand_x = " << random_x << "; rand_y = " << random_y << std::endl; }
+		if (field_id_[random_x - 1][random_y - 1].first > 1 && !field_war_[random_x - 1][random_y - 1]) counter++;
+		if (field_id_[random_x - 1][random_y].first > 1 && !field_war_[random_x - 1][random_y]) counter++;
+		if (field_id_[random_x - 1][random_y + 1].first > 1 && !field_war_[random_x - 1][random_y + 1]) counter++;
+		if (field_id_[random_x][random_y - 1].first > 1 && !field_war_[random_x][random_y - 1]) counter++;
+		if (field_id_[random_x][random_y].first > 1 && !field_war_[random_x][random_y]) counter++;
+		if (field_id_[random_x][random_y + 1].first > 1 && !field_war_[random_x][random_y + 1]) counter++;
+		if (field_id_[random_x + 1][random_y - 1].first > 1 && !field_war_[random_x + 1][random_y - 1]) counter++;
+		if (field_id_[random_x + 1][random_y].first > 1 && !field_war_[random_x + 1][random_y]) counter++;
+		if (field_id_[random_x + 1][random_y + 1].first > 1 && !field_war_[random_x + 1][random_y + 1]) counter++;
+		if (counter >= max) {
+			max = counter;
+			x = random_x;
+			y = random_y;
+		}
+		if (max == 9) {
 			GwSUtPaLT = false;
 		}
+		attempts++;
 	}
 	
 	if constexpr (DEBUG_MODE) { std::cout << "[HEAVY CRUISER ATTACK BOT]Gura decided, that X = " << x << "; Y = " << y << std::endl; }
@@ -686,7 +737,7 @@ void Fleet::heavy_cruiser_attack_bot(const int dmg, int difficulty)
 	}
 }
 
-void Fleet::find_founded_ships(std::vector <std::pair <unsigned int, unsigned int>>& memory) {
+void Fleet::find_founded_ships(std::vector <std::pair <int, int>>& memory) {
 	for (int y = 0; y < width_height; y++) {
 		for (int x = 0; x < width_height; x++) {
 			if (field_id_[x][y].first > 1 && field_war_[x][y] == true) {
@@ -750,12 +801,12 @@ std::string Fleet::return_field_final(const unsigned& x, const unsigned& y) cons
 	return field_final_[x][y];
 }
 
-unsigned int Fleet::return_field_id(const unsigned& x, const unsigned& y)const
+int Fleet::return_field_id(const unsigned& x, const unsigned& y)const
 {
 	return field_id_[x][y].first;
 }
 
-unsigned int Fleet::return_field_index(const unsigned& x, const unsigned& y)const
+int Fleet::return_field_index(const unsigned& x, const unsigned& y)const
 {
 	return field_id_[x][y].second;
 }
@@ -767,9 +818,9 @@ bool Fleet::return_field_war(const unsigned& x, const unsigned& y)const
 
 void Fleet::initialize_field_final()
 {
-	for (unsigned int y = 0; y < width_height; y++)
+	for (int y = 0; y < width_height; y++)
 	{
-		for (unsigned int x = 0; x < width_height; x++)
+		for (int x = 0; x < width_height; x++)
 		{
 			if (field_id_[x][y].first > 1)
 			{
@@ -793,25 +844,25 @@ void Fleet::output_field_final(const Fleet& fleet2)const //Передаём только враже
 	std::string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	std::cout << "\tSide: " << name_ << "\t\tSide: " << fleet2.name_ << std::endl;
 	std::cout << "\t ||";
-	for (unsigned int x = 0; x < width_height; x++)
+	for (int x = 0; x < width_height; x++)
 	{
 		std::cout << letters[x] << "|";
 	}
 	std::cout << "\t\t   ";
-	for (unsigned int x = 0; x < width_height; x++)
+	for (int x = 0; x < width_height; x++)
 	{
 		std::cout << letters[x] << "|";
 	}
 	std::cout << std::endl;
-	for (unsigned int y = 0; y < width_height; y++)
+	for (int y = 0; y < width_height; y++)
 	{
 		std::cout << "\t" << y << "||";
-		for (unsigned int x = 0; x < width_height; x++)
+		for (int x = 0; x < width_height; x++)
 		{
 			std::cout << field_final_[x][y] << "|";
 		}
 		std::cout << "\t\t" << y << "||";
-		for (unsigned int x = 0; x < width_height; x++)
+		for (int x = 0; x < width_height; x++)
 		{
 			if (fleet2.field_war_[x][y])
 			{
@@ -832,10 +883,10 @@ void Fleet::output_field_id()const
 {
 	//DEBUG FUNC
 	std::cout << "id[" << side_ << "](NOT FOR USER): \n\n";
-	for (unsigned int y = 0; y < width_height; y++)
+	for (int y = 0; y < width_height; y++)
 	{
 		std::cout << "         |";
-		for (unsigned int x = 0; x < width_height; x++)
+		for (int x = 0; x < width_height; x++)
 		{
 			std::cout << field_id_[x][y].first << "|";
 		}
@@ -848,10 +899,10 @@ void Fleet::output_field_index()const
 {
 	//DEBUG FUNC
 	std::cout << "index[" << side_ << "](NOT FOR USER): \n\n";
-	for (unsigned int y = 0; y < width_height; y++)
+	for (int y = 0; y < width_height; y++)
 	{
 		std::cout << "         |";
-		for (unsigned int x = 0; x < width_height; x++)
+		for (int x = 0; x < width_height; x++)
 		{
 			std::cout << field_id_[x][y].second << "|";
 		}
@@ -864,10 +915,10 @@ void Fleet::output_field_war()const
 {
 	//DEBUG FUNC
 	std::cout << "War[" << side_ << "](NOT FOR USER): \n\n";
-	for (unsigned int y = 0; y < width_height; y++)
+	for (int y = 0; y < width_height; y++)
 	{
 		std::cout << "         |";
-		for (unsigned int x = 0; x < width_height; x++)
+		for (int x = 0; x < width_height; x++)
 		{
 			std::cout << field_war_[x][y] << "|";
 		}
@@ -876,7 +927,7 @@ void Fleet::output_field_war()const
 	std::cout << std::endl;
 }
 
-void Fleet::field_get_vision(const unsigned int x, const unsigned int y)
+void Fleet::field_get_vision(const int x, const int y)
 {
 	field_war_[x][y] = true;
 }
@@ -884,10 +935,10 @@ void Fleet::field_get_vision(const unsigned int x, const unsigned int y)
 std::pair<int, int> Fleet::return_x_y(const int& id)const
 {
 	//ID ON MAP!
-	unsigned int start_x = 0, start_y = 0;
-	for (unsigned int y = 0; y < width_height; y++)
+	int start_x = 0, start_y = 0;
+	for (int y = 0; y < width_height; y++)
 	{
-		for (unsigned int x = 0; x < width_height; x++)
+		for (int x = 0; x < width_height; x++)
 		{
 			if (field_id_[x][y].first == id)
 			{
@@ -1213,8 +1264,8 @@ void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 	if constexpr (DEBUG_MODE) { std::cout << "[DO ACTION]order[round] = " << current_ship_id << std::endl; }
 	const std::pair <int, int> coordinates = return_x_y(current_ship_id + 2);
 	std::cout << "Current position: \t" << int_to_letter(coordinates.first) << " " << coordinates.second << std::endl;
-	std::cout << "Current type: \t\t" << ship_vector_[current_ship_id].get_type()->get_name() << std::endl;
-	std::cout << "What do you want?\n\n";
+	std::cout << "Current type: \t\t" << ship_vector_[current_ship_id].get_type()->get_name() << std::endl << std::endl;
+	std::cout << "What do you want? (Write command and coordinates)\n\n";
 	std::string action;
 	while (true)
 	{
@@ -1266,9 +1317,18 @@ void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 				}
 				if (ship_vector_[current_ship_id].get_type()->get_name() == "Heavy Cruiser")
 				{
-					//Shot
-					whom.heavy_cruiser_attack_player(ship_vector_[current_ship_id].get_type()->get_damage_value());
-					break;
+					std::cout << "-Shoot\n" << std::endl;
+					std::cin >> action;
+					ha_you_are_small_now(action);
+					if (action == "shoot" || action == "s")
+					{
+						//Shot
+						whom.heavy_cruiser_attack_player(ship_vector_[current_ship_id].get_type()->get_damage_value());
+						break;
+					}
+					std::cout << "Wrong command!" << std::endl;
+					system("pause");
+					continue;
 				}
 				if (ship_vector_[current_ship_id].get_type()->get_name() == "Aircraft Carrier")
 				{
@@ -1395,13 +1455,13 @@ void Fleet::klee(const auto& coords)
 	}
 }
 
-void Fleet::get_damage(const int dmg, const unsigned int x, const unsigned int y)
+void Fleet::get_damage(const int dmg, const int x, const int y)
 {
-	const unsigned int id = field_id_[x][y].first - 2;
+	const int id = field_id_[x][y].first - 2;
 	ship_vector_[id].damage_by_index(dmg, field_id_[x][y].second);
 	std::cout << "Hit!" << std::endl;
 
-	std::vector<std::pair<unsigned int, unsigned int>> coords;
+	std::vector<std::pair<int, int>> coords;
 
 	if (!ship_vector_[id].get_durability_sum())
 	{
@@ -1419,26 +1479,27 @@ void Fleet::get_damage(const int dmg, const unsigned int x, const unsigned int y
 	}
 }
 
-void Fleet::small_move_player(const std::pair<unsigned int, unsigned int>& start, const int& index)
+void Fleet::small_move_player(const std::pair<int, int>& start, const int& index)
 {
-	int x = 0, y = -1;
-	std::cout << "Where are we going? (Write X and Y coordinates): ";
+	int x = 0, y = 0;
 	char char_x;
 	std::cin >> char_x >> y;
 	if constexpr (DEBUG_MODE) std::cout << "[Move small]X = " << char_x << "; Y = " << y << std::endl;
 
-	if (y > width_height)
+	if (y > width_height - 1 || y < 0)
 	{
-		std::cout << "Captain! Are you trying to steer the ship out of the battlefield?\n" << std::endl;
+		std::cout << "Captain! Are you trying to steer the ship out of the battlefield?" << std::endl;
 		system("pause");
 		small_move_player(start, index);
 		return;
 	}
 	char_x = std::toupper(char_x);
 	x = letter_to_int(char_x);
-	if (x > width_height - 1)
+	if (x > width_height - 1 || x < 0)
 	{
-		std::cout << "Captain! You shot out of bounds!" << std::endl;
+		std::cout << "Captain! Are you trying to steer the ship out of the battlefield?" << std::endl;
+		system("pause");
+		small_move_player(start, index);
 		return;
 	}
 
@@ -1448,7 +1509,7 @@ void Fleet::small_move_player(const std::pair<unsigned int, unsigned int>& start
 		std::cout << "[Move small]X = " << x << "; Y = " << y << std::endl;
 	}
 
-	if ((start.first - x <= 1 || start.first - x >= UINT_MAX - 1) && (start.second - y <= 1 || start.second - y >= UINT_MAX - 1))
+	if (difference_modulus(start.first, x) < 2 && difference_modulus(start.second, y) < 2)
 	{
 		field_id_[start.first][start.second].first = 0;
 		if (area_is_clear(x, y))
@@ -1542,14 +1603,15 @@ void Fleet::small_move_player(const std::pair<unsigned int, unsigned int>& start
 	else
 	{
 		field_id_[start.first][start.second].first = index + 2;
-		std::cout << "Captain! This is not a <<Meteor>> for you, a single-decker can only move one square.";
+		std::cout << "Captain! This is not a <<Meteor>> for you, a single-decker can only move one square." << std::endl;
+		system("pause");
 		small_move_player(start, index);
 		return;
 	}
 	std::cout << "Moved!\n";
 }
 
-void Fleet::small_move_bot(const std::pair<int, int>& coordinates, const std::pair<unsigned int, unsigned int>& start, const int& index)
+void Fleet::small_move_bot(const std::pair<int, int>& coordinates, const std::pair<int, int>& start, const int& index)
 {
 	if constexpr (DEBUG_MODE)
 	{
@@ -1635,7 +1697,7 @@ void Fleet::small_move_bot(const std::pair<int, int>& coordinates, const std::pa
 	field_id_[coordinates.first][coordinates.second].first = index + 2;
 }
 
-bool Fleet::area_is_clear(const unsigned int x, const unsigned int y)const
+bool Fleet::area_is_clear(const int x, const int y)const
 {
 	if (y)
 	{

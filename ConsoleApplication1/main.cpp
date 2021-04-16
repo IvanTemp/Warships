@@ -81,8 +81,8 @@ int main(int argc, char* argv[]) {
 	///////////////
 
 	//Order
-	std::vector <unsigned int> order = first_order(std::max(fleet_1.get_ship_vector().size(), fleet_2.get_ship_vector().size()));
-	//std::vector <unsigned int> order = { 0 };
+	//std::vector <int> order = first_order(std::max(fleet_1.get_ship_vector().size(), fleet_2.get_ship_vector().size()));
+	std::vector <int> order = { 0, 1, 8 };
 	///////
 
 	//DEBUG FUNCTIONS
@@ -116,7 +116,7 @@ int main(int argc, char* argv[]) {
 	//////////////
 
 	if (fleet_1 != fleet_2) {
-		std::cout << "Warning! Dizballans! Ironman mode is disabled." << std::endl << std::endl;
+		std::cout << "Imbalance! Ironman mode is disabled." << std::endl << std::endl;
 		ironman = false;
 	}
 
