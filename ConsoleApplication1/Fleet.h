@@ -32,6 +32,7 @@ public:
 	//							Set
 	void set_name(int index, const std::string name);
 
+
 	//						Input/Output
 	void print(std::ostream& out)const;
 	void read(std::istream& in);
@@ -95,6 +96,7 @@ private:
 	std::string name_;
 	std::vector<Ship> ship_vector_;
 	const bool side_;
+
 
 	//															Fields
 	std::string field_final_[width_height][width_height] = { "#", "#" }; //The field seen by the player
