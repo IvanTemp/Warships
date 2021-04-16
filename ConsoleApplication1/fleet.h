@@ -25,11 +25,11 @@ public:
 	void damage_by_index_bot(Ship sheep, int difficulty);
 	void ai(const int id, const int difficulty, Fleet& fleet_of_player);
 	void damage_by_index_player(Ship &sheep);
-	void heavy_cruiser_attack_bot(const int dmg, int difficulty);
-	void aircraft_attack_player(const bool angle, const int dmg);
+	void aircraft_attack_player(const int dmg);
 	void aircraft_attack_bot(const int dmg, int difficulty);
-	void find_founded_ships(std::vector <std::pair <unsigned int, unsigned int>>& memory);
 	void heavy_cruiser_attack_player(const int dmg);
+	void heavy_cruiser_attack_bot(const int dmg, int difficulty);
+	void find_founded_ships(std::vector <std::pair <unsigned int, unsigned int>>& memory);
 	void nuclear_bomb();
 	Fleet& operator +=(const Ship& ship); //add ship
 	Fleet& operator -=(const Ship& ship); //del ship
