@@ -61,7 +61,6 @@ int main(int argc, char* argv[]) {
 	{
 		std::ifstream fin(argv[2]);
 		fleet_2.read(fin);
-		std::cout << fleet_2.get_name() << " is loaded from file!" << std::endl << std::endl;
 		fin.close();
 		//Check fleet_2 for empty
 		if (fleet_2.get_ship_vector().empty()) {
@@ -72,7 +71,6 @@ int main(int argc, char* argv[]) {
 	////////
 
 	fleet_1.print(std::cout);
-	std::cout << std::endl;
 	fleet_2.print(std::cout);
 	std::cout << std::endl;
 	
@@ -83,8 +81,8 @@ int main(int argc, char* argv[]) {
 	///////////////
 
 	//Order
-	//std::vector <unsigned int> order = first_order(std::max(fleet_1.get_ship_vector().size(), fleet_2.get_ship_vector().size()));
-	std::vector <unsigned int> order = { 0 };
+	std::vector <unsigned int> order = first_order(std::max(fleet_1.get_ship_vector().size(), fleet_2.get_ship_vector().size()));
+	//std::vector <unsigned int> order = { 0 };
 	///////
 
 	//DEBUG FUNCTIONS
