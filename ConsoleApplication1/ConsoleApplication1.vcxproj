@@ -154,7 +154,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AircraftCarrier.h" />
-    <ClInclude Include="Fleet.h" />
     <ClInclude Include="functions.h" />
     <ClInclude Include="HeavyCruiser.h" />
     <ClInclude Include="Ship.h" />
