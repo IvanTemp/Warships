@@ -21,7 +21,7 @@ public:
 
 
 	//							Get
-	std::string get_name()const;
+	std::string get_name() const;
 	std::vector<Ship> get_ship_vector()const;
 	int get_health()const;
 	bool get_side() const;
@@ -87,8 +87,8 @@ public:
 
 
 	//					  Will be deleted
-	bool add_ship_to_fleet(const Ship& ship);
-	void remove_ship_from_fleet(const Ship& ship);
+	//bool add_ship_to_fleet(const Ship& ship);
+	//void remove_ship_from_fleet(const Ship& ship);
 
 
 private:

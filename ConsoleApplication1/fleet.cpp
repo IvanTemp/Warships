@@ -37,7 +37,7 @@ void Fleet::read(std::istream& in)
 	{
 		Ship newShip;
 		newShip.read(in);
-		add_ship_to_fleet(newShip);
+		*this += newShip;
 	}
 }
 
@@ -67,39 +67,6 @@ int Fleet::get_health() const
 		}
 	}
 	return hp;
-}
-
-bool Fleet::add_ship_to_fleet(const Ship& shp)
-{
-	for (auto& i : ship_vector_)
-	{
-		if (i == shp)
-		{
-			std::cout << "Ship is already added" << std::endl;
-			return false;
-		}
-	}
-	ship_vector_.push_back(shp);
-	return true;
-}
-
-void Fleet::remove_ship_from_fleet(const Ship& shp)
-{
-	bool flag = false;
-	for (auto& i : ship_vector_)
-	{
-		if (i == shp)
-		{
-			//Само удаление
-			ship_vector_.erase(std::remove(ship_vector_.begin(), ship_vector_.end(), shp));
-			flag = true;
-			if constexpr (DEBUG_MODE) std::cout << "[REMOVE SHIP]One ship removed!" << std::endl;
-		}
-	}
-	if (!flag)
-	{
-		if constexpr (DEBUG_MODE) std::cout << "[REMOVE SHIP]No ship to delete" << std::endl;
-	}
 }
 
 bool Fleet::get_side()const {
@@ -324,7 +291,7 @@ void Fleet::aircraft_attack_player(const int dmg)
 	std::string tempstr = "";
 	while (true)
 	{
-		std::cout << "How are we going to shoot? \n\n -1x3 (Vertical) \n -3x1 (Horizantal) \n\n";
+		std::cout << "Firsly, How are we going to shoot? \n\n -1x3 (Vertical) \n -3x1 (Horizantal) \n\n";
 		std::cin >> tempstr;
 		if (tempstr == "1x3" || tempstr == "1")
 		{
@@ -341,7 +308,7 @@ void Fleet::aircraft_attack_player(const int dmg)
 			std::cout << "Wrong command\n";
 		}
 	}
-
+	std::cout << "And now coords \n";
 	//Get XY
 	//std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
 	int x = 0, y = 0;
@@ -758,15 +725,36 @@ void Fleet::nuclear_bomb() {
 	}
 }
 
-Fleet& Fleet::operator+=(const Ship& ship)
+Fleet& Fleet::operator+=(const Ship& shp)
 {
-	add_ship_to_fleet(ship);
+	for (auto& i : ship_vector_)
+	{
+		if (i == shp)
+		{
+			std::cout << "Ship is already added" << std::endl;
+		}
+	}
+	ship_vector_.push_back(shp);
 	return *this;
 }
 
-Fleet& Fleet::operator-=(const Ship& ship)
+Fleet& Fleet::operator-=(const Ship& shp)
 {
-	remove_ship_from_fleet(ship);
+	bool flag = false;
+	for (auto& i : ship_vector_)
+	{
+		if (i == shp)
+		{
+			//Само удаление
+			ship_vector_.erase(std::remove(ship_vector_.begin(), ship_vector_.end(), shp));
+			flag = true;
+			if constexpr (DEBUG_MODE) std::cout << "[REMOVE SHIP]One ship removed!" << std::endl;
+		}
+	}
+	if (!flag)
+	{
+		if constexpr (DEBUG_MODE) std::cout << "[REMOVE SHIP]No ship to delete" << std::endl;
+	}
 	return *this;
 }
 
