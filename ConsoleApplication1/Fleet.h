@@ -58,6 +58,7 @@ public:
 	void damage_by_index_bot(Ship sheep, int difficulty);
 	void aircraft_attack_bot(const int dmg, int difficulty);
 	void heavy_cruiser_attack_bot(const int dmg, int difficulty);
+	void small_move_bot(const std::pair<int, int>& coordinates, const std::pair<int, int>& start, const int& index);
 
 
 	//					Player - actions & damage
@@ -67,7 +68,6 @@ public:
 	void aircraft_attack_player(const int dmg);
 	void heavy_cruiser_attack_player(const int dmg);
 	void small_move_player(const std::pair<int, int>& start, const int& index);
-	void small_move_bot(const std::pair<int, int>& coordinates, const std::pair<int, int>& start, const int& index);
 
 
 	//						  Fields

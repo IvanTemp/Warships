@@ -28,9 +28,6 @@ int main(int argc, char* argv[]) {
 	if constexpr (DEBUG_MODE) {
 		std::cout << "WARNING! DEBUG MODE ON! \n" << std::endl;
 	}
-	else {
-		std::cout << "This is a playable build! Most of the information unnecessary to the player will be shown only after enabling DEBUG_MODE in Ship.h!\n\n";
-	}
 
 	if constexpr (width_height > 26) {
 		std::cout << "Warning! The game is not designed for such a large field size! Please limit yourself to 26 cells!" << std::endl;
@@ -81,8 +78,8 @@ int main(int argc, char* argv[]) {
 	///////////////
 
 	//Order
-	//std::vector <int> order = first_order(std::max(fleet_1.get_ship_vector().size(), fleet_2.get_ship_vector().size()));
-	std::vector <int> order = { 8 };
+	std::vector <int> order = first_order(std::max(fleet_1.get_ship_vector().size(), fleet_2.get_ship_vector().size()));
+	//std::vector <int> order = { 8 };
 	///////
 
 	//DEBUG FUNCTIONS

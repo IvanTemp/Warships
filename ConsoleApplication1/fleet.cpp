@@ -511,7 +511,7 @@ void Fleet::aircraft_attack_bot(const int dmg, int difficulty)
 					y++;
 				}
 			}
-			else if (x == width_height - 1) {
+			else if (y == width_height - 1) {
 				if (angle) {
 					y--;
 				}
@@ -703,15 +703,15 @@ void Fleet::heavy_cruiser_attack_bot(const int dmg, int difficulty)
 		random_x = 1 + rand() % (width_height - 1);
 		random_y = 1 + rand() % (width_height - 1);
 		if constexpr (DEBUG_MODE) { std::cout << "[AIRCRAFT ATTACK BOT]rand_x = " << random_x << "; rand_y = " << random_y << std::endl; }
-		if (field_id_[random_x - 1][random_y - 1].first > 1 && !field_war_[random_x - 1][random_y - 1]) counter++;
-		if (field_id_[random_x - 1][random_y].first > 1 && !field_war_[random_x - 1][random_y]) counter++;
-		if (field_id_[random_x - 1][random_y + 1].first > 1 && !field_war_[random_x - 1][random_y + 1]) counter++;
-		if (field_id_[random_x][random_y - 1].first > 1 && !field_war_[random_x][random_y - 1]) counter++;
-		if (field_id_[random_x][random_y].first > 1 && !field_war_[random_x][random_y]) counter++;
-		if (field_id_[random_x][random_y + 1].first > 1 && !field_war_[random_x][random_y + 1]) counter++;
-		if (field_id_[random_x + 1][random_y - 1].first > 1 && !field_war_[random_x + 1][random_y - 1]) counter++;
-		if (field_id_[random_x + 1][random_y].first > 1 && !field_war_[random_x + 1][random_y]) counter++;
-		if (field_id_[random_x + 1][random_y + 1].first > 1 && !field_war_[random_x + 1][random_y + 1]) counter++;
+		if (field_id_[random_x - 1][random_y - 1].first > 1 || !field_war_[random_x - 1][random_y - 1]) counter++;
+		if (field_id_[random_x - 1][random_y].first > 1 || !field_war_[random_x - 1][random_y]) counter++;
+		if (field_id_[random_x - 1][random_y + 1].first > 1 || !field_war_[random_x - 1][random_y + 1]) counter++;
+		if (field_id_[random_x][random_y - 1].first > 1 || !field_war_[random_x][random_y - 1]) counter++;
+		if (field_id_[random_x][random_y].first > 1 || !field_war_[random_x][random_y]) counter++;
+		if (field_id_[random_x][random_y + 1].first > 1 || !field_war_[random_x][random_y + 1]) counter++;
+		if (field_id_[random_x + 1][random_y - 1].first > 1 || !field_war_[random_x + 1][random_y - 1]) counter++;
+		if (field_id_[random_x + 1][random_y].first > 1 || !field_war_[random_x + 1][random_y]) counter++;
+		if (field_id_[random_x + 1][random_y + 1].first > 1 || !field_war_[random_x + 1][random_y + 1]) counter++;
 		if (counter >= max) {
 			max = counter;
 			x = random_x;
@@ -1347,7 +1347,7 @@ void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 				}
 				if (ship_vector_[current_ship_id].get_type()->get_name() == "Heavy Cruiser")
 				{
-					std::cout << "-Shoot\n" << std::endl;
+					std::cout << "-Shoot (3x3)\n" << std::endl;
 					std::cin >> action;
 					ha_you_are_small_now(action);
 					if (action == "shoot" || action == "s")
