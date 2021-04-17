@@ -81,8 +81,8 @@ int main(int argc, char* argv[]) {
 	///////////////
 
 	//Order
-	std::vector <int> order = first_order(std::max(fleet_1.get_ship_vector().size(), fleet_2.get_ship_vector().size()));
-	//std::vector <int> order = { 0, 1, 8 };
+	//std::vector <int> order = first_order(std::max(fleet_1.get_ship_vector().size(), fleet_2.get_ship_vector().size()));
+	std::vector <int> order = { 8 };
 	///////
 
 	//DEBUG FUNCTIONS
@@ -276,10 +276,10 @@ int main(int argc, char* argv[]) {
 
 				int nuclear_id = -1, finder_id = -1, damager_id = -1;
 				bool playable_fleet = false; //who will shoot(false - fleet1, true - fleet2)
-				if (fleet_2.find_small_ship_id() != -1 && fleet_1.find_heavy_cruiser_ship_id() != -1 && fleet_1.find_tsundere_ship_id() != -1) {
+				if (fleet_2.find_undead_small_ship_id() != -1 && fleet_1.find_undead_heavy_cruiser_ship_id() != -1 && fleet_1.find_undead_tsundere_ship_id() != -1) {
 					//nothing
 				}
-				else if (fleet_1.find_small_ship_id() != -1 && fleet_2.find_heavy_cruiser_ship_id() != -1 && fleet_2.find_tsundere_ship_id() != -1) {
+				else if (fleet_1.find_undead_small_ship_id() != -1 && fleet_2.find_undead_heavy_cruiser_ship_id() != -1 && fleet_2.find_undead_tsundere_ship_id() != -1) {
 					playable_fleet = true;
 				}
 				else {
@@ -340,14 +340,14 @@ int main(int argc, char* argv[]) {
 				switch (playable_fleet)
 				{
 				case false:
-					nuclear_id = fleet_2.find_small_ship_id();
-					finder_id = fleet_1.find_heavy_cruiser_ship_id();
-					damager_id = fleet_1.find_tsundere_ship_id();
+					nuclear_id = fleet_2.find_undead_small_ship_id();
+					finder_id = fleet_1.find_undead_heavy_cruiser_ship_id();
+					damager_id = fleet_1.find_undead_tsundere_ship_id();
 					break;
 				case true:
-					nuclear_id = fleet_1.find_small_ship_id();
-					finder_id = fleet_2.find_heavy_cruiser_ship_id();
-					damager_id = fleet_2.find_tsundere_ship_id();
+					nuclear_id = fleet_1.find_undead_small_ship_id();
+					finder_id = fleet_2.find_undead_heavy_cruiser_ship_id();
+					damager_id = fleet_2.find_undead_tsundere_ship_id();
 					break;
 				}
 

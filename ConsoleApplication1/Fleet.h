@@ -46,11 +46,12 @@ public:
 
 
 	//						Bot - find
-	int find_small_ship_id();
-	int find_heavy_cruiser_ship_id();
-	int find_tsundere_ship_id();
-	void find_founded_ships(std::vector <std::pair <int, int>>& memory);
-	std::pair<int, int> find_ship_and_return_x_y(const int& id)const; //ID ON MAP! (id on map = id in ship_vector_ + 2)
+	int find_undead_small_ship_id();
+	int find_undead_heavy_cruiser_ship_id();
+	int find_undead_tsundere_ship_id();
+	int	find_undead_aircraft_carrier_ship_id();
+	void remember_founded_ships(std::vector <std::pair <int, int>>& memory);
+	std::vector<std::pair<int, int>> find_ship_and_return_x_y_vector(const int& id)const; //ID ON MAP! (id on map = id in ship_vector_ + 2)
 
 
 	//					Bot - actions & damage
@@ -99,9 +100,9 @@ private:
 
 
 	//															Fields
-	std::string field_final_[width_height][width_height] = { "#", "#" }; //The field seen by the player
-	std::pair<int, int> field_id_[width_height][width_height] = { (std::make_pair(0, 0)) }; //The field with id_(.first) and indexes(.second)
-	bool field_war_[width_height][width_height] = { (false), (false) }; //The field with fog of war
+	std::string field_final_[width_height][width_height]; //The field seen by the player
+	std::pair<int, int> field_id_[width_height][width_height]; //The field with id_(.first) and indexes(.second)
+	bool field_war_[width_height][width_height]; //The field with fog of war
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 };
 
