@@ -10,6 +10,7 @@
 
 
 int main(int argc, char* argv[]) {
+
 	switch (SEED) {
 	case 0:
 		srand(time(nullptr));
@@ -57,6 +58,17 @@ int main(int argc, char* argv[]) {
 	if (argc > 1)
 	{
 		std::ifstream fin(argv[2]);
+		fleet_2.read(fin);
+		fin.close();
+		//Check fleet_2 for empty
+		if (fleet_2.get_ship_vector().empty()) {
+			std::cout << "Warning! Connect the file with the second fleet!" << std::endl;
+			return -2;
+		}
+	}
+	else //можно удалить этот else, сделал чтобы посмеяться
+	{
+		std::ifstream fin("input.txt");
 		fleet_2.read(fin);
 		fin.close();
 		//Check fleet_2 for empty
