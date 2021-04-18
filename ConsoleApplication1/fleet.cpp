@@ -689,6 +689,12 @@ void Fleet::heavy_cruiser_attack_bot(const int dmg, int difficulty)
 			y = bot_memory[i].second;
 			nice_coords_from_memory = true;
 			bot_memory.clear();
+			if (!x) {
+				x++;
+			}
+			if (!y) {
+				y++;
+			}
 		}
 	}
 
