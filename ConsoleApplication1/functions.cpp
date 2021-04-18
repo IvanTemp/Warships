@@ -4,6 +4,7 @@
 
 void output_achievement_info(const std::vector<std::pair<std::string, bool>>& achievements)
 {
+	//То, что количество не совпадает с выводимыми - не баг, а фича
 	int counter = 0;
 	for (int i = 0; i < achievements.size(); i++) if (achievements[i].second) counter++;
 	std::cout << "Achievements[" << counter << "/" << achievements.size() << "]: " << std::endl;

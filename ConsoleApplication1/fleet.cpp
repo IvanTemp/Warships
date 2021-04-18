@@ -176,7 +176,7 @@ void Fleet::damage_by_index_bot(Ship sheep, int difficulty) { //sheep - who is a
 }
 
 void Fleet::ai(const int current_ship_id, const int difficulty, Fleet& fleet_of_player) {
-	//Gura AI(not copyrighted) Reborn v1.11
+	//Gura AI(not copyrighted) Reborn v1.12
 	srand(time(nullptr));
 	const std::string type = ship_vector_[current_ship_id].get_type()->get_name();
 
@@ -687,37 +687,48 @@ void Fleet::heavy_cruiser_attack_bot(const int dmg, int difficulty)
 
 	remember_founded_ships(bot_memory);
 
+	nice_coords_from_memory = false;
+	for (int i = 0; i < bot_memory.size(); i++) {
+		if (ship_vector_[field_id_[bot_memory[i].first][bot_memory[i].second].first - 2].get_durability()[field_id_[bot_memory[i].first][bot_memory[i].second].second] == 1) {
+			x = bot_memory[i].first;
+			y = bot_memory[i].second;
+			nice_coords_from_memory = true;
+			bot_memory.clear();
+		}
+	}
+
 	while (GwSUtPaLT && attempts < difficulty + 1)
 	{
-		nice_coords_from_memory = false;
-		for (int i = 0; i < bot_memory.size(); i++) {
-			if (ship_vector_[field_id_[bot_memory[i].first][bot_memory[i].second].first].get_durability()[field_id_[bot_memory[i].first][bot_memory[i].second].second] == 1) {
-				x = bot_memory[i].first;
-				y = bot_memory[i].second;
-				nice_coords_from_memory = true;
-				bot_memory.clear();
-			}
-		}
+
 		if (nice_coords_from_memory) break;
 		counter = 0;
 		random_x = 1 + rand() % (width_height - 1);
 		random_y = 1 + rand() % (width_height - 1);
 		if constexpr (DEBUG_MODE) { std::cout << "[AIRCRAFT ATTACK BOT]rand_x = " << random_x << "; rand_y = " << random_y << std::endl; }
-		if (field_id_[random_x - 1][random_y - 1].first > 1 || !field_war_[random_x - 1][random_y - 1]) counter++;
-		if (field_id_[random_x - 1][random_y].first > 1 || !field_war_[random_x - 1][random_y]) counter++;
-		if (field_id_[random_x - 1][random_y + 1].first > 1 || !field_war_[random_x - 1][random_y + 1]) counter++;
-		if (field_id_[random_x][random_y - 1].first > 1 || !field_war_[random_x][random_y - 1]) counter++;
-		if (field_id_[random_x][random_y].first > 1 || !field_war_[random_x][random_y]) counter++;
-		if (field_id_[random_x][random_y + 1].first > 1 || !field_war_[random_x][random_y + 1]) counter++;
-		if (field_id_[random_x + 1][random_y - 1].first > 1 || !field_war_[random_x + 1][random_y - 1]) counter++;
-		if (field_id_[random_x + 1][random_y].first > 1 || !field_war_[random_x + 1][random_y]) counter++;
-		if (field_id_[random_x + 1][random_y + 1].first > 1 || !field_war_[random_x + 1][random_y + 1]) counter++;
+		if (field_id_[random_x - 1][random_y - 1].first > 1) counter += 2;
+		if (!field_war_[random_x - 1][random_y - 1]) counter++;
+		if (field_id_[random_x - 1][random_y].first > 1) counter += 2;
+		if (!field_war_[random_x - 1][random_y]) counter++;
+		if (field_id_[random_x - 1][random_y + 1].first > 1) counter += 2;
+		if (!field_war_[random_x - 1][random_y + 1])  counter++;
+		if (field_id_[random_x][random_y - 1].first > 1) counter += 2;
+		if (!field_war_[random_x][random_y - 1])  counter++;
+		if (field_id_[random_x][random_y].first > 1) counter += 2;
+		if (!field_war_[random_x][random_y]) counter++;
+		if (field_id_[random_x][random_y + 1].first > 1) counter += 2;
+		if (!field_war_[random_x][random_y + 1]) counter++;
+		if (field_id_[random_x + 1][random_y - 1].first > 1) counter += 2;
+		if (!field_war_[random_x + 1][random_y - 1]) counter++;
+		if (field_id_[random_x + 1][random_y].first > 1) counter += 2;
+		if (!field_war_[random_x + 1][random_y]) counter++;
+		if (field_id_[random_x + 1][random_y + 1].first > 1) counter += 2;
+		if (!field_war_[random_x + 1][random_y + 1]) counter++;
 		if (counter >= max) {
 			max = counter;
 			x = random_x;
 			y = random_y;
 		}
-		if (max == 9) {
+		if (max == 18) {
 			GwSUtPaLT = false;
 		}
 		attempts++;
@@ -856,8 +867,7 @@ void Fleet::initialize_field_final()
 		{
 			if (field_id_[x][y].first > 1)
 			{
-				field_final_[x][y] = std::to_string(
-					ship_vector_[field_id_[x][y].first - 2].get_durability()[field_id_[x][y].second]);
+				field_final_[x][y] = std::to_string(ship_vector_[field_id_[x][y].first - 2].get_durability()[field_id_[x][y].second]);
 			}
 			else if (field_war_[x][y])
 			{
