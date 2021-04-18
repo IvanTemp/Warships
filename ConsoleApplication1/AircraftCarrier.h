@@ -18,6 +18,6 @@ public:
 private:
 	const int size_ = 4;
 	std::string name_ = "Aircraft Carrier";
-	int default_durability_ = 6;
-	const int damage_ = 3;
+	int default_durability_ = 5;
+	const int damage_ = 4;
 };

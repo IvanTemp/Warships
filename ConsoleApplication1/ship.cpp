@@ -128,7 +128,7 @@ int Ship::get_id() const
 
 bool Ship::operator==(const Ship& right) const
 {
-	return (type_->get_name() == right.type_->get_name() && id_ == right.id_ && durability_ == right.durability_);
+	return (type_->get_size() == right.type_->get_size() && id_ == right.id_ && durability_ == right.durability_);
 }
 
 bool Ship::operator!=(const Ship& right) const

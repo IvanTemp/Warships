@@ -78,8 +78,8 @@ int main(int argc, char* argv[]) {
 	///////////////
 
 	//Order
-	//std::vector <int> order = first_order(std::max(fleet_1.get_ship_vector().size(), fleet_2.get_ship_vector().size()));
-	std::vector <int> order = { 2 };
+	std::vector <int> order = first_order(std::max(fleet_1.get_ship_vector().size(), fleet_2.get_ship_vector().size()));
+	//std::vector <int> order = { 2 };
 	///////
 
 	//DEBUG FUNCTIONS
@@ -258,16 +258,16 @@ int main(int argc, char* argv[]) {
 			if (mission_number == "344460") {
 				//Cleaning from Aircraft Carrier
 				for (int i = 0; i < fleet_1.get_ship_vector().size();) {
-					if (fleet_1.get_ship_vector()[i].get_type()->get_name() == "Aircraft Carrier") {
+					if (fleet_1.get_ship_vector()[i].get_type()->get_size() == 4) {
 						fleet_1 -= fleet_1.get_ship_vector()[i];
 					}
-					if (fleet_1.get_ship_by_index(i).get_type()->get_name() != "Aircraft Carrier") i++;
+					if (fleet_1.get_ship_by_index(i).get_type()->get_size() != 4) i++;
 				}
 				for (int i = 0; i < fleet_2.get_ship_vector().size();) {
-					if (fleet_2.get_ship_vector()[i].get_type()->get_name() == "Aircraft Carrier") {
+					if (fleet_2.get_ship_vector()[i].get_type()->get_size() == 4) {
 						fleet_2 -= fleet_2.get_ship_vector()[i];
 					}
-					if (fleet_2.get_ship_by_index(i).get_type()->get_name() != "Aircraft Carrier") i++;
+					if (fleet_2.get_ship_by_index(i).get_type()->get_size() != 4) i++;
 				}
 				///////////////////////////////
 
@@ -288,38 +288,38 @@ int main(int argc, char* argv[]) {
 				{
 				case false:
 					for (int i = 0; i < fleet_1.get_ship_vector().size();) {
-						if (fleet_1.get_ship_by_index(i).get_type()->get_name() == "Small") {
+						if (fleet_1.get_ship_by_index(i).get_type()->get_size() == 1) {
 							fleet_1 -= fleet_1.get_ship_by_index(i);
 						}
 						if (i < fleet_1.get_ship_vector().size()) {
-							if (fleet_1.get_ship_by_index(i).get_type()->get_name() != "Small") i++;
+							if (fleet_1.get_ship_by_index(i).get_type()->get_size() != 1) i++;
 						}
 					}
 					for (int i = 0; i < fleet_2.get_ship_vector().size();) {
-						if (fleet_2.get_ship_by_index(i).get_type()->get_name() == "Tsundere") {
+						if (fleet_2.get_ship_by_index(i).get_type()->get_size() == 2) {
 							fleet_2 -= fleet_2.get_ship_by_index(i);
 						}
-						if (fleet_2.get_ship_by_index(i).get_type()->get_name() == "Heavy Cruiser") {
+						if (fleet_2.get_ship_by_index(i).get_type()->get_size() == 3) {
 							fleet_2 -= fleet_2.get_ship_by_index(i);
 						}
-						if (fleet_2.get_ship_by_index(i).get_type()->get_name() != "Tsundere" && fleet_2.get_ship_by_index(i).get_type()->get_name() != "Heavy Cruiser") i++;
+						if (fleet_2.get_ship_by_index(i).get_type()->get_size() != 2 && fleet_2.get_ship_by_index(i).get_type()->get_size() != 3) i++;
 					}
 					break;
 				case true:
 					for (int i = 0; i < fleet_2.get_ship_vector().size();) {
-						if (fleet_2.get_ship_by_index(i).get_type()->get_name() == "Small") {
+						if (fleet_2.get_ship_by_index(i).get_type()->get_size() == 1) {
 							fleet_2 -= fleet_2.get_ship_by_index(i);
 						}
-						if (fleet_2.get_ship_by_index(i).get_type()->get_name() != "Small") i++;
+						if (fleet_2.get_ship_by_index(i).get_type()->get_size() != 1) i++;
 					}
 					for (int i = 0; i < fleet_1.get_ship_vector().size();) {
-						if (fleet_1.get_ship_by_index(i).get_type()->get_name() == "Tsundere") {
+						if (fleet_1.get_ship_by_index(i).get_type()->get_size() == 2) {
 							fleet_1 -= fleet_1.get_ship_by_index(i);
 						}
-						if (fleet_1.get_ship_by_index(i).get_type()->get_name() == "Heavy Cruiser") {
+						if (fleet_1.get_ship_by_index(i).get_type()->get_size() == 3) {
 							fleet_1 -= fleet_1.get_ship_by_index(i);
 						}
-						if (fleet_1.get_ship_by_index(i).get_type()->get_name() != "Tsundere" && fleet_1.get_ship_by_index(i).get_type()->get_name() != "Heavy Cruiser") i++;
+						if (fleet_1.get_ship_by_index(i).get_type()->get_size() != 2 && fleet_1.get_ship_by_index(i).get_type()->get_size() != 3) i++;
 					}
 					break;
 				}

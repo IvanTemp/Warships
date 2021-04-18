@@ -94,7 +94,7 @@ void Fleet::damage_by_index_bot(Ship sheep, int difficulty) { //sheep - who is a
 
 	if (difficulty == 2) {
 		difficulty = 49;
-		if (find_undead_aircraft_carrier_ship_id() != -1 && sheep.get_type()->get_name() == "Small") {
+		if (find_undead_aircraft_carrier_ship_id() != -1 && sheep.get_type()->get_size() == 1) {
 			int aircraft_carrier_ship_id = find_undead_aircraft_carrier_ship_id();
 			std::vector<std::pair<int, int>> coordinates = find_ship_and_return_x_y_vector(aircraft_carrier_ship_id + 2);
 			for (int i = 0; i < coordinates.size(); i++) {
@@ -107,7 +107,7 @@ void Fleet::damage_by_index_bot(Ship sheep, int difficulty) { //sheep - who is a
 			GwSUtPaLT = false;
 		}
 
-		if (find_undead_small_ship_id() != -1 && sheep.get_type()->get_name() == "Tsundere") {
+		if (find_undead_small_ship_id() != -1 && sheep.get_type()->get_size() == 2) {
 			int small_ship_id = find_undead_small_ship_id();
 			if (ship_vector_[small_ship_id].get_durability_sum() > 0) {
 				std::vector<std::pair<int, int>> coordinates = find_ship_and_return_x_y_vector(small_ship_id + 2);
@@ -155,11 +155,11 @@ void Fleet::damage_by_index_bot(Ship sheep, int difficulty) { //sheep - who is a
 	const char str_x = int_to_letter(x);
 
 	if (field_id_[x][y].first > 1) {
-		if (ship_vector_[field_id_[x][y].first - 2].get_type()->get_name() == "Small" && sheep.get_type()->get_name() == "Tsundere")
+		if (ship_vector_[field_id_[x][y].first - 2].get_type()->get_size() == 1 && sheep.get_type()->get_size() == 2)
 		{
 			dmg = ship_vector_[field_id_[x][y].first - 2].get_type()->get_default_durability();
 		}
-		else if (ship_vector_[field_id_[x][y].first - 2].get_type()->get_name() == "Aircraft Carrier" && sheep.get_type()->get_name() == "Small")
+		else if (ship_vector_[field_id_[x][y].first - 2].get_type()->get_size() == 4 && sheep.get_type()->get_size() == 1)
 		{
 			dmg *= 2;
 		}
@@ -300,11 +300,7 @@ void Fleet::damage_by_index_player(Ship &sheep) { //sheep - who is attack
 	{
 		if (ship_vector_[field_id_[x][y].first - 2].get_durability()[field_id_[x][y].second])
 		{
-			if (ship_vector_[field_id_[x][y].first - 2].get_type()->get_name() == "Small" && sheep.get_type()->get_name() == "Tsundere")
-			{
-				dmg = ship_vector_[field_id_[x][y].first - 2].get_type()->get_default_durability();
-			}
-			else if (ship_vector_[field_id_[x][y].first - 2].get_type()->get_name() == "Aircraft Carrier" && sheep.get_type()->get_name() == "Small")
+		if (ship_vector_[field_id_[x][y].first - 2].get_type()->get_size() == 4 && sheep.get_type()->get_size() == 1)
 			{
 				dmg *= 2;
 			}
@@ -324,16 +320,16 @@ void Fleet::aircraft_attack_player(const int dmg)
 {
 	//Get angle (horizontal/vertical)
 	bool angle = 0;
-	std::string tempstr = "";
+	std::string str_angle = "";
 	while (true)
 	{
-		std::cin >> tempstr;
-		if (tempstr == "1x3" || tempstr == "1")
+		std::cin >> str_angle;
+		if (str_angle == "1x3" || str_angle == "1" || str_angle == "v")
 		{
 			angle = 0;
 			break;
 		}
-		else if (tempstr == "3x1" || tempstr == "3")
+		else if (str_angle == "3x1" || str_angle == "3" || str_angle == "h")
 		{
 			angle = 1;
 			break;
@@ -344,7 +340,6 @@ void Fleet::aircraft_attack_player(const int dmg)
 		}
 	}
 	//Get XY
-	//std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
 	int x = 0, y = 0;
 	bool not_idiot = true, negative = false;
 	char char_x = ' ';
@@ -1313,7 +1308,7 @@ void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 		{
 			if (ship_vector_[current_ship_id].get_durability_sum())
 			{
-				if (ship_vector_[current_ship_id].get_type()->get_name() == "Small")
+				if (ship_vector_[current_ship_id].get_type()->get_size() == 1)
 				{
 					std::cout << "-Shoot\n-Move\n" << std::endl;
 					std::cin >> action;
@@ -1334,7 +1329,7 @@ void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 					system("pause");
 					continue;
 				}
-				if (ship_vector_[current_ship_id].get_type()->get_name() == "Tsundere")
+				if (ship_vector_[current_ship_id].get_type()->get_size() == 2)
 				{
 					std::cout << "-Shoot\n-Repair\n" << std::endl;
 					std::cin >> action;
@@ -1355,7 +1350,7 @@ void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 					system("pause");
 					continue;
 				}
-				if (ship_vector_[current_ship_id].get_type()->get_name() == "Heavy Cruiser")
+				if (ship_vector_[current_ship_id].get_type()->get_size() == 3)
 				{
 					std::cout << "-Shoot (3x3)\n" << std::endl;
 					std::cin >> action;
@@ -1370,7 +1365,7 @@ void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 					system("pause");
 					continue;
 				}
-				if (ship_vector_[current_ship_id].get_type()->get_name() == "Aircraft Carrier")
+				if (ship_vector_[current_ship_id].get_type()->get_size() == 4)
 				{
 					std::cout << "-1x3 (Vert)\n-3x1 (Horiz)\n" << std::endl;
 					whom.aircraft_attack_player(ship_vector_[current_ship_id].get_type()->get_damage_value());
@@ -1427,28 +1422,28 @@ void Fleet::do_action_344460(Fleet& whom, Ship damager)
 
 int	Fleet::find_undead_small_ship_id() {
 	for (int i = 0; i < ship_vector_.size(); i++) {
-		if (ship_vector_[i].get_type()->get_name() == "Small" && ship_vector_[i].get_durability_sum() > 0) return i;
+		if (ship_vector_[i].get_type()->get_size() == 1 && ship_vector_[i].get_durability_sum() > 0) return i;
 	}
 	return -1;
 }
 
 int	Fleet::find_undead_tsundere_ship_id() {
 	for (int i = 0; i < ship_vector_.size(); i++) {
-		if (ship_vector_[i].get_type()->get_name() == "Tsundere" && ship_vector_[i].get_durability_sum() > 0) return i;
+		if (ship_vector_[i].get_type()->get_size() == 2 && ship_vector_[i].get_durability_sum() > 0) return i;
 	}
 	return -1;
 }
 
 int	Fleet::find_undead_heavy_cruiser_ship_id() {
 	for (int i = 0; i < ship_vector_.size(); i++) {
-		if (ship_vector_[i].get_type()->get_name() == "Heavy Cruiser" && ship_vector_[i].get_durability_sum() > 0) return i;
+		if (ship_vector_[i].get_type()->get_size() == 3 && ship_vector_[i].get_durability_sum() > 0) return i;
 	}
 	return -1;
 }
 
 int	Fleet::find_undead_aircraft_carrier_ship_id() {
 	for (int i = 0; i < ship_vector_.size(); i++) {
-		if (ship_vector_[i].get_type()->get_name() == "Aircraft Carrier" && ship_vector_[i].get_durability_sum() > 0) return i;
+		if (ship_vector_[i].get_type()->get_size() == 4 && ship_vector_[i].get_durability_sum() > 0) return i;
 	}
 	return -1;
 }
