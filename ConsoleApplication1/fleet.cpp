@@ -674,9 +674,9 @@ void Fleet::heavy_cruiser_attack_bot(const int dmg, int difficulty)
 	}
 
 	if constexpr (DEBUG_MODE) {
-		std::cout << "[AIRCRAFT ATTACK BOT]bot_memory:" << std::endl;
+		std::cout << "[HEAVY CRUISER ATTACK BOT]bot_memory:" << std::endl;
 		for (int i = 0; i < bot_memory.size(); i++) {
-			std::cout << "[AIRCRAFT ATTACK BOT]X = " << bot_memory[i].first << "; Y = " << bot_memory[i].second << std::endl;
+			std::cout << "[HEAVY CRUISER ATTACK BOT]X = " << bot_memory[i].first << "; Y = " << bot_memory[i].second << std::endl;
 		}
 	}
 
@@ -697,9 +697,11 @@ void Fleet::heavy_cruiser_attack_bot(const int dmg, int difficulty)
 
 		if (nice_coords_from_memory) break;
 		counter = 0;
-		random_x = 1 + rand() % (width_height - 1);
-		random_y = 1 + rand() % (width_height - 1);
-		if constexpr (DEBUG_MODE) { std::cout << "[AIRCRAFT ATTACK BOT]rand_x = " << random_x << "; rand_y = " << random_y << std::endl; }
+		random_x = rand() % (width_height - 2);
+		random_x++;
+		random_y = rand() % (width_height - 2);
+		random_y++;
+		if constexpr (DEBUG_MODE) { std::cout << "[HEAVY CRUISER ATTACK BOT]rand_x = " << random_x << "; rand_y = " << random_y << std::endl; }
 		if (field_id_[random_x - 1][random_y - 1].first > 1) counter += 2;
 		if (!field_war_[random_x - 1][random_y - 1]) counter++;
 		if (field_id_[random_x - 1][random_y].first > 1) counter += 2;
@@ -752,6 +754,7 @@ void Fleet::heavy_cruiser_attack_bot(const int dmg, int difficulty)
 			field_get_vision(x, y);
 		}
 	}
+
 }
 
 void Fleet::remember_founded_ships(std::vector <std::pair <int, int>>& memory) {
