@@ -1362,7 +1362,7 @@ void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 				}
 				if (ship_vector_[current_ship_id].get_type()->get_name() == "Aircraft Carrier")
 				{
-					std::cout << "-1x3\n-3x1\n" << std::endl;
+					std::cout << "-1x3 (Vert)\n-3x1 (Horiz)\n" << std::endl;
 					whom.aircraft_attack_player(ship_vector_[current_ship_id].get_type()->get_damage_value());
 					break;
 				}
