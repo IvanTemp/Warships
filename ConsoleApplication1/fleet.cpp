@@ -695,6 +695,12 @@ void Fleet::heavy_cruiser_attack_bot(const int dmg, int difficulty)
 			if (!y) {
 				y++;
 			}
+			if (x == width_height - 1) {
+				x--;
+			}
+			if (y == width_height - 1) {
+				y--;
+			}
 		}
 	}
 
