@@ -78,8 +78,8 @@ int main(int argc, char* argv[]) {
 	///////////////
 
 	//Order
-	//std::vector <int> order = first_order(std::max(fleet_1.get_ship_vector().size(), fleet_2.get_ship_vector().size()));
-	std::vector <int> order = { 8 };
+	std::vector <int> order = first_order(std::max(fleet_1.get_ship_vector().size(), fleet_2.get_ship_vector().size()));
+	//std::vector <int> order = { 8 };
 	///////
 
 	//DEBUG FUNCTIONS

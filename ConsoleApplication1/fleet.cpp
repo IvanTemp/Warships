@@ -1508,6 +1508,7 @@ void Fleet::small_move_player(const std::pair<int, int>& start, const int& index
 	int x = 0, y = 0;
 	bool not_idiot = true, negative = false;
 	char char_x = ' ';
+	std::string str_y;
 	while (true)
 	{
 		x = 0;
@@ -1515,7 +1516,7 @@ void Fleet::small_move_player(const std::pair<int, int>& start, const int& index
 		not_idiot = true;
 		negative = false;
 		char_x = ' ';
-		std::string str_y;
+		str_y = "";
 		std::cin >> char_x >> str_y;
 
 		if constexpr (DEBUG_MODE) std::cout << "[SMALL MOVE PLAYER]Char_X = " << char_x << "; Str_Y = " << str_y << std::endl;
@@ -1536,6 +1537,7 @@ void Fleet::small_move_player(const std::pair<int, int>& start, const int& index
 		if (not_idiot) y = letter_to_int(std::toupper(str_y[0]));
 		if (negative) y *= -1;
 
+		//Check out of bounds
 		if (y > width_height - 1 || y < 0)
 		{
 			std::cout << "Captain! Are you trying to steer the ship out of the battlefield?" << std::endl;
@@ -1553,11 +1555,13 @@ void Fleet::small_move_player(const std::pair<int, int>& start, const int& index
 			continue;
 		}
 
+
 		if constexpr (DEBUG_MODE)
 		{
 			std::cout << "[SMALL MOVE PLAYER]Start X = " << start.first << "; Start Y = " << start.second << std::endl;
 			std::cout << "[SMALL MOVE PLAYER]X = " << x << "; Y = " << y << std::endl;
 		}
+
 
 		if (difference_modulus(start.first, x) < 2 && difference_modulus(start.second, y) < 2)
 		{
@@ -1573,7 +1577,7 @@ void Fleet::small_move_player(const std::pair<int, int>& start, const int& index
 					}
 					if (area_is_clear(start.first, start.second - 1))
 						field_id_[start.first][start.second - 1].first = 0;
-					if (start.first < width_height)
+					if (start.first < width_height - 1)
 					{
 						if (area_is_clear(start.first + 1, start.second - 1))
 							field_id_[start.first + 1][start.second - 1].first = 0;
@@ -1614,7 +1618,7 @@ void Fleet::small_move_player(const std::pair<int, int>& start, const int& index
 						field_id_[x - 1][y - 1].first = 1;
 					}
 					field_id_[x][y - 1].first = 1;
-					if (x < width_height)
+					if (x < width_height - 1) //тут магия (на сиде 1618667546, ссылка: https://youtu.be/6ulhygoUrJg)
 					{
 						field_id_[x + 1][y - 1].first = 1;
 					}
@@ -1652,7 +1656,7 @@ void Fleet::small_move_player(const std::pair<int, int>& start, const int& index
 		}
 		else
 		{
-			field_id_[start.first][start.second].first = index + 2;
+			//field_id_[start.first][start.second].first = index + 2;
 			std::cout << "Captain! This is not a <<Meteor>> for you, a single-decker can only move one square." << std::endl;
 			system("pause");
 			std::cout << "Write coordinates: ";
