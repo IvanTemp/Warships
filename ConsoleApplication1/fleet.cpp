@@ -691,14 +691,13 @@ void Fleet::heavy_cruiser_attack_bot(const int dmg, int difficulty)
 			bot_memory.clear();
 			if (!x) {
 				x++;
-			}
-			if (!y) {
-				y++;
-			}
-			if (x == width_height - 1) {
+			} else if (x == width_height - 1) {
 				x--;
 			}
-			if (y == width_height - 1) {
+
+			if (!y) {
+				y++;
+			} else if (y == width_height - 1) {
 				y--;
 			}
 		}
