@@ -15,24 +15,38 @@ int main(int argc, char* argv[]) {
 	case 0:
 		srand(time(nullptr));
 		if constexpr (DEBUG_MODE) {
-			std::cout << "[MAIN]Seed: " << time(nullptr) << std::endl;
+			std::cout << "================" << std::endl;
+			std::cout << "Seed: " << time(nullptr) << std::endl;
+			std::cout << "================" << std::endl;
 		}
 		break;
 	default:
 		srand(SEED);
 		if constexpr (DEBUG_MODE) {
+			std::cout << "======================" << std::endl;
 			std::cout << "[MAIN]Seed: " << SEED << std::endl;
+			std::cout << "======================" << std::endl;
 		}
 		break;
 	}
 
 	if constexpr (DEBUG_MODE) {
-		std::cout << "WARNING! DEBUG MODE ON! \n" << std::endl;
+		std::cout << "=======================" << std::endl;
+		std::cout << "WARNING! DEBUG MODE ON!" << std::endl;
+		std::cout << "=======================" << std::endl;
 	}
 
 	if constexpr (width_height > 26) {
+		std::cout << "=================================================================================================" << std::endl;
 		std::cout << "Warning! The game is not designed for such a large field size! Please limit yourself to 26 cells!" << std::endl;
+		std::cout << "=================================================================================================" << std::endl;
 		return -26;
+	}
+
+	if constexpr (width_height > 10) {
+		std::cout << "===============================================================================" << std::endl;
+		std::cout << "Warning! You are using an experimental field size.\nPlease increase the size of the window to full or change the size of the field." << std::endl;
+		std::cout << "===============================================================================" << std::endl << std::endl;
 	}
 
 	//FLEET 1
@@ -78,7 +92,6 @@ int main(int argc, char* argv[]) {
 		}
 	}
 	////////
-
 	fleet_1.print(std::cout);
 	fleet_2.print(std::cout);
 	std::cout << std::endl;
@@ -96,8 +109,7 @@ int main(int argc, char* argv[]) {
 
 	//DEBUG FUNCTIONS
 	if constexpr (DEBUG_MODE) {
-		fleet_1.print(std::cout);
-		fleet_2.print(std::cout);
+		std::cout << std::endl;
 		fleet_1.output_field_id();
 		fleet_1.output_field_index();
 		fleet_1.output_field_war();

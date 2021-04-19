@@ -142,8 +142,8 @@ void Fleet::damage_by_index_bot(Ship sheep, int difficulty) { //sheep - who is a
 			attempts++;
 		}
 		else { //II)Finishing off found ships
-			x = bot_memory[0].first;
-			y = bot_memory[0].second;
+			x = bot_memory[rand() % bot_memory.size()].first;
+			y = bot_memory[rand() % bot_memory.size()].second;
 			GwSUtPaLT = false;
 		}
 	}
@@ -488,8 +488,8 @@ void Fleet::aircraft_attack_bot(const int dmg, int difficulty)
 			attempts++;
 		}
 		else { //II)Finishing off found ships + выравнивание
-			x = bot_memory[0].first;
-			y = bot_memory[0].second;
+			x = bot_memory[rand() % bot_memory.size()].first;
+			y = bot_memory[rand() % bot_memory.size()].second;
 			bot_memory.clear();
 			if (x == 0) {
 				if (angle) {
