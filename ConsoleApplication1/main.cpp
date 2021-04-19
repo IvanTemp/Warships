@@ -67,6 +67,7 @@ int main(int argc, char* argv[]) {
 		{"Flaffey2", Sm2, 9},
 		{"Flaffey3", Sm3, 10},
 		{"Flaffey4", Sm4, 11} } };
+
 	//FLEET 2
 	//We read the fleet from the file input.txt (names in the project parameters)
 	Fleet fleet_2;
