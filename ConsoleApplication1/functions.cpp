@@ -1,10 +1,10 @@
-#include "functions.h"
+﻿#include "functions.h"
 
 #define achievement_file "achievements.db"
 
 void output_achievement_info(const std::vector<std::pair<std::string, bool>>& achievements)
 {
-	//��, ��� ���������� �� ��������� � ���������� - �� ���, � ����
+	//То, что количество не совпадает с выводимыми - не баг, а фича
 	int counter = 0;
 	for (int i = 0; i < achievements.size(); i++) if (achievements[i].second) counter++;
 	std::cout << "Achievements[" << counter << "/" << achievements.size() << "]: " << std::endl;
@@ -107,4 +107,10 @@ std::vector<int> first_order(const size_t count) //count - length of order
 		buleidu ? order_list.emplace_back(random_index) : i--;
 	}
 	return order_list;
+}
+
+std::string uwu()
+{
+	std::string temp = "⢕⢕⢕⢕⢕⠅⢗⢕⠕⣠⠄⣗⢕⢕⠕⢕⢕⢕⠕⢠⣿⠐⢕⢕⢕⠑⢕⢕⠵⢕\n⢕⢕⢕⢕⠁⢜⠕⢁⣴⣿⡇⢓⢕⢵⢐⢕⢕⠕⢁⣾⢿⣧⠑⢕⢕⠄⢑⢕⠅⢕\n⢕⢕⠵⢁⠔⢁⣤⣤⣶⣶⣶⡐";
+	return temp;
 }

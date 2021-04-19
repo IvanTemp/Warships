@@ -163,6 +163,7 @@
     <ClInclude Include="BasicType.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="input.txt" />
     <Text Include="z_notes.txt" />
     <Text Include="z_TODO.txt" />
   </ItemGroup>

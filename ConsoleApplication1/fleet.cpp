@@ -937,26 +937,67 @@ void Fleet::initialize_field_final()
 void Fleet::output_field_final(const Fleet& fleet2)const //Передаём только вражеский флот, призываем через текущий
 {
 	std::string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	std::cout << "\tSide: " << name_ << "\t\tSide: " << fleet2.name_ << std::endl;
-	std::cout << "\t ||";
+	std::cout << "\tSide: " << name_ << "\t";
+	for (int i = 6; i <= width_height; i += 4)
+	{
+		std::cout << "\t";
+	}
+	//if (width_height >= 10 && width_height < 14) //10-13
+	//{
+	//	std::cout << "\t";
+	//}
+	//else if (width_height >= 14 && width_height < 18)
+	//{
+	//	std::cout << "\t\t";
+	//}
+	//else if (width_height >= 18 && width_height < 22)
+	//{
+	//	std::cout << "\t\t\t";
+	//}
+	//else if (width_height >= 22 && width_height < 26)
+	//{
+	//	std::cout << "\t\t\t\t";
+	//}
+	//else if (width_height >= 26 && width_height < 27)
+	//{
+	//	std::cout << "\t\t\t\t\t";
+	//}
+	std::cout << " Side: " << fleet2.name_ << std::endl;
+		//Chars
+		std::cout << "\t    ";
 	for (int x = 0; x < width_height; x++)
 	{
 		std::cout << letters[x] << "|";
 	}
-	std::cout << "\t\t   ";
+	std::cout << "\t\t    ";
 	for (int x = 0; x < width_height; x++)
 	{
 		std::cout << letters[x] << "|";
 	}
 	std::cout << std::endl;
+	//game fields
 	for (int y = 0; y < width_height; y++)
 	{
-		std::cout << "\t" << y << "||";
+		//our
+		std::cout << "\t";
+		//if y is 1 chars then " "
+		if (y < 10)
+		{
+			std::cout << " ";
+		}
+		std::cout <<  y << "||";
 		for (int x = 0; x < width_height; x++)
 		{
 			std::cout << field_final_[x][y] << "|";
 		}
-		std::cout << "\t\t" << y << "||";
+		//enemy
+		std::cout << "\t\t";
+		//if y is 1 chars then " "
+		if (y < 10)
+		{
+			std::cout << " ";
+		}
+		std::cout << y << "||";
 		for (int x = 0; x < width_height; x++)
 		{
 			if (fleet2.field_war_[x][y])

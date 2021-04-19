@@ -76,5 +76,8 @@
     <Text Include="z_TODO.txt">
       <Filter>Исходные файлы</Filter>
     </Text>
+    <Text Include="input.txt">
+      <Filter>Исходные файлы</Filter>
+    </Text>
   </ItemGroup>
 </Project>

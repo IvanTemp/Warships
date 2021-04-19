@@ -56,15 +56,15 @@ int main(int argc, char* argv[]) {
 	Tsundere Tsun1, Tsun2, Tsun3;
 	Small Sm1, Sm2, Sm3, Sm4;
 	Fleet fleet_1 = { "Eagle Union",{
-		{"Enterprise", air1, 2},
-		{"Prinz Eugene", HwCrus1, 3},
-		{"Atago", HwCrus2, 4},
-		{"FLX1", Tsun1, 5},
-		{"FLX2", Tsun2, 6},
-		{"FLX3", Tsun3, 7},
-		{"Flaffey1", Sm1, 8},
-		{"Flaffey2", Sm2, 9},
-		{"Flaffey3", Sm3, 10},
+		//{"Enterprise", air1, 2},
+		//{"Prinz Eugene", HwCrus1, 3},
+		//{"Atago", HwCrus2, 4},
+		//{"FLX1", Tsun1, 5},
+		//{"FLX2", Tsun2, 6},
+		//{"FLX3", Tsun3, 7},
+		//{"Flaffey1", Sm1, 8},
+		//{"Flaffey2", Sm2, 9},
+		//{"Flaffey3", Sm3, 10},
 		{"Flaffey4", Sm4, 11} } };
 	//FLEET 2
 	//We read the fleet from the file input.txt (names in the project parameters)
