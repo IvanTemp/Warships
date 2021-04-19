@@ -40,12 +40,13 @@ int main(int argc, char* argv[]) {
 		std::cout << "=================================================================================================" << std::endl;
 		std::cout << "Warning! The game is not designed for such a large field size! Please limit yourself to 26 cells!" << std::endl;
 		std::cout << "=================================================================================================" << std::endl;
+		system("pause");
 		return -26;
 	}
 
-	if constexpr (width_height > 10) {
+	if constexpr (width_height != 10) {
 		std::cout << "===============================================================================" << std::endl;
-		std::cout << "Warning! You are using an experimental field size.\nPlease increase the size of the window to full or change the size of the field." << std::endl;
+		std::cout << "Warning! You are using an experimental field size(" << width_height << ").\nPlease increase the size of the window to full or change the size of the field." << std::endl;
 		std::cout << "===============================================================================" << std::endl << std::endl;
 	}
 
@@ -77,20 +78,11 @@ int main(int argc, char* argv[]) {
 		//Check fleet_2 for empty
 		if (fleet_2.get_ship_vector().empty()) {
 			std::cout << "Warning! Connect the file with the second fleet!" << std::endl;
+			system("pause");
 			return -2;
 		}
 	}
-	else //можно удалить этот else, сделал чтобы посмеяться
-	{
-		std::ifstream fin("input.txt");
-		fleet_2.read(fin);
-		fin.close();
-		//Check fleet_2 for empty
-		if (fleet_2.get_ship_vector().empty()) {
-			std::cout << "Warning! Connect the file with the second fleet!" << std::endl;
-			return -2;
-		}
-	}
+
 	////////
 	fleet_1.print(std::cout);
 	fleet_2.print(std::cout);

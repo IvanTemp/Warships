@@ -87,11 +87,6 @@ public:
 	void nuclear_bomb();
 
 
-	//					  Will be deleted
-	//bool add_ship_to_fleet(const Ship& ship);
-	//void remove_ship_from_fleet(const Ship& ship);
-
-
 private:
 	static int count_;
 	std::string name_;
