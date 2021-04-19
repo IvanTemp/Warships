@@ -6,7 +6,7 @@
 //Game settings
 #define width_height 26 //Width & height of field
 
-#define DEBUG_MODE 1 //0 - off; 1 - on
+#define DEBUG_MODE 0 //0 - off; 1 - on
 
 #define SEED 0 //0 - Pseudo-random
 ///////////////
