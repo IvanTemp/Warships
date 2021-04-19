@@ -277,9 +277,26 @@ int main(int argc, char* argv[]) {
 		while (true)
 		{
 			if constexpr (!DEBUG_MODE) { system("cls"); }
-			std::cout << "Type the secret mission number: ";
+			std::cout << "Mission list: " << std::endl << std::endl;
+			std::cout << "1)Standard Warships" << std::endl << std::endl;
+			if (achievement_array[4].second) {
+				std::cout << "344460)Nuclear finders" << std::endl << std::endl;
+			}
+			else {
+				std::cout << "******)*mission secret*" << std::endl << std::endl;
+			}
+			std::cout << "Type the mission number: ";
 			std::cin >> mission_number;
-			if (mission_number == "344460") {
+
+			if (mission_number == "1") {
+				//Стандартный морской бой
+				if constexpr (!DEBUG_MODE) system("cls");
+				std::cout << "WORK IN PROGRESS" << std::endl;
+				system("pause");
+				break;
+
+			} else if (mission_number == "344460") {
+				//миссия, которую один из кодеров сделал со скуки
 				//Cleaning from Aircraft Carrier
 				for (int i = 0; i < fleet_1.get_ship_vector().size();) {
 					if (fleet_1.get_ship_vector()[i].get_type()->get_size() == 4) {
@@ -423,8 +440,7 @@ int main(int argc, char* argv[]) {
 					give_achievement(achievement_array, 4);
 					break;
 				}
-			}
-			else {
+			} else {
 				if constexpr (!DEBUG_MODE) { system("cls"); }
 				std::cout << "E-error! This is inappropriate... I... What should I...?" << std::endl << std::endl;
 				std::cout << "You scared the program with your wrong input. Be careful next time." << std::endl << std::endl;
@@ -470,6 +486,5 @@ int main(int argc, char* argv[]) {
 		fleet_2.print(out);
 		out.close();
 	}
-	system("pause");
 	return 0;
 }
