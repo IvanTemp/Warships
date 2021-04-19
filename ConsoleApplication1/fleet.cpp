@@ -969,6 +969,10 @@ void Fleet::output_field_final(const Fleet& fleet2)const //Передаём только враже
 	{
 		std::cout << letters[x] << "|";
 	}
+	if (width_height == 1)
+	{
+		std::cout << "\t";
+	}
 	std::cout << "\t\t    ";
 	for (int x = 0; x < width_height; x++)
 	{
@@ -991,7 +995,14 @@ void Fleet::output_field_final(const Fleet& fleet2)const //Передаём только враже
 			std::cout << field_final_[x][y] << "|";
 		}
 		//enemy
-		std::cout << "\t\t";
+		if (width_height == 1)
+		{
+			std::cout << "\t\t\t";
+		}
+		else
+		{
+			std::cout << "\t\t";
+		}
 		//if y is 1 chars then " "
 		if (y < 10)
 		{

@@ -1,8 +1,8 @@
 Sakura Empire
-1
+10
 2
 Akagi
-Small
+Aircraft Carrier
 3
 SAKURA_NAME1
 Heavy Cruiser
@@ -32,4 +32,3 @@ Ayanami4
 Small
 
 
-Aircraft Carrier
