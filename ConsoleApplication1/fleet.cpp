@@ -445,7 +445,7 @@ void Fleet::aircraft_attack_bot(const int dmg, int difficulty)
 	bool angle = rand() % 2;
 
 	if (difficulty == 2) {
-		difficulty = 49;
+		difficulty = width_height * width_height;
 	}
 
 	remember_founded_ships(bot_memory);
@@ -457,12 +457,20 @@ void Fleet::aircraft_attack_bot(const int dmg, int difficulty)
 		}
 	}
 
-	while (GwSUtPaLT && attempts < difficulty + 1)
+	while (GwSUtPaLT && attempts <= difficulty)
 	{
 		if (bot_memory.empty()) {//I)Сканируем на количество неисследованных клеток и наличие на них кораблей, подбираем наиболее подходящий(если сложность hard)
 			counter = 0;
 			random_x = rand() % width_height;
 			random_y = rand() % width_height;
+			if (angle) {
+				if (!x) x++;
+				else if (x == width_height - 1) x--;
+			}
+			else {
+				if (!y) y++;
+				else if (y == width_height - 1) y--;
+			}
 			if constexpr (DEBUG_MODE) { std::cout << "[AIRCRAFT ATTACK BOT]rand_x = " << random_x << "; rand_y = " << random_y << std::endl; }
 			switch (angle)
 			{
@@ -491,25 +499,13 @@ void Fleet::aircraft_attack_bot(const int dmg, int difficulty)
 			x = bot_memory[rand() % bot_memory.size()].first;
 			y = bot_memory[rand() % bot_memory.size()].second;
 			bot_memory.clear();
-			if (x == 0) {
-				if (angle) {
-					x++;
-				}
+			if (angle) {
+				if (!x) x++;
+				else if (x == width_height - 1) x--;
 			}
-			else if (x == width_height - 1) {
-				if (angle) {
-					x--;
-				}
-			}
-			if (y == 0) {
-				if (!angle) {
-					y++;
-				}
-			}
-			else if (y == width_height - 1) {
-				if (angle) {
-					y--;
-				}
+			else {
+				if (!y) y++;
+				else if (y == width_height - 1) y--;
 			}
 			GwSUtPaLT = false;
 		}
