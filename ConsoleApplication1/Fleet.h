@@ -89,7 +89,7 @@ public:
 
 private:
 	static int count_;
-	std::string name_;
+	std::string name_ = "Nameless";
 	std::vector<Ship> ship_vector_;
 	const bool side_;
 

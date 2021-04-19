@@ -85,6 +85,7 @@ int main(int argc, char* argv[]) {
 
 	////////
 	fleet_1.print(std::cout);
+	std::cout << std::endl;
 	fleet_2.print(std::cout);
 	std::cout << std::endl;
 	
