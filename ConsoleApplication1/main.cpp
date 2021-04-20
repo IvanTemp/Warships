@@ -90,7 +90,7 @@ int main(int argc, char* argv[]) {
 	fleet_2.print(std::cout);
 	std::cout << std::endl;
 	
-	//Gemu ga hajimarimasu(прим. переводчика: Игра начинается)
+	//Gemu ga hajimarimasu(РїСЂРёРј. РїРµСЂРµРІРѕРґС‡РёРєР°: РРіСЂР° РЅР°С‡РёРЅР°РµС‚СЃСЏ)
 	bool ironman = true;
 	fleet_1.generate_field();
 	fleet_2.generate_field();
@@ -144,10 +144,10 @@ int main(int argc, char* argv[]) {
 	std::string battle_mode;
 	while (true)
 	{
-		std::cout << "Select game mode: \n-PvP\n-PvE\n-Missions\n\n";
+		std::cout << "Select game mode: \n-PvP\n-PvE\n-Arcade Games\n\n";
 		std::cin >> battle_mode;
 		ha_you_are_small_now(battle_mode);
-		if (battle_mode == "pve" || battle_mode == "e" || battle_mode == "pvp" || battle_mode == "p" || battle_mode == "missions" || battle_mode == "m")
+		if (battle_mode == "pve" || battle_mode == "e" || battle_mode == "pvp" || battle_mode == "p" || battle_mode == "arcade games" || battle_mode == "a")
 		{
 			break;
 		}
@@ -269,24 +269,24 @@ int main(int argc, char* argv[]) {
 				}
 			}
 	}
-	else if (battle_mode == "missions" || battle_mode == "m") {
+	else if (battle_mode == "arcade games" || battle_mode == "a") {
 		while (true)
 		{
 			if constexpr (!DEBUG_MODE) { system("cls"); }
-			std::cout << "Mission list: " << std::endl << std::endl;
+			std::cout << "Arcade games list: " << std::endl << std::endl;
 			std::cout << "1)Standard Warships - Primitive" << std::endl << std::endl;
 			std::cout << "2)Standard Warships - Impossible" << std::endl << std::endl;
 			if (achievement_array[4].second) {
 				std::cout << "344460)Nuclear finders" << std::endl << std::endl;
 			}
 			else {
-				std::cout << "******)*mission secret*" << std::endl << std::endl;
+				std::cout << "and one secret mission.." << std::endl << std::endl;
 			}
 			std::cout << "Type the mission number: ";
 			std::cin >> mission_number;
 
 			if (mission_number == "1") {
-				//Стандартный морской бой - примитивный бот
+				//РЎС‚Р°РЅРґР°СЂС‚РЅС‹Р№ РјРѕСЂСЃРєРѕР№ Р±РѕР№ - РїСЂРёРјРёС‚РёРІРЅС‹Р№ Р±РѕС‚
 				if constexpr (!DEBUG_MODE) system("cls");
 				std::cout << "Standard warships on normal difficulty." << std::endl;
 				system("pause");
@@ -329,7 +329,7 @@ int main(int argc, char* argv[]) {
 				break;
 			}
 			else if (mission_number == "2") {
-				//Стандартный морской бой - невозможно
+				//РЎС‚Р°РЅРґР°СЂС‚РЅС‹Р№ РјРѕСЂСЃРєРѕР№ Р±РѕР№ - РЅРµРІРѕР·РјРѕР¶РЅРѕ
 				if constexpr (!DEBUG_MODE) system("cls");
 				std::cout << "Standard warships on impossible difficulty." << std::endl;
 				system("pause");
@@ -371,7 +371,7 @@ int main(int argc, char* argv[]) {
 				if (fleet_1.get_health_sum()) give_achievement(achievement_array, 5);
 			break;
 			} else if (mission_number == "344460") {
-				//миссия, которую один из кодеров сделал со скуки
+				//РјРёСЃСЃРёСЏ, РєРѕС‚РѕСЂСѓСЋ РѕРґРёРЅ РёР· РєРѕРґРµСЂРѕРІ(РЅРµ Р’Р°РЅСЏ) СЃРґРµР»Р°Р» СЃРѕ СЃРєСѓРєРё
 				//Cleaning from Aircraft Carrier
 				for (int i = 0; i < fleet_1.get_ship_vector().size();) {
 					if (fleet_1.get_ship_vector()[i].get_type()->get_size() == 4) {
@@ -397,7 +397,7 @@ int main(int argc, char* argv[]) {
 					return -277716;
 				}
 
-				switch (playable_fleet) //удаляем ненужные корабли
+				switch (playable_fleet) //СѓРґР°Р»СЏРµРј РЅРµРЅСѓР¶РЅС‹Рµ РєРѕСЂР°Р±Р»Рё
 				{
 				case false:
 					for (int i = 0; i < fleet_1.get_ship_vector().size();) {

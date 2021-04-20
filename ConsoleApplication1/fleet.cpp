@@ -134,7 +134,7 @@ void Fleet::damage_by_index_bot(Ship sheep, int difficulty) { //sheep - who is a
 
 	while (GwSUtPaLT && attempts < difficulty + 1)
 	{
-		if (bot_memory.empty()) {//I)Сканируем на количество неисследованных клеток и наличие на них кораблей, подбираем наиболее подходящий(если сложность hard)
+		if (bot_memory.empty()) {//I)РЎРєР°РЅРёСЂСѓРµРј РЅР° РєРѕР»РёС‡РµСЃС‚РІРѕ РЅРµРёСЃСЃР»РµРґРѕРІР°РЅРЅС‹С… РєР»РµС‚РѕРє Рё РЅР°Р»РёС‡РёРµ РЅР° РЅРёС… РєРѕСЂР°Р±Р»РµР№, РїРѕРґР±РёСЂР°РµРј РЅР°РёР±РѕР»РµРµ РїРѕРґС…РѕРґСЏС‰РёР№(РµСЃР»Рё СЃР»РѕР¶РЅРѕСЃС‚СЊ hard)
 			x = rand() % (width_height - 1);
 			y = rand() % (width_height - 1);
 			if constexpr (DEBUG_MODE) { std::cout << "[DEFAULT DAMAGE BOT]rand_x = " << x << "; rand_y = " << y << std::endl; }
@@ -178,7 +178,7 @@ void Fleet::damage_by_index_bot_simple() {
 			if (field_id_[x][y].first > 1) {
 				if (ship_vector_[field_id_[x][y].first - 2].get_durability()[field_id_[x][y].second]) {
 					get_damage(1, x, y);
-					//здесь должен находиться код, дающий вижион в точку, которую стрельнул бот, но зачем, а главное, зачем
+					//Р·РґРµСЃСЊ РґРѕР»Р¶РµРЅ РЅР°С…РѕРґРёС‚СЊСЃСЏ РєРѕРґ, РґР°СЋС‰РёР№ РІРёР¶РёРѕРЅ РІ С‚РѕС‡РєСѓ, РєРѕС‚РѕСЂСѓСЋ СЃС‚СЂРµР»СЊРЅСѓР» Р±РѕС‚, РЅРѕ Р·Р°С‡РµРј, Р° РіР»Р°РІРЅРѕРµ, Р·Р°С‡РµРј
 					return;
 				}
 			}
@@ -206,7 +206,7 @@ void Fleet::ai(const int current_ship_id, const int difficulty, Fleet& fleet_of_
 			if (type == "Small")
 			{
 				const std::pair <int, int> coordinates = find_ship_and_return_x_y_vector(current_ship_id + 2)[0];
-				if (!field_war_[coordinates.first][coordinates.second]) //Если корабль не обнаружен, то атакуем
+				if (!field_war_[coordinates.first][coordinates.second]) //Р•СЃР»Рё РєРѕСЂР°Р±Р»СЊ РЅРµ РѕР±РЅР°СЂСѓР¶РµРЅ, С‚Рѕ Р°С‚Р°РєСѓРµРј
 				{
 					fleet_of_player.damage_by_index_bot(ship_vector_[current_ship_id], difficulty);
 				}
@@ -219,7 +219,7 @@ void Fleet::ai(const int current_ship_id, const int difficulty, Fleet& fleet_of_
 						for (int x = coordinates.first - 1; x < coordinates.first + 2; x++)
 						{
 							if (x >= 0 && x < width_height && y >= 0 && y < width_height) {
-								if (area_is_clear(x, y) && !field_war_[x][y]) //Если клетка пустая и неизведанная
+								if (area_is_clear(x, y) && !field_war_[x][y]) //Р•СЃР»Рё РєР»РµС‚РєР° РїСѓСЃС‚Р°СЏ Рё РЅРµРёР·РІРµРґР°РЅРЅР°СЏ
 								{
 									possible_coordinates.emplace_back(std::make_pair(x, y));
 								}
@@ -237,13 +237,13 @@ void Fleet::ai(const int current_ship_id, const int difficulty, Fleet& fleet_of_
 					}
 					else {
 						field_id_[coordinates.first][coordinates.second].first = current_ship_id + 2;
-						fleet_of_player.damage_by_index_bot(ship_vector_[current_ship_id], difficulty); //если некуда переплыть
+						fleet_of_player.damage_by_index_bot(ship_vector_[current_ship_id], difficulty); //РµСЃР»Рё РЅРµРєСѓРґР° РїРµСЂРµРїР»С‹С‚СЊ
 					}
 				}
 			}
 			else if (type == "Tsundere")
 			{
-				if (ship_vector_[current_ship_id].get_durability_sum() == ship_vector_[current_ship_id].get_type()->get_default_durability() * ship_vector_[current_ship_id].get_type()->get_size()) //Если хп полное
+				if (ship_vector_[current_ship_id].get_durability_sum() == ship_vector_[current_ship_id].get_type()->get_default_durability() * ship_vector_[current_ship_id].get_type()->get_size()) //Р•СЃР»Рё С…Рї РїРѕР»РЅРѕРµ
 				{
 					fleet_of_player.damage_by_index_bot(ship_vector_[current_ship_id], difficulty);
 				}
@@ -541,7 +541,7 @@ void Fleet::aircraft_attack_bot(const int dmg, int difficulty)
 
 	while (GwSUtPaLT && attempts <= difficulty)
 	{
-		if (bot_memory.empty()) {//I)Сканируем на количество неисследованных клеток и наличие на них кораблей, подбираем наиболее подходящий(если сложность hard)
+		if (bot_memory.empty()) {//I)РЎРєР°РЅРёСЂСѓРµРј РЅР° РєРѕР»РёС‡РµСЃС‚РІРѕ РЅРµРёСЃСЃР»РµРґРѕРІР°РЅРЅС‹С… РєР»РµС‚РѕРє Рё РЅР°Р»РёС‡РёРµ РЅР° РЅРёС… РєРѕСЂР°Р±Р»РµР№, РїРѕРґР±РёСЂР°РµРј РЅР°РёР±РѕР»РµРµ РїРѕРґС…РѕРґСЏС‰РёР№(РµСЃР»Рё СЃР»РѕР¶РЅРѕСЃС‚СЊ hard)
 			counter = 0;
 			random_x = rand() % width_height;
 			random_y = rand() % width_height;
@@ -577,7 +577,7 @@ void Fleet::aircraft_attack_bot(const int dmg, int difficulty)
 			}
 			attempts++;
 		}
-		else { //II)Finishing off found ships + выравнивание
+		else { //II)Finishing off found ships + РІС‹СЂР°РІРЅРёРІР°РЅРёРµ
 			x = bot_memory[rand() % bot_memory.size()].first;
 			y = bot_memory[rand() % bot_memory.size()].second;
 			bot_memory.clear();
@@ -591,7 +591,7 @@ void Fleet::aircraft_attack_bot(const int dmg, int difficulty)
 			}
 			GwSUtPaLT = false;
 		}
-		if (field_id_[x][y].first > 1) { //III)Попытка задеть как можно больше клеток
+		if (field_id_[x][y].first > 1) { //III)РџРѕРїС‹С‚РєР° Р·Р°РґРµС‚СЊ РєР°Рє РјРѕР¶РЅРѕ Р±РѕР»СЊС€Рµ РєР»РµС‚РѕРє
 			if (field_id_[x - 1][y].first > 1 && x - 1 > 0) {
 				angle = true;
 				x--;
@@ -930,7 +930,7 @@ Fleet& Fleet::operator-=(const Ship& shp)
 	{
 		if (i == shp)
 		{
-			//Само удаление
+			//РЎР°РјРѕ СѓРґР°Р»РµРЅРёРµ
 			ship_vector_.erase(std::remove(ship_vector_.begin(), ship_vector_.end(), shp));
 			flag = true;
 			if constexpr (DEBUG_MODE) std::cout << "[REMOVE SHIP]One ship removed!" << std::endl;
@@ -1011,7 +1011,7 @@ void Fleet::initialize_field_final()
 	}
 }
 
-void Fleet::output_field_final(const Fleet& fleet2)const //Передаём только вражеский флот, призываем через текущий
+void Fleet::output_field_final(const Fleet& fleet2)const //РџРµСЂРµРґР°С‘Рј С‚РѕР»СЊРєРѕ РІСЂР°Р¶РµСЃРєРёР№ С„Р»РѕС‚, РїСЂРёР·С‹РІР°РµРј С‡РµСЂРµР· С‚РµРєСѓС‰РёР№
 {
 	std::string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	std::cout << "\tSide: " << name_ << "\t";
@@ -1813,7 +1813,7 @@ void Fleet::small_move_player(const std::pair<int, int>& start, const int& index
 						field_id_[x - 1][y - 1].first = 1;
 					}
 					field_id_[x][y - 1].first = 1;
-					if (x < width_height - 1) //тут магия (на сиде 1618667546, ссылка: https://youtu.be/6ulhygoUrJg)
+					if (x < width_height - 1) //С‚СѓС‚ РјР°РіРёСЏ (РЅР° СЃРёРґРµ 1618667546, СЃСЃС‹Р»РєР°: https://youtu.be/6ulhygoUrJg)
 					{
 						field_id_[x + 1][y - 1].first = 1;
 					}

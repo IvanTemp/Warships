@@ -1,4 +1,4 @@
-﻿#include "functions.h"
+#include "functions.h"
 
 #define achievement_file "achievements.db"
 
@@ -31,7 +31,7 @@ std::vector<std::pair<std::string, bool>> read_achievements()
 	achievement_array.emplace_back(std::make_pair("Try to win a PVE match on Impossible difficulty", 0));
 	achievement_array.emplace_back(std::make_pair("Win a PVP match", 0));
 	achievement_array.emplace_back(std::make_pair("Win in Standard Warships - Primitive", 0));
-	achievement_array.emplace_back(std::make_pair("Win in Standard Warships - Impossible", 0));
+	achievement_array.emplace_back(std::make_pair("Try to win in Standard Warships - Impossible", 0));
 	achievement_array.emplace_back(std::make_pair("Win a mission with code 344460", 0));
 	/////////////////////////////
 	std::ofstream aqua(
