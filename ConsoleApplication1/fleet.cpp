@@ -169,9 +169,6 @@ void Fleet::damage_by_index_bot(Ship sheep, int difficulty) { //sheep - who is a
 			bot_memory.emplace_back(std::make_pair(x, y));
 		}
 	}
-	else {
-		std::cout << "The enemy missed! X = " << str_x << "; Y = " << y << std::endl;
-	}
 	field_get_vision(x, y);
 }
 
