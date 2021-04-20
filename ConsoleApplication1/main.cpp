@@ -559,5 +559,8 @@ int main(int argc, char* argv[]) {
 		fleet_2.print(out);
 		out.close();
 	}
+	if (mission_number != "344460") {
+		system("pause");
+	}
 	return 0;
 }
