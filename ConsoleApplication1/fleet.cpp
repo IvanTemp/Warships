@@ -1681,6 +1681,7 @@ void Fleet::get_damage(const int dmg, const int x, const int y)
 
 	std::vector<std::pair<int, int>> coords;
 
+
 	if (!ship_vector_[id].get_durability_sum())
 	{
 		for (int x = 0; x < width_height; x++)

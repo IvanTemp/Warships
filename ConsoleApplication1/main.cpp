@@ -325,6 +325,7 @@ int main(int argc, char* argv[]) {
 					temple++;
 					if (!DEBUG_MODE) system("cls");
 				}
+				if (fleet_1.get_health_sum()) give_achievement(achievement_array, 4);
 				break;
 			}
 			else if (mission_number == "2") {
@@ -367,6 +368,7 @@ int main(int argc, char* argv[]) {
 					temple++;
 					if (!DEBUG_MODE) system("cls");
 				}
+				if (fleet_1.get_health_sum()) give_achievement(achievement_array, 5);
 			break;
 			} else if (mission_number == "344460") {
 				//миссия, которую один из кодеров сделал со скуки
@@ -507,7 +509,7 @@ int main(int argc, char* argv[]) {
 				else {
 					std::cout << "Captain! The ship with the missile silo is sunk!" << std::endl;
 					std::cout << "You won!" << std::endl;
-					give_achievement(achievement_array, 4);
+					give_achievement(achievement_array, 6);
 					break;
 				}
 			}

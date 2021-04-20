@@ -6,13 +6,14 @@ void output_achievement_info(const std::vector<std::pair<std::string, bool>>& ac
 {
 	//То, что количество не совпадает с выводимыми - не баг, а фича
 	int counter = 0;
+	int count_of_common_achievements = 6;
 	for (int i = 0; i < achievements.size(); i++) if (achievements[i].second) counter++;
 	std::cout << "Achievements[" << counter << "/" << achievements.size() << "]: " << std::endl;
-	for (int i = 0; i < 4; i++) { //Common achievements
+	for (int i = 0; i < count_of_common_achievements; i++) { //Common achievements
 		std::cout << i + 1 << ")" << achievements[i].first << ": ";
 		achievements[i].second ? std::cout << "Received\n" : std::cout << "Not received\n";
 	}
-	for (int i = 4; i < achievements.size(); i++) {//Hidden achievements
+	for (int i = count_of_common_achievements; i < achievements.size(); i++) {//Hidden achievements
 		if (achievements[i].second) {
 			std::cout << i + 1 << ")" << achievements[i].first << ": ";
 			achievements[i].second ? std::cout << "Received\n" : std::cout << "Not received\n";
@@ -29,6 +30,8 @@ std::vector<std::pair<std::string, bool>> read_achievements()
 	achievement_array.emplace_back(std::make_pair("Win a PVE match on Hard difficulty", 0));
 	achievement_array.emplace_back(std::make_pair("Try to win a PVE match on Impossible difficulty", 0));
 	achievement_array.emplace_back(std::make_pair("Win a PVP match", 0));
+	achievement_array.emplace_back(std::make_pair("Win in Standard Warships - Primitive", 0));
+	achievement_array.emplace_back(std::make_pair("Win in Standard Warships - Impossible", 0));
 	achievement_array.emplace_back(std::make_pair("Win a mission with code 344460", 0));
 	/////////////////////////////
 	std::ofstream aqua(
