@@ -155,12 +155,14 @@ int main(int argc, char* argv[]) {
 		std::cout << "E-error! This is inappropriate... I... What should I...?" << std::endl << std::endl;
 		std::cout << "You scared the program with your wrong input. Be careful next time." << std::endl << std::endl;
 		system("pause");
+		if (!DEBUG_MODE) system("cls");
 	}
 
 	int difficulty = 0, round = 0, temple = rand() % 2;
+	std::string mission_number;
 	if (battle_mode == "pvp" || battle_mode == "p") { //PVP
 		if constexpr (!DEBUG_MODE) system("cls");
-		while (fleet_1.get_health() && fleet_2.get_health()) {
+		while (fleet_1.get_health_sum() && fleet_2.get_health_sum()) {
 			switch (temple % 2) {
 				case 0:
 					fleet_1.initialize_field_final();
@@ -176,7 +178,7 @@ int main(int argc, char* argv[]) {
 					break;
 			}
 			if constexpr (!DEBUG_MODE) system("cls");
-			if (!fleet_1.get_health() || !fleet_2.get_health()) break;
+			if (!fleet_1.get_health_sum() || !fleet_2.get_health_sum()) break;
 			temple++;
 			switch (temple % 2) {
 				case 0:
@@ -216,6 +218,7 @@ int main(int argc, char* argv[]) {
 				std::cout << "E-error! This is inappropriate... I... What should I...?" << std::endl << std::endl;
 				std::cout << "You scared the program with your wrong input. Be careful next time." << std::endl << std::endl;
 				system("pause");
+				if (!DEBUG_MODE) system("cls");
 			}
 		}
 
@@ -225,7 +228,7 @@ int main(int argc, char* argv[]) {
 
 			if (difficulty >= 0 && difficulty <= 2) { //0 - 2(1 - 3 for user)
 				if constexpr (!DEBUG_MODE) system("cls");
-				while (fleet_1.get_health() && fleet_2.get_health()) {
+				while (fleet_1.get_health_sum() && fleet_2.get_health_sum()) {
 					switch (temple % 2) {
 					case 0:
 						fleet_1.initialize_field_final();
@@ -242,7 +245,7 @@ int main(int argc, char* argv[]) {
 					}
 
 					if constexpr (!DEBUG_MODE) system("cls");
-					if (!fleet_1.get_health() || !fleet_2.get_health()) break;
+					if (!fleet_1.get_health_sum() || !fleet_2.get_health_sum()) break;
 					temple++;
 
 					switch (temple % 2) {
@@ -267,12 +270,12 @@ int main(int argc, char* argv[]) {
 			}
 	}
 	else if (battle_mode == "missions" || battle_mode == "m") {
-		std::string mission_number;
 		while (true)
 		{
 			if constexpr (!DEBUG_MODE) { system("cls"); }
 			std::cout << "Mission list: " << std::endl << std::endl;
-			std::cout << "1)Standard Warships" << std::endl << std::endl;
+			std::cout << "1)Standard Warships - Primitive" << std::endl << std::endl;
+			std::cout << "2)Standard Warships - Impossible" << std::endl << std::endl;
 			if (achievement_array[4].second) {
 				std::cout << "344460)Nuclear finders" << std::endl << std::endl;
 			}
@@ -283,12 +286,88 @@ int main(int argc, char* argv[]) {
 			std::cin >> mission_number;
 
 			if (mission_number == "1") {
-				//—тандартный морской бой
+				//—тандартный морской бой - примитивный бот
 				if constexpr (!DEBUG_MODE) system("cls");
-				std::cout << "WORK IN PROGRESS" << std::endl;
+				std::cout << "Standard warships on normal difficulty." << std::endl;
 				system("pause");
-				break;
+				if constexpr (!DEBUG_MODE) system("cls");
 
+				//first re-initialization
+				fleet_1.initialize_field_final();
+				fleet_2.initialize_field_final();
+
+				//Oneing durability
+				fleet_1.oneing_durability();
+				fleet_2.oneing_durability();
+
+				temple = rand() % 2; //Bot will always go first (Kappa)
+
+				while (fleet_1.get_health_sum() && fleet_2.get_health_sum())
+				{
+					switch (temple % 2) {
+					case 0:
+						//Player
+						fleet_1.initialize_field_final();
+						std::cout << fleet_1.get_name() << " turn." << std::endl << std::endl;
+						fleet_1.output_field_final(fleet_2);
+						std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
+						fleet_2.damage_by_index_player_simple();
+						system("pause");
+						break;
+					case 1:
+						//bot
+						fleet_2.initialize_field_final();
+						std::cout << fleet_2.get_name() << " turn." << std::endl << std::endl;
+						fleet_1.damage_by_index_bot_primitive();
+						system("pause");
+						break;
+					}
+					temple++;
+					if (!DEBUG_MODE) system("cls");
+				}
+				break;
+			}
+			else if (mission_number == "2") {
+				//—тандартный морской бой - невозможно
+				if constexpr (!DEBUG_MODE) system("cls");
+				std::cout << "Standard warships on impossible difficulty." << std::endl;
+				system("pause");
+				if constexpr (!DEBUG_MODE) system("cls");
+
+				//first re-initialization
+				fleet_1.initialize_field_final();
+				fleet_2.initialize_field_final();
+
+				//Oneing durability
+				fleet_1.oneing_durability();
+				fleet_2.oneing_durability();
+
+				temple = 1; //Bot will always go first (Kappa)
+
+				while (fleet_1.get_health_sum() && fleet_2.get_health_sum())
+				{
+					switch (temple % 2) {
+					case 0:
+						//Player
+						fleet_1.initialize_field_final();
+						std::cout << fleet_1.get_name() << " turn." << std::endl << std::endl;
+						fleet_1.output_field_final(fleet_2);
+						std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
+						fleet_2.damage_by_index_player_simple();
+						system("pause");
+						break;
+					case 1:
+						//bot
+						fleet_2.initialize_field_final();
+						std::cout << fleet_2.get_name() << " turn." << std::endl << std::endl;
+						fleet_1.damage_by_index_bot_simple();
+						system("pause");
+						break;
+					}
+					temple++;
+					if (!DEBUG_MODE) system("cls");
+				}
+			break;
 			} else if (mission_number == "344460") {
 				//мисси€, которую один из кодеров сделал со скуки
 				//Cleaning from Aircraft Carrier
@@ -308,10 +387,7 @@ int main(int argc, char* argv[]) {
 
 				int nuclear_id = -1, finder_id = -1, damager_id = -1;
 				bool playable_fleet = false; //who will shoot(false - fleet1, true - fleet2)
-				if (fleet_2.find_undead_small_ship_id() != -1 && fleet_1.find_undead_heavy_cruiser_ship_id() != -1 && fleet_1.find_undead_tsundere_ship_id() != -1) {
-					//nothing
-				}
-				else if (fleet_1.find_undead_small_ship_id() != -1 && fleet_2.find_undead_heavy_cruiser_ship_id() != -1 && fleet_2.find_undead_tsundere_ship_id() != -1) {
+				if (fleet_1.find_undead_small_ship_id() != -1 && fleet_2.find_undead_heavy_cruiser_ship_id() != -1 && fleet_2.find_undead_tsundere_ship_id() != -1) {
 					playable_fleet = true;
 				}
 				else {
@@ -434,11 +510,13 @@ int main(int argc, char* argv[]) {
 					give_achievement(achievement_array, 4);
 					break;
 				}
-			} else {
+			}
+			else {
 				if constexpr (!DEBUG_MODE) { system("cls"); }
 				std::cout << "E-error! This is inappropriate... I... What should I...?" << std::endl << std::endl;
 				std::cout << "You scared the program with your wrong input. Be careful next time." << std::endl << std::endl;
 				system("pause");
+				if (!DEBUG_MODE) system("cls");
 			}
 		}
 	}
@@ -448,17 +526,18 @@ int main(int argc, char* argv[]) {
 		std::cout << "E-error! This is inappropriate... I... What should I...?" << std::endl << std::endl;
 		std::cout << "You scared the program with your wrong input. Be careful next time." << std::endl << std::endl;
 		system("pause");
+		if (!DEBUG_MODE) system("cls");
 	}
 
 	//Issuance of achievements after the game
-	if (battle_mode == "pve" || battle_mode == "pvp") {
-		if (fleet_1.get_health() > fleet_2.get_health()) {
+	if (mission_number != "344460") {
+		if (fleet_1.get_health_sum() > fleet_2.get_health_sum()) {
 			std::cout << "=====" << fleet_1.get_name() << " won!" << "=====" << std::endl;
 			if (battle_mode == "pve" && difficulty < 2 && ironman) {
 				give_achievement(achievement_array, difficulty);
 			}
 		}
-		else if (fleet_1.get_health() < fleet_2.get_health()) {
+		else if (fleet_1.get_health_sum() < fleet_2.get_health_sum()) {
 			std::cout << "=====" << fleet_2.get_name() << " won!" << "=====" << std::endl;
 		}
 		else { //IDK when it will be work :/

@@ -23,7 +23,7 @@ public:
 	//							Get
 	std::string get_name() const;
 	std::vector<Ship> get_ship_vector()const;
-	int get_health()const;
+	int get_health_sum()const;
 	bool get_side() const;
 	Ship get_ship_by_index(const int id)const;
 	void get_damage(const int dmg, const int x, const int y);
@@ -31,6 +31,7 @@ public:
 
 	//							Set
 	void set_name(int index, const std::string name);
+	void oneing_durability();
 
 
 	//						Input/Output
@@ -56,6 +57,7 @@ public:
 
 	//					Bot - actions & damage
 	void damage_by_index_bot(Ship sheep, int difficulty);
+	void damage_by_index_bot_simple();
 	void aircraft_attack_bot(const int dmg, int difficulty);
 	void heavy_cruiser_attack_bot(const int dmg, int difficulty);
 	void small_move_bot(const std::pair<int, int>& coordinates, const std::pair<int, int>& start, const int& index);
@@ -65,6 +67,8 @@ public:
 	void do_action(Fleet& whom, const unsigned& current_ship_id);
 	void do_action_344460(Fleet& whom, Ship damager);
 	void damage_by_index_player(Ship& sheep);
+	void damage_by_index_player_simple();
+	void damage_by_index_bot_primitive();
 	void aircraft_attack_player(const int dmg);
 	void heavy_cruiser_attack_player(const int dmg);
 	void small_move_player(const std::pair<int, int>& start, const int& index);

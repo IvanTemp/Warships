@@ -56,7 +56,7 @@ std::vector<Ship> Fleet::get_ship_vector() const
 	return ship_vector_;
 }
 
-int Fleet::get_health() const
+int Fleet::get_health_sum() const
 {
 	int hp = 0;
 	for (auto& i : ship_vector_)
@@ -172,6 +172,27 @@ void Fleet::damage_by_index_bot(Ship sheep, int difficulty) { //sheep - who is a
 	else {
 		std::cout << "The enemy missed! X = " << str_x << "; Y = " << y << std::endl;
 	}
+	field_get_vision(x, y);
+}
+
+void Fleet::damage_by_index_bot_simple() {
+	for (int y = 0; y < width_height; y++) {
+		for (int x = 0; x < width_height; x++) {
+			if (field_id_[x][y].first > 1) {
+				if (ship_vector_[field_id_[x][y].first - 2].get_durability()[field_id_[x][y].second]) {
+					get_damage(1, x, y);
+					//здесь должен находиться код, дающий вижион в точку, которую стрельнул бот, но зачем, а главное, зачем
+					return;
+				}
+			}
+		}
+	}
+}
+
+void Fleet::damage_by_index_bot_primitive() {
+	int x = rand() % width_height, y = rand() % width_height;
+	if (field_id_[x][y].first > 1) get_damage(1, x, y);
+	else std::cout << "Miss!" << std::endl;
 	field_get_vision(x, y);
 }
 
@@ -307,13 +328,77 @@ void Fleet::damage_by_index_player(Ship &sheep) { //sheep - who is attack
 			get_damage(dmg, x, y);
 		}
 		else {
-			std::cout << "Why did you shoot at an already sunk ship?" << std::endl;
+			std::cout << "Why did you shoot at an already sunk cell?" << std::endl;
 		}
 	}
 	else {
 		std::cout << "Miss!" << std::endl;
 	}
 	field_get_vision(x, y);
+}
+
+void Fleet::damage_by_index_player_simple() {
+	int x = 0, y = 0;
+	bool not_idiot = true, negative = false;
+	char char_x = ' ';
+	std::string str_y;
+	std::cin >> char_x >> str_y;
+	if constexpr (DEBUG_MODE) std::cout << "[DEFAULT DAMAGE PLAYER SIMPLE]X = " << char_x << "; Y = " << str_y << std::endl;
+
+	for (int i = 0; i < str_y.length(); i++) {
+		if (str_y[i] >= '0' && str_y[i] <= '9') {
+			not_idiot = false;
+			y *= 10;
+			y += str_y[i] - '0';
+		}
+		if (str_y[i] == '-') {
+			negative = true;
+		}
+	}
+
+	if (not_idiot) y = letter_to_int(std::toupper(str_y[0]));
+	if (negative) y *= -1;
+
+	if (y > width_height - 1 || y < 0) {
+		std::cout << "Captain! You shot out of bounds!" << std::endl;
+		return;
+	}
+
+	char_x = std::toupper(char_x);
+	x = letter_to_int(char_x);
+	if (x > width_height - 1 || x < 0)
+	{
+		std::cout << "Captain! You shot out of bounds!" << std::endl;
+		return;
+	}
+
+	if constexpr (DEBUG_MODE) { std::cout << "[DEFAULT DAMAGE PLAYER SIMPLE]int X = " << x << " Y = " << y << std::endl; }
+
+	if (field_id_[x][y].first > 1)
+	{
+		if (ship_vector_[field_id_[x][y].first - 2].get_durability()[field_id_[x][y].second])
+		{
+			get_damage(1, x, y);
+		}
+		else {
+			std::cout << "Why did you shoot at an already sunk cell?" << std::endl;
+		}
+	}
+	else {
+		std::cout << "Miss!" << std::endl;
+	}
+	field_get_vision(x, y);
+}
+
+void Fleet::oneing_durability() {
+	std::vector<int> temp;
+	for (auto& i : ship_vector_) {
+		temp.clear();
+		for (int j = 0; j < i.get_durability().size(); j++) {
+			temp.emplace_back(1);
+		}
+		i.set_durability(temp);
+	}
 }
 
 void Fleet::aircraft_attack_player(const int dmg)
@@ -588,7 +673,6 @@ void Fleet::aircraft_attack_bot(const int dmg, int difficulty)
 
 void Fleet::heavy_cruiser_attack_player(const int dmg)
 {
-	//std::cout << "Where are we going to shoot? 3x3 low dmg (Write X and Y coordinates): ";
 	int x = 0, y = 0;
 	bool not_idiot = true, negative = false;
 	char char_x = ' ';
@@ -938,29 +1022,9 @@ void Fleet::output_field_final(const Fleet& fleet2)const //Передаём только враже
 	{
 		std::cout << "\t";
 	}
-	//if (width_height >= 10 && width_height < 14) //10-13
-	//{
-	//	std::cout << "\t";
-	//}
-	//else if (width_height >= 14 && width_height < 18)
-	//{
-	//	std::cout << "\t\t";
-	//}
-	//else if (width_height >= 18 && width_height < 22)
-	//{
-	//	std::cout << "\t\t\t";
-	//}
-	//else if (width_height >= 22 && width_height < 26)
-	//{
-	//	std::cout << "\t\t\t\t";
-	//}
-	//else if (width_height >= 26 && width_height < 27)
-	//{
-	//	std::cout << "\t\t\t\t\t";
-	//}
 	std::cout << " Side: " << fleet2.name_ << std::endl;
-		//Chars
-		std::cout << "\t    ";
+	//Chars
+	std::cout << "\t    ";
 	for (int x = 0; x < width_height; x++)
 	{
 		std::cout << letters[x] << "|";
@@ -985,7 +1049,7 @@ void Fleet::output_field_final(const Fleet& fleet2)const //Передаём только враже
 		{
 			std::cout << " ";
 		}
-		std::cout <<  y << "||";
+		std::cout << y << "||";
 		for (int x = 0; x < width_height; x++)
 		{
 			std::cout << field_final_[x][y] << "|";
@@ -1092,19 +1156,39 @@ std::vector<std::pair<int, int>> Fleet::find_ship_and_return_x_y_vector(const in
 	return coords;
 }
 
-void Fleet::generate_field()
-{
-	for (auto& sheep : get_ship_vector()) {
-		bool stop = false;
-		int x = 0, y = 0, rotation = 0;
-		const int length = sheep.get_type()->get_size(), id = sheep.get_id();
-		bool breaks_in = true,
-			left_is_clear = false,
-			right_is_clear = false,
-			up_is_clear = false,
-			down_is_clear = false;
+void Fleet::generate_field() {
+	int counter = 0;
+	bool breaks_in = true,
+		left_is_clear = false,
+		right_is_clear = false,
+		up_is_clear = false,
+		down_is_clear = false;
+	bool stop = false;
+	int x = 0, y = 0, rotation = 0;
+	int length = 0, id = 0;
+
+	for (int i = 0; i < ship_vector_.size(); i++) {
+		counter = 0;
+		stop = false;
+		x = 0, y = 0, rotation = 0;
+		length = ship_vector_[i].get_type()->get_size(), id = ship_vector_[i].get_id();
+		breaks_in = true,
+		left_is_clear = false,
+		right_is_clear = false,
+		up_is_clear = false,
+		down_is_clear = false;
 		while (!stop)
 		{
+			if (counter > width_height * width_height) {
+				std::cout << "=============================================================================" << std::endl;
+				std::cout << "Warning! Perhaps the ships cannot be placed on a field of this size.\nRestart the generator by pressing any key or change the fleets or field size." << std::endl;
+				std::cout << "=============================================================================" << std::endl << std::endl;
+				system("pause");
+				std::cout << std::endl;
+				clear_fields();
+				i = -1;
+				break;
+			}
 			x = rand() % width_height;
 			y = rand() % width_height;
 			rotation = rand() % 4;
@@ -1117,7 +1201,7 @@ void Fleet::generate_field()
 				std::cout << "; rotation = " << rotation;
 				std::cout << "; id_: " << id;
 				std::cout << "; Length: " << length;
-				std::cout << "; Default durability: " << sheep.get_durability()[0];
+				std::cout << "; Default durability: " << ship_vector_[i].get_durability()[0];
 				std::cout << "; Status: ";
 			}
 
@@ -1385,8 +1469,10 @@ void Fleet::generate_field()
 			{
 				std::cout << "Failed!" << std::endl;
 			}
+			counter++;
 		}
 	}
+	std::cout << "Generation of " << name_ << " complete!" << std::endl << std::endl;
 }
 
 void Fleet::clear_fields() {
