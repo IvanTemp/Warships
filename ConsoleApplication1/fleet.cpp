@@ -387,6 +387,122 @@ void Fleet::damage_by_index_player_simple() {
 	field_get_vision(x, y);
 }
 
+int Fleet::play_shipsweeper() {
+	std::string action;
+	std::cout << "What do you want? (Write command and coordinates)\n\n-Shoot\n-Place mark\n-Delete mark" << std::endl;
+	std::cin >> action;
+	ha_you_are_small_now(action);
+	int x = 0, y = 0;
+	bool not_idiot = true, negative = false;
+	char char_x = ' ';
+	std::string str_y;
+	std::cin >> char_x >> str_y;
+	if constexpr (DEBUG_MODE) std::cout << "[PLAY SHIPSWEEPER]X = " << char_x << "; Y = " << str_y << std::endl;
+
+	for (int i = 0; i < str_y.length(); i++) {
+		if (str_y[i] >= '0' && str_y[i] <= '9') {
+			not_idiot = false;
+			y *= 10;
+			y += str_y[i] - '0';
+		}
+		if (str_y[i] == '-') {
+			negative = true;
+		}
+	}
+
+	if (not_idiot) y = letter_to_int(std::toupper(str_y[0]));
+	if (negative) y *= -1;
+
+	if (y > width_height - 1 || y < 0) {
+		std::cout << "Captain! Out of bounds!" << std::endl;
+		return -1;
+	}
+
+	char_x = std::toupper(char_x);
+	x = letter_to_int(char_x);
+	if (x > width_height - 1 || x < 0)
+	{
+		std::cout << "Captain! Out of bounds!" << std::endl;
+		return -1;
+	}
+
+	if constexpr (DEBUG_MODE) { std::cout << "[PLAY SHIPSWEEPER]int X = " << x << " Y = " << y << std::endl; }
+
+	if (action == "shoot" || action == "s") {
+		std::cout << "Shooted" << std::endl;
+		system("pause");
+		if (field_id_[x][y].first == -1) {
+			if constexpr (!DEBUG_MODE) system("cls");
+			field_get_vision(x, y);
+			return -1;
+		}
+		else
+		{
+			open_cells(x, y);
+		}
+	}
+	else if (action == "place mark" || action == "p") {
+		if (!field_id_[x][y].second) {
+			field_id_[x][y].second = 1;
+			std::cout << "Placed!" << std::endl;
+		}
+		else {
+			std::cout << "The mark is already there!" << std::endl;
+		}
+		system("pause");
+		if constexpr (!DEBUG_MODE) system("cls");
+		return -1;
+	}
+	else if (action == "delete mark" || action == "d") {
+		if (field_id_[x][y].second) {
+			field_id_[x][y].second = 0;
+			std::cout << "Deleted!" << std::endl;
+		}
+		else {
+			std::cout << "There is no mark!" << std::endl;
+		}
+		system("pause");
+		if constexpr (!DEBUG_MODE) system("cls");
+		return -1;
+	}
+	else {
+		std::cout << "Wrong command!" << std::endl;
+		system("pause");
+		if constexpr (!DEBUG_MODE) system("cls");
+		return -1;
+	}
+	return 0;
+}
+
+bool Fleet::check_bad_end_game_shipsweeper()const {
+	for (int y = 0; y < width_height; y++) {
+		for (int x = 0; x < width_height; x++) {
+			if (field_id_[x][y].first == -1 && field_war_[x][y]) return true;
+		}
+	}
+	return false;
+}
+
+bool Fleet::check_good_end_game_shipsweeper()const {
+	for (int y = 0; y < width_height; y++) {
+		for (int x = 0; x < width_height; x++) {
+			if (field_id_[x][y].first == -1 && !field_id_[x][y].second) return false;
+		}
+	}
+	return true;
+}
+
+int Fleet::count_remaining_markers_shipsweeper()const {
+	int counter = 0;
+	for (int y = 0; y < width_height; y++) {
+		for (int x = 0; x < width_height; x++) {
+			if (field_id_[x][y].first == -1) counter++;
+			if (field_id_[x][y].second == 1) counter--;
+		}
+	}
+	return counter;
+}
+
 void Fleet::oneing_durability() {
 	std::vector<int> temp;
 	for (auto& i : ship_vector_) {
@@ -1011,6 +1127,72 @@ void Fleet::initialize_field_final()
 	}
 }
 
+void Fleet::rebuild_fields_for_shipsweeper() {
+	//для удобства я разделил это на два разных for, просьба не пытаться переписать это
+	for (int y = 0; y < width_height; y++) {
+		for (int x = 0; x < width_height; x++) {
+			if (field_id_[x][y].first > 1) {
+				field_id_[x][y].first = -1; //bomb
+			}
+		}
+	}
+
+	for (int y = 0; y < width_height; y++) {
+		for (int x = 0; x < width_height; x++) {
+			field_id_[x][y].second = 0;
+			field_war_[x][y] = false; //true for WH(for testing)
+			if (field_id_[x][y].first == 1) {
+				field_id_[x][y].first = area_is_clear_shipsweeper(x, y); //number
+			}
+		}
+	}
+}
+
+void Fleet::open_cells(const int x, const int y) {
+	field_get_vision(x, y);
+	if (field_id_[x][y].first > 0) return;
+	if (y) {
+		if (x) {
+			if (field_id_[x - 1][y - 1].first >= 0 && !field_war_[x - 1][y - 1]) {
+				open_cells(x - 1, y - 1);
+			}
+		}
+		if (field_id_[x][y - 1].first >= 0 && !field_war_[x][y - 1]) {
+			open_cells(x, y - 1);
+		}
+		if (x < width_height - 1) {
+			if (field_id_[x + 1][y - 1].first >= 0 && !field_war_[x + 1][y - 1]) {
+				open_cells(x + 1, y - 1);
+			}
+		}
+	}
+	if (x) {
+		if (field_id_[x - 1][y].first >= 0 && !field_war_[x - 1][y]) {
+			open_cells(x - 1, y);
+		}
+	}
+	if (x < width_height - 1) {
+		if (field_id_[x + 1][y].first >= 0 && !field_war_[x + 1][y]) {
+			open_cells(x + 1, y);
+		}
+	}
+	if (y < width_height - 1) {
+		if (x) {
+			if (field_id_[x - 1][y + 1].first >= 0 && !field_war_[x - 1][y + 1]) {
+				open_cells(x - 1, y + 1);
+			}
+		}
+		if (field_id_[x][y + 1].first >= 0 && !field_war_[x][y + 1]) {
+			open_cells(x, y + 1);
+		}
+		if (x < width_height - 1) {
+			if (field_id_[x + 1][y + 1].first >= 0 && !field_war_[x + 1][y + 1]) {
+				open_cells(x + 1, y + 1);
+			}
+		}
+	}
+}
+
 void Fleet::output_field_final(const Fleet& fleet2)const //Передаём только вражеский флот, призываем через текущий
 {
 	std::string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -1052,13 +1234,10 @@ void Fleet::output_field_final(const Fleet& fleet2)const //Передаём то
 			std::cout << field_final_[x][y] << "|";
 		}
 		//enemy
+		std::cout << "\t\t";
 		if (width_height == 1)
 		{
-			std::cout << "\t\t\t";
-		}
-		else
-		{
-			std::cout << "\t\t";
+			std::cout << "\t";
 		}
 		//if y is 1 chars then " "
 		if (y < 10)
@@ -1076,6 +1255,103 @@ void Fleet::output_field_final(const Fleet& fleet2)const //Передаём то
 			else
 			{
 				std::cout << "#" << "|";
+			}
+		}
+		std::cout << std::endl;
+	}
+	std::cout << std::endl;
+}
+
+void Fleet::output_field_final_shipsweeper(const Fleet& fleet2)const //Передаём только вражеский флот, призываем через текущий
+{
+	std::string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	std::cout << "\tSide: " << name_ << "\t";
+	for (int i = 6; i <= width_height; i += 4)
+	{
+		std::cout << "\t";
+	}
+	std::cout << " Side: " << fleet2.name_ << std::endl;
+	//Chars
+	std::cout << "\t    ";
+	for (int x = 0; x < width_height; x++)
+	{
+		std::cout << letters[x] << "|";
+	}
+	if (width_height == 1)
+	{
+		std::cout << "\t";
+	}
+	std::cout << "\t\t    ";
+	for (int x = 0; x < width_height; x++)
+	{
+		std::cout << letters[x] << "|";
+	}
+	std::cout << std::endl;
+	//game fields
+	for (int y = 0; y < width_height; y++)
+	{
+		//our
+		std::cout << "\t";
+		//if y is 1 chars then " "
+		if (y < 10)
+		{
+			std::cout << " ";
+		}
+		std::cout << y << "||";
+		for (int x = 0; x < width_height; x++)
+		{
+			if (!field_id_[x][y].second) {
+				if (field_war_[x][y]) {
+					if (field_id_[x][y].first == -1) {
+						std::cout << "B|";
+					}
+					else if (!field_id_[x][y].first) {
+						std::cout << " |";
+					}
+					else {
+						std::cout << field_id_[x][y].first << "|";
+					}
+				}
+				else {
+					std::cout << "#|";
+				}
+			}
+			else {
+				std::cout << "M|";
+			}
+		}
+		//enemy
+		std::cout << "\t\t";
+		if (width_height == 1)
+		{
+			std::cout << "\t";
+		}
+		//if y is 1 chars then " "
+		if (y < 10)
+		{
+			std::cout << " ";
+		}
+		std::cout << y << "||";
+		for (int x = 0; x < width_height; x++)
+		{
+			if (!fleet2.field_id_[x][y].second) {
+				if (fleet2.field_war_[x][y]) {
+					if (fleet2.field_id_[x][y].first == -1) {
+						std::cout << "B|";
+					}
+					else if (!fleet2.field_id_[x][y].first) {
+						std::cout << " |";
+					}
+					else {
+						std::cout << fleet2.field_id_[x][y].first << "|";
+					}
+				}
+				else {
+					std::cout << "#|";
+				}
+			}
+			else {
+				std::cout << "M|";
 			}
 		}
 		std::cout << std::endl;
@@ -1983,4 +2259,42 @@ bool Fleet::area_is_clear(const int x, const int y)const
 		}
 	}
 	return true;
+}
+
+int Fleet::area_is_clear_shipsweeper(const int x, const int y)const
+{
+	int counter = 0;
+	if (y)
+	{
+		if (x)
+		{
+			if (field_id_[x - 1][y - 1].first == -1) counter++;
+		}
+		if (field_id_[x][y - 1].first == -1) counter++;
+		if (x < width_height - 1)
+		{
+			if (field_id_[x + 1][y - 1].first == -1) counter++;
+		}
+	}
+	if (x)
+	{
+		if (field_id_[x - 1][y].first == -1) counter++;
+	}
+	if (x < width_height - 1)
+	{
+		if (field_id_[x + 1][y].first == -1) counter++;
+	}
+	if (y < width_height - 1)
+	{
+		if (x)
+		{
+			if (field_id_[x - 1][y + 1].first == -1) counter++;
+		}
+		if (field_id_[x][y + 1].first == -1) counter++;
+		if (x < width_height - 1)
+		{
+			if (field_id_[x + 1][y + 1].first == -1) counter++;
+		}
+	}
+	return counter;
 }

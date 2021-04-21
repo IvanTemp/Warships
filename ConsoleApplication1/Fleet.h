@@ -38,6 +38,7 @@ public:
 	void print(std::ostream& out)const;
 	void read(std::istream& in);
 	void output_field_final(const Fleet& fleet2)const;
+	void output_field_final_shipsweeper(const Fleet& fleet2)const;
 	void output_field_id()const;
 	void output_field_index()const;
 	void output_field_war()const;
@@ -58,6 +59,7 @@ public:
 	//					Bot - actions & damage
 	void damage_by_index_bot(Ship sheep, int difficulty);
 	void damage_by_index_bot_simple();
+	void damage_by_index_bot_primitive();
 	void aircraft_attack_bot(const int dmg, int difficulty);
 	void heavy_cruiser_attack_bot(const int dmg, int difficulty);
 	void small_move_bot(const std::pair<int, int>& coordinates, const std::pair<int, int>& start, const int& index);
@@ -68,7 +70,7 @@ public:
 	void do_action_344460(Fleet& whom, Ship damager);
 	void damage_by_index_player(Ship& sheep);
 	void damage_by_index_player_simple();
-	void damage_by_index_bot_primitive();
+	int play_shipsweeper();
 	void aircraft_attack_player(const int dmg);
 	void heavy_cruiser_attack_player(const int dmg);
 	void small_move_player(const std::pair<int, int>& start, const int& index);
@@ -82,9 +84,15 @@ public:
 	int return_field_index(const unsigned& x, const unsigned& y)const;
 	bool return_field_war(const unsigned& x, const unsigned& y)const;
 	void initialize_field_final();
+	void rebuild_fields_for_shipsweeper();
 	void field_get_vision(const int x, const int y);
 	void klee(const auto& coords);
 	bool area_is_clear(const int x, const int y)const;
+	int area_is_clear_shipsweeper(const int x, const int y)const;
+	bool check_bad_end_game_shipsweeper()const;
+	bool check_good_end_game_shipsweeper()const;
+	int count_remaining_markers_shipsweeper()const;
+	void open_cells(const int x, const int y);
 
 
 	//					  Debug functions
@@ -100,7 +108,7 @@ private:
 
 	//															Fields
 	std::string field_final_[width_height][width_height]; //The field seen by the player
-	std::pair<int, int> field_id_[width_height][width_height]; //The field with id_(.first) and indexes(.second)
+	std::pair<int, int> field_id_[width_height][width_height]; //The field with id_(.first) and indexes(.second) (in shipsweeper .second = field with marked cells)
 	bool field_war_[width_height][width_height]; //The field with fog of war
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 };
