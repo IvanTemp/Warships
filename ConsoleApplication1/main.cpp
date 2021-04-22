@@ -10,7 +10,6 @@
 
 
 int main(int argc, char* argv[]) {
-
 	switch (SEED) {
 	case 0:
 		srand(time(nullptr));
@@ -83,18 +82,18 @@ int main(int argc, char* argv[]) {
 			return -2;
 		}
 	}
-	else //рср йняршкэ, ме рпнцюи онйю врн!!!!!11111!
-	{
-		std::ifstream fin("input.txt");
-		fleet_2.read(fin);
-		fin.close();
-		//Check fleet_2 for empty
-		if (fleet_2.get_ship_vector().empty()) {
-			std::cout << "Warning! Connect the file with the second fleet!" << std::endl;
-			system("pause");
-			return -2;
-		}
-	}
+	//else //рср йняршкэ, ме рпнцюи онйю врн!!!!!11111!
+	//{
+	//	std::ifstream fin("input.txt");
+	//	fleet_2.read(fin);
+	//	fin.close();
+	//	//Check fleet_2 for empty
+	//	if (fleet_2.get_ship_vector().empty()) {
+	//		std::cout << "Warning! Connect the file with the second fleet!" << std::endl;
+	//		system("pause");
+	//		return -2;
+	//	}
+	//}
 
 	////////
 	fleet_1.print(std::cout);

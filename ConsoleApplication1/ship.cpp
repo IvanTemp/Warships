@@ -48,8 +48,6 @@ void Ship::print(std::ostream& out) const
 void Ship::read(std::istream& in)
 {
 	std::string temp;
-	std::getline(in, temp);
-	id_ = stoi(temp);
 	std::getline(in, name_);
 	//std::getline(in, type_);
 	temp = "";
@@ -101,6 +99,11 @@ void Ship::set_type(const BasicType* tp)
 void Ship::set_durability(const std::vector<int> &durability)
 {
 	durability_ = durability;
+}
+
+void Ship::set_id(const int ind)
+{
+	id_ = ind;
 }
 
 int Ship::get_durability_sum() const {

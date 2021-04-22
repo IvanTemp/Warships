@@ -27,6 +27,7 @@ public:
 	bool get_side() const;
 	Ship get_ship_by_index(const int id)const;
 	void get_damage(const int dmg, const int x, const int y);
+	int get_health_in_perc()const;
 
 
 	//							Set

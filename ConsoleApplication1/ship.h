@@ -4,7 +4,7 @@
 #include "BasicType.h"
 
 //Game settings
-#define width_height 10 //Width & height of field
+#define width_height 9 //Width & height of field
 
 #define DEBUG_MODE 0 //0 - off; 1 - on
 
@@ -42,6 +42,7 @@ public:
 	void set_name(const std::string& name);
 	void set_type(const BasicType* type);
 	void set_durability(const std::vector<int>& durability);
+	void set_id(const int id);
 
 
 	//						Input/Output

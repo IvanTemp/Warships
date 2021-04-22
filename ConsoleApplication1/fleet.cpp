@@ -31,13 +31,15 @@ void Fleet::print(std::ostream& out) const
 void Fleet::read(std::istream& in)
 {
 	getline(in, name_);
-	std::string count = "";
-	getline(in, count);
-	for (int i = 0; i < stoi(count); i++)
+	while(!(in.eof()))
 	{
 		Ship newShip;
 		newShip.read(in);
 		*this += newShip;
+	}
+	for (int i = 0; i < ship_vector_.size(); i++)
+	{
+		ship_vector_[i].set_id(i + 2);
 	}
 }
 
@@ -1028,13 +1030,6 @@ void Fleet::nuclear_bomb() {
 
 Fleet& Fleet::operator+=(const Ship& shp)
 {
-	for (auto& i : ship_vector_)
-	{
-		if (i == shp)
-		{
-			std::cout << "Ship is already added" << std::endl;
-		}
-	}
 	ship_vector_.push_back(shp);
 	return *this;
 }
@@ -1196,12 +1191,17 @@ void Fleet::open_cells(const int x, const int y) {
 void Fleet::output_field_final(const Fleet& fleet2)const //Передаём только вражеский флот, призываем через текущий
 {
 	std::string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	std::cout << "\tSide: " << name_ << "\t";
+	std::cout << "\t";
+	if (width_height <= 10) std::cout << " ";
+	std::cout << "Side: " << name_ << "[" << get_health_in_perc() << "%]";
+	if (get_health_in_perc() < 100) std::cout << " ";
+	if (get_health_in_perc() < 10) std::cout << " ";
 	for (int i = 6; i <= width_height; i += 4)
 	{
 		std::cout << "\t";
 	}
-	std::cout << " Side: " << fleet2.name_ << std::endl;
+	std::cout << " Side: " << fleet2.name_ << "[" << fleet2.get_health_in_perc() << "%]" << std::endl;
+
 	//Chars
 	std::cout << "\t    ";
 	for (int x = 0; x < width_height; x++)
@@ -1218,12 +1218,13 @@ void Fleet::output_field_final(const Fleet& fleet2)const //Передаём то
 		std::cout << letters[x] << "|";
 	}
 	std::cout << std::endl;
+
 	//game fields
 	for (int y = 0; y < width_height; y++)
 	{
 		//our
 		std::cout << "\t";
-		//if y is 1 chars then " "
+		//if y is one sign then " "
 		if (y < 10)
 		{
 			std::cout << " ";
@@ -1763,6 +1764,7 @@ void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 {
 	if constexpr (DEBUG_MODE) { std::cout << "[DO ACTION]order[round] = " << current_ship_id << std::endl; }
 	const std::pair <int, int> coordinates = find_ship_and_return_x_y_vector(current_ship_id + 2)[0];
+	std::cout << "Your fleet have:\t" << get_health_sum() << " health points" << std::endl; 
 	std::cout << "Current position: \t" << int_to_letter(coordinates.first) << " " << coordinates.second << std::endl;
 	std::cout << "Current type: \t\t" << ship_vector_[current_ship_id].get_type()->get_name() << std::endl << std::endl;
 	std::cout << "What do you want? (Write command and coordinates)\n\n";
@@ -1855,6 +1857,18 @@ void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 	}
 	system("pause");
 	if constexpr (!DEBUG_MODE) { system("cls"); }
+}
+
+int Fleet::get_health_in_perc() const
+{
+	int result = 0;
+	int healths = 0;
+	for (int i = 0; i < ship_vector_.size(); i++)
+	{
+		healths += (ship_vector_[i].get_type()->get_default_durability() * ship_vector_[i].get_type()->get_size());
+	}
+	result = get_health_sum() * 100 / healths;
+	return result;
 }
 
 void Fleet::do_action_344460(Fleet& whom, Ship damager)
