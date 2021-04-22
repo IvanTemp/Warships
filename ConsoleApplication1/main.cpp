@@ -1,4 +1,4 @@
-#include "functions.h"
+п»ї#include "functions.h"
 #include "Fleet.h"
 #include "AircraftCarrier.h"
 #include "HeavyCruiser.h"
@@ -82,18 +82,6 @@ int main(int argc, char* argv[]) {
 			return -2;
 		}
 	}
-	//else //ТУТ КОСТЫЛЬ, НЕ ТРОГАЙ ПОКА ЧТО!!!!!11111!
-	//{
-	//	std::ifstream fin("input.txt");
-	//	fleet_2.read(fin);
-	//	fin.close();
-	//	//Check fleet_2 for empty
-	//	if (fleet_2.get_ship_vector().empty()) {
-	//		std::cout << "Warning! Connect the file with the second fleet!" << std::endl;
-	//		system("pause");
-	//		return -2;
-	//	}
-	//}
 
 	////////
 	fleet_1.print(std::cout);
@@ -101,7 +89,7 @@ int main(int argc, char* argv[]) {
 	fleet_2.print(std::cout);
 	std::cout << std::endl;
 	
-	//Gemu ga hajimarimasu(прим. переводчика: Игра начинается)
+	//Gemu ga hajimarimasu(РїСЂРёРј. РїРµСЂРµРІРѕРґС‡РёРєР°: РРіСЂР° РЅР°С‡РёРЅР°РµС‚СЃСЏ)
 	bool ironman = true;
 	fleet_1.generate_field();
 	fleet_2.generate_field();
@@ -304,7 +292,7 @@ int main(int argc, char* argv[]) {
 			std::cin >> arcade_game_number;
 
 			if (arcade_game_number == "1") {
-				//Стандартный морской бой - примитивный бот
+				//РЎС‚Р°РЅРґР°СЂС‚РЅС‹Р№ РјРѕСЂСЃРєРѕР№ Р±РѕР№ - РїСЂРёРјРёС‚РёРІРЅС‹Р№ Р±РѕС‚
 				if constexpr (!DEBUG_MODE) system("cls");
 				std::cout << "Standard warships on normal difficulty." << std::endl;
 				system("pause");
@@ -347,7 +335,7 @@ int main(int argc, char* argv[]) {
 				break;
 			}
 			else if (arcade_game_number == "2") {
-				//Стандартный морской бой - невозможно
+				//РЎС‚Р°РЅРґР°СЂС‚РЅС‹Р№ РјРѕСЂСЃРєРѕР№ Р±РѕР№ - РЅРµРІРѕР·РјРѕР¶РЅРѕ
 				if constexpr (!DEBUG_MODE) system("cls");
 				std::cout << "Standard warships on impossible difficulty." << std::endl;
 				system("pause");
@@ -356,7 +344,7 @@ int main(int argc, char* argv[]) {
 				//first re-initialization
 				//fleet_1.initialize_field_final();
 				//fleet_2.initialize_field_final();
-				//не помню зачем это написал, но и без этого работает :\
+				//РЅРµ РїРѕРјРЅСЋ Р·Р°С‡РµРј СЌС‚Рѕ РЅР°РїРёСЃР°Р», РЅРѕ Рё Р±РµР· СЌС‚РѕРіРѕ СЂР°Р±РѕС‚Р°РµС‚ :\
 
 				//Oneing durability
 				fleet_1.oneing_durability();
@@ -391,7 +379,7 @@ int main(int argc, char* argv[]) {
 			break;
 			} 
 			else if (arcade_game_number == "344460") {
-				//кастомка, которую один из кодеров(не Ваня) сделал со скуки
+				//РєР°СЃС‚РѕРјРєР°, РєРѕС‚РѕСЂСѓСЋ РѕРґРёРЅ РёР· РєРѕРґРµСЂРѕРІ(РЅРµ Р’Р°РЅСЏ) СЃРґРµР»Р°Р» СЃРѕ СЃРєСѓРєРё
 				//Cleaning from Aircraft Carrier
 				for (int i = 0; i < fleet_1.get_ship_vector().size();) {
 					if (fleet_1.get_ship_vector()[i].get_type()->get_size() == 4) {
@@ -417,7 +405,7 @@ int main(int argc, char* argv[]) {
 					return -277716;
 				}
 
-				switch (playable_fleet) //удаляем ненужные корабли
+				switch (playable_fleet) //СѓРґР°Р»СЏРµРј РЅРµРЅСѓР¶РЅС‹Рµ РєРѕСЂР°Р±Р»Рё
 				{
 				case false:
 					for (int i = 0; i < fleet_1.get_ship_vector().size();) {
@@ -534,8 +522,8 @@ int main(int argc, char* argv[]) {
 				}
 			}
 			else if (arcade_game_number == "354735") {
-			//ещё одна кастомка, которую один из кодеров(всё ещё не Ваня) сделал со скуки
-			//по задумке это должен был быть PvE, но кому-то(и тут не Ваня) было лень писать ИИ под это
+			//РµС‰С‘ РѕРґРЅР° РєР°СЃС‚РѕРјРєР°, РєРѕС‚РѕСЂСѓСЋ РѕРґРёРЅ РёР· РєРѕРґРµСЂРѕРІ(РІСЃС‘ РµС‰С‘ РЅРµ Р’Р°РЅСЏ) СЃРґРµР»Р°Р» СЃРѕ СЃРєСѓРєРё
+			//РїРѕ Р·Р°РґСѓРјРєРµ СЌС‚Рѕ РґРѕР»Р¶РµРЅ Р±С‹Р» Р±С‹С‚СЊ PvE, РЅРѕ РєРѕРјСѓ-С‚Рѕ(Рё С‚СѓС‚ РЅРµ Р’Р°РЅСЏ) Р±С‹Р»Рѕ Р»РµРЅСЊ РїРёСЃР°С‚СЊ РР РїРѕРґ СЌС‚Рѕ
 			if constexpr (!DEBUG_MODE) system("cls");
 			std::cout << "Warships, But It's Minesweeper" << std::endl;
 			system("pause");

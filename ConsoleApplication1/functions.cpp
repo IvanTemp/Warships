@@ -1,4 +1,4 @@
-#include "functions.h"
+﻿#include "functions.h"
 
 #define achievement_file "achievements.db"
 
