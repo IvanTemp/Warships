@@ -102,7 +102,7 @@ int main(int argc, char* argv[]) {
 	fleet_2.print(std::cout);
 	std::cout << std::endl;
 	
-	//Gemu ga hajimarimasu(����. �����������: ���� ����������)
+	//Gemu ga hajimarimasu(прим. переводчика: Игра начинается)
 	bool ironman = true;
 	fleet_1.generate_field();
 	fleet_2.generate_field();
@@ -137,15 +137,15 @@ int main(int argc, char* argv[]) {
 	}
 	/////////////////
 
-	//Achievements
-	std::vector <std::pair<std::string, bool>> achievement_array = read_achievements();
-	output_achievement_info(achievement_array);
-	//////////////
-
 	if (fleet_1 != fleet_2) {
-		std::cout << "Imbalance! Ironman mode is disabled." << std::endl << std::endl;
+		std::cout << "Imbalance! Achievements are disabled." << std::endl << std::endl;
 		ironman = false;
 	}
+
+	//Achievements
+	std::vector <std::pair<std::string, bool>> achievement_array = read_achievements();
+	if (ironman) output_achievement_info(achievement_array);
+	//////////////
 
 	std::cout << "Start game?\n";
 	system("pause");
@@ -156,10 +156,10 @@ int main(int argc, char* argv[]) {
 	std::string battle_mode;
 	while (true)
 	{
-		std::cout << "Select game mode: \n-PvP\n-PvE\n-Missions\n\n";
+		std::cout << "Select game mode: \n-PvP\n-PvE\n-Arcade Games\n\n";
 		std::cin >> battle_mode;
 		ha_you_are_small_now(battle_mode);
-		if (battle_mode == "pve" || battle_mode == "e" || battle_mode == "pvp" || battle_mode == "p" || battle_mode == "missions" || battle_mode == "m")
+		if (battle_mode == "pve" || battle_mode == "e" || battle_mode == "pvp" || battle_mode == "p" || battle_mode == "arcade games" || battle_mode == "a")
 		{
 			break;
 		}
@@ -171,7 +171,7 @@ int main(int argc, char* argv[]) {
 	}
 
 	int difficulty = 0, round = 0, temple = rand() % 2;
-	std::string mission_number;
+	std::string arcade_game_number;
 	if (battle_mode == "pvp" || battle_mode == "p") { //PVP
 		if constexpr (!DEBUG_MODE) system("cls");
 		while (fleet_1.get_health_sum() && fleet_2.get_health_sum()) {
@@ -281,24 +281,31 @@ int main(int argc, char* argv[]) {
 				}
 			}
 	}
-	else if (battle_mode == "missions" || battle_mode == "m") {
+	else if (battle_mode == "arcade games" || battle_mode == "a") {
 		while (true)
 		{
 			if constexpr (!DEBUG_MODE) { system("cls"); }
-			std::cout << "Mission list: " << std::endl << std::endl;
+			std::cout << "Arcade games list: " << std::endl << std::endl;
 			std::cout << "1)Standard Warships - Primitive" << std::endl << std::endl;
 			std::cout << "2)Standard Warships - Impossible" << std::endl << std::endl;
-			if (achievement_array[4].second) {
+			if (achievement_array[6].second) {
 				std::cout << "344460)Nuclear finders" << std::endl << std::endl;
 			}
-			else {
-				std::cout << "******)*mission secret*" << std::endl << std::endl;
+			if (achievement_array[7].second) {
+				std::cout << "354735)Shipsweeper" << std::endl << std::endl;
+			}
+
+			if (!achievement_array[6].second && !achievement_array[7].second) {
+				std::cout << "and two secret arcade games.." << std::endl << std::endl;
+			}
+			else if (!achievement_array[6].second || !achievement_array[7].second) {
+				std::cout << "and one secret arcade game.." << std::endl << std::endl;
 			}
 			std::cout << "Type the mission number: ";
-			std::cin >> mission_number;
+			std::cin >> arcade_game_number;
 
-			if (mission_number == "1") {
-				//����������� ������� ��� - ����������� ���
+			if (arcade_game_number == "1") {
+				//Стандартный морской бой - примитивный бот
 				if constexpr (!DEBUG_MODE) system("cls");
 				std::cout << "Standard warships on normal difficulty." << std::endl;
 				system("pause");
@@ -337,18 +344,20 @@ int main(int argc, char* argv[]) {
 					temple++;
 					if (!DEBUG_MODE) system("cls");
 				}
+				if (fleet_1.get_health_sum()) give_achievement(achievement_array, 4);
 				break;
 			}
-			else if (mission_number == "2") {
-				//����������� ������� ��� - ����������
+			else if (arcade_game_number == "2") {
+				//Стандартный морской бой - невозможно
 				if constexpr (!DEBUG_MODE) system("cls");
 				std::cout << "Standard warships on impossible difficulty." << std::endl;
 				system("pause");
 				if constexpr (!DEBUG_MODE) system("cls");
 
 				//first re-initialization
-				fleet_1.initialize_field_final();
-				fleet_2.initialize_field_final();
+				//fleet_1.initialize_field_final();
+				//fleet_2.initialize_field_final();
+				//не помню зачем это написал, но и без этого работает :\
 
 				//Oneing durability
 				fleet_1.oneing_durability();
@@ -379,9 +388,11 @@ int main(int argc, char* argv[]) {
 					temple++;
 					if (!DEBUG_MODE) system("cls");
 				}
+				if (fleet_1.get_health_sum()) give_achievement(achievement_array, 5);
 			break;
-			} else if (mission_number == "344460") {
-				//������, ������� ���� �� ������� ������ �� �����
+			} 
+			else if (arcade_game_number == "344460") {
+				//кастомка, которую один из кодеров(не Ваня) сделал со скуки
 				//Cleaning from Aircraft Carrier
 				for (int i = 0; i < fleet_1.get_ship_vector().size();) {
 					if (fleet_1.get_ship_vector()[i].get_type()->get_size() == 4) {
@@ -407,7 +418,7 @@ int main(int argc, char* argv[]) {
 					return -277716;
 				}
 
-				switch (playable_fleet) //������� �������� �������
+				switch (playable_fleet) //удаляем ненужные корабли
 				{
 				case false:
 					for (int i = 0; i < fleet_1.get_ship_vector().size();) {
@@ -519,9 +530,77 @@ int main(int argc, char* argv[]) {
 				else {
 					std::cout << "Captain! The ship with the missile silo is sunk!" << std::endl;
 					std::cout << "You won!" << std::endl;
-					give_achievement(achievement_array, 4);
+					give_achievement(achievement_array, 6);
 					break;
 				}
+			}
+			else if (arcade_game_number == "354735") {
+			//ещё одна кастомка, которую один из кодеров(всё ещё не Ваня) сделал со скуки
+			//по задумке это должен был быть PvE, но кому-то(и тут не Ваня) было лень писать ИИ под это
+			if constexpr (!DEBUG_MODE) system("cls");
+			std::cout << "PvP Mode, But It's Minesweeper" << std::endl;
+			system("pause");
+			if constexpr (!DEBUG_MODE) system("cls");
+
+			//rebuild fields for shipsweeper
+			fleet_1.rebuild_fields_for_shipsweeper();
+			fleet_2.rebuild_fields_for_shipsweeper();
+
+			temple = rand() % 2; //who will go first
+
+			if constexpr (DEBUG_MODE) {
+				std::cout << "[SHIPSWEEPER]" << std::endl;
+				fleet_1.output_field_final(fleet_2);
+				fleet_2.output_field_final(fleet_1);
+				std::cout << "[/SHIPSWEEPER]" << std::endl;
+			}
+
+			bool bad = true;
+
+			while (!fleet_1.check_good_end_game_shipsweeper() && !fleet_2.check_good_end_game_shipsweeper() && bad)
+			{
+				switch (temple % 2) {
+				case 0:
+					//Player 1
+					bad = !fleet_1.check_bad_end_game_shipsweeper();
+					if (!bad) break;
+					std::cout << fleet_1.get_name() << " turn." << std::endl << std::endl;
+					std::cout << "You have " << fleet_1.count_remaining_markers_shipsweeper() << " markers left." << std::endl;
+					fleet_1.output_field_final_shipsweeper(fleet_2);
+					temple += fleet_1.play_shipsweeper();
+					break;
+				case 1:
+					//Player 1+1
+					bad = !fleet_2.check_bad_end_game_shipsweeper();
+					if (!bad) break;
+					std::cout << fleet_2.get_name() << " turn." << std::endl << std::endl;
+					std::cout << "You have " << fleet_2.count_remaining_markers_shipsweeper() << " markers left." << std::endl;
+					fleet_2.output_field_final_shipsweeper(fleet_1);
+					temple += fleet_2.play_shipsweeper();
+					break;
+				}
+				temple++;
+				if (!DEBUG_MODE) system("cls");
+			}
+			if (fleet_1.check_bad_end_game_shipsweeper()) {
+				std::cout << fleet_2.get_name() << " win." << std::endl << std::endl;
+				fleet_1.output_field_final_shipsweeper(fleet_2);
+			}
+			else if (fleet_2.check_bad_end_game_shipsweeper()) {
+				std::cout << fleet_1.get_name() << " win." << std::endl << std::endl;
+				fleet_2.output_field_final_shipsweeper(fleet_1);
+			}
+			else if (fleet_1.check_good_end_game_shipsweeper()) {
+				std::cout << fleet_1.get_name() << " win." << std::endl << std::endl;
+				fleet_1.output_field_final_shipsweeper(fleet_2);
+			}
+			else {
+				std::cout << fleet_2.get_name() << " win." << std::endl << std::endl;
+				fleet_2.output_field_final_shipsweeper(fleet_1);
+			}
+			give_achievement(achievement_array, 7);
+			system("pause");
+			break;
 			}
 			else {
 				if constexpr (!DEBUG_MODE) { system("cls"); }
@@ -542,7 +621,7 @@ int main(int argc, char* argv[]) {
 	}
 
 	//Issuance of achievements after the game
-	if (mission_number != "344460") {
+	if (arcade_game_number != "344460") {
 		if (fleet_1.get_health_sum() > fleet_2.get_health_sum()) {
 			std::cout << "=====" << fleet_1.get_name() << " won!" << "=====" << std::endl;
 			if (battle_mode == "pve" && difficulty < 2 && ironman) {
@@ -571,7 +650,7 @@ int main(int argc, char* argv[]) {
 		fleet_2.print(out);
 		out.close();
 	}
-	if (mission_number != "344460") {
+	if (arcade_game_number != "344460") {
 		system("pause");
 	}
 	return 0;
