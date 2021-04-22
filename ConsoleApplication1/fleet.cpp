@@ -1874,9 +1874,8 @@ int Fleet::get_health_in_perc() const
 {
 	int result = 0;
 	int healths = 0;
-	for (int i = 0; i < ship_vector_.size(); i++)
-	{
-		healths += (ship_vector_[i].get_type()->get_default_durability() * ship_vector_[i].get_type()->get_size());
+	for (auto& i : ship_vector_) {
+		healths += (i.get_type()->get_default_durability() * i.get_type()->get_size());
 	}
 	result = get_health_sum() * 100 / healths;
 	return result;
