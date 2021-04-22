@@ -417,7 +417,7 @@ int main(int argc, char* argv[]) {
 					return -277716;
 				}
 
-				switch (playable_fleet) //удаляем ненужные корабли
+				switch (playable_fleet) //was comment
 				{
 				case false:
 					for (int i = 0; i < fleet_1.get_ship_vector().size();) {
