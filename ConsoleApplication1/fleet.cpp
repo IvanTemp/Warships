@@ -417,6 +417,7 @@ int Fleet::play_shipsweeper() {
 
 	if (y > width_height - 1 || y < 0) {
 		std::cout << "Captain! Out of bounds!" << std::endl;
+		system("pause");
 		return -1;
 	}
 
@@ -425,6 +426,7 @@ int Fleet::play_shipsweeper() {
 	if (x > width_height - 1 || x < 0)
 	{
 		std::cout << "Captain! Out of bounds!" << std::endl;
+		system("pause");
 		return -1;
 	}
 
@@ -444,12 +446,17 @@ int Fleet::play_shipsweeper() {
 		}
 	}
 	else if (action == "place_mark" || action == "p") {
-		if (!field_id_[x][y].second) {
-			field_id_[x][y].second = 1;
-			std::cout << "Placed!" << std::endl;
+		if (count_remaining_markers_shipsweeper()) {
+			if (!field_id_[x][y].second) {
+				field_id_[x][y].second = 1;
+				std::cout << "Placed!" << std::endl;
+			}
+			else {
+				std::cout << "The mark is already there!" << std::endl;
+			}
 		}
 		else {
-			std::cout << "The mark is already there!" << std::endl;
+			std::cout << "You have no marks!" << std::endl;
 		}
 		system("pause");
 		if constexpr (!DEBUG_MODE) system("cls");
@@ -1200,7 +1207,8 @@ void Fleet::output_field_final(const Fleet& fleet2)const //Передаём то
 	{
 		std::cout << "\t";
 	}
-	std::cout << " Side: " << fleet2.name_ << "[" << fleet2.get_health_in_perc() << "%]" << std::endl;
+	if (width_height <= 10) std::cout << " ";
+	std::cout << "Side: " << fleet2.name_ << "[" << fleet2.get_health_in_perc() << "%]" << std::endl;
 
 	//Chars
 	std::cout << "\t    ";

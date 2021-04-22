@@ -537,7 +537,7 @@ int main(int argc, char* argv[]) {
 			//ещё одна кастомка, которую один из кодеров(всё ещё не Ваня) сделал со скуки
 			//по задумке это должен был быть PvE, но кому-то(и тут не Ваня) было лень писать ИИ под это
 			if constexpr (!DEBUG_MODE) system("cls");
-			std::cout << "PvP Mode, But It's Minesweeper" << std::endl;
+			std::cout << "Warships, But It's Minesweeper" << std::endl;
 			system("pause");
 			if constexpr (!DEBUG_MODE) system("cls");
 
@@ -620,7 +620,7 @@ int main(int argc, char* argv[]) {
 	}
 
 	//Issuance of achievements after the game
-	if (arcade_game_number != "344460") {
+	if (arcade_game_number != "344460" && arcade_game_number != "354735") {
 		if (fleet_1.get_health_sum() > fleet_2.get_health_sum()) {
 			std::cout << "=====" << fleet_1.get_name() << " won!" << "=====" << std::endl;
 			if (battle_mode == "pve" && difficulty < 2 && ironman) {
