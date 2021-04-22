@@ -155,10 +155,10 @@ int main(int argc, char* argv[]) {
 	std::string battle_mode;
 	while (true)
 	{
-		std::cout << "Select game mode: \n-PvP\n-PvE\n-Arcade Games\n\n";
+		std::cout << "Select game mode: \n-PvP\n-PvE\n-Arcade\n\n";
 		std::cin >> battle_mode;
 		ha_you_are_small_now(battle_mode);
-		if (battle_mode == "pve" || battle_mode == "e" || battle_mode == "pvp" || battle_mode == "p" || battle_mode == "arcade games" || battle_mode == "a")
+		if (battle_mode == "pve" || battle_mode == "e" || battle_mode == "pvp" || battle_mode == "p" || battle_mode == "arcade" || battle_mode == "a")
 		{
 			break;
 		}
@@ -280,18 +280,18 @@ int main(int argc, char* argv[]) {
 				}
 			}
 	}
-	else if (battle_mode == "arcade games" || battle_mode == "a") {
+	else if (battle_mode == "arcade" || battle_mode == "a") {
 		while (true)
 		{
 			if constexpr (!DEBUG_MODE) { system("cls"); }
 			std::cout << "Arcade games list: " << std::endl << std::endl;
-			std::cout << "1)Standard Warships - Primitive" << std::endl << std::endl;
-			std::cout << "2)Standard Warships - Impossible" << std::endl << std::endl;
+			std::cout << "1) Standard Warships - Primitive" << std::endl << std::endl;
+			std::cout << "2) Standard Warships - Impossible" << std::endl << std::endl;
 			if (achievement_array[6].second) {
-				std::cout << "344460)Nuclear finders" << std::endl << std::endl;
+				std::cout << "344460) Nuclear finders" << std::endl << std::endl;
 			}
 			if (achievement_array[7].second) {
-				std::cout << "354735)Shipsweeper" << std::endl << std::endl;
+				std::cout << "354735) Shipsweeper" << std::endl << std::endl;
 			}
 
 			if (!achievement_array[6].second && !achievement_array[7].second) {
