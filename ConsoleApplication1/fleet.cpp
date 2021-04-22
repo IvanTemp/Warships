@@ -391,7 +391,7 @@ void Fleet::damage_by_index_player_simple() {
 
 int Fleet::play_shipsweeper() {
 	std::string action;
-	std::cout << "What do you want? (Write command and coordinates)\n\n-Shoot\n-Place mark\n-Delete mark" << std::endl;
+	std::cout << "What do you want? (Write command and coordinates)\n\n-Shoot \n-Place_mark\n-Delete_mark" << std::endl;
 	std::cin >> action;
 	ha_you_are_small_now(action);
 	int x = 0, y = 0;
@@ -443,7 +443,7 @@ int Fleet::play_shipsweeper() {
 			open_cells(x, y);
 		}
 	}
-	else if (action == "place mark" || action == "p") {
+	else if (action == "place_mark" || action == "p") {
 		if (!field_id_[x][y].second) {
 			field_id_[x][y].second = 1;
 			std::cout << "Placed!" << std::endl;
@@ -455,7 +455,7 @@ int Fleet::play_shipsweeper() {
 		if constexpr (!DEBUG_MODE) system("cls");
 		return -1;
 	}
-	else if (action == "delete mark" || action == "d") {
+	else if (action == "delete_mark" || action == "d") {
 		if (field_id_[x][y].second) {
 			field_id_[x][y].second = 0;
 			std::cout << "Deleted!" << std::endl;
