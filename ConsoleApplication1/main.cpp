@@ -125,15 +125,15 @@ int main(int argc, char* argv[]) {
 	}
 	/////////////////
 
-	//Achievements
-	std::vector <std::pair<std::string, bool>> achievement_array = read_achievements();
-	output_achievement_info(achievement_array);
-	//////////////
-
 	if (fleet_1 != fleet_2) {
-		std::cout << "Imbalance! Ironman mode is disabled." << std::endl << std::endl;
+		std::cout << "Imbalance! Achievements are disabled." << std::endl << std::endl;
 		ironman = false;
 	}
+
+	//Achievements
+	std::vector <std::pair<std::string, bool>> achievement_array = read_achievements();
+	if (ironman) output_achievement_info(achievement_array);
+	//////////////
 
 	std::cout << "Start game?\n";
 	system("pause");
