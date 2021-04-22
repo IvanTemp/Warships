@@ -171,6 +171,9 @@ void Fleet::damage_by_index_bot(Ship sheep, int difficulty) { //sheep - who is a
 			bot_memory.emplace_back(std::make_pair(x, y));
 		}
 	}
+	else {
+		std::cout << "Miss!" << std::endl;
+	}
 	field_get_vision(x, y);
 }
 
@@ -196,7 +199,7 @@ void Fleet::damage_by_index_bot_primitive() {
 }
 
 void Fleet::ai(const int current_ship_id, const int difficulty, Fleet& fleet_of_player) {
-	//Gura AI(not copyrighted) Reborn v1.13
+	//Gura AI(not copyrighted) Reborn v1.13.1
 	srand(time(nullptr));
 	const std::string type = ship_vector_[current_ship_id].get_type()->get_name();
 
@@ -872,7 +875,7 @@ void Fleet::heavy_cruiser_attack_bot(const int dmg, int difficulty)
 	int x = 0, y = 0, random_x = 0, random_y = 0, attempts = 0, counter = 0, max = 0;
 
 	if (difficulty == 2) {
-		difficulty = 49;
+		difficulty = width_height * width_height;
 	}
 
 	if constexpr (DEBUG_MODE) {
@@ -917,62 +920,62 @@ void Fleet::heavy_cruiser_attack_bot(const int dmg, int difficulty)
 		if constexpr (DEBUG_MODE) { std::cout << "[HEAVY CRUISER ATTACK BOT]rand_x = " << random_x << "; rand_y = " << random_y << std::endl; }
 		if (field_id_[random_x - 1][random_y - 1].first > 1) {
 			if (ship_vector_[field_id_[random_x - 1][random_y - 1].first - 2].get_durability()[field_id_[random_x - 1][random_y - 1].second]) {
-				counter += 2;
+				counter += 3;
 			}
 		}
 		if (!field_war_[random_x - 1][random_y - 1]) counter++;
 
 		if (field_id_[random_x - 1][random_y].first > 1) {
 			if (ship_vector_[field_id_[random_x - 1][random_y].first - 2].get_durability()[field_id_[random_x - 1][random_y].second]) {
-				counter += 2;
+				counter += 3;
 			}
 		}
 		if (!field_war_[random_x - 1][random_y]) counter++;
 		if (field_id_[random_x - 1][random_y + 1].first > 1) {
 			if (ship_vector_[field_id_[random_x - 1][random_y + 1].first - 2].get_durability()[field_id_[random_x - 1][random_y + 1].second]) {
-				counter += 2;
+				counter += 3;
 			}
 		}
 		if (!field_war_[random_x - 1][random_y + 1])  counter++;
 
 		if (field_id_[random_x][random_y - 1].first > 1) {
 			if (ship_vector_[field_id_[random_x][random_y - 1].first - 2].get_durability()[field_id_[random_x][random_y - 1].second]) {
-				counter += 2;
+				counter += 3;
 			}
 		}
 		if (!field_war_[random_x][random_y - 1])  counter++;
 
 		if (field_id_[random_x][random_y].first > 1) {
 			if (ship_vector_[field_id_[random_x][random_y].first - 2].get_durability()[field_id_[random_x][random_y].second]) {
-				counter += 2;
+				counter += 3;
 			}
 		}
 		if (!field_war_[random_x][random_y]) counter++;
 
 		if (field_id_[random_x][random_y + 1].first > 1) {
 			if (ship_vector_[field_id_[random_x][random_y + 1].first - 2].get_durability()[field_id_[random_x][random_y + 1].second]) {
-				counter += 2;
+				counter += 3;
 			}
 		}
 		if (!field_war_[random_x][random_y + 1]) counter++;
 
 		if (field_id_[random_x + 1][random_y - 1].first > 1) {
 			if (ship_vector_[field_id_[random_x + 1][random_y - 1].first - 2].get_durability()[field_id_[random_x + 1][random_y - 1].second]) {
-				counter += 2;
+				counter += 3;
 			}
 		}
 		if (!field_war_[random_x + 1][random_y - 1]) counter++;
 
 		if (field_id_[random_x + 1][random_y].first > 1) {
 			if (ship_vector_[field_id_[random_x + 1][random_y].first - 2].get_durability()[field_id_[random_x + 1][random_y].second]) {
-				counter += 2;
+				counter += 3;
 			}
 		}
 		if (!field_war_[random_x + 1][random_y]) counter++;
 
 		if (field_id_[random_x + 1][random_y + 1].first > 1) {
 			if (ship_vector_[field_id_[random_x + 1][random_y + 1].first - 2].get_durability()[field_id_[random_x + 1][random_y + 1].second]) {
-				counter += 2;
+				counter += 3;
 			}
 		}
 		if (!field_war_[random_x + 1][random_y + 1]) counter++;
