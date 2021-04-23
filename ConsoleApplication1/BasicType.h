@@ -10,4 +10,7 @@ public:
 	virtual std::string get_name()const = 0;
 	virtual int get_default_durability()const = 0;
 	virtual ~BasicType() {};
+
+	//added
+	virtual void print_commands()const = 0;
 };

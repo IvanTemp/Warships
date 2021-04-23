@@ -1786,9 +1786,9 @@ void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 		{
 			if (ship_vector_[current_ship_id].get_durability_sum())
 			{
+				ship_vector_[current_ship_id].get_type()->print_commands();
 				if (ship_vector_[current_ship_id].get_type()->get_size() == 1)
 				{
-					std::cout << "-Shoot\n-Move\n" << std::endl;
 					std::cin >> action;
 					ha_you_are_small_now(action);
 					if (action == "shoot" || action == "s")
@@ -1809,7 +1809,6 @@ void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 				}
 				if (ship_vector_[current_ship_id].get_type()->get_size() == 2)
 				{
-					std::cout << "-Shoot\n-Repair\n" << std::endl;
 					std::cin >> action;
 					ha_you_are_small_now(action);
 					if (action == "shoot" || action == "s")
@@ -1830,7 +1829,6 @@ void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 				}
 				if (ship_vector_[current_ship_id].get_type()->get_size() == 3)
 				{
-					std::cout << "-Shoot (3x3)\n" << std::endl;
 					std::cin >> action;
 					ha_you_are_small_now(action);
 					if (action == "shoot" || action == "s")
@@ -1845,7 +1843,6 @@ void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 				}
 				if (ship_vector_[current_ship_id].get_type()->get_size() == 4)
 				{
-					std::cout << "-1x3 (Vert)\n-3x1 (Horiz)\n" << std::endl;
 					whom.aircraft_attack_player(ship_vector_[current_ship_id].get_type()->get_damage_value());
 					break;
 				}

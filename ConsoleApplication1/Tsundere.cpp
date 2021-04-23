@@ -24,3 +24,8 @@ int Tsundere::get_default_durability() const
 {
 	return default_durability_;
 }
+
+void Tsundere::print_commands() const
+{
+	std::cout << "-Shoot\n-Repair\n" << std::endl;
+}

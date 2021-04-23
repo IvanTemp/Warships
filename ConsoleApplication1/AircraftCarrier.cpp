@@ -25,3 +25,8 @@ int AircraftCarrier::get_default_durability() const
 {
 	return default_durability_;
 }
+
+void AircraftCarrier::print_commands() const
+{
+	std::cout << "-1x3 (Vert)\n-3x1 (Horiz)\n" << std::endl;
+}

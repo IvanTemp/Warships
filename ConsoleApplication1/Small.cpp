@@ -24,3 +24,8 @@ int Small::get_default_durability() const
 {
 	return default_durability_;
 }
+
+void Small::print_commands() const
+{
+	std::cout << "-Shoot\n-Move\n" << std::endl;
+}

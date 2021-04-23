@@ -24,3 +24,8 @@ int HeavyCruiser::get_default_durability() const
 {
 	return default_durability_;
 }
+
+void HeavyCruiser::print_commands() const
+{
+	std::cout << "-Shoot (3x3)\n" << std::endl;
+}
