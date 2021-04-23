@@ -29,3 +29,8 @@ void Tsundere::print_commands() const
 {
 	std::cout << "-Shoot\n-Repair\n" << std::endl;
 }
+
+std::string Tsundere::get_description() const
+{
+	return "This ship have a tools for repairing, which means it can repair yourself!";
+}

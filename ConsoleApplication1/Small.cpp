@@ -29,3 +29,8 @@ void Small::print_commands() const
 {
 	std::cout << "-Shoot\n-Move\n" << std::endl;
 }
+
+std::string Small::get_description() const
+{
+	return "This small ship is small, which means it can move in other cells";
+}

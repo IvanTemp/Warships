@@ -29,3 +29,8 @@ void HeavyCruiser::print_commands() const
 {
 	std::cout << "-Shoot (3x3)\n" << std::endl;
 }
+
+std::string HeavyCruiser::get_description() const
+{
+	return "This ship have 3 installations of 3 low-callibre cannons, which mean it can shoot 9 cells square";
+}

@@ -1777,7 +1777,7 @@ void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 	const std::pair <int, int> coordinates = find_ship_and_return_x_y_vector(current_ship_id + 2)[0];
 	std::cout << "Your fleet have:\t" << get_health_sum() << " health points" << std::endl; 
 	std::cout << "Current position: \t" << int_to_letter(coordinates.first) << " " << coordinates.second << std::endl;
-	std::cout << "Current type: \t\t" << ship_vector_[current_ship_id].get_type()->get_name() << std::endl << std::endl;
+	std::cout << "Current type: \t\t" << ship_vector_[current_ship_id].get_type()->get_name() << ": " << ship_vector_[current_ship_id].get_type()->get_description() << std::endl << std::endl;
 	std::cout << "What do you want? (Write command and coordinates)\n\n";
 	std::string action;
 	while (true)

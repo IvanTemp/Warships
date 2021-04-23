@@ -13,4 +13,5 @@ public:
 
 	//added
 	virtual void print_commands()const = 0;
+	virtual std::string get_description()const = 0;
 };

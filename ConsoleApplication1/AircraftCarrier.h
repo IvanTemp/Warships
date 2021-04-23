@@ -17,6 +17,7 @@ public:
 
 	//added
 	virtual void print_commands()const override;
+	virtual std::string get_description()const override;
 private:
 	const int size_ = 4;
 	std::string name_ = "Aircraft Carrier";
