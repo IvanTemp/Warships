@@ -77,15 +77,6 @@ bool Fleet::get_side()const {
 
 Ship Fleet::get_ship_by_index(const int id)const {
 	return ship_vector_.at(id);
-	//try
-	//{
-	//	return ship_vector_.at(index);
-	//}
-	//catch (std::out_of_range)
-	//{
-	//	std::cout << "Index out of range" << std::endl;
-	//	throw;
-	//}
 }
 
 void Fleet::damage_by_index_bot(Ship sheep, int difficulty) { //sheep - who is attack

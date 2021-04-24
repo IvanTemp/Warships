@@ -143,10 +143,10 @@ int main(int argc, char* argv[]) {
 	std::string battle_mode;
 	while (true)
 	{
-		std::cout << "Select game mode: \n-PvP\n-PvE\n-Arcade\n\n";
+		std::cout << "Select game mode: \n1) PvP\n2) PvE\n3) Arcade\n\n";
 		std::cin >> battle_mode;
 		ha_you_are_small_now(battle_mode);
-		if (battle_mode == "pve" || battle_mode == "e" || battle_mode == "pvp" || battle_mode == "p" || battle_mode == "arcade" || battle_mode == "a")
+		if (battle_mode == "pve" || battle_mode == "e" || battle_mode == "pvp" || battle_mode == "p" || battle_mode == "arcade" || battle_mode == "a" || battle_mode == "1" || battle_mode == "2" || battle_mode == "3")
 		{
 			break;
 		}
@@ -159,7 +159,7 @@ int main(int argc, char* argv[]) {
 
 	int difficulty = 0, round = 0, temple = rand() % 2;
 	std::string arcade_game_number;
-	if (battle_mode == "pvp" || battle_mode == "p") { //PVP
+	if (battle_mode == "pvp" || battle_mode == "p" || battle_mode == "1") { //PVP
 		if constexpr (!DEBUG_MODE) system("cls");
 		while (fleet_1.get_health_sum() && fleet_2.get_health_sum()) {
 			switch (temple % 2) {
@@ -199,7 +199,7 @@ int main(int argc, char* argv[]) {
 			if constexpr (!DEBUG_MODE) system("cls");
 		}
 	}
-	else if (battle_mode == "pve" || battle_mode == "e") //PVE
+	else if (battle_mode == "pve" || battle_mode == "e" || battle_mode == "2") //PVE
 	{
 		while (true) {
 			if constexpr (!DEBUG_MODE) { system("cls"); }
@@ -268,25 +268,25 @@ int main(int argc, char* argv[]) {
 				}
 			}
 	}
-	else if (battle_mode == "arcade" || battle_mode == "a") {
+	else if (battle_mode == "arcade" || battle_mode == "a" || battle_mode == "3") {
 		while (true)
 		{
 			if constexpr (!DEBUG_MODE) { system("cls"); }
-			std::cout << "Arcade games list: " << std::endl << std::endl;
-			std::cout << "1) Standard Warships - Primitive" << std::endl << std::endl;
-			std::cout << "2) Standard Warships - Impossible" << std::endl << std::endl;
+			std::cout << "Arcade games list: " << std::endl;
+			std::cout << "1) Standard Warships - Primitive" << std::endl;
+			std::cout << "2) Standard Warships - Impossible" << std::endl;
 			if (achievement_array[6].second) {
-				std::cout << "344460) Nuclear finders" << std::endl << std::endl;
+				std::cout << "344460) Nuclear finders" << std::endl;
 			}
 			if (achievement_array[7].second) {
-				std::cout << "354735) Shipsweeper" << std::endl << std::endl;
+				std::cout << "354735) Shipsweeper" << std::endl;
 			}
 
 			if (!achievement_array[6].second && !achievement_array[7].second) {
-				std::cout << "and two secret arcade games.." << std::endl << std::endl;
+				std::cout << "\nand two secret arcade games.." << std::endl << std::endl;
 			}
 			else if (!achievement_array[6].second || !achievement_array[7].second) {
-				std::cout << "and one secret arcade game.." << std::endl << std::endl;
+				std::cout << "\nand one secret arcade game.." << std::endl << std::endl;
 			}
 			std::cout << "Type the mission number: ";
 			std::cin >> arcade_game_number;

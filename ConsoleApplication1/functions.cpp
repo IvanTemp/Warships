@@ -9,7 +9,7 @@ void output_achievement_info(const std::vector<std::pair<std::string, bool>>& ac
 
 	for (int i = 0; i < achievements.size(); i++) if (achievements[i].second) counter++;
 
-	std::cout << "Achievements[" << counter << "/" << achievements.size() << "]: " << std::endl;
+	std::cout << "Achievements[" << (counter * 100) / achievements.size() << "%]: " << std::endl;
 
 	for (int i = 0; i < achievements.size(); i++) {
 		std::cout << i + 1 << ")";
