@@ -4,19 +4,21 @@
 
 void output_achievement_info(const std::vector<std::pair<std::string, bool>>& achievements)
 {
-	//То, что количество не совпадает с выводимыми - не баг, а фича
 	int counter = 0;
 	int count_of_common_achievements = 6;
+
 	for (int i = 0; i < achievements.size(); i++) if (achievements[i].second) counter++;
+
 	std::cout << "Achievements[" << counter << "/" << achievements.size() << "]: " << std::endl;
-	for (int i = 0; i < count_of_common_achievements; i++) { //Common achievements
-		std::cout << i + 1 << ")" << achievements[i].first << ": ";
-		achievements[i].second ? std::cout << "Received\n" : std::cout << "Not received\n";
-	}
-	for (int i = count_of_common_achievements; i < achievements.size(); i++) {//Hidden achievements
-		if (achievements[i].second) {
-			std::cout << i + 1 << ")" << achievements[i].first << ": ";
+
+	for (int i = 0; i < achievements.size(); i++) {
+		std::cout << i + 1 << ")";
+		if (i < count_of_common_achievements) {
+			std::cout << achievements[i].first << ": ";
 			achievements[i].second ? std::cout << "Received\n" : std::cout << "Not received\n";
+		}
+		else {
+			achievements[i].second ? std::cout << achievements[i].first << ": Received\n" : std::cout << "???\n";
 		}
 	}
 	std::cout << std::endl;
