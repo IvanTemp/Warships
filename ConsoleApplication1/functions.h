@@ -19,5 +19,3 @@ int letter_to_int(const char chr);
 int difference_modulus(int first, int second);
 
 std::vector<int> first_order(const size_t count);
-
-std::string uwu();

@@ -33,9 +33,9 @@ void Fleet::read(std::istream& in)
 	getline(in, name_);
 	while(!(in.eof()))
 	{
-		Ship newShip;
-		newShip.read(in);
-		*this += newShip;
+		Ship new_ship;
+		new_ship.read(in);
+		*this += new_ship;
 	}
 	for (int i = 0; i < ship_vector_.size(); i++)
 	{
@@ -81,7 +81,7 @@ Ship Fleet::get_ship_by_index(const int id)const {
 
 void Fleet::damage_by_index_bot(Ship sheep, int difficulty) { //sheep - who is attack
 	std::vector <std::pair <int, int>> bot_memory; //BOT Repository Of Detected Cells
-	bool GwSUtPaLT = true; //Gura was still unable to plant a large tree
+	bool guras_bool = true; //Gura was still unable to plant a large tree
 	int x = 0, y = 0, attempts = 0;
 	int dmg = sheep.get_type()->get_damage_value();
 
@@ -97,7 +97,7 @@ void Fleet::damage_by_index_bot(Ship sheep, int difficulty) { //sheep - who is a
 					break;
 				}
 			}
-			GwSUtPaLT = false;
+			guras_bool = false;
 		}
 
 		if (find_undead_small_ship_id() != -1 && sheep.get_type()->get_size() == 2) {
@@ -111,7 +111,7 @@ void Fleet::damage_by_index_bot(Ship sheep, int difficulty) { //sheep - who is a
 						break;
 					}
 				}
-				GwSUtPaLT = false;
+				guras_bool = false;
 			}
 		}
 	}
@@ -125,19 +125,19 @@ void Fleet::damage_by_index_bot(Ship sheep, int difficulty) { //sheep - who is a
 
 	remember_founded_ships(bot_memory);
 
-	while (GwSUtPaLT && attempts < difficulty + 1)
+	while (guras_bool && attempts < difficulty + 1)
 	{
-		if (bot_memory.empty()) {//I)Сканируем на количество неисследованных клеток и наличие на них кораблей, подбираем наиболее подходящий(если сложность hard)
+		if (bot_memory.empty()) {//I)We scan for the number of unexplored cells and the presence of ships on them, select the most suitable one (if the difficulty is hard)
 			x = rand() % (width_height - 1);
 			y = rand() % (width_height - 1);
 			if constexpr (DEBUG_MODE) { std::cout << "[DEFAULT DAMAGE BOT]rand_x = " << x << "; rand_y = " << y << std::endl; }
-			if (field_id_[x][y].first > 1 && !field_war_[x][y]) GwSUtPaLT = false;
+			if (field_id_[x][y].first > 1 && !field_war_[x][y]) guras_bool = false;
 			attempts++;
 		}
 		else { //II)Finishing off found ships
 			x = bot_memory[rand() % bot_memory.size()].first;
 			y = bot_memory[rand() % bot_memory.size()].second;
-			GwSUtPaLT = false;
+			guras_bool = false;
 		}
 	}
 
@@ -174,7 +174,7 @@ void Fleet::damage_by_index_bot_simple() {
 			if (field_id_[x][y].first > 1) {
 				if (ship_vector_[field_id_[x][y].first - 2].get_durability()[field_id_[x][y].second]) {
 					get_damage(1, x, y);
-					//здесь должен находиться код, дающий вижион в точку, которую стрельнул бот, но зачем, а главное, зачем
+					//there should be a code that gives a vision to the point that the bot shot, but why, if the bot shoots only at the cells with ships?
 					return;
 				}
 			}
@@ -202,7 +202,7 @@ void Fleet::ai(const int current_ship_id, const int difficulty, Fleet& fleet_of_
 			if (type == "Small")
 			{
 				const std::pair <int, int> coordinates = find_ship_and_return_x_y_vector(current_ship_id + 2)[0];
-				if (!field_war_[coordinates.first][coordinates.second]) //Если корабль не обнаружен, то атакуем
+				if (!field_war_[coordinates.first][coordinates.second]) //If the ship is not found, then we attack
 				{
 					fleet_of_player.damage_by_index_bot(ship_vector_[current_ship_id], difficulty);
 				}
@@ -215,7 +215,7 @@ void Fleet::ai(const int current_ship_id, const int difficulty, Fleet& fleet_of_
 						for (int x = coordinates.first - 1; x < coordinates.first + 2; x++)
 						{
 							if (x >= 0 && x < width_height && y >= 0 && y < width_height) {
-								if (area_is_clear(x, y) && !field_war_[x][y]) //Если клетка пустая и неизведанная
+								if (area_is_clear(x, y) && !field_war_[x][y]) //If the cell is emptyand unexplored
 								{
 									possible_coordinates.emplace_back(std::make_pair(x, y));
 								}
@@ -233,7 +233,7 @@ void Fleet::ai(const int current_ship_id, const int difficulty, Fleet& fleet_of_
 					}
 					else {
 						field_id_[coordinates.first][coordinates.second].first = current_ship_id + 2;
-						fleet_of_player.damage_by_index_bot(ship_vector_[current_ship_id], difficulty); //если некуда переплыть
+						fleet_of_player.damage_by_index_bot(ship_vector_[current_ship_id], difficulty); //if there is nowhere to swim
 					}
 				}
 			}
@@ -641,7 +641,7 @@ void Fleet::aircraft_attack_player(const int dmg)
 void Fleet::aircraft_attack_bot(const int dmg, int difficulty)
 {
 	std::vector <std::pair <int, int>> bot_memory; //BOT Repository Of Detected Cells
-	bool GwSUtPaLT = true; //Gura was still unable to plant a large tree
+	bool guras_bool = true; //Gura was still unable to plant a large tree
 	int x = 0, y = 0, random_x = 0, random_y = 0, attempts = 0, counter = 0, max = 0;
 	bool angle = rand() % 2;
 
@@ -658,9 +658,9 @@ void Fleet::aircraft_attack_bot(const int dmg, int difficulty)
 		}
 	}
 
-	while (GwSUtPaLT && attempts <= difficulty)
+	while (guras_bool && attempts <= difficulty)
 	{
-		if (bot_memory.empty()) {//I)Сканируем на количество неисследованных клеток и наличие на них кораблей, подбираем наиболее подходящий(если сложность hard)
+		if (bot_memory.empty()) {//I)We scan for the number of unexplored cellsand the presence of ships on them, select the most suitable one(if the difficulty is hard)
 			counter = 0;
 			random_x = rand() % width_height;
 			random_y = rand() % width_height;
@@ -692,11 +692,11 @@ void Fleet::aircraft_attack_bot(const int dmg, int difficulty)
 				y = random_y;
 			}
 			if (max == 3) {
-				GwSUtPaLT = false;
+				guras_bool = false;
 			}
 			attempts++;
 		}
-		else { //II)Finishing off found ships + выравнивание
+		else { //II)Finishing off found ships + alignment
 			x = bot_memory[rand() % bot_memory.size()].first;
 			y = bot_memory[rand() % bot_memory.size()].second;
 			bot_memory.clear();
@@ -708,9 +708,9 @@ void Fleet::aircraft_attack_bot(const int dmg, int difficulty)
 				if (!y) y++;
 				else if (y == width_height - 1) y--;
 			}
-			GwSUtPaLT = false;
+			guras_bool = false;
 		}
-		if (field_id_[x][y].first > 1) { //III)Попытка задеть как можно больше клеток
+		if (field_id_[x][y].first > 1) { //III)Trying to hit as many cells as possible
 			if (field_id_[x - 1][y].first > 1 && x - 1 > 0) {
 				angle = true;
 				x--;
@@ -861,7 +861,7 @@ void Fleet::heavy_cruiser_attack_player(const int dmg)
 void Fleet::heavy_cruiser_attack_bot(const int dmg, int difficulty)
 {
 	std::vector <std::pair <int, int>> bot_memory; //BOT Repository Of Detected Cells
-	bool GwSUtPaLT = true, //Gura was still unable to plant a large tree
+	bool guras_bool = true, //Gura was still unable to plant a large tree
 		nice_coords_from_memory = false;
 	int x = 0, y = 0, random_x = 0, random_y = 0, attempts = 0, counter = 0, max = 0;
 
@@ -899,7 +899,7 @@ void Fleet::heavy_cruiser_attack_bot(const int dmg, int difficulty)
 		}
 	}
 
-	while (GwSUtPaLT && attempts < difficulty + 1)
+	while (guras_bool && attempts < difficulty + 1)
 	{
 
 		if (nice_coords_from_memory) break;
@@ -977,7 +977,7 @@ void Fleet::heavy_cruiser_attack_bot(const int dmg, int difficulty)
 			y = random_y;
 		}
 		if (max == 18) {
-			GwSUtPaLT = false;
+			guras_bool = false;
 		}
 		attempts++;
 	}
@@ -1042,7 +1042,6 @@ Fleet& Fleet::operator-=(const Ship& shp)
 	{
 		if (i == shp)
 		{
-			//Само удаление
 			ship_vector_.erase(std::remove(ship_vector_.begin(), ship_vector_.end(), shp));
 			flag = true;
 			if constexpr (DEBUG_MODE) std::cout << "[REMOVE SHIP]One ship removed!" << std::endl;
@@ -1124,7 +1123,7 @@ void Fleet::initialize_field_final()
 }
 
 void Fleet::rebuild_fields_for_shipsweeper() {
-	//для удобства я разделил это на два разных for, просьба не пытаться переписать это
+	//for convenience I split this into two different "for", please do not try to rewrite this  -Alexey
 	for (int y = 0; y < width_height; y++) {
 		for (int x = 0; x < width_height; x++) {
 			if (field_id_[x][y].first > 1) {
@@ -1136,7 +1135,7 @@ void Fleet::rebuild_fields_for_shipsweeper() {
 	for (int y = 0; y < width_height; y++) {
 		for (int x = 0; x < width_height; x++) {
 			field_id_[x][y].second = 0;
-			field_war_[x][y] = false; //true for WH(for testing)
+			field_war_[x][y] = false;
 			if (field_id_[x][y].first == 1) {
 				field_id_[x][y].first = area_is_clear_shipsweeper(x, y); //number
 			}
@@ -1189,7 +1188,7 @@ void Fleet::open_cells(const int x, const int y) {
 	}
 }
 
-void Fleet::output_field_final(const Fleet& fleet2)const //Передаём только вражеский флот, призываем через текущий
+void Fleet::output_field_final(const Fleet& fleet2)const //We transfer only the enemy fleet, we call through the current!
 {
 	std::string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	std::cout << "\t";
@@ -1265,7 +1264,7 @@ void Fleet::output_field_final(const Fleet& fleet2)const //Передаём то
 	std::cout << std::endl;
 }
 
-void Fleet::output_field_final_shipsweeper(const Fleet& fleet2)const //Передаём только вражеский флот, призываем через текущий
+void Fleet::output_field_final_shipsweeper(const Fleet& fleet2)const //We transfer only the enemy fleet, we call through the current
 {
 	std::string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	std::cout << "\tSide: " << name_ << "\t";
@@ -1364,7 +1363,7 @@ void Fleet::output_field_final_shipsweeper(const Fleet& fleet2)const //Пере�
 
 void Fleet::output_field_id()const
 {
-	//DEBUG FUNC
+	//DEBUG FUNCTION
 	std::cout << "id[" << side_ << "](NOT FOR USER): \n\n";
 	for (int y = 0; y < width_height; y++)
 	{
@@ -1380,7 +1379,7 @@ void Fleet::output_field_id()const
 
 void Fleet::output_field_index()const
 {
-	//DEBUG FUNC
+	//DEBUG FUNCTION
 	std::cout << "index[" << side_ << "](NOT FOR USER): \n\n";
 	for (int y = 0; y < width_height; y++)
 	{
@@ -1396,7 +1395,7 @@ void Fleet::output_field_index()const
 
 void Fleet::output_field_war()const
 {
-	//DEBUG FUNC
+	//DEBUG FUNCTION
 	std::cout << "War[" << side_ << "](NOT FOR USER): \n\n";
 	for (int y = 0; y < width_height; y++)
 	{
@@ -2015,6 +2014,9 @@ void Fleet::small_move_player(const std::pair<int, int>& start, const int& index
 			}
 		}
 
+		char_x = std::toupper(char_x);
+		x = letter_to_int(char_x);
+
 		if constexpr (DEBUG_MODE) std::cout << "[SMALL MOVE PLAYER]X = " << x << "; Y = " << y << std::endl;
 
 		if (not_idiot) y = letter_to_int(std::toupper(str_y[0]));
@@ -2028,8 +2030,7 @@ void Fleet::small_move_player(const std::pair<int, int>& start, const int& index
 			std::cout << "Write coordinates: ";
 			continue;
 		}
-		char_x = std::toupper(char_x);
-		x = letter_to_int(char_x);
+
 		if (x > width_height - 1 || x < 0)
 		{
 			std::cout << "Captain! Are you trying to steer the ship out of the battlefield?" << std::endl;
@@ -2101,7 +2102,7 @@ void Fleet::small_move_player(const std::pair<int, int>& start, const int& index
 						field_id_[x - 1][y - 1].first = 1;
 					}
 					field_id_[x][y - 1].first = 1;
-					if (x < width_height - 1) //тут магия (на сиде 1618667546, ссылка: https://youtu.be/6ulhygoUrJg)
+					if (x < width_height - 1) //here is magic(on the seed 1618667546, link: https://youtu.be/6ulhygoUrJg)
 					{
 						field_id_[x + 1][y - 1].first = 1;
 					}
@@ -2139,7 +2140,6 @@ void Fleet::small_move_player(const std::pair<int, int>& start, const int& index
 		}
 		else
 		{
-			//field_id_[start.first][start.second].first = index + 2;
 			std::cout << "Captain! This is not a <<Meteor>> for you, a single-decker can only move one square." << std::endl;
 			system("pause");
 			std::cout << "Write coordinates: ";

@@ -10,6 +10,7 @@
 
 
 int main(int argc, char* argv[]) {
+	//													Seed
 	switch (SEED) {
 	case 0:
 		srand(time(nullptr));
@@ -28,7 +29,9 @@ int main(int argc, char* argv[]) {
 		}
 		break;
 	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	//													Alerts
 	if constexpr (DEBUG_MODE) {
 		std::cout << "=======================" << std::endl;
 		std::cout << "WARNING! DEBUG MODE ON!" << std::endl;
@@ -48,9 +51,9 @@ int main(int argc, char* argv[]) {
 		std::cout << "Warning! You are using an experimental field size(" << width_height << ").\nPlease increase the size of the window to full or change the size of the field." << std::endl;
 		std::cout << "===============================================================================" << std::endl << std::endl;
 	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	//FLEET 1
-	
+	//													FLEET 1	
 	AircraftCarrier air1;
 	HeavyCruiser HwCrus1, HwCrus2;
 	Tsundere Tsun1, Tsun2, Tsun3;
@@ -66,8 +69,9 @@ int main(int argc, char* argv[]) {
 		{"Flaffey2", Sm2, 9},
 		{"Flaffey3", Sm3, 10},
 		{"Flaffey4", Sm4, 11} } };
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	//FLEET 2
+	//													FLEET 2
 	//We read the fleet from the file input.txt (names in the project parameters)
 	Fleet fleet_2;
 	if (argc > 1)
@@ -82,25 +86,31 @@ int main(int argc, char* argv[]) {
 			return -2;
 		}
 	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	////////
+	//											Output fleet information
 	fleet_1.print(std::cout);
 	std::cout << std::endl;
 	fleet_2.print(std::cout);
 	std::cout << std::endl;
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	//Gemu ga hajimarimasu(прим. переводчика: Игра начинается)
+	//												Field creating
 	bool ironman = true;
 	fleet_1.generate_field();
 	fleet_2.generate_field();
-	///////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	//Order
+	//												Order creating
 	std::vector <int> order = first_order(std::max(fleet_1.get_ship_vector().size(), fleet_2.get_ship_vector().size()));
-	//std::vector <int> order = { 1 };
-	///////
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	//DEBUG FUNCTIONS
+	//											  First initialization
+	fleet_1.initialize_field_final();
+	fleet_2.initialize_field_final();
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	//												DEBUG FUNCTIONS
 	if constexpr (DEBUG_MODE) {
 		std::cout << std::endl;
 		fleet_1.output_field_id();
@@ -109,10 +119,6 @@ int main(int argc, char* argv[]) {
 		fleet_2.output_field_id();
 		fleet_2.output_field_index();
 		fleet_2.output_field_war();
-		////Initialisation fields
-		fleet_1.initialize_field_final();
-		fleet_2.initialize_field_final();
-		/////////////////////////
 		std::cout << "Game Fields:" << std::endl << std::endl;
 		fleet_1.output_field_final(fleet_2);
 		fleet_2.output_field_final(fleet_1);
@@ -122,24 +128,28 @@ int main(int argc, char* argv[]) {
 		}
 		std::cout << std::endl << std::endl;
 	}
-	/////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	//											  Cheater protection
 	if (fleet_1 != fleet_2) {
 		std::cout << "Imbalance! Achievements are disabled." << std::endl << std::endl;
 		ironman = false;
 	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	//Achievements
+	//												Achievements
 	std::vector <std::pair<std::string, bool>> achievement_array = read_achievements();
 	if (ironman) output_achievement_info(achievement_array);
-	//////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	//												Game starter
 	std::cout << "Start game?\n";
 	system("pause");
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	if constexpr (!DEBUG_MODE) { system("cls"); }
 
-	//Selecting a game mode
+	//											Selecting a game mode
 	std::string battle_mode;
 	while (true)
 	{
@@ -156,10 +166,12 @@ int main(int argc, char* argv[]) {
 		system("pause");
 		if (!DEBUG_MODE) system("cls");
 	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	int difficulty = 0, round = 0, temple = rand() % 2;
 	std::string arcade_game_number;
-	if (battle_mode == "pvp" || battle_mode == "p" || battle_mode == "1") { //PVP
+	//													PVP
+	if (battle_mode == "pvp" || battle_mode == "p" || battle_mode == "1") {
 		if constexpr (!DEBUG_MODE) system("cls");
 		while (fleet_1.get_health_sum() && fleet_2.get_health_sum()) {
 			switch (temple % 2) {
@@ -199,7 +211,10 @@ int main(int argc, char* argv[]) {
 			if constexpr (!DEBUG_MODE) system("cls");
 		}
 	}
-	else if (battle_mode == "pve" || battle_mode == "e" || battle_mode == "2") //PVE
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	//													PVE
+	else if (battle_mode == "pve" || battle_mode == "e" || battle_mode == "2")
 	{
 		while (true) {
 			if constexpr (!DEBUG_MODE) { system("cls"); }
@@ -222,7 +237,7 @@ int main(int argc, char* argv[]) {
 		}
 
 			if (difficulty == 2) {
-				temple = 1; //Bot will always go first (Kappa)
+				temple = 1; //Bot will always go first
 			}
 
 			if (difficulty >= 0 && difficulty <= 2) { //0 - 2(1 - 3 for user)
@@ -268,6 +283,9 @@ int main(int argc, char* argv[]) {
 				}
 			}
 	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	//													Arcade
 	else if (battle_mode == "arcade" || battle_mode == "a" || battle_mode == "3") {
 		while (true)
 		{
@@ -292,21 +310,17 @@ int main(int argc, char* argv[]) {
 			std::cin >> arcade_game_number;
 
 			if (arcade_game_number == "1") {
-				//Стандартный морской бой - примитивный бот
+				//Standard warships - primitive bot
 				if constexpr (!DEBUG_MODE) system("cls");
 				std::cout << "Standard warships on normal difficulty." << std::endl;
 				system("pause");
 				if constexpr (!DEBUG_MODE) system("cls");
 
-				//first re-initialization
-				fleet_1.initialize_field_final();
-				fleet_2.initialize_field_final();
-
 				//Oneing durability
 				fleet_1.oneing_durability();
 				fleet_2.oneing_durability();
 
-				temple = rand() % 2; //Bot will always go first (Kappa)
+				temple = rand() % 2; //Bot will always go first
 
 				while (fleet_1.get_health_sum() && fleet_2.get_health_sum())
 				{
@@ -321,7 +335,7 @@ int main(int argc, char* argv[]) {
 						system("pause");
 						break;
 					case 1:
-						//bot
+						//Bot
 						fleet_2.initialize_field_final();
 						std::cout << fleet_2.get_name() << " turn." << std::endl << std::endl;
 						fleet_1.damage_by_index_bot_primitive();
@@ -335,7 +349,7 @@ int main(int argc, char* argv[]) {
 				break;
 			}
 			else if (arcade_game_number == "2") {
-				//Стандартный морской бой - невозможно
+				//Standard warships - impossible bot
 				if constexpr (!DEBUG_MODE) system("cls");
 				std::cout << "Standard warships on impossible difficulty." << std::endl;
 				system("pause");
@@ -379,7 +393,7 @@ int main(int argc, char* argv[]) {
 			break;
 			} 
 			else if (arcade_game_number == "344460") {
-				//кастомка, которую один из кодеров(не Ваня) сделал со скуки
+				//custom game made by one of the coders (not Vanya) out of boredom
 				//Cleaning from Aircraft Carrier
 				for (int i = 0; i < fleet_1.get_ship_vector().size();) {
 					if (fleet_1.get_ship_vector()[i].get_type()->get_size() == 4) {
@@ -405,7 +419,7 @@ int main(int argc, char* argv[]) {
 					return -277716;
 				}
 
-				switch (playable_fleet) //удаляем ненужные корабли
+				switch (playable_fleet) //removal of unnecessary ships
 				{
 				case false:
 					for (int i = 0; i < fleet_1.get_ship_vector().size();) {
@@ -445,15 +459,20 @@ int main(int argc, char* argv[]) {
 					break;
 				}
 
-				////Clearing fields
+				//		Clearing fields
 				fleet_1.clear_fields();
 				fleet_2.clear_fields();
-				////Generating fields
+				/////////////////////////////////
+
+				//		Generating fields
 				fleet_1.generate_field();
 				fleet_2.generate_field();
-				////Initialisation fields
+				/////////////////////////////////
+
+				//	Re-initialisation fields
 				fleet_1.initialize_field_final();
 				fleet_2.initialize_field_final();
+				/////////////////////////////////
 
 				switch (playable_fleet)
 				{
@@ -522,16 +541,17 @@ int main(int argc, char* argv[]) {
 				}
 			}
 			else if (arcade_game_number == "354735") {
-			//ещё одна кастомка, которую один из кодеров(всё ещё не Ваня) сделал со скуки
-			//по задумке это должен был быть PvE, но кому-то(и тут не Ваня) было лень писать ИИ под это
+			//another custom game that one of the coders (still not Vanya) made out of boredom
+			//according to the idea, it was supposed to be PvE, but someone(and not Vanya here) was too lazy to write AI for this
 			if constexpr (!DEBUG_MODE) system("cls");
 			std::cout << "Warships, But It's Minesweeper" << std::endl;
 			system("pause");
 			if constexpr (!DEBUG_MODE) system("cls");
 
-			//rebuild fields for shipsweeper
+			//	  rebuild fields for shipsweeper
 			fleet_1.rebuild_fields_for_shipsweeper();
 			fleet_2.rebuild_fields_for_shipsweeper();
+			/////////////////////////////////////////
 
 			temple = rand() % 2; //who will go first
 
@@ -598,7 +618,9 @@ int main(int argc, char* argv[]) {
 			}
 		}
 	}
-	else  // Protect from Epic Games Store users
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//									Protect from Epic Games Store users
+	else
 	{
 		if constexpr (!DEBUG_MODE) { system("cls"); }
 		std::cout << "E-error! This is inappropriate... I... What should I...?" << std::endl << std::endl;
@@ -606,6 +628,7 @@ int main(int argc, char* argv[]) {
 		system("pause");
 		if (!DEBUG_MODE) system("cls");
 	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	//Issuance of achievements after the game
 	if (arcade_game_number != "344460" && arcade_game_number != "354735") {

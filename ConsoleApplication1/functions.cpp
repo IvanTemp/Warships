@@ -27,7 +27,7 @@ void output_achievement_info(const std::vector<std::pair<std::string, bool>>& ac
 std::vector<std::pair<std::string, bool>> read_achievements()
 {
 	std::vector<std::pair<std::string, bool>> achievement_array;
-	//Place your achievements here
+	//								Place your achievements here
 	achievement_array.emplace_back(std::make_pair("Win a PVE match on Normal difficulty", 0));
 	achievement_array.emplace_back(std::make_pair("Win a PVE match on Hard difficulty", 0));
 	achievement_array.emplace_back(std::make_pair("Try to win a PVE match on Impossible difficulty", 0));
@@ -36,7 +36,7 @@ std::vector<std::pair<std::string, bool>> read_achievements()
 	achievement_array.emplace_back(std::make_pair("Try to win in Standard Warships - Impossible", 0));
 	achievement_array.emplace_back(std::make_pair("Win a mission with code 344460", 0));
 	achievement_array.emplace_back(std::make_pair("Play in Shipsweeper", 0));
-	/////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////////////
 	std::ofstream aqua(
 		achievement_file, std::ios::in | std::ios::out | std::ios::app | std::ios::binary | std::ios::ate);
 	aqua.close();
@@ -113,10 +113,4 @@ std::vector<int> first_order(const size_t count) //count - length of order
 		buleidu ? order_list.emplace_back(random_index) : i--;
 	}
 	return order_list;
-}
-
-std::string uwu()
-{
-	std::string temp = "⢕⢕⢕⢕⢕⠅⢗⢕⠕⣠⠄⣗⢕⢕⠕⢕⢕⢕⠕⢠⣿⠐⢕⢕⢕⠑⢕⢕⠵⢕\n⢕⢕⢕⢕⠁⢜⠕⢁⣴⣿⡇⢓⢕⢵⢐⢕⢕⠕⢁⣾⢿⣧⠑⢕⢕⠄⢑⢕⠅⢕\n⢕⢕⠵⢁⠔⢁⣤⣤⣶⣶⣶⡐";
-	return temp;
 }
