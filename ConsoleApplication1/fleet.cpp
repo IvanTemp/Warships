@@ -1998,7 +1998,7 @@ void Fleet::small_move_player(const std::pair<int, int>& start, const int& index
 		not_idiot = true;
 		negative = false;
 		char_x = ' ';
-		str_y = "";
+		str_y.clear();
 		std::cin >> char_x >> str_y;
 
 		if constexpr (DEBUG_MODE) std::cout << "[SMALL MOVE PLAYER]Char_X = " << char_x << "; Str_Y = " << str_y << std::endl;

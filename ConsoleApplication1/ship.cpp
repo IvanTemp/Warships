@@ -49,7 +49,7 @@ void Ship::read(std::istream& in)
 {
 	std::string temp;
 	std::getline(in, name_);
-	temp = "";
+	temp.clear();
 	std::getline(in, temp);
 	if (temp == "Aircraft Carrier") 
 	{
