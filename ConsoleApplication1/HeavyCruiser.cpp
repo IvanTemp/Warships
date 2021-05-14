@@ -1,10 +1,5 @@
 #include "HeavyCruiser.h"
 
-void HeavyCruiser::print() const
-{
-	std::cout << "Heavy Cruiser";
-}
-
 int HeavyCruiser::get_size() const
 {
 	return 3;
@@ -13,11 +8,6 @@ int HeavyCruiser::get_size() const
 int HeavyCruiser::get_damage_value() const
 {
 	return 1;
-}
-
-std::string HeavyCruiser::get_name() const
-{
-	return "Heavy Cruiser";
 }
 
 int HeavyCruiser::get_default_durability() const

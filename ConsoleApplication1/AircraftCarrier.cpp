@@ -1,10 +1,6 @@
 #include "AircraftCarrier.h"
 #include <iostream>
 
-void AircraftCarrier::print() const
-{
-	std::cout << "Aircraft Carrier";
-}
 
 int AircraftCarrier::get_size() const
 {
@@ -14,11 +10,6 @@ int AircraftCarrier::get_size() const
 int AircraftCarrier::get_damage_value() const
 {
 	return 4;
-}
-
-std::string AircraftCarrier::get_name() const
-{
-	return "Aircraft Carrier";
 }
 
 int AircraftCarrier::get_default_durability() const

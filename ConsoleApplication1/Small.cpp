@@ -1,10 +1,5 @@
 #include "Small.h"
 
-void Small::print() const
-{
-	std::cout << "Small";
-}
-
 int Small::get_size() const
 {
 	return 1;
@@ -13,11 +8,6 @@ int Small::get_size() const
 int Small::get_damage_value() const
 {
 	return 2;
-}
-
-std::string Small::get_name() const
-{
-	return "Small";
 }
 
 int Small::get_default_durability() const

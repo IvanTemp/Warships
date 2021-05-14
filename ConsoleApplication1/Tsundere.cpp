@@ -1,10 +1,5 @@
 #include "Tsundere.h"
 
-void Tsundere::print() const
-{
-	std::cout << "Tsundere";
-}
-
 int Tsundere::get_size() const
 {
 	return 2;
@@ -13,11 +8,6 @@ int Tsundere::get_size() const
 int Tsundere::get_damage_value() const
 {
 	return 3;
-}
-
-std::string Tsundere::get_name() const
-{
-	return "Tsundere";
 }
 
 int Tsundere::get_default_durability() const
