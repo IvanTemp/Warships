@@ -3,27 +3,27 @@
 
 void AircraftCarrier::print() const
 {
-	std::cout << name_;
+	std::cout << "Aircraft Carrier";
 }
 
 int AircraftCarrier::get_size() const
 {
-	return size_;
+	return 4;
 }
 
 int AircraftCarrier::get_damage_value() const
 {
-	return damage_;
+	return 4;
 }
 
 std::string AircraftCarrier::get_name() const
 {
-	return name_;
+	return "Aircraft Carrier";
 }
 
 int AircraftCarrier::get_default_durability() const
 {
-	return default_durability_;
+	return 5;
 }
 
 void AircraftCarrier::print_commands() const

@@ -2,27 +2,27 @@
 
 void HeavyCruiser::print() const
 {
-	std::cout << name_;
+	std::cout << "Heavy Cruiser";
 }
 
 int HeavyCruiser::get_size() const
 {
-	return size_;
+	return 3;
 }
 
 int HeavyCruiser::get_damage_value() const
 {
-	return damage_;
+	return 1;
 }
 
 std::string HeavyCruiser::get_name() const
 {
-	return name_;
+	return "Heavy Cruiser";
 }
 
 int HeavyCruiser::get_default_durability() const
 {
-	return default_durability_;
+	return 6;
 }
 
 void HeavyCruiser::print_commands() const

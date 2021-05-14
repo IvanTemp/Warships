@@ -2,27 +2,27 @@
 
 void Tsundere::print() const
 {
-	std::cout << name_;
+	std::cout << "Tsundere";
 }
 
 int Tsundere::get_size() const
 {
-	return size_;
+	return 2;
 }
 
 int Tsundere::get_damage_value() const
 {
-	return damage_;
+	return 3;
 }
 
 std::string Tsundere::get_name() const
 {
-	return name_;
+	return "Tsundere";
 }
 
 int Tsundere::get_default_durability() const
 {
-	return default_durability_;
+	return 5;
 }
 
 void Tsundere::print_commands() const

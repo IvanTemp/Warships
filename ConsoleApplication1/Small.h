@@ -16,8 +16,4 @@ public:
 	virtual std::string get_description()const override;
 
 private:
-	const int size_ = 1;
-	const std::string name_ = "Small";
-	const int default_durability_ = 3;
-	const int damage_ = 2;
 };

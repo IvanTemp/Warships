@@ -2,27 +2,27 @@
 
 void Small::print() const
 {
-	std::cout << name_;
+	std::cout << "Small";
 }
 
 int Small::get_size() const
 {
-	return size_;
+	return 1;
 }
 
 int Small::get_damage_value() const
 {
-	return damage_;
+	return 2;
 }
 
 std::string Small::get_name() const
 {
-	return name_;
+	return "Small";
 }
 
 int Small::get_default_durability() const
 {
-	return default_durability_;
+	return 3;
 }
 
 void Small::print_commands() const
