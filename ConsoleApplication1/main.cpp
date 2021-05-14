@@ -620,8 +620,7 @@ int main(int argc, char* argv[]) {
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//									Protect from Epic Games Store users
-	else
-	{
+	else {
 		if constexpr (!DEBUG_MODE) { system("cls"); }
 		std::cout << "E-error! This is inappropriate... I... What should I...?" << std::endl << std::endl;
 		std::cout << "You scared the program with your wrong input. Be careful next time." << std::endl << std::endl;

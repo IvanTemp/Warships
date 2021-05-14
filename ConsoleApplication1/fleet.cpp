@@ -15,15 +15,13 @@ Fleet::Fleet(const std::string& nm, const std::vector<Ship>& v) : name_(nm), shi
 void Fleet::print(std::ostream& out) const
 {
 	out << "=====Fleet " << name_ << "=====" << std::endl;
-	if (!ship_vector_.empty())
-	{
+	if (!ship_vector_.empty()) [[likely]] {
 		for (const auto& x : ship_vector_)
 		{
 			x.print(out);
 		}
 	}
-	else
-	{
+	else {
 		out << "Fleet is empty" << std::endl;
 	}
 }
@@ -190,12 +188,12 @@ void Fleet::damage_by_index_bot_primitive() {
 }
 
 void Fleet::ai(const int current_ship_id, const int difficulty, Fleet& fleet_of_player) {
-	//Gura AI(not copyrighted) Reborn v1.13.1
+	//Gura AI(not copyrighted) Reborn v1.13.2
 	srand(time(nullptr));
 	const std::string type = ship_vector_[current_ship_id].get_type()->get_name();
 
-	if (ship_vector_.size() > current_ship_id) {
-		if (ship_vector_[current_ship_id].get_durability_sum() || difficulty == 2) {
+	if (ship_vector_.size() > current_ship_id) [[likely]] {
+		if (ship_vector_[current_ship_id].get_durability_sum() || difficulty == 2) [[likely]] {
 			std::cout << "Bot's ship is " << type << std::endl;
 			if constexpr (DEBUG_MODE) std::cout << "[GURA AI]Current position: " << int_to_letter(find_ship_and_return_x_y_vector(current_ship_id + 2)[0].first) << find_ship_and_return_x_y_vector(current_ship_id + 2)[0].second << std::endl;
 
@@ -265,8 +263,9 @@ void Fleet::ai(const int current_ship_id, const int difficulty, Fleet& fleet_of_
 			if constexpr (!DEBUG_MODE) system("cls");
 			return;
 		}
-	} else {
-		 std::cout << "This ship disapperared, you miss this turn." << std::endl;
+	}
+	else {
+		 std::cout << "This ship disapperared, you bot this turn." << std::endl;
 		 if constexpr (!DEBUG_MODE) system("cls");
 		 return;
 	}
@@ -310,12 +309,9 @@ void Fleet::damage_by_index_player(Ship &sheep) { //sheep - who is attack
 
 	if constexpr (DEBUG_MODE) { std::cout << "[DEFAULT DAMAGE PLAYER]int X = " << x << " Y = " << y << std::endl; }
 
-	if (field_id_[x][y].first > 1)
-	{
-		if (ship_vector_[field_id_[x][y].first - 2].get_durability()[field_id_[x][y].second])
-		{
-		if (ship_vector_[field_id_[x][y].first - 2].get_type()->get_size() == 4 && sheep.get_type()->get_size() == 1)
-			{
+	if (field_id_[x][y].first > 1) {
+		if (ship_vector_[field_id_[x][y].first - 2].get_durability()[field_id_[x][y].second]) {
+		if (ship_vector_[field_id_[x][y].first - 2].get_type()->get_size() == 4 && sheep.get_type()->get_size() == 1) {
 				dmg *= 2;
 			}
 			get_damage(dmg, x, y);
@@ -359,18 +355,15 @@ void Fleet::damage_by_index_player_simple() {
 
 	char_x = std::toupper(char_x);
 	x = letter_to_int(char_x);
-	if (x > width_height - 1 || x < 0)
-	{
+	if (x > width_height - 1 || x < 0) {
 		std::cout << "Captain! You shot out of bounds!" << std::endl;
 		return;
 	}
 
 	if constexpr (DEBUG_MODE) { std::cout << "[DEFAULT DAMAGE PLAYER SIMPLE]int X = " << x << " Y = " << y << std::endl; }
 
-	if (field_id_[x][y].first > 1)
-	{
-		if (ship_vector_[field_id_[x][y].first - 2].get_durability()[field_id_[x][y].second])
-		{
+	if (field_id_[x][y].first > 1) {
+		if (ship_vector_[field_id_[x][y].first - 2].get_durability()[field_id_[x][y].second]) {
 			get_damage(1, x, y);
 		}
 		else {
@@ -434,8 +427,7 @@ int Fleet::play_shipsweeper() {
 			field_get_vision(x, y);
 			return -1;
 		}
-		else
-		{
+		else {
 			open_cells(x, y);
 		}
 	}
@@ -535,8 +527,7 @@ void Fleet::aircraft_attack_player(const int dmg)
 			angle = 1;
 			break;
 		}
-		else
-		{
+		else {
 			std::cout << "Wrong command\n";
 		}
 	}
@@ -596,20 +587,17 @@ void Fleet::aircraft_attack_player(const int dmg)
 				{
 					get_damage(dmg, x, y);
 				}
-				else
-				{
+				else {
 					std::cout << "Why did you shoot at an already sunk ship?" << std::endl;
 				}
 			}
-			else
-			{
+			else {
 				std::cout << "Miss!" << std::endl;
 			}
 			field_get_vision(x, y);
 		}
 	}
-	else
-	{
+	else {
 		y--;
 		int temp_y = y + 3;
 		for (y; y < temp_y; y++) {
@@ -624,13 +612,11 @@ void Fleet::aircraft_attack_player(const int dmg)
 				{
 					get_damage(dmg, x, y);
 				}
-				else
-				{
+				else {
 					std::cout << "Why did you shoot at an already sunk ship?" << std::endl;
 				}
 			}
-			else
-			{
+			else {
 				std::cout << "Miss!" << std::endl;
 			}
 			field_get_vision(x, y);
@@ -758,8 +744,7 @@ void Fleet::aircraft_attack_bot(const int dmg, int difficulty)
 					bot_memory.emplace_back(std::make_pair(x, y));
 				}
 			}
-			else
-			{
+			else {
 				std::cout << "Miss!" << std::endl;
 			}
 			field_get_vision(x, y);
@@ -778,8 +763,7 @@ void Fleet::aircraft_attack_bot(const int dmg, int difficulty)
 					bot_memory.emplace_back(std::make_pair(x, y));
 				}
 			}
-			else
-			{
+			else {
 				std::cout << "Miss!" << std::endl;
 			}
 			field_get_vision(x, y);
@@ -839,19 +823,16 @@ void Fleet::heavy_cruiser_attack_player(const int dmg)
 					{
 						get_damage(dmg, x, y);
 					}
-					else
-					{
+					else {
 						std::cout << "Why did you shoot at an already sunk ship?" << std::endl;
 					}
 				}
-				else
-				{
+				else {
 					std::cout << "Miss!" << std::endl;
 				}
 				field_get_vision(x, y);
 			}
-			else
-			{
+			else {
 				std::cout << "Captain! You shot out of bounds!" << std::endl;
 			}
 		}
@@ -998,8 +979,7 @@ void Fleet::heavy_cruiser_attack_bot(const int dmg, int difficulty)
 					bot_memory.emplace_back(std::make_pair(x, y));
 				}
 			}
-			else
-			{
+			else {
 				std::cout << "Miss!" << std::endl;
 			}
 			field_get_vision(x, y);
@@ -1114,8 +1094,7 @@ void Fleet::initialize_field_final()
 			{
 				field_final_[x][y] = "X";
 			}
-			else
-			{
+			else {
 				field_final_[x][y] = " ";
 			}
 		}
@@ -1252,10 +1231,11 @@ void Fleet::output_field_final(const Fleet& fleet2)const //We transfer only the 
 			if (fleet2.field_war_[x][y])
 			{
 				if (fleet2.field_id_[x][y].first > 1) { std::cout << fleet2.field_final_[x][y] << "|"; }
-				else { std::cout << " |"; }
+				else {
+					std::cout << " |";
+				}
 			}
-			else
-			{
+			else {
 				std::cout << "#" << "|";
 			}
 		}
@@ -1526,8 +1506,7 @@ void Fleet::generate_field() {
 							breaks_in = false;
 						}
 					}
-					else
-					{
+					else {
 						if (y - length < 0)
 						{
 							breaks_in = false;
@@ -1627,8 +1606,7 @@ void Fleet::generate_field() {
 					stop = true;
 				}
 			}
-			else
-			{
+			else {
 				//horizontal
 				if (length > 1)
 				{
@@ -1640,8 +1618,7 @@ void Fleet::generate_field() {
 							breaks_in = false;
 						}
 					}
-					else
-					{
+					else {
 						if (x - length < 0)
 						{
 							breaks_in = false;
@@ -1837,16 +1814,14 @@ void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id)
 					break;
 				}
 			}
-			else
-			{
+			else {
 				std::cout << "This ship is sunk, you miss this turn." << std::endl;
 				system("pause");
 				if constexpr (!DEBUG_MODE) system("cls");
 				return;
 			}
 		} 
-		else 
-		{
+		else {
 			std::cout << "This ship sank, you miss this turn." << std::endl;
 			system("pause");
 			if constexpr (!DEBUG_MODE) system("cls");
@@ -2130,16 +2105,14 @@ void Fleet::small_move_player(const std::pair<int, int>& start, const int& index
 
 				field_id_[x][y].first = index + 2;
 			}
-			else
-			{
+			else {
 				field_id_[start.first][start.second].first = index + 2;
 				std::cout << "Captain! This square is already taken!" << std::endl;
 				std::cout << "Write coordinates: ";
 				continue;
 			}
 		}
-		else
-		{
+		else {
 			std::cout << "Captain! This is not a <<Meteor>> for you, a single-decker can only move one square." << std::endl;
 			system("pause");
 			std::cout << "Write coordinates: ";

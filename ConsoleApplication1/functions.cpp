@@ -91,8 +91,12 @@ int letter_to_int(const char chr)
 }
 
 int difference_modulus(int first, int second) {
-	if (first - second > 0) return first - second;
-	else return second - first;
+	if (first - second > 0) {
+		return first - second;
+	}
+	else {
+		return second - first;
+	}
 }
 
 std::vector<int> first_order(const size_t count) //count - length of order

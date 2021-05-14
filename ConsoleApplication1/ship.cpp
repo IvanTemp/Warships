@@ -32,8 +32,7 @@ void Ship::print(std::ostream& out) const
 			out << type_->get_name();
 			if (type_->get_name().size() < 9) out << "\t";
 		}
-		else
-		{
+		else {
 			out << "none BasicType";
 		}
 	out << "\t";
@@ -67,8 +66,7 @@ void Ship::read(std::istream& in)
 	{
 		type_ = new Small();
 	}
-	else
-	{
+	else {
 		type_ = nullptr;
 	}
 	durability_.resize(type_->get_size());
