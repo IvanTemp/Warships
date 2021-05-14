@@ -13,6 +13,4 @@ public:
 	virtual int get_default_durability()const override;
 	virtual void print_commands()const override;
 	virtual std::string get_description()const override;
-
-private:
 };
