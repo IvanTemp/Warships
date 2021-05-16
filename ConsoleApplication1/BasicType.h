@@ -2,8 +2,7 @@
 #include <string>
 #include <iostream>
 
-class BasicType
-{
+class BasicType {
 public:
 	virtual ~BasicType() {};
 	std::string get_name() { return name_; };

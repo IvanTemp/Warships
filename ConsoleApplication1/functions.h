@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 
+
 void output_achievement_info(const std::vector <std::pair<std::string, bool>>& achievements);
 
 std::vector <std::pair<std::string, bool>> read_achievements();

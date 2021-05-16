@@ -74,8 +74,7 @@ int main(int argc, char* argv[]) {
 	//													FLEET 2
 	//We read the fleet from the file input.txt (names in the project parameters)
 	Fleet fleet_2;
-	if (argc > 1)
-	{
+	if (argc > 1) {
 		std::ifstream fin(argv[2]);
 		fleet_2.read(fin);
 		fin.close();
@@ -156,8 +155,7 @@ int main(int argc, char* argv[]) {
 		std::cout << "Select game mode: \n1) PvP\n2) PvE\n3) Arcade\n\n";
 		std::cin >> battle_mode;
 		ha_you_are_small_now(battle_mode);
-		if (battle_mode == "pve" || battle_mode == "e" || battle_mode == "pvp" || battle_mode == "p" || battle_mode == "arcade" || battle_mode == "a" || battle_mode == "1" || battle_mode == "2" || battle_mode == "3")
-		{
+		if (battle_mode == "pve" || battle_mode == "e" || battle_mode == "pvp" || battle_mode == "p" || battle_mode == "arcade" || battle_mode == "a" || battle_mode == "1" || battle_mode == "2" || battle_mode == "3") {
 			break;
 		}
 		if constexpr (!DEBUG_MODE) { system("cls"); }
@@ -214,8 +212,7 @@ int main(int argc, char* argv[]) {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	//													PVE
-	else if (battle_mode == "pve" || battle_mode == "e" || battle_mode == "2")
-	{
+	else if (battle_mode == "pve" || battle_mode == "e" || battle_mode == "2") {
 		while (true) {
 			if constexpr (!DEBUG_MODE) { system("cls"); }
 			std::cout << "Select difficulty level NUMBER: " << std::endl;
@@ -226,8 +223,8 @@ int main(int argc, char* argv[]) {
 			std::cin >> difficulty;
 			difficulty--;
 			if (difficulty >= 0 && difficulty <= 2) break;
-			else  // Protect from Epic Games Store users
-			{
+			else  {
+				//Protect from Epic Games Store users
 				if constexpr (!DEBUG_MODE) { system("cls"); }
 				std::cout << "E-error! This is inappropriate... I... What should I...?" << std::endl << std::endl;
 				std::cout << "You scared the program with your wrong input. Be careful next time." << std::endl << std::endl;
@@ -287,8 +284,7 @@ int main(int argc, char* argv[]) {
 
 	//													Arcade
 	else if (battle_mode == "arcade" || battle_mode == "a" || battle_mode == "3") {
-		while (true)
-		{
+		while (true) {
 			if constexpr (!DEBUG_MODE) { system("cls"); }
 			std::cout << "Arcade games list: " << std::endl;
 			std::cout << "1) Standard Warships - Primitive" << std::endl;
@@ -322,8 +318,7 @@ int main(int argc, char* argv[]) {
 
 				temple = rand() % 2; //Bot will always go first
 
-				while (fleet_1.get_health_sum() && fleet_2.get_health_sum())
-				{
+				while (fleet_1.get_health_sum() && fleet_2.get_health_sum()) {
 					switch (temple % 2) {
 					case 0:
 						//Player
@@ -366,8 +361,7 @@ int main(int argc, char* argv[]) {
 
 				temple = 1; //Bot will always go first (Kappa)
 
-				while (fleet_1.get_health_sum() && fleet_2.get_health_sum())
-				{
+				while (fleet_1.get_health_sum() && fleet_2.get_health_sum()) {
 					switch (temple % 2) {
 					case 0:
 						//Player
@@ -474,8 +468,7 @@ int main(int argc, char* argv[]) {
 				fleet_2.initialize_field_final();
 				/////////////////////////////////
 
-				switch (playable_fleet)
-				{
+				switch (playable_fleet) {
 				case false:
 					nuclear_id = fleet_2.find_undead_small_ship_id();
 					finder_id = fleet_1.find_undead_heavy_cruiser_ship_id();
@@ -564,8 +557,7 @@ int main(int argc, char* argv[]) {
 
 			bool bad = true;
 
-			while (!fleet_1.check_good_end_game_shipsweeper() && !fleet_2.check_good_end_game_shipsweeper() && bad)
-			{
+			while (!fleet_1.check_good_end_game_shipsweeper() && !fleet_2.check_good_end_game_shipsweeper() && bad) {
 				switch (temple % 2) {
 				case 0:
 					//Player 1
@@ -652,8 +644,7 @@ int main(int argc, char* argv[]) {
 	}
 
 	//Let's output fleets to the file output.txt (names in the project parameters)
-	if (argc > 1)
-	{
+	if (argc > 1) {
 		std::ofstream out(argv[1]);
 		fleet_1.print(out);
 		fleet_2.print(out);

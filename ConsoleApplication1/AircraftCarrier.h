@@ -3,10 +3,8 @@
 #include <string>
 #include <iostream>
 
-class AircraftCarrier :
-	public BasicType
-{
-public:
+class AircraftCarrier : public BasicType {
+ public:
 	AircraftCarrier() { set_name("Aircraft Carrier"); };
 	virtual int get_size()const override;
 	virtual int get_damage_value() const override;

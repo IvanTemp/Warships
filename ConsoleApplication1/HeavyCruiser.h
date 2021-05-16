@@ -3,10 +3,9 @@
 #include <string>
 #include <iostream>
 
-class HeavyCruiser :
-	public BasicType
-{
-public:
+
+class HeavyCruiser : public BasicType {
+ public:
 	HeavyCruiser() { set_name("Heavy Cruiser"); };
 	virtual int get_size()const override;
 	virtual int get_damage_value() const override;

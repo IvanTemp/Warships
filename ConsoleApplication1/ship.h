@@ -11,8 +11,7 @@
 #define SEED 0 //0 - Pseudo-random
 ///////////////
 
-class Ship
-{
+class Ship {
 public:
 	//				  Constructors & Destructors
 	Ship() : cid_(count_++), type_(nullptr), id_(0) {};

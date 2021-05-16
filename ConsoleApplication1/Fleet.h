@@ -3,8 +3,7 @@
 #include "functions.h"
 
 
-class Fleet
-{
+class Fleet {
 public:
 	//												 Constructors & Destructors
 	Fleet() : side_(count_++) {};
