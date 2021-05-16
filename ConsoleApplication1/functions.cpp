@@ -42,7 +42,7 @@ std::vector<std::pair<std::string, bool>> read_achievements()
 	aqua.close();
 	std::ifstream achievement_in(achievement_file);
 	std::string str;
-	getline(achievement_in, str);
+	std::getline(achievement_in, str);
 	for (int i = 0; i < str.size(); i++)
 	{
 		str[i] == '1' ? achievement_array[i].second = true : achievement_array[i].second = false;

@@ -28,7 +28,7 @@ void Fleet::print(std::ostream& out) const
 
 void Fleet::read(std::istream& in)
 {
-	getline(in, name_);
+	std::getline(in, name_);
 	while(!(in.eof()))
 	{
 		Ship new_ship;
