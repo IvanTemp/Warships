@@ -31,7 +31,7 @@ std::vector<std::pair<std::string, bool>> read_achievements() {
 	achievement_array.emplace_back(std::make_pair("Win a PVE match on Normal difficulty", 0));
 	achievement_array.emplace_back(std::make_pair("Win a PVE match on Hard difficulty", 0));
 	achievement_array.emplace_back(std::make_pair("Try to win a PVE match on Impossible difficulty", 0));
-	achievement_array.emplace_back(std::make_pair("Play in basic PVP match", 0));
+	achievement_array.emplace_back(std::make_pair("Play in standard PVP match", 0));
 	achievement_array.emplace_back(std::make_pair("Win in Standard Warships - Primitive", 0));
 	achievement_array.emplace_back(std::make_pair("Try to win in Standard Warships - Impossible", 0));
 	achievement_array.emplace_back(std::make_pair("Win nameless mission with code 344460", 0));
