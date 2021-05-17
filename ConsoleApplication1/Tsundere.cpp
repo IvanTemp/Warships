@@ -6,11 +6,11 @@ int Tsundere::get_size() const {
 }
 
 int Tsundere::get_damage_value() const {
-	return 3;
+	return 4;
 }
 
 int Tsundere::get_default_durability() const {
-	return 5;
+	return 3;
 }
 
 void Tsundere::print_commands() const {

@@ -580,7 +580,7 @@ int main(int argc, char* argv[]) {
 	std::cout << std::endl;
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	//												Field creating & initializating
+	//										Field creating & initializating
 	fleet_1.generate_field();
 	fleet_1.initialize_field_final();
 	fleet_2.generate_field();

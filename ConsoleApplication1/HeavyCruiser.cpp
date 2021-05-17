@@ -9,7 +9,7 @@ int HeavyCruiser::get_damage_value() const {
 }
 
 int HeavyCruiser::get_default_durability() const {
-	return 6;
+	return 7;
 }
 
 void HeavyCruiser::print_commands() const {
