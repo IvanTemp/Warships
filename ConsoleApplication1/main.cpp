@@ -646,7 +646,6 @@ int main(int argc, char* argv[]) {
 		system("pause");
 		if (!DEBUG_MODE) system("cls");
 	}
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	//Let's output fleets to the file output.txt (names in the project parameters)
 	if (argc > 1) {
