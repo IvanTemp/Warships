@@ -221,8 +221,8 @@ std::pair<int, bool> pve(Fleet &fleet_1, Fleet &fleet_2, std::vector<int> &order
 		if (!fleet_2.get_health_sum() || difficulty == 2) {
 			return std::make_pair(difficulty, 1);
 		}
-		return std::make_pair(difficulty, 0);
 	}
+	return std::make_pair(difficulty, 0);
 }
 
 std::pair<int, bool> arcade(Fleet &fleet_1, Fleet &fleet_2, std::vector<int> &order, std::vector <std::pair<std::string, bool>> achievement_array) {
