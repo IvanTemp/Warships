@@ -1,7 +1,7 @@
 #pragma once
 
-#include <vector>
 #include "BasicType.h"
+#include <vector>
 
 //Game settings
 #define width_height 10 //Width & height of field
