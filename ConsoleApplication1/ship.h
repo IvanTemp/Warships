@@ -4,11 +4,7 @@
 #include <vector>
 
 //Game settings
-#define width_height 10 //Width & height of field
-
 #define DEBUG_MODE 0 //0 - off; 1 - on
-
-#define SEED 0 //0 - Pseudo-random
 ///////////////
 
 class Ship {

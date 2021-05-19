@@ -107,3 +107,15 @@ std::vector<int> first_order(const size_t count) {
 	}
 	return order_list;
 }
+
+std::pair<int, int> load_settings() {
+	std::ifstream settings("settings.cfg");
+	std::string temp;
+	std::pair<int, int> config;
+	std::getline(settings, temp);
+	config.first = std::stoi(temp);
+	std::getline(settings, temp);
+	config.second = std::stoi(temp);
+	settings.close();
+	return config;
+}

@@ -108,7 +108,7 @@ private:
 
 
 	//															Fields
-	std::string field_final_[width_height][width_height]; //The field seen by the player
+	std::string field_final_[load_settings().first][width_height]; //The field seen by the player
 	std::pair<int, int> field_id_[width_height][width_height]; //The field with id_(.first) and indexes(.second) (in shipsweeper .second = field with marked cells)
 	bool field_war_[width_height][width_height]; //The field with fog of war
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

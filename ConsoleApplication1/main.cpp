@@ -9,7 +9,8 @@
 #include <iostream>
 
 void generate_seed() {//	Seed
-	switch (SEED) {
+	int seed = load_settings().second;
+	switch (seed) {
 	case 0:
 		srand(time(nullptr));
 		if constexpr (DEBUG_MODE) {
@@ -19,10 +20,10 @@ void generate_seed() {//	Seed
 		}
 		break;
 	default:
-		srand(SEED);
+		srand(seed);
 		if constexpr (DEBUG_MODE) {
 			std::cout << "======================" << std::endl;
-			std::cout << "[MAIN]Seed: " << SEED << std::endl;
+			std::cout << "[GENERATE SEED]Seed: " << seed << std::endl;
 			std::cout << "======================" << std::endl;
 		}
 		break;
@@ -36,7 +37,9 @@ void alerts() { //	  Alerts
 		std::cout << "=======================" << std::endl;
 	}
 
-	if constexpr (width_height > 26) {
+	int width_height = load_settings().first;
+
+	if (width_height > 26) {
 		std::cout << "=================================================================================================" << std::endl;
 		std::cout << "Warning! The game is not designed for such a large field size! Please limit yourself to 26 cells!" << std::endl;
 		std::cout << "=================================================================================================" << std::endl << std::endl;
@@ -44,7 +47,7 @@ void alerts() { //	  Alerts
 		exit(-26);
 	}
 
-	if constexpr (width_height != 10) {
+	if (width_height != 10) {
 		std::cout << "===============================================================================" << std::endl;
 		std::cout << "Warning! You are using an experimental field size(" << width_height << ").\nPlease increase the size of the window to full or change the size of the field." << std::endl;
 		std::cout << "===============================================================================" << std::endl << std::endl;
@@ -429,7 +432,7 @@ std::pair<int, bool> arcade(Fleet &fleet_1, Fleet &fleet_2, std::vector<int> &or
 			system("pause");
 			if constexpr (!DEBUG_MODE) system("cls");
 			bool stop = true;
-			while (stop && round < width_height) {
+			while (stop && round < load_settings().first) {
 				switch (playable_fleet) {
 				case false:
 					fleet_1.output_field_final(fleet_2);
@@ -446,7 +449,7 @@ std::pair<int, bool> arcade(Fleet &fleet_1, Fleet &fleet_2, std::vector<int> &or
 				}
 				round++;
 			}
-			if (round == width_height) {
+			if (round == load_settings().first) {
 				std::cout << "Captain! The enemy launched a nuclear missile!" << std::endl;
 				std::cout << "=====You lose!=====" << std::endl;
 				return std::make_pair(6, 0);
