@@ -225,7 +225,7 @@ std::pair<int, bool> pve(Fleet &fleet_1, Fleet &fleet_2, std::vector<int> &order
 	return std::make_pair(difficulty, 0);
 }
 
-std::pair<int, bool> arcade(Fleet &fleet_1, Fleet &fleet_2, std::vector<int> &order, std::vector <std::pair<std::string, bool>> achievement_array) {
+std::pair<int, bool> arcade(Fleet &fleet_1, Fleet &fleet_2, std::vector<int> &order, std::vector <std::pair<std::string, bool>> &achievement_array) {
 	int round = 0, temple = rand() % 2;
 	while (true) {
 		if constexpr (!DEBUG_MODE) { system("cls"); }
