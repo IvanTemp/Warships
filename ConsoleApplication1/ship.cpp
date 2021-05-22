@@ -8,9 +8,9 @@
 #include "Tsundere.h"
 #include "Small.h"
 
-Ship::Ship(const std::string& nm, const int IDen) : name_(nm), type_(nullptr) {}
+Ship::Ship(const std::string& nm) : name_(nm), type_(nullptr) {}
 
-Ship::Ship(const std::string& nm, BasicType& tp, const int IDen) : name_(nm), type_(&tp) {
+Ship::Ship(const std::string& nm, BasicType& tp) : name_(nm), type_(&tp) {
 	durability_.resize(type_->get_size());
 	std::fill(durability_.begin(), durability_.end(), type_->get_default_durability());
 }

@@ -11,8 +11,8 @@ class Ship {
 public:
 	//				  Constructors & Destructors
 	Ship() : type_(nullptr) {};
-	Ship(const std::string& name, const int id);
-	Ship(const std::string& name, BasicType& type, const int id);
+	Ship(const std::string& name);
+	Ship(const std::string& name, BasicType& type);
 	~Ship() {};
 	//////////////////////////////////////////////////////////////////
 
