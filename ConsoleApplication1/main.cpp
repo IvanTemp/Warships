@@ -57,6 +57,7 @@ void alerts() { //	  Alerts
 
 void output_debug_info(Fleet &fleet_1, Fleet &fleet_2, std::vector<int> order) {
 	std::cout << std::endl;
+	std::cout << "Width/Height: " << load_settings().first << std::endl;
 	fleet_1.output_field_id();
 	fleet_1.output_field_index();
 	fleet_1.output_field_war();

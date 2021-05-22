@@ -108,7 +108,7 @@ std::vector<int> first_order(const size_t count) {
 	return order_list;
 }
 
-std::pair<int, int> load_settings() {
+const std::pair<int, int> load_settings() {
 	std::ifstream settings("settings.cfg");
 	std::string temp;
 	std::pair<int, int> config;

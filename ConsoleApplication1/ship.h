@@ -4,13 +4,13 @@
 #include <vector>
 
 //Game settings
-#define DEBUG_MODE 0 //0 - off; 1 - on
+#define DEBUG_MODE 1 //0 - off; 1 - on
 ///////////////
 
 class Ship {
 public:
 	//				  Constructors & Destructors
-	Ship() : cid_(count_++), type_(nullptr), id_(0) {};
+	Ship() : type_(nullptr) {};
 	Ship(const std::string& name, const int id);
 	Ship(const std::string& name, BasicType& type, const int id);
 	~Ship() {};
@@ -24,20 +24,14 @@ public:
 	Ship operator-- (int); //anti repair function
 	//////////////////////////////////////////////////////////////////
 
+	//							 Set
+	void set_durability(std::vector<int>);
+
 	//							 Get
 	int get_durability_sum()const;
 	std::vector<int> get_durability()const;
 	std::string get_name()const;
-	int get_id()const;
 	BasicType* get_type()const;
-	static int get_count() { return count_; }
-	//////////////////////////////////////////////////////////////////
-
-	//							  Set
-	void set_name(const std::string& name);
-	void set_type(const BasicType* type);
-	void set_durability(const std::vector<int>& durability);
-	void set_id(const int id);
 	//////////////////////////////////////////////////////////////////
 
 	//						  Input/Output
@@ -53,9 +47,6 @@ private:
 	std::string name_;
 	std::vector<int> durability_;
 	BasicType* type_;
-	int id_;
-	static int count_;
-	const int cid_;
 };
 
 //Overloading I/O operators is only possible separately from the class

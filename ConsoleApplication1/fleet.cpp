@@ -8,9 +8,32 @@
 
 int Fleet::count_ = 0;
 
-Fleet::Fleet(const std::string& nm) :name_(nm), side_(count_++) {}
+Fleet::Fleet() : side_(count_++) {
+	resize_fields();
+}
 
-Fleet::Fleet(const std::string& nm, const std::vector<Ship>& v) : name_(nm), ship_vector_(v), side_(count_++) {}
+Fleet::Fleet(const std::string& nm) :name_(nm), side_(count_++) {
+	resize_fields();
+}
+
+Fleet::Fleet(const std::string& nm, const std::vector<Ship>& v) : name_(nm), ship_vector_(v), side_(count_++) {
+	resize_fields();
+}
+
+void Fleet::resize_fields() {
+	field_final_.resize(width_height);
+	for (int i = 0; i < field_final_.size(); i++) {
+		field_final_[i].resize(width_height);
+	}
+	field_id_.resize(width_height);
+	for (int i = 0; i < field_id_.size(); i++) {
+		field_id_[i].resize(width_height);
+	}
+	field_war_.resize(width_height);
+	for (int i = 0; i < field_war_.size(); i++) {
+		field_war_[i].resize(width_height);
+	}
+}
 
 void Fleet::print(std::ostream& out) const {
 	out << "=====Fleet " << name_ << "=====" << std::endl;
@@ -27,20 +50,11 @@ void Fleet::print(std::ostream& out) const {
 
 void Fleet::read(std::istream& in) {
 	std::getline(in, name_);
-	while(!(in.eof()))
-	{
+	while(!(in.eof())) {
 		Ship new_ship;
 		new_ship.read(in);
 		*this += new_ship;
 	}
-	for (int i = 0; i < ship_vector_.size(); i++)
-	{
-		ship_vector_[i].set_id(i + 2);
-	}
-}
-
-void Fleet::set_name(int index, const std::string nm) {
-	ship_vector_.at(index).set_name(nm);
 }
 
 std::string Fleet::get_name() const {
@@ -959,16 +973,16 @@ void Fleet::nuclear_bomb() {
 	}
 }
 
-Fleet& Fleet::operator+=(const Ship& shp) {
-	ship_vector_.push_back(shp);
+Fleet& Fleet::operator+=(const Ship& sheep) {
+	ship_vector_.push_back(sheep);
 	return *this;
 }
 
-Fleet& Fleet::operator-=(const Ship& shp) {
+Fleet& Fleet::operator-=(const Ship& sheep) {
 	bool flag = false;
 	for (auto& i : ship_vector_) {
-		if (i == shp) {
-			ship_vector_.erase(std::remove(ship_vector_.begin(), ship_vector_.end(), shp));
+		if (i == sheep) {
+			ship_vector_.erase(std::remove(ship_vector_.begin(), ship_vector_.end(), sheep));
 			flag = true;
 			if constexpr (DEBUG_MODE) std::cout << "[REMOVE SHIP]One ship removed!" << std::endl;
 		}
@@ -991,30 +1005,14 @@ bool Fleet::operator!=(const Fleet& flood) {
 	return !(*this == flood);
 }
 
-std::istream& operator>>(std::istream& in, Fleet& shp) {
-	shp.read(in);
+std::istream& operator>>(std::istream& in, Fleet& sheep) {
+	sheep.read(in);
 	return in;
 }
 
-std::ostream& operator<<(std::ostream& out, const Fleet& shp) {
-	shp.print(out);
+std::ostream& operator<<(std::ostream& out, const Fleet& sheep) {
+	sheep.print(out);
 	return out;
-}
-
-std::string Fleet::return_field_final(const unsigned& x, const unsigned& y) const {
-	return field_final_[x][y];
-}
-
-int Fleet::return_field_id(const unsigned& x, const unsigned& y)const {
-	return field_id_[x][y].first;
-}
-
-int Fleet::return_field_index(const unsigned& x, const unsigned& y)const {
-	return field_id_[x][y].second;
-}
-
-bool Fleet::return_field_war(const unsigned& x, const unsigned& y)const {
-	return field_war_[x][y];
 }
 
 void Fleet::initialize_field_final() {
@@ -1327,7 +1325,7 @@ void Fleet::generate_field() {
 		counter = 0;
 		stop = false;
 		x = 0, y = 0, rotation = 0;
-		length = ship_vector_[i].get_type()->get_size(), id = ship_vector_[i].get_id();
+		length = ship_vector_[i].get_type()->get_size(), id = i + 2;
 		breaks_in = true,
 		left_is_clear = false,
 		right_is_clear = false,

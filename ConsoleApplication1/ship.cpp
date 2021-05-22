@@ -8,18 +8,14 @@
 #include "Tsundere.h"
 #include "Small.h"
 
+Ship::Ship(const std::string& nm, const int IDen) : name_(nm), type_(nullptr) {}
 
-int Ship::count_ = 0;
-
-Ship::Ship(const std::string& nm, const int IDen) : name_(nm), id_(IDen), type_(nullptr), cid_(count_++) {}
-
-Ship::Ship(const std::string& nm, BasicType& tp, const int IDen) : name_(nm), id_(IDen), type_(&tp), cid_(count_++) {
+Ship::Ship(const std::string& nm, BasicType& tp, const int IDen) : name_(nm), type_(&tp) {
 	durability_.resize(type_->get_size());
 	std::fill(durability_.begin(), durability_.end(), type_->get_default_durability());
 }
 
 void Ship::print(std::ostream& out) const {
-	out << "[" << id_ << "]\t";
 	out << name_ << "\t";
 	if (name_.size() < 6) out << "\t";
 	out << "Type: ";
@@ -68,31 +64,19 @@ void Ship::read(std::istream& in) {
 	std::fill(durability_.begin(), durability_.end(), type_->get_default_durability());
 }
 
-void Ship::set_name(const std::string &name) {
-	name_ = name;
-}
-
 std::string Ship::get_name() const {
 	return name_;
-}
-
-void Ship::set_type(const BasicType* tp) {
-	type_ = (BasicType*)tp;
 }
 
  BasicType* Ship::get_type() const {
 	return type_;
 }
 
-void Ship::set_durability(const std::vector<int> &durability) {
-	durability_ = durability;
-}
+ void Ship::set_durability(std::vector<int> value) {
+	 durability_ = value;
+ }
 
-void Ship::set_id(const int ind) {
-	id_ = ind;
-}
-
-int Ship::get_durability_sum() const {
+ int Ship::get_durability_sum() const {
 	int sum = 0;
 	for (auto& i : durability_) {
 		sum += i;
@@ -109,12 +93,8 @@ void Ship::damage_by_index(const int dmg, const int ind) {
 	else { durability_[ind] = 0; }
 }
 
-int Ship::get_id() const {
-	return id_;
-}
-
 bool Ship::operator==(const Ship& right) const {
-	return (type_->get_size() == right.type_->get_size() && id_ == right.id_ && durability_ == right.durability_);
+	return (type_->get_size() == right.type_->get_size() && durability_ == right.durability_);
 }
 
 bool Ship::operator!=(const Ship& right) const {
