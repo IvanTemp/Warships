@@ -179,7 +179,12 @@ void Fleet::damage_by_index_bot_simple() {
 }
 
 void Fleet::damage_by_index_bot_primitive() {
-	int x = rand() % width_height, y = rand() % width_height;
+	int x = 0, y = 0;
+	while (true) {
+		x = rand() % width_height, y = rand() % width_height;
+		if (!field_war_[x][y]) break;
+	}
+
 	if (field_id_[x][y].first > 1) get_damage(1, x, y);
 	else std::cout << "Miss!" << std::endl;
 	field_get_vision(x, y);
