@@ -21,4 +21,4 @@ int difference_modulus(int first, int second);
 
 std::vector<int> first_order(const size_t count);
 
-const std::pair<int, int> load_settings();
+std::pair<int, int> load_settings();

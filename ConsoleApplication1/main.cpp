@@ -8,29 +8,7 @@
 #include <vector>
 #include <iostream>
 
-void generate_seed() {//	Seed
-	int seed = load_settings().second;
-	switch (seed) {
-	case 0:
-		srand(time(nullptr));
-		if constexpr (DEBUG_MODE) {
-			std::cout << "================" << std::endl;
-			std::cout << "Seed: " << time(nullptr) << std::endl;
-			std::cout << "================" << std::endl;
-		}
-		break;
-	default:
-		srand(seed);
-		if constexpr (DEBUG_MODE) {
-			std::cout << "======================" << std::endl;
-			std::cout << "[GENERATE SEED]Seed: " << seed << std::endl;
-			std::cout << "======================" << std::endl;
-		}
-		break;
-	}
-}
-
-void alerts() { //	  Alerts
+void alerts() {
 	if constexpr (DEBUG_MODE) {
 		std::cout << "=======================" << std::endl;
 		std::cout << "WARNING! DEBUG MODE ON!" << std::endl;
@@ -47,11 +25,41 @@ void alerts() { //	  Alerts
 		exit(-26);
 	}
 
+	if (width_height == 0) {
+		std::cout << "=============================================" << std::endl;
+		std::cout << "Why are you trying to play on an empty field?" << std::endl;
+		std::cout << "=============================================" << std::endl << std::endl;
+		system("pause");
+		exit(-5);
+	}
+
 	if (width_height != 10) {
 		std::cout << "===============================================================================" << std::endl;
 		std::cout << "Warning! You are using an experimental field size(" << width_height << ").\nPlease increase the size of the window to full or change the size of the field." << std::endl;
 		std::cout << "===============================================================================" << std::endl << std::endl;
 		system("pause");
+	}
+}
+
+void generate_seed() {
+	int seed = load_settings().second;
+	switch (seed) {
+	case 0:
+		srand(time(NULL));
+		if constexpr (DEBUG_MODE) {
+			std::cout << "================" << std::endl;
+			std::cout << "Seed: " << time(NULL) << std::endl;
+			std::cout << "================" << std::endl;
+		}
+		break;
+	default:
+		srand(seed);
+		if constexpr (DEBUG_MODE) {
+			std::cout << "======================" << std::endl;
+			std::cout << "[GENERATE SEED]Seed: " << seed << std::endl;
+			std::cout << "======================" << std::endl;
+		}
+		break;
 	}
 }
 

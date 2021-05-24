@@ -108,14 +108,73 @@ std::vector<int> first_order(const size_t count) {
 	return order_list;
 }
 
-const std::pair<int, int> load_settings() {
+std::pair<int, int> load_settings() {
 	std::ifstream settings("settings.cfg");
-	std::string temp;
-	std::pair<int, int> config;
-	std::getline(settings, temp);
-	config.first = std::stoi(temp);
-	std::getline(settings, temp);
-	config.second = std::stoi(temp);
+
+	if (settings.peek() == EOF) {
+		settings.close();
+		std::ofstream settings("settings.cfg");
+		settings << "Width&Height: 10" << std::endl;
+		settings << "Seed: 0";
+		std::cout << "==========================================" << std::endl;
+		std::cout << "settings.cfg has been created / recreated!" << std::endl;
+		std::cout << "==========================================" << std::endl;
+		return std::make_pair(10, 0);
+	}
+
+	std::string value, parameter;
+	std::pair<int, int> config = std::make_pair(0, 0);
+
+	std::getline(settings, value);
+	if (value.length() > 12) {
+		parameter = value;
+		parameter.erase(parameter.begin() + 13, parameter.end());
+		if (parameter == "Width&Height:" && value.length() != 13) {
+			value.erase(value.begin(), value.begin() + 14);
+			if (!value.empty()) {
+				config.first = std::stoi(value);
+			}
+		}
+	}
+	else {
+		std::cout << "==============================================================================" << std::endl;
+		std::cout << "Warning! Your settings file is corrupted. Program will create new settings.cfg" << std::endl;
+		std::cout << "==============================================================================" << std::endl;
+		settings.close();
+		std::ofstream settings("settings.cfg");
+		settings << "Width&Height: 10" << std::endl;
+		settings << "Seed: 0";
+		std::cout << "==========================================" << std::endl;
+		std::cout << "settings.cfg has been created / recreated!" << std::endl;
+		std::cout << "==========================================" << std::endl;
+		return std::make_pair(10, 0);
+	}
+
+	std::getline(settings, value);
+	if (value.length() > 4) {
+		parameter = value;
+		parameter.erase(parameter.begin() + 5, parameter.end());
+		if (parameter == "Seed:" && value.length() != 4) {
+			value.erase(value.begin(), value.begin() + 5);
+			if (!value.empty()) {
+				config.second = std::stoi(value);
+			}
+		}
+	}
+	else {
+		std::cout << "==============================================================================" << std::endl;
+		std::cout << "Warning! Your settings file is corrupted. Program will create new settings.cfg" << std::endl;
+		std::cout << "==============================================================================" << std::endl;
+		settings.close();
+		std::ofstream settings("settings.cfg");
+		settings << "Width&Height: 10" << std::endl;
+		settings << "Seed: 0";
+		std::cout << "==========================================" << std::endl;
+		std::cout << "settings.cfg has been created / recreated!" << std::endl;
+		std::cout << "==========================================" << std::endl;
+		return std::make_pair(10, 0);
+	}
+
 	settings.close();
 	return config;
 }
