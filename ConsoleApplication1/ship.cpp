@@ -3,6 +3,7 @@
 #include <vector>
 #include <algorithm>
 #include "Ship.h"
+#include "Leviathan.h"
 #include "AircraftCarrier.h"
 #include "HeavyCruiser.h"
 #include "Tsundere.h"
@@ -41,20 +42,19 @@ void Ship::read(std::istream& in) {
 	std::getline(in, name_);
 	temp.clear();
 	std::getline(in, temp);
-	if (temp == "Aircraft Carrier") 
-	{
+	if (temp == "Leviathan") {
+		type_ = new Leviathan();
+	}
+	else if (temp == "Aircraft Carrier")  {
 		type_ = new AircraftCarrier();
 	}
-	else if (temp == "Heavy Cruiser")
-	{
+	else if (temp == "Heavy Cruiser") {
 		type_ = new HeavyCruiser();
 	}
-	else if (temp == "Tsundere")
-	{
+	else if (temp == "Tsundere") {
 		type_ = new Tsundere();
 	}
-	else if (temp == "Small")
-	{
+	else if (temp == "Small") {
 		type_ = new Small();
 	}
 	else {

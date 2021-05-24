@@ -152,6 +152,7 @@
     <ClCompile Include="Fleet.cpp" />
     <ClCompile Include="functions.cpp" />
     <ClCompile Include="HeavyCruiser.cpp" />
+    <ClCompile Include="Leviathan.cpp" />
     <ClCompile Include="Ship.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Small.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="Fleet.h" />
     <ClInclude Include="functions.h" />
     <ClInclude Include="HeavyCruiser.h" />
+    <ClInclude Include="Leviathan.h" />
     <ClInclude Include="Ship.h" />
     <ClInclude Include="Small.h" />
     <ClInclude Include="Tsundere.h" />

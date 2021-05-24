@@ -263,6 +263,30 @@ std::pair<int, bool> arcade(Fleet &fleet_1, Fleet &fleet_2, std::vector<int> &or
 
 		if (arcade_game_number == "1" || arcade_game_number == "2") {
 			//Standard warships - primitive bots
+
+			for (int i = 0; i < fleet_1.get_ship_vector().size();) {
+				if (fleet_1.get_ship_vector()[i].get_type()->get_size() == 5) {
+					fleet_1 -= fleet_1.get_ship_vector()[i];
+				}
+				else i++;
+			}
+			for (int i = 0; i < fleet_2.get_ship_vector().size();) {
+				if (fleet_2.get_ship_vector()[i].get_type()->get_size() == 5) {
+					fleet_2 -= fleet_2.get_ship_vector()[i];
+				}
+				if (fleet_2.get_ship_by_index(i).get_type()->get_size() != 5) i++;
+			}
+
+			//		Clearing fields
+			fleet_1.clear_fields();
+			fleet_2.clear_fields();
+			/////////////////////////////////
+
+			//		Generating fields
+			fleet_1.generate_field();
+			fleet_2.generate_field();
+			/////////////////////////////////
+
 			if constexpr (!DEBUG_MODE) system("cls");
 			if (arcade_game_number == "1") {
 				temple = rand() % 2; //who will go first
@@ -324,16 +348,16 @@ std::pair<int, bool> arcade(Fleet &fleet_1, Fleet &fleet_2, std::vector<int> &or
 			//custom game made by one of the coders (not Vanya) out of boredom
 			//Cleaning from Aircraft Carrier
 			for (int i = 0; i < fleet_1.get_ship_vector().size();) {
-				if (fleet_1.get_ship_vector()[i].get_type()->get_size() == 4) {
+				if (fleet_1.get_ship_vector()[i].get_type()->get_size() == 4 || fleet_1.get_ship_vector()[i].get_type()->get_size() == 5) {
 					fleet_1 -= fleet_1.get_ship_vector()[i];
 				}
-				if (fleet_1.get_ship_by_index(i).get_type()->get_size() != 4) i++;
+				if (fleet_1.get_ship_by_index(i).get_type()->get_size() != 4 && fleet_1.get_ship_by_index(i).get_type()->get_size() != 5) i++;
 			}
 			for (int i = 0; i < fleet_2.get_ship_vector().size();) {
-				if (fleet_2.get_ship_vector()[i].get_type()->get_size() == 4) {
+				if (fleet_2.get_ship_vector()[i].get_type()->get_size() == 4 || fleet_2.get_ship_vector()[i].get_type()->get_size() == 5) {
 					fleet_2 -= fleet_2.get_ship_vector()[i];
 				}
-				if (fleet_2.get_ship_by_index(i).get_type()->get_size() != 4) i++;
+				if (fleet_2.get_ship_by_index(i).get_type()->get_size() != 4 && fleet_2.get_ship_by_index(i).get_type()->get_size() != 5) i++;
 			}
 			///////////////////////////////
 

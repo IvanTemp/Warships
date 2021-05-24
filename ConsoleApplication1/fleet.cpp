@@ -988,11 +988,27 @@ Fleet& Fleet::operator-=(const Ship& sheep) {
 }
 
 bool Fleet::operator==(const Fleet& flood) {
-	if (ship_vector_.size() != flood.ship_vector_.size()) return false;
+	std::vector<unsigned int> count1, count2;
 	for (int i = 0; i < ship_vector_.size(); i++) {
-		if (ship_vector_[i] != flood.ship_vector_[i]) return false;
+		if (ship_vector_[i].get_type()->get_size() > count1.size()) {
+			count1.resize(ship_vector_[i].get_type()->get_size());
+		}
+		count1[ship_vector_[i].get_type()->get_size() - 1]++;
 	}
-	return true;
+
+	for (int i = 0; i < flood.ship_vector_.size(); i++) {
+		if (flood.ship_vector_[i].get_type()->get_size() > count2.size()) {
+			count2.resize(flood.ship_vector_[i].get_type()->get_size());
+		}
+		count2[flood.ship_vector_[i].get_type()->get_size() - 1]++;
+	}
+
+	if (count1 == count2) {
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 
 bool Fleet::operator!=(const Fleet& flood) {
@@ -1013,7 +1029,12 @@ void Fleet::initialize_field_final() {
 	for (int y = 0; y < width_height; y++) {
 		for (int x = 0; x < width_height; x++) {
 			if (field_id_[x][y].first > 1) {
-				field_final_[x][y] = std::to_string(ship_vector_[field_id_[x][y].first - 2].get_durability()[field_id_[x][y].second]);
+				if (ship_vector_[field_id_[x][y].first - 2].get_durability()[field_id_[x][y].second] < 10) {
+					field_final_[x][y] = std::to_string(ship_vector_[field_id_[x][y].first - 2].get_durability()[field_id_[x][y].second]);
+				}
+				else {
+					field_final_[x][y] = "?";
+				}
 			}
 			else if (field_war_[x][y]) {
 				field_final_[x][y] = "X";
@@ -1631,6 +1652,13 @@ void Fleet::do_action(Fleet& whom, const unsigned& current_ship_id) {
 				}
 				if (ship_vector_[current_ship_id].get_type()->get_size() == 4) {
 					whom.aircraft_attack_player(ship_vector_[current_ship_id].get_type()->get_damage_value());
+					break;
+				}
+				if (ship_vector_[current_ship_id].get_type()->get_size() == 5) {
+					system("pause");
+					whom.nuclear_bomb();
+					if (!DEBUG_MODE) system("cls");
+					std::cout << "For just a moment, you see how a huge jet of magma erupts from the mouth of a huge monster, blowing away all the ships of the enemy." << std::endl;
 					break;
 				}
 			}
