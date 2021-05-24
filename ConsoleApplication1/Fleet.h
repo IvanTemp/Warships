@@ -79,10 +79,8 @@ public:
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 private:
-	static int count_;
 	std::string name_ = "Nameless";
 	std::vector<Ship> ship_vector_;
-	const bool side_;
 	const int width_height = load_settings().first;
 
 	void resize_fields();

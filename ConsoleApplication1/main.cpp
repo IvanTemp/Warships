@@ -553,35 +553,31 @@ int main(int argc, char* argv[]) {
 	generate_seed();
 	alerts();
 	//													FLEET 1	
-	AircraftCarrier air1;
-	HeavyCruiser HwCrus1, HwCrus2;
-	Tsundere Tsun1, Tsun2, Tsun3;
-	Small Sm1, Sm2, Sm3, Sm4;
-	Fleet fleet_1 = { "Eagle Union",{
-		{"Enterprise", air1 },
-		{"Prinz Eugene", HwCrus1 },
-		{"Atago", HwCrus2 },
-		{"FLX1", Tsun1 },
-		{"FLX2", Tsun2 },
-		{"FLX3", Tsun3 },
-		{"Flaffey1", Sm1 },
-		{"Flaffey2", Sm2 },
-		{"Flaffey3", Sm3 },
-		{"Flaffey4", Sm4 } } };
+	Fleet fleet_1;
+	if (argc > 2) {
+		std::ifstream fin(argv[2]);
+		fleet_1.read(fin);
+		fin.close();
+	}
+	else {
+		std::cout << "Warning! Connect the file with the first fleet!" << std::endl << std::endl;
+		system("pause");
+		return -2;
+	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	//													FLEET 2
 	//We read the fleet from the file input.txt (names in the project parameters)
 	Fleet fleet_2;
-	if (argc > 2) {
-		std::ifstream fin(argv[2]);
+	if (argc > 3) {
+		std::ifstream fin(argv[3]);
 		fleet_2.read(fin);
 		fin.close();
 	}
 	else {
 		std::cout << "Warning! Connect the file with the second fleet!" << std::endl << std::endl;
 		system("pause");
-		return -2;
+		return -3;
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

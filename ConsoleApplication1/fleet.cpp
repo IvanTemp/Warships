@@ -6,17 +6,15 @@
 #include <map>
 #include "Fleet.h"
 
-int Fleet::count_ = 0;
-
-Fleet::Fleet() : side_(count_++) {
+Fleet::Fleet() {
 	resize_fields();
 }
 
-Fleet::Fleet(const std::string& nm) :name_(nm), side_(count_++) {
+Fleet::Fleet(const std::string& nm) :name_(nm) {
 	resize_fields();
 }
 
-Fleet::Fleet(const std::string& nm, const std::vector<Ship>& v) : name_(nm), ship_vector_(v), side_(count_++) {
+Fleet::Fleet(const std::string& nm, const std::vector<Ship>& v) : name_(nm), ship_vector_(v) {
 	resize_fields();
 }
 
@@ -75,10 +73,6 @@ int Fleet::get_health_sum() const {
 		}
 	}
 	return hp;
-}
-
-bool Fleet::get_side()const {
-	return side_;
 }
 
 Ship Fleet::get_ship_by_index(const int id)const {
@@ -1254,7 +1248,7 @@ void Fleet::output_field_final_shipsweeper(const Fleet& fleet2)const {
 
 void Fleet::output_field_id()const {
 	//DEBUG FUNCTION
-	std::cout << "id[" << side_ << "](NOT FOR USER): \n\n";
+	std::cout << "id[" << name_ << "](NOT FOR USER): \n\n";
 	for (int y = 0; y < width_height; y++) {
 		std::cout << "         |";
 		for (int x = 0; x < width_height; x++) {
@@ -1267,7 +1261,7 @@ void Fleet::output_field_id()const {
 
 void Fleet::output_field_index()const {
 	//DEBUG FUNCTION
-	std::cout << "index[" << side_ << "](NOT FOR USER): \n\n";
+	std::cout << "index[" << name_ << "](NOT FOR USER): \n\n";
 	for (int y = 0; y < width_height; y++) {
 		std::cout << "         |";
 		for (int x = 0; x < width_height; x++) {
@@ -1280,7 +1274,7 @@ void Fleet::output_field_index()const {
 
 void Fleet::output_field_war()const {
 	//DEBUG FUNCTION
-	std::cout << "War[" << side_ << "](NOT FOR USER): \n\n";
+	std::cout << "War[" << name_ << "](NOT FOR USER): \n\n";
 	for (int y = 0; y < width_height; y++) {
 		std::cout << "         |";
 		for (int x = 0; x < width_height; x++) {
