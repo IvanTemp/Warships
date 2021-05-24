@@ -245,7 +245,7 @@ std::pair<int, bool> arcade(Fleet &fleet_1, Fleet &fleet_2, std::vector<int> &or
 		std::cout << "1) Standard Warships - Primitive" << std::endl;
 		std::cout << "2) Standard Warships - Impossible" << std::endl;
 		if (achievement_array[6].second) {
-			std::cout << "344460) Nuclear finders" << std::endl;
+			std::cout << "344460) Among They" << std::endl;
 		}
 		if (achievement_array[7].second) {
 			std::cout << "354735) Shipsweeper" << std::endl;

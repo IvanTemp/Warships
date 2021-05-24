@@ -34,7 +34,7 @@ std::vector<std::pair<std::string, bool>> read_achievements() {
 	achievement_array.emplace_back(std::make_pair("Play in standard PVP match", 0));
 	achievement_array.emplace_back(std::make_pair("Win in Standard Warships - Primitive", 0));
 	achievement_array.emplace_back(std::make_pair("Try to win in Standard Warships - Impossible", 0));
-	achievement_array.emplace_back(std::make_pair("Win nameless mission with code 344460", 0));
+	achievement_array.emplace_back(std::make_pair("Win in Among They", 0));
 	achievement_array.emplace_back(std::make_pair("Play in Shipsweeper", 0));
 	//////////////////////////////////////////////////////////////////////////////////////////////////////
 	std::ofstream aqua(
