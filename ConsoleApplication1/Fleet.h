@@ -23,7 +23,6 @@ public:
 	std::string get_name() const;
 	std::vector<Ship> get_ship_vector()const;
 	int get_health_sum()const;
-	bool get_side() const;
 	Ship get_ship_by_index(const int)const;
 	int get_health_in_perc()const;
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
