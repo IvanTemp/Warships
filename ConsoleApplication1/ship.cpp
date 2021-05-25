@@ -17,7 +17,7 @@ Ship::Ship(const std::string& nm, BasicType& tp) : name_(nm), type_(&tp) {
 }
 
 void Ship::print(std::ostream& out) const {
-	out << name_ << "\t";
+	out << name_;
 	for (int i = 16; i > name_.length(); i--) out << " ";
 	out << "Type: ";
 		if (type_ != nullptr)
@@ -29,7 +29,6 @@ void Ship::print(std::ostream& out) const {
 			out << "none BasicType";
 			for (int i = 20; i > 14; i--) out << " ";
 		}
-	out << "\t";
 	out << "Durability: ";
 	for (auto i : durability_)
 	{
