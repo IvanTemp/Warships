@@ -1583,7 +1583,7 @@ void Fleet::generate_field() {
 			counter++;
 		}
 	}
-	std::cout << name_ << " generation complete!" << std::endl << std::endl;
+	//std::cout << name_ << " generation complete!" << std::endl << std::endl;
 }
 
 void Fleet::clear_fields() {

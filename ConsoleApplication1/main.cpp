@@ -237,7 +237,7 @@ std::pair<int, bool> pve(Fleet &fleet_1, Fleet &fleet_2, std::vector<int> &order
 	return std::make_pair(difficulty, 0);
 }
 
-std::pair<int, bool> arcade(Fleet &fleet_1, Fleet &fleet_2, std::vector<int> &order, std::vector <std::pair<std::string, bool>> &achievement_array) {
+std::pair<int, bool> arcade(Fleet &fleet_1, Fleet &fleet_2, std::vector<int> &order, std::vector <std::pair<std::string, bool>> &achievement_array, bool ironman) {
 	int round = 0, temple = rand() % 2;
 	while (true) {
 		if constexpr (!DEBUG_MODE) { system("cls"); }
@@ -264,6 +264,15 @@ std::pair<int, bool> arcade(Fleet &fleet_1, Fleet &fleet_2, std::vector<int> &or
 		if (arcade_game_number == "1" || arcade_game_number == "2") {
 			//Standard warships - primitive bots
 
+			if constexpr (!DEBUG_MODE) system("cls");
+
+			if (arcade_game_number == "2" && !ironman) {
+				std::cout << "========================================================================" << std::endl;
+				std::cout << "Starting this game mode with a disturbed balance of power is impossible!" << std::endl;
+				std::cout << "========================================================================" << std::endl;
+				return std::make_pair(0, 0); //error
+			}
+
 			for (int i = 0; i < fleet_1.get_ship_vector().size();) {
 				if (fleet_1.get_ship_vector()[i].get_type()->get_size() == 5) {
 					fleet_1 -= fleet_1.get_ship_vector()[i];
@@ -288,6 +297,7 @@ std::pair<int, bool> arcade(Fleet &fleet_1, Fleet &fleet_2, std::vector<int> &or
 			/////////////////////////////////
 
 			if constexpr (!DEBUG_MODE) system("cls");
+
 			if (arcade_game_number == "1") {
 				temple = rand() % 2; //who will go first
 				std::cout << "Standard warships on normal difficulty." << std::endl;
@@ -665,7 +675,7 @@ int main(int argc, char* argv[]) {
 	}
 	else if (battle_mode == "arcade" || battle_mode == "a" || battle_mode == "3") {
 		//													Arcade
-		std::pair<int, bool> result = arcade(fleet_1, fleet_2, order, achievement_array);
+		std::pair<int, bool> result = arcade(fleet_1, fleet_2, order, achievement_array, ironman);
 		if (ironman && result.second) {
 			give_achievement(achievement_array, result.first);
 		}
