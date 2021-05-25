@@ -1,0 +1,8 @@
+FLEET_NAME
+SHIP_NAME
+TYPENAME ("Small" / "Tsundere" / "Heavy Cruiser" / "Aircraft Carrier" / "Leviathan" without quotes!)
+SHIP_NAME
+TYPENAME ("Small" / "Tsundere" / "Heavy Cruiser" / "Aircraft Carrier" / "Leviathan" without quotes!)
+SHIP_NAME
+TYPENAME ("Small" / "Tsundere" / "Heavy Cruiser" / "Aircraft Carrier" / "Leviathan" without quotes!)
+...
