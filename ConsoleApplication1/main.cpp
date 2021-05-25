@@ -267,9 +267,9 @@ std::pair<int, bool> arcade(Fleet &fleet_1, Fleet &fleet_2, std::vector<int> &or
 			if constexpr (!DEBUG_MODE) system("cls");
 
 			if (arcade_game_number == "2" && !ironman) {
-				std::cout << "========================================================================" << std::endl;
-				std::cout << "Starting this game mode with a disturbed balance of power is impossible!" << std::endl;
-				std::cout << "========================================================================" << std::endl;
+				std::cout << "==================================================================" << std::endl;
+				std::cout << "It is not possible to start this mode with the Ironman turned off!" << std::endl;
+				std::cout << "==================================================================" << std::endl;
 				return std::make_pair(0, 0); //error
 			}
 
