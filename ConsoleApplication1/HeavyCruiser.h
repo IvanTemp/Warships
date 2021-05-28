@@ -3,7 +3,6 @@
 #include <string>
 #include <iostream>
 
-
 class HeavyCruiser : public BasicType {
  public:
 	HeavyCruiser() { set_name("Heavy Cruiser"); };
