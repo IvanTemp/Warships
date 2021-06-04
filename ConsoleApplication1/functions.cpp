@@ -116,9 +116,9 @@ std::pair<int, int> load_settings() {
 		std::ofstream settings("settings.cfg");
 		settings << "Width&Height: 10" << std::endl;
 		settings << "Seed: 0";
-		std::cout << "==========================================" << std::endl;
-		std::cout << "settings.cfg has been created / recreated!" << std::endl;
-		std::cout << "==========================================" << std::endl;
+		std::cout << "==============================" << std::endl;
+		std::cout << "settings.cfg has been created!" << std::endl;
+		std::cout << "==============================" << std::endl;
 		return std::make_pair(10, 0);
 	}
 
