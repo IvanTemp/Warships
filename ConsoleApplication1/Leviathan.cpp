@@ -1,5 +1,4 @@
 ﻿#include "Leviathan.h"
-#include <iostream>
 
 
 int Leviathan::get_size() const {

@@ -1,5 +1,4 @@
 #include "AircraftCarrier.h"
-#include <iostream>
 
 
 int AircraftCarrier::get_size() const {
