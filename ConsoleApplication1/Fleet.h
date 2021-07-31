@@ -88,6 +88,7 @@ private:
 	std::vector<std::vector<bool>> field_war_; //The field with fog of war
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+protected:
 	void resize_fields();
 	void klee(const auto&);
 	bool area_is_clear(const int, const int)const;
