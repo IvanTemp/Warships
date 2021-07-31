@@ -82,6 +82,13 @@ private:
 	std::vector<Ship> ship_vector_;
 	const int width_height = load_settings().first;
 
+	//															Fields
+	std::vector<std::vector<std::string>> field_final_; //The field seen by the player
+	std::vector<std::vector<std::pair<int, int>>> field_id_; //The field with id_(.first) and indexes(.second) (in shipsweeper .second = field with marked cells)
+	std::vector<std::vector<bool>> field_war_; //The field with fog of war
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+protected:
 	void resize_fields();
 	void klee(const auto&);
 	bool area_is_clear(const int, const int)const;
@@ -100,12 +107,6 @@ private:
 	void heavy_cruiser_attack_player(const int);
 	void small_move_player(const std::pair<int, int>&, const int&);
 	int area_is_clear_shipsweeper(const int x, const int y)const;
-
-	//															Fields
-	std::vector<std::vector<std::string>> field_final_; //The field seen by the player
-	std::vector<std::vector<std::pair<int, int>>> field_id_; //The field with id_(.first) and indexes(.second) (in shipsweeper .second = field with marked cells)
-	std::vector<std::vector<bool>> field_war_; //The field with fog of war
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 };
 
 std::istream& operator>>(std::istream&, Fleet&);
