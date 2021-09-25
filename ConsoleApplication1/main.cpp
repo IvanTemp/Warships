@@ -586,7 +586,6 @@ std::pair<int, bool> arcade(Fleet &fleet_1, Fleet &fleet_2, std::vector<int> &or
 int main(int argc, char* argv[]) {
 	generate_seed();
 	alerts();
-	std::cout << argv[1] << std::endl << argv[2] << std::endl << argc << std::endl;
 	//													FLEET 1	
 	Fleet fleet_1;
 	if (argc > 1) {
