@@ -63,7 +63,7 @@ void generate_seed() {
 	}
 }
 
-void output_debug_info(Fleet &fleet_1, Fleet &fleet_2, std::vector<int> order) {
+void output_debug_info(Fleet& fleet_1, Fleet& fleet_2, std::vector<int> order) {
 	std::cout << std::endl;
 	std::cout << "Width/Height: " << load_settings().first << std::endl;
 	fleet_1.output_field_id();
@@ -100,7 +100,7 @@ std::string selecting_battle_mode() {
 	return battle_mode;
 }
 
-void pvp(Fleet &fleet_1, Fleet &fleet_2, std::vector<int> &order) {
+void pvp(Fleet& fleet_1, Fleet& fleet_2, std::vector<int>& order) {
 	int round = 0, temple = rand() % 2;
 	if constexpr (!DEBUG_MODE) system("cls");
 	while (fleet_1.get_health_sum() && fleet_2.get_health_sum()) {
@@ -152,7 +152,7 @@ void pvp(Fleet &fleet_1, Fleet &fleet_2, std::vector<int> &order) {
 	}
 }
 
-std::pair<int, bool> pve(Fleet &fleet_1, Fleet &fleet_2, std::vector<int> &order) {
+std::pair<int, bool> pve(Fleet& fleet_1, Fleet& fleet_2, std::vector<int>& order) {
 	int difficulty = 0, round = 0, temple = rand() % 2;
 	while (true) {
 		if constexpr (!DEBUG_MODE) { system("cls"); }
@@ -237,7 +237,7 @@ std::pair<int, bool> pve(Fleet &fleet_1, Fleet &fleet_2, std::vector<int> &order
 	return std::make_pair(difficulty, 0);
 }
 
-std::pair<int, bool> arcade(Fleet &fleet_1, Fleet &fleet_2, std::vector<int> &order, std::vector <std::pair<std::string, bool>> &achievement_array, bool ironman) {
+std::pair<int, bool> arcade(Fleet& fleet_1, Fleet& fleet_2, std::vector<int>& order, std::vector <std::pair<std::string, bool>>& achievement_array, bool ironman) {
 	int round = 0, temple = rand() % 2;
 	while (true) {
 		if constexpr (!DEBUG_MODE) { system("cls"); }
@@ -621,7 +621,7 @@ int main(int argc, char* argv[]) {
 	fleet_2.print(std::cout);
 	std::cout << std::endl;
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+
 	//										Field creating & initializating
 	fleet_1.generate_field();
 	fleet_1.initialize_field_final();
