@@ -6,7 +6,7 @@ int Small::get_size() const {
 }
 
 int Small::get_damage_value() const {
-	return 2;
+	return 1 + rand() % 3;
 }
 
 int Small::get_default_durability() const {

@@ -6,7 +6,7 @@ int Leviathan::get_size() const {
 }
 
 int Leviathan::get_damage_value() const {
-	return 999;
+	return rand() % 1000;
 }
 
 int Leviathan::get_default_durability() const {

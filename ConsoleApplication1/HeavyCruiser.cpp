@@ -5,7 +5,7 @@ int HeavyCruiser::get_size() const {
 }
 
 int HeavyCruiser::get_damage_value() const {
-	return 1;
+	return 1 + rand() % 2;
 }
 
 int HeavyCruiser::get_default_durability() const {
