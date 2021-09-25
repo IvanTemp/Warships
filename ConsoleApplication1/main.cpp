@@ -586,10 +586,11 @@ std::pair<int, bool> arcade(Fleet &fleet_1, Fleet &fleet_2, std::vector<int> &or
 int main(int argc, char* argv[]) {
 	generate_seed();
 	alerts();
+	std::cout << argv[1] << std::endl << argv[2] << std::endl << argc << std::endl;
 	//													FLEET 1	
 	Fleet fleet_1;
-	if (argc > 2) {
-		std::ifstream fin(argv[2]);
+	if (argc > 1) {
+		std::ifstream fin(argv[1]);
 		fleet_1.read(fin);
 		fin.close();
 	}
@@ -603,8 +604,8 @@ int main(int argc, char* argv[]) {
 	//													FLEET 2
 	//We read the fleet from the file input.txt (names in the project parameters)
 	Fleet fleet_2;
-	if (argc > 3) {
-		std::ifstream fin(argv[3]);
+	if (argc > 2) {
+		std::ifstream fin(argv[2]);
 		fleet_2.read(fin);
 		fin.close();
 	}
@@ -690,8 +691,8 @@ int main(int argc, char* argv[]) {
 	}
 
 	//Let's output fleets to the file output.txt (names in the project parameters)
-	if (argc > 1) {
-		std::ofstream out(argv[1]);
+	if (argc > 3) {
+		std::ofstream out(argv[3]);
 		fleet_1.print(out);
 		fleet_2.print(out);
 		out.close();
