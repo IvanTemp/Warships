@@ -2,9 +2,22 @@
 
 #include "BasicType.h"
 #include <vector>
+<<<<<<< HEAD
 
 //Game settings
 #define DEBUG_MODE 0 //0 - off; 1 - on
+=======
+#include "type.h"
+#include "GameInformation.h"
+
+//Game settings
+#define Aircraft_Carrier_Durability 6
+#define Heavy_Cruiser_Durability 7
+#define Tsundere_Durability 5
+#define Small_Durability 4
+
+#define achievement_file "achievements.db"
+>>>>>>> master
 ///////////////
 
 class Ship {
@@ -41,12 +54,33 @@ public:
 
 	//						  Damage ship
 	void damage_by_index(const int damage, const int index);
+<<<<<<< HEAD
 	//////////////////////////////////////////////////////////////////
+=======
+	int get_id()const;
+	bool operator == (const ship& right)const;
+	bool operator != (const ship& right)const;
+	ship& operator= (const ship& right);
+	ship operator++ (int); //repair function
+	void detonate_the_ship(const std::vector<std::pair<unsigned int, unsigned int>> coords, const bool side) const;
+	static int get_count() { return count_; }
+	void set_coordinates(const std::pair <unsigned int, unsigned int> new_coordinates);
+	std::pair <unsigned int, unsigned int> get_coordinates()const;
+	void nuclear_bomb();
+>>>>>>> master
 
 private:
 	std::string name_;
 	std::vector<int> durability_;
+<<<<<<< HEAD
 	BasicType* type_;
+=======
+	type* type_;
+	int id_;
+	static int count_;
+	const int cid_;
+	std::pair <unsigned int, unsigned int> coordinates_;
+>>>>>>> master
 };
 
 //Overloading I/O operators is only possible separately from the class

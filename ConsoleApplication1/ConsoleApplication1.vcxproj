@@ -148,24 +148,42 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <ClCompile Include="AircraftCarrier.cpp" />
     <ClCompile Include="Fleet.cpp" />
     <ClCompile Include="functions.cpp" />
     <ClCompile Include="HeavyCruiser.cpp" />
     <ClCompile Include="Leviathan.cpp" />
     <ClCompile Include="Ship.cpp" />
+=======
+    <ClCompile Include="Aircraft_Carrier.cpp" />
+    <ClCompile Include="GameInformation.cpp" />
+    <ClCompile Include="fleet.cpp" />
+    <ClCompile Include="generator.cpp" />
+    <ClCompile Include="Heavy_Cruiser.cpp" />
+    <ClCompile Include="ship.cpp" />
+>>>>>>> master
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Small.cpp" />
     <ClCompile Include="Tsundere.cpp" />
     <ClCompile Include="BasicType.cpp" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <ClInclude Include="AircraftCarrier.h" />
     <ClInclude Include="Fleet.h" />
     <ClInclude Include="functions.h" />
     <ClInclude Include="HeavyCruiser.h" />
     <ClInclude Include="Leviathan.h" />
     <ClInclude Include="Ship.h" />
+=======
+    <ClInclude Include="Aircraft_Carrier.h" />
+    <ClInclude Include="GameInformation.h" />
+    <ClInclude Include="fleet.h" />
+    <ClInclude Include="generator.h" />
+    <ClInclude Include="Heavy_Cruiser.h" />
+    <ClInclude Include="ship.h" />
+>>>>>>> master
     <ClInclude Include="Small.h" />
     <ClInclude Include="Tsundere.h" />
     <ClInclude Include="BasicType.h" />

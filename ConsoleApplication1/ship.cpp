@@ -144,7 +144,99 @@ std::istream& operator>>(std::istream& in, Ship& shp) {
 	return in;
 }
 
+<<<<<<< HEAD
 std::ostream& operator<<(std::ostream& out, const Ship& shp) {
 	shp.print(out);
 	return out;
+=======
+bool ship::operator!=(const ship& right) const
+{
+    return !(*this == right);
+}
+
+ship& ship::operator=(const ship& right)
+{
+    if (this != &right)
+    {
+        name_ = right.name_;
+        type_ = right.type_;
+        durability_ = right.durability_;
+    }
+    return *this;
+}
+
+ship ship::operator++(int)
+{
+    ship copyThis(*this);
+    for (int i = 0; i < durability_.size(); i++)
+    {
+        if (durability_[i] == Tsundere_Durability)
+        {
+            durability_[i]++;
+        }
+    }
+    return copyThis;
+}
+
+void ship::detonate_the_ship(const std::vector <std::pair<unsigned int, unsigned int>> coords, const bool side)const {
+    extern GameInformation game_info();
+    if (game_info().get_debug_mode()) {
+        for (int i = 0; i < coords.size(); i++) {
+            std::cout << "[DEBUG INFO]" << i << ": X = " << coords[i].first << "; Y = " << coords[i].second << std::endl;
+        }
+        std::cout << std::endl;
+    }
+    for (int i = 0; i < coords.size(); i++) {
+        if (coords[i].first) {
+            if (coords[i].second) {
+                game_info().field_get_vision(coords[i].first - 1, coords[i].second - 1, side);
+            }
+            game_info().field_get_vision(coords[i].first - 1, coords[i].second, side);
+            if (coords[i].second < width_height - 1) {
+                game_info().field_get_vision(coords[i].first - 1, coords[i].second + 1, side);
+            }
+        }
+        if (coords[i].second) {
+            game_info().field_get_vision(coords[i].first, coords[i].second - 1, side);
+        }
+        if (coords[i].second < width_height - 1) {
+            game_info().field_get_vision(coords[i].first, coords[i].second + 1, side);
+        }
+        if (coords[i].first < width_height - 1) {
+            if (coords[i].second) {
+                game_info().field_get_vision(coords[i].first + 1, coords[i].second - 1, side);
+            }
+            game_info().field_get_vision(coords[i].first + 1, coords[i].second, side);
+            if (coords[i].second < width_height - 1) {
+                game_info().field_get_vision(coords[i].first + 1, coords[i].second + 1, side);
+            }
+        }
+    }
+}
+
+std::pair<unsigned int, unsigned int> ship::get_coordinates()const {
+    return coordinates_;
+}
+
+void ship::set_coordinates(const std::pair<unsigned int, unsigned int> new_coordinates) {
+    coordinates_ = new_coordinates;
+}
+
+void ship::nuclear_bomb() {
+    for (auto& i : durability_) {
+        durability_[i] = 0;
+    }
+}
+
+std::istream& operator>>(std::istream& in, ship& shp)
+{
+    shp.read(in);
+    return in;
+}
+
+std::ostream& operator<<(std::ostream& out, const ship& shp)
+{
+    shp.print(out);
+    return out;
+>>>>>>> master
 }

@@ -6,9 +6,14 @@
 #include <map>
 #include "Fleet.h"
 
+<<<<<<< HEAD
 Fleet::Fleet() {
 	resize_fields();
 }
+=======
+
+std::vector <std::pair <unsigned int, unsigned int>> bots_memory; //BOT Repository Of Detected Cells
+>>>>>>> master
 
 Fleet::Fleet(const std::string& nm) :name_(nm) {
 	resize_fields();
@@ -79,11 +84,24 @@ Ship Fleet::get_ship_by_index(const int id)const {
 	return ship_vector_.at(id);
 }
 
+<<<<<<< HEAD
 void Fleet::damage_by_index_bot(Ship sheep, int difficulty) { //sheep - who is attack
 	std::vector <std::pair <int, int>> bot_memory; //BOT Repository Of Detected Cells
 	bool guras_bool = true; //Gura was still unable to plant a large tree
 	int x = 0, y = 0, attempts = 0;
 	int dmg = sheep.get_type()->get_damage_value();
+=======
+void Fleet::damage_by_index_bot(const int dmg, const int difficulty) {
+	srand(time(nullptr));
+	extern 
+	int x = 0, y = 0;
+	//Gura AI(c). All rights not reserved.
+	bool GwSUtPaLT = true; //Gura was still unable to plant a large tree
+	unsigned int attempts = difficulty;
+	while (GwSUtPaLT) {
+		x = rand() % width_height, y = rand() % width_height;
+		if (DEBUG_MODE) std::cout << "[DEBUG INFO]Trying to: x = " << x << "; y = " << y << std::endl;
+>>>>>>> master
 
 	if (difficulty == 2) {
 		difficulty = 49;
@@ -277,6 +295,7 @@ void Fleet::damage_by_index_player(Ship &sheep) { //sheep - who is attack
 	std::cin >> char_x >> str_y;
 	if constexpr (DEBUG_MODE) std::cout << "[DEFAULT DAMAGE PLAYER]X = " << char_x << "; Y = " << str_y << std::endl;
 
+<<<<<<< HEAD
 	for (int i = 0; i < str_y.length(); i++) {
 		if (str_y[i] >= '0' && str_y[i] <= '9') {
 			not_idiot = false;
@@ -287,6 +306,17 @@ void Fleet::damage_by_index_player(Ship &sheep) { //sheep - who is attack
 			negative = true;
 		}
 	}
+=======
+void Fleet::damage_by_index_player(const ship sheep) {
+	extern GameInformation game_info();
+	std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
+	int x = 0, y = -1;
+	unsigned int dmg = sheep.get_type()->get_damage_value();
+	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	char charx;
+	std::cin >> charx >> y;
+	if (game_info().get_debug_mode()) std::cout << "[DEBUG INFO]X = " << charx << "; Y = " << y << std::endl;
+>>>>>>> master
 
 	if (not_idiot) y = letter_to_int(std::toupper(str_y[0]));
 	if (negative) y *= -1;
@@ -305,9 +335,24 @@ void Fleet::damage_by_index_player(Ship &sheep) { //sheep - who is attack
 
 	if constexpr (DEBUG_MODE) { std::cout << "[DEFAULT DAMAGE PLAYER]int X = " << x << " Y = " << y << std::endl; }
 
+<<<<<<< HEAD
 	if (field_id_[x][y].first > 1) {
 		if (ship_vector_[field_id_[x][y].first - 2].get_durability()[field_id_[x][y].second]) {
 		if (ship_vector_[field_id_[x][y].first - 2].get_type()->get_size() == 4 && sheep.get_type()->get_size() == 1) {
+=======
+	if (game_info().get_debug_mode()) { std::cout << "[DEBUG INFO]int X = " << x << " Y = " << y << std::endl; }
+
+	if (game_info().return_field_id()[side_][x][y].first > 1) 
+	{
+		if (ship_vector_[game_info().return_field_id()[side_][x][y].first - 2].get_durability()[game_info().return_field_id()[side_][x][y].second])
+		{
+			if (ship_vector_[game_info().return_field_id()[side_][x][y].first - 2].get_type()->get_name() == "Small" && sheep.get_type()->get_name() == "Tsundere")
+			{
+				dmg = Small_Durability;
+			}
+			else if (ship_vector_[game_info().return_field_id()[side_][x][y].first - 2].get_type()->get_name() == "Aircraft Carrier" && sheep.get_type()->get_name() == "Small")
+			{
+>>>>>>> master
 				dmg *= 2;
 			}
 			get_damage(dmg, x, y);
@@ -319,6 +364,7 @@ void Fleet::damage_by_index_player(Ship &sheep) { //sheep - who is attack
 	else {
 		std::cout << "Miss!" << std::endl;
 	}
+<<<<<<< HEAD
 	field_get_vision(x, y);
 }
 
@@ -329,6 +375,20 @@ void Fleet::damage_by_index_player_simple() {
 	std::string str_y;
 	std::cin >> char_x >> str_y;
 	if constexpr (DEBUG_MODE) std::cout << "[DEFAULT DAMAGE PLAYER SIMPLE]X = " << char_x << "; Y = " << str_y << std::endl;
+=======
+	game_info().field_get_vision(x, y, side_);
+}
+
+void Fleet::aircraft_attack(const bool angle, const int dmg)
+{
+	extern GameInformation game_info();
+	std::cout << "Where are we going to shoot? (Write X and Y coordinates): ";
+	int x = 0, y = -1;
+	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	char char_x = ' ';
+	std::cin >> char_x >> y;
+	if (game_info().get_debug_mode()) std::cout << "[DEBUG INFO]X = " << char_x << "; Y = " << y << std::endl;
+>>>>>>> master
 
 	for (int i = 0; i < str_y.length(); i++) {
 		if (str_y[i] >= '0' && str_y[i] <= '9') {
@@ -395,8 +455,12 @@ int Fleet::play_shipsweeper() {
 		}
 	}
 
+<<<<<<< HEAD
 	if (not_idiot) y = letter_to_int(std::toupper(str_y[0]));
 	if (negative) y *= -1;
+=======
+	if (game_info().get_debug_mode()) { std::cout << "[DEBUG INFO]int X = " << x << " Y = " << y << std::endl; }
+>>>>>>> master
 
 	if (y > width_height - 1 || y < 0) {
 		std::cout << "Captain! Out of bounds!" << std::endl;
@@ -570,9 +634,15 @@ void Fleet::aircraft_attack_player(const int dmg) {
 				std::cout << "Captain! You shot out of bounds!" << std::endl;
 				continue;
 			}
+<<<<<<< HEAD
 			if (field_id_[x][y].first > 1) {
 				if (ship_vector_[field_id_[x][y].first - 2].get_durability()[field_id_[x][y].second]) {
 					get_damage(dmg, x, y);
+=======
+			if (game_info().return_field_id()[side_][x][y].first > 1) {
+				if (ship_vector_[game_info().return_field_id()[side_][x][y].first - 2].get_durability()[game_info().return_field_id()[side_][x][y].second]) {
+					get_damage(side_, x, y, dmg, ship_vector_);
+>>>>>>> master
 				}
 				else {
 					std::cout << "Why did you shoot at an already sunk ship?" << std::endl;
@@ -592,9 +662,15 @@ void Fleet::aircraft_attack_player(const int dmg) {
 				std::cout << "Captain! You shot out of bounds!" << std::endl;
 				continue;
 			}
+<<<<<<< HEAD
 			if (field_id_[x][y].first > 1) {
 				if (ship_vector_[field_id_[x][y].first - 2].get_durability()[field_id_[x][y].second]) {
 					get_damage(dmg, x, y);
+=======
+			if (game_info().return_field_id()[side_][x][y].first > 1) {
+				if (ship_vector_[game_info().return_field_id()[side_][x][y].first - 2].get_durability()[game_info().return_field_id()[side_][x][y].second]) {
+					get_damage(side_, x, y, dmg, ship_vector_);
+>>>>>>> master
 				}
 				else {
 					std::cout << "Why did you shoot at an already sunk ship?" << std::endl;
@@ -709,6 +785,7 @@ void Fleet::aircraft_attack_bot(const int dmg, int difficulty) {
 			}
 		}
 	}
+<<<<<<< HEAD
 
 	if constexpr (DEBUG_MODE) { std::cout << "[AIRCRAFT ATTACK BOT]Gura decided, that X = " << x << "; Y = " << y << std::endl; }
 
@@ -755,6 +832,19 @@ void Fleet::heavy_cruiser_attack_player(const int dmg) {
 	std::string str_y;
 	std::cin >> char_x >> str_y;
 	if constexpr (DEBUG_MODE) std::cout << "[HEAVY CRUISER ATTACK PLAYER]X = " << char_x << "; Y = " << str_y << std::endl;
+=======
+	game_info().field_get_vision(x, y, side_);
+}
+
+void Fleet::heavy_cruiser_attack(const int dmg)
+{
+	extern GameInformation game_info();
+	int x = 0, y = -1;
+	std::string alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	char char_x;
+	std::cin >> char_x >> y;
+	if (game_info().get_debug_mode()) std::cout << "[DEBUG INFO]X = " << char_x << "; Y = " << y << std::endl;
+>>>>>>> master
 
 	for (int i = 0; i < str_y.length(); i++) {
 		if (str_y[i] >= '0' && str_y[i] <= '9') {
@@ -781,6 +871,7 @@ void Fleet::heavy_cruiser_attack_player(const int dmg) {
 		std::cout << "Captain! You shot out of bounds!" << std::endl;
 	}
 
+<<<<<<< HEAD
 	if constexpr (DEBUG_MODE) { std::cout << "[HEAVY CRUISER ATTACK PLAYER]int X = " << x << " Y = " << y << std::endl; }
 	//Attack
 	x--;
@@ -792,10 +883,40 @@ void Fleet::heavy_cruiser_attack_player(const int dmg) {
 				if (field_id_[x][y].first > 1) {
 					if (ship_vector_[field_id_[x][y].first - 2].get_durability()[field_id_[x][y].second]) {
 						get_damage(dmg, x, y);
+=======
+	if (game_info().get_debug_mode()) { std::cout << "[DEBUG INFO]int X = " << x << " Y = " << y << std::endl; }
+	x--;
+	y--;
+	int temp_x = x + 3, temp_y = y + 3;
+	for (x; x < temp_x; x++)
+	{
+		for (y = temp_y - 3; y < temp_y; y++)
+		{
+			if (x < 0 || x >= width_height)
+			{
+				std::cout << "Captain! You shot out of bounds!" << std::endl;
+			}
+			else
+			{
+				if (y < 0 || y > width_height)
+				{
+					std::cout << "Captain! You shot out of bounds!" << std::endl;
+				}
+				else
+				{
+					if (game_info().return_field_id()[side_][x][y].first > 1) {
+						if (ship_vector_[game_info().return_field_id()[side_][x][y].first - 2].get_durability()[game_info().return_field_id()[side_][x][y].second]) {
+							get_damage(side_, x, y, dmg, ship_vector_);
+						}
+						else {
+							std::cout << "Why did you shoot at an already sunk ship?" << std::endl;
+						}
+>>>>>>> master
 					}
 					else {
 						std::cout << "Why did you shoot at an already sunk ship?" << std::endl;
 					}
+<<<<<<< HEAD
 				}
 				else {
 					std::cout << "Miss!" << std::endl;
@@ -958,6 +1079,9 @@ void Fleet::remember_founded_ships(std::vector <std::pair <int, int>>& memory) {
 			if (field_id_[x][y].first > 1 && field_war_[x][y] == true) {
 				if (ship_vector_[field_id_[x][y].first - 2].get_durability()[field_id_[x][y].second]) {
 					memory.emplace_back(std::make_pair(x, y));
+=======
+					game_info().field_get_vision(x, y, side_);
+>>>>>>> master
 				}
 			}
 		}

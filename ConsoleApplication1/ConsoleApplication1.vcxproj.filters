@@ -39,10 +39,14 @@
     <ClCompile Include="Small.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="functions.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="Leviathan.cpp">
+=======
+    <ClCompile Include="GameInformation.cpp">
+>>>>>>> master
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -65,6 +69,7 @@
     <ClInclude Include="Small.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="functions.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
@@ -73,6 +78,10 @@
     </ClInclude>
     <ClInclude Include="Leviathan.h">
       <Filter>Файлы заголовков</Filter>
+=======
+    <ClInclude Include="GameInformation.h">
+      <Filter>Исходные файлы</Filter>
+>>>>>>> master
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
