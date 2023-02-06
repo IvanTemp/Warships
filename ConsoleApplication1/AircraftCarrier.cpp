@@ -6,7 +6,7 @@ int AircraftCarrier::get_size() const {
 }
 
 int AircraftCarrier::get_damage_value() const {
-	return 4;
+	return 3 + rand() % 3;
 }
 
 int AircraftCarrier::get_default_durability() const {
