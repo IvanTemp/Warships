@@ -1,26 +1,34 @@
 #include "Small.h"
 #include "GameInformation.h"
 
-void Small::print() const
-{
-    std::cout << name_;
+
+int Small::get_size() const {
+	return 1;
 }
 
-int Small::get_size() const
-{
-    return size_;
+int Small::get_damage_value() const {
+	return 1 + rand() % 3;
 }
 
+<<<<<<< HEAD
+int Small::get_default_durability() const {
+	return 3;
+=======
 int Small::get_damage_value() const
 {
     return damage_;
+>>>>>>> master
 }
 
-std::string Small::get_name() const
-{
-    return name_;
+void Small::print_commands() const {
+	std::cout << "-Shoot\n-Move\n" << std::endl;
 }
 
+<<<<<<< HEAD
+std::string Small::get_description() const {
+	return "This small ship is small, which means it can move in other cells";
+}
+=======
 int Small::get_default_durability() const
 {
     return default_durability_;
@@ -204,3 +212,4 @@ void Small::move_small(const unsigned int index, const unsigned int start_x, con
 	}
 	std::cout << "Complete!\n\n";
 }
+>>>>>>> master

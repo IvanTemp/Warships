@@ -89,6 +89,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -103,6 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -117,7 +119,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -132,7 +136,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -142,29 +148,48 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+<<<<<<< HEAD
+    <ClCompile Include="AircraftCarrier.cpp" />
+    <ClCompile Include="Fleet.cpp" />
+    <ClCompile Include="functions.cpp" />
+    <ClCompile Include="HeavyCruiser.cpp" />
+    <ClCompile Include="Leviathan.cpp" />
+    <ClCompile Include="Ship.cpp" />
+=======
     <ClCompile Include="Aircraft_Carrier.cpp" />
     <ClCompile Include="GameInformation.cpp" />
     <ClCompile Include="fleet.cpp" />
     <ClCompile Include="generator.cpp" />
     <ClCompile Include="Heavy_Cruiser.cpp" />
     <ClCompile Include="ship.cpp" />
+>>>>>>> master
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Small.cpp" />
     <ClCompile Include="Tsundere.cpp" />
-    <ClCompile Include="type.cpp" />
+    <ClCompile Include="BasicType.cpp" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
+    <ClInclude Include="AircraftCarrier.h" />
+    <ClInclude Include="Fleet.h" />
+    <ClInclude Include="functions.h" />
+    <ClInclude Include="HeavyCruiser.h" />
+    <ClInclude Include="Leviathan.h" />
+    <ClInclude Include="Ship.h" />
+=======
     <ClInclude Include="Aircraft_Carrier.h" />
     <ClInclude Include="GameInformation.h" />
     <ClInclude Include="fleet.h" />
     <ClInclude Include="generator.h" />
     <ClInclude Include="Heavy_Cruiser.h" />
     <ClInclude Include="ship.h" />
+>>>>>>> master
     <ClInclude Include="Small.h" />
     <ClInclude Include="Tsundere.h" />
-    <ClInclude Include="type.h" />
+    <ClInclude Include="BasicType.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="input.txt" />
     <Text Include="z_notes.txt" />
     <Text Include="z_TODO.txt" />
   </ItemGroup>

@@ -18,22 +18,19 @@
     <ClCompile Include="main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="ship.cpp">
+    <ClCompile Include="Ship.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="generator.cpp">
+    <ClCompile Include="Fleet.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="fleet.cpp">
+    <ClCompile Include="BasicType.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="type.cpp">
+    <ClCompile Include="AircraftCarrier.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Aircraft_Carrier.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="Heavy_Cruiser.cpp">
+    <ClCompile Include="HeavyCruiser.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="Tsundere.cpp">
@@ -42,27 +39,28 @@
     <ClCompile Include="Small.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+<<<<<<< HEAD
+    <ClCompile Include="functions.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Leviathan.cpp">
+=======
     <ClCompile Include="GameInformation.cpp">
+>>>>>>> master
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ship.h">
+    <ClInclude Include="Ship.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="generator.h">
+    <ClInclude Include="BasicType.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="fleet.h">
+    <ClInclude Include="AircraftCarrier.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="type.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="Aircraft_Carrier.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="Heavy_Cruiser.h">
+    <ClInclude Include="HeavyCruiser.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Tsundere.h">
@@ -71,8 +69,19 @@
     <ClInclude Include="Small.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+<<<<<<< HEAD
+    <ClInclude Include="functions.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Fleet.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Leviathan.h">
+      <Filter>Файлы заголовков</Filter>
+=======
     <ClInclude Include="GameInformation.h">
       <Filter>Исходные файлы</Filter>
+>>>>>>> master
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -80,6 +89,9 @@
       <Filter>Исходные файлы</Filter>
     </Text>
     <Text Include="z_TODO.txt">
+      <Filter>Исходные файлы</Filter>
+    </Text>
+    <Text Include="input.txt">
       <Filter>Исходные файлы</Filter>
     </Text>
   </ItemGroup>

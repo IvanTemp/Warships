@@ -1,22 +1,23 @@
-=====ship_vector_ Eagle Union=====
-[2]	Enterprise	Type: Aircraft Carrier	Durability:  6 6 6 6
-[3]	Prinz Eugene	Type: Heavy Cruiser	Durability:  7 7 7
-[4]	Atago		Type: Heavy Cruiser	Durability:  7 7 7
-[5]	FLX1		Type: Tsundere		Durability:  5 5
-[6]	FLX2		Type: Tsundere		Durability:  5 5
-[7]	FLX3		Type: Tsundere		Durability:  5 5
-[8]	Flaffey1	Type: Small		Durability:  4
-[9]	Flaffey2	Type: Small		Durability:  4
-[10]	Flaffey3	Type: Small		Durability:  4
-[11]	Flaffey4	Type: Small		Durability:  4
-=====ship_vector_ Sakura Empire=====
-[2]	Akagi		Type: Aircraft Carrier	Durability:  6 6 6 6
-[3]	SAKURA_NAME1	Type: Heavy Cruiser	Durability:  7 7 7
-[4]	SAKURA_NAME2	Type: Heavy Cruiser	Durability:  7 7 7
-[5]	SAKURA_NAME3	Type: Tsundere		Durability:  5 5
-[6]	SAKURA_NAME4	Type: Tsundere		Durability:  5 5
-[7]	SAKURA_NAME5	Type: Tsundere		Durability:  5 5
-[8]	Ayanami1	Type: Small		Durability:  4
-[9]	Ayanami2	Type: Small		Durability:  4
-[10]	Ayanami3	Type: Small		Durability:  4
-[11]	Ayanami4	Type: Small		Durability:  4
+=====Fleet Eagle Union=====
+Madoka	Type: Leviathan	Durability:  666 666 666 666 660
+Enterprise	Type: Aircraft Carrier	Durability:  4 4 0 0
+Prinz Eugene	Type: Heavy Cruiser	Durability:  7 7 7
+Atago		Type: Heavy Cruiser	Durability:  7 6 6
+FLX1		Type: Tsundere		Durability:  3 3
+FLX2		Type: Tsundere		Durability:  3 3
+FLX3		Type: Tsundere		Durability:  3 3
+Flaffey1	Type: Small		Durability:  0
+Flaffey2	Type: Small		Durability:  0
+Flaffey3	Type: Small		Durability:  0
+Flaffey4	Type: Small		Durability:  0
+=====Fleet Sakura Empire=====
+Akagi		Type: Aircraft Carrier	Durability:  0 0 0 0
+SAKURA_NAME1	Type: Heavy Cruiser	Durability:  0 0 0
+SAKURA_NAME2	Type: Heavy Cruiser	Durability:  0 0 0
+SAKURA_NAME3	Type: Tsundere		Durability:  0 0
+SAKURA_NAME4	Type: Tsundere		Durability:  0 0
+SAKURA_NAME5	Type: Tsundere		Durability:  0 0
+Ayanami1	Type: Small		Durability:  0
+Ayanami2	Type: Small		Durability:  0
+Ayanami3	Type: Small		Durability:  0
+Ayanami4	Type: Small		Durability:  0
